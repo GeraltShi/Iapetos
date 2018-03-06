@@ -91,6 +91,15 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }
+    
+    // add Keyboard Listener
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
+        log("%d Pressed", keyCode);
+    };
+    
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+    
     return true;
 }
 
