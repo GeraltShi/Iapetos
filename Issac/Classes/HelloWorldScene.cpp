@@ -78,7 +78,7 @@ bool HelloWorld::init()
     }
 
     // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
+    sprite = Sprite::create("HelloWorld.png");
     if (sprite == nullptr)
     {
         problemLoading("'HelloWorld.png'");
@@ -91,9 +91,70 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }
+    
+    // add Keyboard Listener
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
+        log("%d Pressed", keyCode);
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+    listener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
+        keys[keyCode] = true;
+    };
+    
+    listener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event){
+        keys[keyCode] = false;
+    };
+    this->scheduleUpdate();
     return true;
 }
 
+bool HelloWorld::isKeyPressed(EventKeyboard::KeyCode keyCode) {
+    if(keys[keyCode]) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void HelloWorld::update(float delta) {
+    Node::update(delta);
+    auto leftArrow = EventKeyboard::KeyCode::KEY_LEFT_ARROW, rightArrow = EventKeyboard::KeyCode::KEY_RIGHT_ARROW,
+    upArrow = EventKeyboard::KeyCode::KEY_UP_ARROW, downArrow = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
+    if(isKeyPressed(leftArrow)) {
+        keyPressedDuration(leftArrow);
+    } else if(isKeyPressed(rightArrow)) {
+        keyPressedDuration(rightArrow);
+    } else if(isKeyPressed(upArrow)) {
+        keyPressedDuration(upArrow);
+    } else if(isKeyPressed(downArrow)) {
+        keyPressedDuration(downArrow);
+    }
+}
+
+void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
+    int offsetX = 0, offsetY = 0;
+    switch (code) {
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+            offsetX = -5;
+            break;
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+            offsetX = 5;
+            break;
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+            offsetY = 5;
+            break;
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+            offsetY = -5;
+            break;
+        default:
+            offsetY = offsetX = 0;
+            break;
+    }
+    // 0.3s代表着动作从开始到结束所用的时间，从而显得不会那么机械。
+    auto moveTo = MoveTo::create(0.3, Vec2(sprite->getPositionX() + offsetX, sprite->getPositionY() + offsetY));
+    sprite->runAction(moveTo);
+}
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
