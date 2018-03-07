@@ -11,6 +11,9 @@ public:
     virtual bool init();
     
     cocos2d::Sprite *sprite;
+    cocos2d::Sprite *bullet;
+    int bulletOffsetX = 0, bulletOffsetY = 0;
+    bool bulletEnable = false;
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);

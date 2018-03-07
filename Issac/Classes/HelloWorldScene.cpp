@@ -76,12 +76,16 @@ bool HelloWorld::init()
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
+    
+    // import the texture for character
+    auto texture = Director::getInstance()->getTextureCache()->addImage("character_001_isaac.png");
+    SpriteFrame *spFrame = SpriteFrame::createWithTexture(texture, Rect(16,256,48,48));
+    sprite = Sprite::createWithSpriteFrame(spFrame);
 
     // add "HelloWorld" splash screen"
-    sprite = Sprite::create("HelloWorld.png");
     if (sprite == nullptr)
     {
-        problemLoading("'HelloWorld.png'");
+        problemLoading("'character_001_isaac.png'");
     }
     else
     {
@@ -90,6 +94,23 @@ bool HelloWorld::init()
 
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
+    }
+    
+    // add bullet
+    auto texture_bullet = Director::getInstance()->getTextureCache()->addImage("tears.png");
+    SpriteFrame *btFrame = SpriteFrame::createWithTexture(texture_bullet, Rect(0,96,32,32));
+    bullet = Sprite::createWithSpriteFrame(btFrame);
+    if (bullet == nullptr)
+    {
+        problemLoading("'tears.png'");
+    }
+    else
+    {
+        // position the sprite on the center of the screen
+        bullet->setPosition(Vec2(sprite->getPositionX(),sprite->getPositionY()));
+        
+        // add the sprite as a child to this layer
+        this->addChild(bullet, 0);
     }
     
     // add Keyboard Listener
@@ -117,36 +138,84 @@ bool HelloWorld::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 
 void HelloWorld::update(float delta) {
     Node::update(delta);
-    auto leftArrow = EventKeyboard::KeyCode::KEY_LEFT_ARROW, rightArrow = EventKeyboard::KeyCode::KEY_RIGHT_ARROW,
-    upArrow = EventKeyboard::KeyCode::KEY_UP_ARROW, downArrow = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
-    if(isKeyPressed(leftArrow)) {
-        keyPressedDuration(leftArrow);
-    } else if(isKeyPressed(rightArrow)) {
-        keyPressedDuration(rightArrow);
-    } else if(isKeyPressed(upArrow)) {
-        keyPressedDuration(upArrow);
-    } else if(isKeyPressed(downArrow)) {
-        keyPressedDuration(downArrow);
+    auto walkLeft = EventKeyboard::KeyCode::KEY_A, walkRight = EventKeyboard::KeyCode::KEY_D,
+    walkUp = EventKeyboard::KeyCode::KEY_W, walkDown = EventKeyboard::KeyCode::KEY_S,
+    bulletLeft = EventKeyboard::KeyCode::KEY_LEFT_ARROW,
+    bulletRight = EventKeyboard::KeyCode::KEY_RIGHT_ARROW,
+    bulletUp = EventKeyboard::KeyCode::KEY_UP_ARROW,
+    bulletDown = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
+    if(isKeyPressed(walkLeft)) {
+        keyPressedDuration(walkLeft);
+    } else if(isKeyPressed(walkRight)) {
+        keyPressedDuration(walkRight);
     }
+    
+    if(isKeyPressed(walkUp)) {
+        keyPressedDuration(walkUp);
+    } else if(isKeyPressed(walkDown)) {
+        keyPressedDuration(walkDown);
+    }
+    
+    if(isKeyPressed(bulletLeft)) {
+        keyPressedDuration(bulletLeft);
+        bullet->setVisible(true);
+    } else if (isKeyPressed(bulletRight)) {
+        keyPressedDuration(bulletRight);
+        bullet->setVisible(true);
+    } else if (isKeyPressed(bulletUp)) {
+        keyPressedDuration(bulletUp);
+        bullet->setVisible(true);
+    } else if (isKeyPressed(bulletDown)) {
+        keyPressedDuration(bulletDown);
+        bullet->setVisible(true);
+    } else {
+        bullet->setVisible(false);
+    }
+    bullet->setPosition(Vec2(sprite->getPositionX() + bulletOffsetX, sprite->getPositionY() + bulletOffsetY));
 }
 
 void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
     int offsetX = 0, offsetY = 0;
+    bulletOffsetX = 0, bulletOffsetY = 0;
     switch (code) {
-        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        // character response
+        case EventKeyboard::KeyCode::KEY_A:
             offsetX = -7;
             break;
-        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+        case EventKeyboard::KeyCode::KEY_D:
             offsetX = 7;
             break;
-        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        case EventKeyboard::KeyCode::KEY_W:
             offsetY = 7;
             break;
-        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+        case EventKeyboard::KeyCode::KEY_S:
             offsetY = -7;
+            break;
+        // bullet response
+        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+            bulletOffsetX = -16;
+            bulletOffsetY = 0;
+            bulletEnable = true;
+            break;
+        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+            bulletOffsetX = 16;
+            bulletOffsetY = 0;
+            bulletEnable = true;
+            break;
+        case EventKeyboard::KeyCode::KEY_UP_ARROW:
+            bulletOffsetX = 0;
+            bulletOffsetY = 16;
+            bulletEnable = true;
+            break;
+        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+            bulletOffsetX = 0;
+            bulletOffsetY = -16;
+            bulletEnable = true;
             break;
         default:
             offsetY = offsetX = 0;
+            bulletOffsetX = bulletOffsetY = 0;
+            bulletEnable = false;
             break;
     }
     // 0.3s代表着动作从开始到结束所用的时间，从而显得不会那么机械。
