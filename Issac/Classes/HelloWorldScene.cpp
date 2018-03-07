@@ -95,16 +95,14 @@ bool HelloWorld::init()
     // add Keyboard Listener
     auto listener = EventListenerKeyboard::create();
     listener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
-        log("%d Pressed", keyCode);
-    };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-    listener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
         keys[keyCode] = true;
+        log("%d Pressed", keyCode);
     };
     
     listener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event){
         keys[keyCode] = false;
     };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     this->scheduleUpdate();
     return true;
 }
@@ -136,16 +134,16 @@ void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
     int offsetX = 0, offsetY = 0;
     switch (code) {
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-            offsetX = -5;
+            offsetX = -7;
             break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-            offsetX = 5;
+            offsetX = 7;
             break;
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
-            offsetY = 5;
+            offsetY = 7;
             break;
         case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-            offsetY = -5;
+            offsetY = -7;
             break;
         default:
             offsetY = offsetX = 0;
