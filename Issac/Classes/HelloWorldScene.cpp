@@ -1,7 +1,9 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include <thread>
 
 USING_NS_CC;
+using namespace std;
 
 Scene* HelloWorld::createScene()
 {
@@ -166,6 +168,7 @@ void HelloWorld::update(float delta) {
     } else if(isKeyPressed(walkDown)) {
         keyPressedDuration(walkDown);
         swapTexture(headSprite, texture, Rect(0,0,32,32));
+        walkThread();
     }
     
     if(isKeyPressed(bulletLeft)) {
@@ -188,20 +191,21 @@ void HelloWorld::update(float delta) {
 
 void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
     int offsetX = 0, offsetY = 0;
+    int moveSpeed = 5;
     bulletOffsetX = 0, bulletOffsetY = 0;
     switch (code) {
         // character response
         case EventKeyboard::KeyCode::KEY_A:
-            offsetX = -7;
+            offsetX = -moveSpeed;
             break;
         case EventKeyboard::KeyCode::KEY_D:
-            offsetX = 7;
+            offsetX = moveSpeed;
             break;
         case EventKeyboard::KeyCode::KEY_W:
-            offsetY = 7;
+            offsetY = moveSpeed;
             break;
         case EventKeyboard::KeyCode::KEY_S:
-            offsetY = -7;
+            offsetY = -moveSpeed;
             break;
         // bullet response
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
@@ -237,9 +241,17 @@ void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
     bodySprite->runAction(bodyMoveTo);
 }
 
+
 void HelloWorld::swapTexture(cocos2d::Sprite *sprite, cocos2d::Texture2D *texture, const cocos2d::Rect &rect){
+    //Define a new Frame and set
     SpriteFrame *newFrame = SpriteFrame::createWithTexture(texture, rect);
     sprite->setSpriteFrame(newFrame);
+}
+
+void HelloWorld::walkThread(){
+    swapTexture(bodySprite, texture, Rect(200,0,32,32));
+    swapTexture(bodySprite, texture, Rect(0,32,32,32));
+    swapTexture(bodySprite, texture, Rect(32,32,32,32));
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)

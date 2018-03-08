@@ -70,6 +70,9 @@
 ### 库Sprite的继承
 [关于在cocos2dx中继承Sprite的分析与技巧 - CSDN博客](http://blog.csdn.net/while0/article/details/25615685)
 
+### 帧动画
+[cocos2dx 3.x(实现帧动画(人物动画,跑马灯效果)的几种方法) - 罗任德 - 博客园](https://www.cnblogs.com/luorende/p/5998893.html)
+
 ### 相关资源
 素材网站（第三方提取）
 https://tieba.baidu.com/p/3628520349?red_tag=2076293033
