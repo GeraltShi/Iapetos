@@ -178,7 +178,7 @@ void HelloWorld::update(float delta) {
         player->move(2);
     } else if(isKeyPressed(walkDown)) {
         keyPressedDuration(walkDown);
-        player->move(3);
+        player->move(3); 
     }
     
     if(isKeyPressed(bulletLeft)) {
