@@ -10,7 +10,8 @@ public:
 
     virtual bool init();
     
-    cocos2d::Sprite *sprite;
+    cocos2d::Sprite *headSprite;
+    cocos2d::Sprite *bodySprite;
     cocos2d::Sprite *bullet;
     int bulletOffsetX = 0, bulletOffsetY = 0;
     bool bulletEnable = false;

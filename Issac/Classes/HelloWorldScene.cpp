@@ -77,23 +77,29 @@ bool HelloWorld::init()
         this->addChild(label, 1);
     }
     
-    // import the texture for character
+    // import the head_texture for character
     auto texture = Director::getInstance()->getTextureCache()->addImage("character_001_isaac.png");
-    SpriteFrame *spFrame = SpriteFrame::createWithTexture(texture, Rect(16,256,48,48));
-    sprite = Sprite::createWithSpriteFrame(spFrame);
+    SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture, Rect(0,0,32,32));
+    headSprite = Sprite::createWithSpriteFrame(headFrame);
+    
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture, Rect(0,32,32,32));
+    bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+    
 
     // add "HelloWorld" splash screen"
-    if (sprite == nullptr)
+    if (headSprite == nullptr)
     {
         problemLoading("'character_001_isaac.png'");
     }
     else
     {
         // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+        headSprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+        bodySprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y - 13));
 
         // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
+        this->addChild(headSprite, 0);
+        this->addChild(bodySprite, 0);
     }
     
     // add bullet
@@ -107,7 +113,7 @@ bool HelloWorld::init()
     else
     {
         // position the sprite on the center of the screen
-        bullet->setPosition(Vec2(sprite->getPositionX(),sprite->getPositionY()));
+        bullet->setPosition(Vec2(headSprite->getPositionX(),headSprite->getPositionY()));
         
         // add the sprite as a child to this layer
         this->addChild(bullet, 0);
@@ -171,7 +177,7 @@ void HelloWorld::update(float delta) {
     } else {
         bullet->setVisible(false);
     }
-    bullet->setPosition(Vec2(sprite->getPositionX() + bulletOffsetX, sprite->getPositionY() + bulletOffsetY));
+    bullet->setPosition(Vec2(headSprite->getPositionX() + bulletOffsetX, headSprite->getPositionY() + bulletOffsetY));
 }
 
 void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
@@ -219,8 +225,10 @@ void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
             break;
     }
     // 0.3s代表着动作从开始到结束所用的时间，从而显得不会那么机械。
-    auto moveTo = MoveTo::create(0.3, Vec2(sprite->getPositionX() + offsetX, sprite->getPositionY() + offsetY));
-    sprite->runAction(moveTo);
+    auto headMoveTo = MoveTo::create(0.3, Vec2(headSprite->getPositionX() + offsetX, headSprite->getPositionY() + offsetY));
+    headSprite->runAction(headMoveTo);
+    auto bodyMoveTo = MoveTo::create(0.3, Vec2(bodySprite->getPositionX() + offsetX, bodySprite->getPositionY() + offsetY));
+    bodySprite->runAction(bodyMoveTo);
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
