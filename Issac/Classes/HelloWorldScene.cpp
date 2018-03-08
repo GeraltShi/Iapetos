@@ -105,10 +105,14 @@ bool HelloWorld::init()
         this->addChild(bodySprite, 0);
     }
     
+    // support multiple bullets
+    // TODO: need to add direction property of the bullet, to support flying
+    texture_bullet = Director::getInstance()->getTextureCache()->addImage("tears.png");
     // add bullet
-    auto texture_bullet = Director::getInstance()->getTextureCache()->addImage("tears.png");
+    
     SpriteFrame *btFrame = SpriteFrame::createWithTexture(texture_bullet, Rect(0,96,32,32));
-    bullet = Sprite::createWithSpriteFrame(btFrame);
+    Sprite *bullet = Sprite::createWithSpriteFrame(btFrame);
+    bulletQueue.push_back(bullet);
     if (bullet == nullptr)
     {
         problemLoading("'tears.png'");
@@ -121,6 +125,11 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(bullet, 0);
     }
+    
+    player = Player::create();
+    player->setPosition(Vec2(origin.x + visibleSize.width / 2
+                             , origin.y + visibleSize.height / 2));
+    this->addChild(player, 5);
     
     // add Keyboard Listener
     auto listener = EventListenerKeyboard::create();
@@ -146,6 +155,7 @@ bool HelloWorld::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 }
 
 void HelloWorld::update(float delta) {
+    player->update();
     Node::update(delta);
     auto walkLeft = EventKeyboard::KeyCode::KEY_A, walkRight = EventKeyboard::KeyCode::KEY_D,
     walkUp = EventKeyboard::KeyCode::KEY_W, walkDown = EventKeyboard::KeyCode::KEY_S,
@@ -156,40 +166,71 @@ void HelloWorld::update(float delta) {
     if(isKeyPressed(walkLeft)) {
         keyPressedDuration(walkLeft);
         bodySprite->setFlippedX(true);
+        player->move(0);
     } else if(isKeyPressed(walkRight)) {
         keyPressedDuration(walkRight);
         bodySprite->setFlippedX(false);
+        player->move(1);
     }
     
     if(isKeyPressed(walkUp)) {
         keyPressedDuration(walkUp);
+        player->move(2);
     } else if(isKeyPressed(walkDown)) {
         keyPressedDuration(walkDown);
+        player->move(3);
     }
     
     if(isKeyPressed(bulletLeft)) {
         swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
         headSprite->setFlippedX(true);
         keyPressedDuration(bulletLeft);
-        bullet->setVisible(true);
+        bulletQueue[0]->setVisible(true);
     } else if (isKeyPressed(bulletRight)) {
         swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
         headSprite->setFlippedX(false);
         keyPressedDuration(bulletRight);
-        bullet->setVisible(true);
+        bulletQueue[0]->setVisible(true);
+        bulletFlyX = 1;
+        bulletFlyY = 0;
     } else if (isKeyPressed(bulletUp)) {
         swapTexture(headSprite, texture, cocos2d::Rect(128,0,32,32));
         keyPressedDuration(bulletUp);
-        bullet->setVisible(true);
+        bulletQueue[0]->setVisible(true);
     } else if (isKeyPressed(bulletDown)) {
         swapTexture(headSprite, texture, cocos2d::Rect(0,0,32,32));
         keyPressedDuration(bulletDown);
-        bullet->setVisible(true);
+        bulletQueue[0]->setVisible(true);
     } else {
-        bullet->setVisible(false);
+        bulletQueue[0]->setVisible(false);
+    }
+    bulletQueue[0]->setPosition(Vec2(headSprite->getPositionX() + bulletOffsetX, headSprite->getPositionY() + bulletOffsetY));
+    auto bulletAction = MoveTo::create(0, Vec2(headSprite->getPositionX() + bulletFlyX, headSprite->getPositionY() + bulletFlyY));
+    bulletQueue[0]->runAction(bulletAction);
+    if(keys[EventKeyboard::KeyCode::KEY_A]){
+        walkThread(EventKeyboard::KeyCode::KEY_A);
+    } else if (!keys[EventKeyboard::KeyCode::KEY_A]){
+        
     }
     
-    bullet->setPosition(Vec2(headSprite->getPositionX() + bulletOffsetX, headSprite->getPositionY() + bulletOffsetY));
+    if(keys[EventKeyboard::KeyCode::KEY_D]){
+        walkThread(EventKeyboard::KeyCode::KEY_D);
+    } else if (!keys[EventKeyboard::KeyCode::KEY_D]){
+        
+    }
+    
+    if(keys[EventKeyboard::KeyCode::KEY_W]){
+        walkThread(EventKeyboard::KeyCode::KEY_W);
+    } else if (!keys[EventKeyboard::KeyCode::KEY_W]){
+        
+    }
+    
+    if(keys[EventKeyboard::KeyCode::KEY_S]){
+        walkThread(EventKeyboard::KeyCode::KEY_S);
+    } else if (!keys[EventKeyboard::KeyCode::KEY_S]){
+        
+    }
+    
 }
 
 void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
@@ -200,19 +241,19 @@ void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
         // character response
         case EventKeyboard::KeyCode::KEY_A:
             offsetX = -moveSpeed;
-            walkThread(code);
+            //walkThread(code);
             break;
         case EventKeyboard::KeyCode::KEY_D:
             offsetX = moveSpeed;
-            walkThread(code);
+            //walkThread(code);
             break;
         case EventKeyboard::KeyCode::KEY_W:
             offsetY = moveSpeed;
-            walkThread(code);
+            //walkThread(code);
             break;
         case EventKeyboard::KeyCode::KEY_S:
             offsetY = -moveSpeed;
-            walkThread(code);
+            //walkThread(code);
             break;
         // bullet listening
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:

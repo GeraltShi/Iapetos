@@ -2,6 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+#include "Player.hpp"
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -12,11 +13,14 @@ public:
     
     cocos2d::Sprite *headSprite;
     cocos2d::Sprite *bodySprite;
-    cocos2d::Sprite *bullet;
     cocos2d::Texture2D *texture;
     cocos2d::Action *bodyAction;
+    cocos2d::Texture2D *texture_bullet;
+    
+    std::vector<cocos2d::Sprite *> bulletQueue;
     
     int bulletOffsetX = 0, bulletOffsetY = 0;
+    float bulletFlyX = 0, bulletFlyY = 0;
     bool bulletEnable = false;
     
     // a selector callback
@@ -32,6 +36,7 @@ public:
     CREATE_FUNC(HelloWorld);
     
 private:
+    Player * player;
     std::map<cocos2d::EventKeyboard::KeyCode, bool> keys;
 };
 
