@@ -156,29 +156,38 @@ bool HelloWorld::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 
 void HelloWorld::update(float delta) {
     player->update();
-    Node::update(delta);
     auto walkLeft = EventKeyboard::KeyCode::KEY_A, walkRight = EventKeyboard::KeyCode::KEY_D,
     walkUp = EventKeyboard::KeyCode::KEY_W, walkDown = EventKeyboard::KeyCode::KEY_S,
     bulletLeft = EventKeyboard::KeyCode::KEY_LEFT_ARROW,
     bulletRight = EventKeyboard::KeyCode::KEY_RIGHT_ARROW,
     bulletUp = EventKeyboard::KeyCode::KEY_UP_ARROW,
     bulletDown = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
+    
+    if(keys[walkLeft]) {
+        player->move(0);
+    } else if(keys[walkRight]){
+        player->move(1);
+    } else if(keys[walkUp]){
+        player->move(2);
+    } else if(keys[walkDown]){
+        player->move(3);
+    } else{
+        player->idle();
+    }
+    
+    Node::update(delta);
     if(isKeyPressed(walkLeft)) {
         keyPressedDuration(walkLeft);
         bodySprite->setFlippedX(true);
-        player->move(0);
     } else if(isKeyPressed(walkRight)) {
         keyPressedDuration(walkRight);
         bodySprite->setFlippedX(false);
-        player->move(1);
     }
     
     if(isKeyPressed(walkUp)) {
         keyPressedDuration(walkUp);
-        player->move(2);
     } else if(isKeyPressed(walkDown)) {
         keyPressedDuration(walkDown);
-        player->move(3); 
     }
     
     if(isKeyPressed(bulletLeft)) {
