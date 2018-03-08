@@ -78,7 +78,7 @@ bool HelloWorld::init()
     }
     
     // import the head_texture for character
-    auto texture = Director::getInstance()->getTextureCache()->addImage("character_001_isaac.png");
+    texture = Director::getInstance()->getTextureCache()->addImage("character_001_isaac.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture, Rect(0,0,32,32));
     headSprite = Sprite::createWithSpriteFrame(headFrame);
     
@@ -152,14 +152,20 @@ void HelloWorld::update(float delta) {
     bulletDown = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
     if(isKeyPressed(walkLeft)) {
         keyPressedDuration(walkLeft);
+        swapTexture(headSprite, texture, Rect(60,0,32,32));
+        headSprite->setFlippedX(true);
     } else if(isKeyPressed(walkRight)) {
         keyPressedDuration(walkRight);
+        swapTexture(headSprite, texture, Rect(60,0,32,32));
+        headSprite->setFlippedX(false);
     }
     
     if(isKeyPressed(walkUp)) {
         keyPressedDuration(walkUp);
+        swapTexture(headSprite, texture, Rect(120,0,32,32));
     } else if(isKeyPressed(walkDown)) {
         keyPressedDuration(walkDown);
+        swapTexture(headSprite, texture, Rect(0,0,32,32));
     }
     
     if(isKeyPressed(bulletLeft)) {
@@ -229,6 +235,11 @@ void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
     headSprite->runAction(headMoveTo);
     auto bodyMoveTo = MoveTo::create(0.3, Vec2(bodySprite->getPositionX() + offsetX, bodySprite->getPositionY() + offsetY));
     bodySprite->runAction(bodyMoveTo);
+}
+
+void HelloWorld::swapTexture(cocos2d::Sprite *sprite, cocos2d::Texture2D *texture, const cocos2d::Rect &rect){
+    SpriteFrame *newFrame = SpriteFrame::createWithTexture(texture, rect);
+    sprite->setSpriteFrame(newFrame);
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)

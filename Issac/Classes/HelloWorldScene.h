@@ -13,6 +13,7 @@ public:
     cocos2d::Sprite *headSprite;
     cocos2d::Sprite *bodySprite;
     cocos2d::Sprite *bullet;
+    cocos2d::Texture2D *texture;
     int bulletOffsetX = 0, bulletOffsetY = 0;
     bool bulletEnable = false;
     
@@ -23,6 +24,7 @@ public:
     
     bool isKeyPressed(cocos2d::EventKeyboard::KeyCode);
     void keyPressedDuration(cocos2d::EventKeyboard::KeyCode);
+    void swapTexture(cocos2d::Sprite*, cocos2d::Texture2D* , const cocos2d::Rect &);
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
     
