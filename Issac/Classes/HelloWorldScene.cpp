@@ -155,8 +155,10 @@ void HelloWorld::update(float delta) {
     bulletDown = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
     if(isKeyPressed(walkLeft)) {
         keyPressedDuration(walkLeft);
+        bodySprite->setFlippedX(true);
     } else if(isKeyPressed(walkRight)) {
         keyPressedDuration(walkRight);
+        bodySprite->setFlippedX(false);
     }
     
     if(isKeyPressed(walkUp)) {
@@ -264,10 +266,22 @@ void HelloWorld::walkThread(EventKeyboard::KeyCode code){
     auto frame7 = SpriteFrame::createWithTexture(texture, Rect(32*5,32*1,32,32));
     auto frame8 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*1,32,32));
     auto frame9 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*1,32,32));
+    
+    auto frame10 = SpriteFrame::createWithTexture(texture, Rect(32*0,32*2,32,32));
+    auto frame11 = SpriteFrame::createWithTexture(texture, Rect(32*1,32*2,32,32));
+    auto frame12 = SpriteFrame::createWithTexture(texture, Rect(32*2,32*2,32,32));
+    auto frame13 = SpriteFrame::createWithTexture(texture, Rect(32*3,32*2,32,32));
+    auto frame14 = SpriteFrame::createWithTexture(texture, Rect(32*4,32*2,32,32));
+    auto frame15 = SpriteFrame::createWithTexture(texture, Rect(32*5,32*2,32,32));
+    auto frame16 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*2,32,32));
+    auto frame17 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*2,32,32));
+    auto frame18 = SpriteFrame::createWithTexture(texture, Rect(32*0,32*3,32,32));
+    auto frame19 = SpriteFrame::createWithTexture(texture, Rect(32*1,32*3,32,32));
+    
     Vector<cocos2d::SpriteFrame *> array;
     switch (code) {
         case EventKeyboard::KeyCode::KEY_W:
-            array.clear();
+            array.clear(); // just backplay
             array.pushBack(frame9);
             array.pushBack(frame8);
             array.pushBack(frame7);
@@ -292,13 +306,37 @@ void HelloWorld::walkThread(EventKeyboard::KeyCode code){
             array.pushBack(frame8);
             array.pushBack(frame9);
             break;
+        case EventKeyboard::KeyCode::KEY_A:
+            array.clear(); //set flip x true
+            array.pushBack(frame10);
+            array.pushBack(frame11);
+            array.pushBack(frame12);
+            array.pushBack(frame13);
+            array.pushBack(frame14);
+            array.pushBack(frame15);
+            array.pushBack(frame16);
+            array.pushBack(frame17);
+            array.pushBack(frame18);
+            array.pushBack(frame19);
+        case EventKeyboard::KeyCode::KEY_D:
+            array.clear();
+            array.pushBack(frame10);
+            array.pushBack(frame11);
+            array.pushBack(frame12);
+            array.pushBack(frame13);
+            array.pushBack(frame14);
+            array.pushBack(frame15);
+            array.pushBack(frame16);
+            array.pushBack(frame17);
+            array.pushBack(frame18);
+            array.pushBack(frame19);
         default:
             break;
     }
     auto animation = Animation::createWithSpriteFrames(array, 0.1f);
     bodyAction = RepeatForever::create(Animate::create(animation));
     bodySprite->runAction(bodyAction);
-    //TODO: need to solve the repeating issue after altering the direction
+    //TODO: need to solve the repeating issue after altering the direction, flashing bug remains
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
