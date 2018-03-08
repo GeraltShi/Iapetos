@@ -155,38 +155,38 @@ void HelloWorld::update(float delta) {
     bulletDown = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
     if(isKeyPressed(walkLeft)) {
         keyPressedDuration(walkLeft);
-        swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
-        headSprite->setFlippedX(true);
     } else if(isKeyPressed(walkRight)) {
         keyPressedDuration(walkRight);
-        swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
-        headSprite->setFlippedX(false);
     }
     
     if(isKeyPressed(walkUp)) {
         keyPressedDuration(walkUp);
-        swapTexture(headSprite, texture, cocos2d::Rect(128,0,32,32));
     } else if(isKeyPressed(walkDown)) {
         keyPressedDuration(walkDown);
-        swapTexture(headSprite, texture, cocos2d::Rect(0,0,32,32));
-        walkThread();
     }
     
     if(isKeyPressed(bulletLeft)) {
+        swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
+        headSprite->setFlippedX(true);
         keyPressedDuration(bulletLeft);
         bullet->setVisible(true);
     } else if (isKeyPressed(bulletRight)) {
+        swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
+        headSprite->setFlippedX(false);
         keyPressedDuration(bulletRight);
         bullet->setVisible(true);
     } else if (isKeyPressed(bulletUp)) {
+        swapTexture(headSprite, texture, cocos2d::Rect(128,0,32,32));
         keyPressedDuration(bulletUp);
         bullet->setVisible(true);
     } else if (isKeyPressed(bulletDown)) {
+        swapTexture(headSprite, texture, cocos2d::Rect(0,0,32,32));
         keyPressedDuration(bulletDown);
         bullet->setVisible(true);
     } else {
         bullet->setVisible(false);
     }
+    
     bullet->setPosition(Vec2(headSprite->getPositionX() + bulletOffsetX, headSprite->getPositionY() + bulletOffsetY));
 }
 
@@ -198,18 +198,21 @@ void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
         // character response
         case EventKeyboard::KeyCode::KEY_A:
             offsetX = -moveSpeed;
+            walkThread(code);
             break;
         case EventKeyboard::KeyCode::KEY_D:
             offsetX = moveSpeed;
+            walkThread(code);
             break;
         case EventKeyboard::KeyCode::KEY_W:
             offsetY = moveSpeed;
+            walkThread(code);
             break;
         case EventKeyboard::KeyCode::KEY_S:
             offsetY = -moveSpeed;
-            walkThread();
+            walkThread(code);
             break;
-        // bullet response
+        // bullet listening
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             bulletOffsetX = -16;
             bulletOffsetY = 0;
@@ -250,7 +253,7 @@ void HelloWorld::swapTexture(cocos2d::Sprite *sprite, cocos2d::Texture2D *textur
     sprite->setSpriteFrame(newFrame);
 }
 
-void HelloWorld::walkThread(){
+void HelloWorld::walkThread(EventKeyboard::KeyCode code){
     auto frame0 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*0,32,32));
     auto frame1 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*0,32,32));
     auto frame2 = SpriteFrame::createWithTexture(texture, Rect(32*0,32*1,32,32));
@@ -262,18 +265,40 @@ void HelloWorld::walkThread(){
     auto frame8 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*1,32,32));
     auto frame9 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*1,32,32));
     Vector<cocos2d::SpriteFrame *> array;
-    array.pushBack(frame0);
-    array.pushBack(frame1);
-    array.pushBack(frame2);
-    array.pushBack(frame3);
-    array.pushBack(frame4);
-    array.pushBack(frame5);
-    array.pushBack(frame6);
-    array.pushBack(frame7);
-    array.pushBack(frame8);
-    array.pushBack(frame9);
-    auto animation = Animation::createWithSpriteFrames(array, 0.2f);
-    bodySprite->runAction(RepeatForever::create(Animate::create(animation)));
+    switch (code) {
+        case EventKeyboard::KeyCode::KEY_W:
+            array.clear();
+            array.pushBack(frame9);
+            array.pushBack(frame8);
+            array.pushBack(frame7);
+            array.pushBack(frame6);
+            array.pushBack(frame5);
+            array.pushBack(frame4);
+            array.pushBack(frame3);
+            array.pushBack(frame2);
+            array.pushBack(frame1);
+            array.pushBack(frame0);
+            break;
+        case EventKeyboard::KeyCode::KEY_S:
+            array.clear();
+            array.pushBack(frame0);
+            array.pushBack(frame1);
+            array.pushBack(frame2);
+            array.pushBack(frame3);
+            array.pushBack(frame4);
+            array.pushBack(frame5);
+            array.pushBack(frame6);
+            array.pushBack(frame7);
+            array.pushBack(frame8);
+            array.pushBack(frame9);
+            break;
+        default:
+            break;
+    }
+    auto animation = Animation::createWithSpriteFrames(array, 0.1f);
+    bodyAction = RepeatForever::create(Animate::create(animation));
+    bodySprite->runAction(bodyAction);
+    //TODO: need to solve the repeating issue after altering the direction
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
