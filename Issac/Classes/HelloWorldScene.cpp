@@ -97,10 +97,11 @@ bool HelloWorld::init()
     {
         // position the sprite on the center of the screen
         headSprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-        bodySprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y - 13));
+        bodySprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y - 12));
 
         // add the sprite as a child to this layer
-        this->addChild(headSprite, 0);
+        this->addChild(headSprite, 1);
+        // add to a sublayer
         this->addChild(bodySprite, 0);
     }
     
@@ -154,20 +155,20 @@ void HelloWorld::update(float delta) {
     bulletDown = EventKeyboard::KeyCode::KEY_DOWN_ARROW;
     if(isKeyPressed(walkLeft)) {
         keyPressedDuration(walkLeft);
-        swapTexture(headSprite, texture, Rect(60,0,32,32));
+        swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
         headSprite->setFlippedX(true);
     } else if(isKeyPressed(walkRight)) {
         keyPressedDuration(walkRight);
-        swapTexture(headSprite, texture, Rect(60,0,32,32));
+        swapTexture(headSprite, texture, cocos2d::Rect(64,0,32,32));
         headSprite->setFlippedX(false);
     }
     
     if(isKeyPressed(walkUp)) {
         keyPressedDuration(walkUp);
-        swapTexture(headSprite, texture, Rect(120,0,32,32));
+        swapTexture(headSprite, texture, cocos2d::Rect(128,0,32,32));
     } else if(isKeyPressed(walkDown)) {
         keyPressedDuration(walkDown);
-        swapTexture(headSprite, texture, Rect(0,0,32,32));
+        swapTexture(headSprite, texture, cocos2d::Rect(0,0,32,32));
         walkThread();
     }
     
@@ -206,6 +207,7 @@ void HelloWorld::keyPressedDuration(EventKeyboard::KeyCode code) {
             break;
         case EventKeyboard::KeyCode::KEY_S:
             offsetY = -moveSpeed;
+            walkThread();
             break;
         // bullet response
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
@@ -249,9 +251,29 @@ void HelloWorld::swapTexture(cocos2d::Sprite *sprite, cocos2d::Texture2D *textur
 }
 
 void HelloWorld::walkThread(){
-    swapTexture(bodySprite, texture, Rect(200,0,32,32));
-    swapTexture(bodySprite, texture, Rect(0,32,32,32));
-    swapTexture(bodySprite, texture, Rect(32,32,32,32));
+    auto frame0 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*0,32,32));
+    auto frame1 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*0,32,32));
+    auto frame2 = SpriteFrame::createWithTexture(texture, Rect(32*0,32*1,32,32));
+    auto frame3 = SpriteFrame::createWithTexture(texture, Rect(32*1,32*1,32,32));
+    auto frame4 = SpriteFrame::createWithTexture(texture, Rect(32*2,32*1,32,32));
+    auto frame5 = SpriteFrame::createWithTexture(texture, Rect(32*3,32*1,32,32));
+    auto frame6 = SpriteFrame::createWithTexture(texture, Rect(32*4,32*1,32,32));
+    auto frame7 = SpriteFrame::createWithTexture(texture, Rect(32*5,32*1,32,32));
+    auto frame8 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*1,32,32));
+    auto frame9 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*1,32,32));
+    Vector<cocos2d::SpriteFrame *> array;
+    array.pushBack(frame0);
+    array.pushBack(frame1);
+    array.pushBack(frame2);
+    array.pushBack(frame3);
+    array.pushBack(frame4);
+    array.pushBack(frame5);
+    array.pushBack(frame6);
+    array.pushBack(frame7);
+    array.pushBack(frame8);
+    array.pushBack(frame9);
+    auto animation = Animation::createWithSpriteFrames(array, 0.2f);
+    bodySprite->runAction(RepeatForever::create(Animate::create(animation)));
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
