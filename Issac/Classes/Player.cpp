@@ -85,6 +85,8 @@ void Player::update()
         {
             this->setScaleX(-1); //flip
             this->setPositionX(this->getPositionX() - 3);
+            //auto moveTo = MoveTo::create(0.3, Vec2(this->getPositionX() - 3, this->getPositionY()));
+            //this->runAction(moveTo);
         }
         else if(direction == 1)
         {

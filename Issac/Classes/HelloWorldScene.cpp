@@ -155,7 +155,7 @@ bool HelloWorld::isKeyPressed(EventKeyboard::KeyCode keyCode) {
 }
 
 void HelloWorld::update(float delta) {
-    player->update();
+    
     auto walkLeft = EventKeyboard::KeyCode::KEY_A, walkRight = EventKeyboard::KeyCode::KEY_D,
     walkUp = EventKeyboard::KeyCode::KEY_W, walkDown = EventKeyboard::KeyCode::KEY_S,
     bulletLeft = EventKeyboard::KeyCode::KEY_LEFT_ARROW,
@@ -174,6 +174,7 @@ void HelloWorld::update(float delta) {
     } else{
         player->idle();
     }
+    player->update();
     
     Node::update(delta);
     if(isKeyPressed(walkLeft)) {
