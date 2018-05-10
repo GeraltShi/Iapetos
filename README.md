@@ -2,6 +2,25 @@
 ## 仿制 Issac
 ### 复旦大学微电子科学与工程系
 
+## MVC框架
+
+[cocos2d里面如何实现mvc](http://www.cnblogs.com/andyque/archive/2012/03/11/2390814.html)
+
+* Scene中负责界面的加载，界面的更新，事件注册
+* Controller中负责控制，监听事件
+* Model负责Controller与Scene之间传递信息
+
+>   Controller负责初始化Model和View
+    View负责显示Model
+    View负责接收用户touch事件，然后传递给controller来处理。
+    Controller实现view的代理，同时可以操作Model。
+    model则执行一些游戏逻辑处理并通知view它的状态改变。
+    View根据model的当前状态来更新它里面的所有对象，比如精灵。
+
+* Controller持有Service引用，将服务性质的代码放在Service类中，例如访问数据库、管理地图。
+
+* TODO：最后应使用IOC/DI管理所有Scene、Controller、Service。目前阶段直接例化也可以。
+
 ## TODO
 
 ### Step0: 数据结构封装
@@ -10,12 +29,12 @@
     - 道具系统（物品栏）
     - 其他属性
     - 贴图（不同走路方向贴图不同——需要每帧刷新：eg：头的方向会转）
-    
+
 - monster class
     - 类型／属性
     - 生命值
     - 贴图
-    
+
 - room property
     - room有哪些对象？
     - 贴图
