@@ -5,6 +5,7 @@ class MainSceneModel
 {
 private:
 public:
+    MainSceneModel(int wd){walking_direction = wd;};
     int walking_direction = -1;
 };
 

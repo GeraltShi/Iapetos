@@ -81,7 +81,7 @@ int check_key(EventKeyboard::KeyCode keyCode)
 void MainSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
-    scene_->set_model(MainSceneModel{ check_key(keyCode) });
+    scene_->set_model(MainSceneModel( check_key(keyCode) ));
 }
 
 void MainSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)
@@ -90,12 +90,12 @@ void MainSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event 
 
     if (key_map_.empty())
     {
-        scene_->set_model(MainSceneModel{ -1 });
+        scene_->set_model(MainSceneModel( -1 ));
     }
     else
     {
         keyCode = key_map_.begin()->first;
-        scene_->set_model(MainSceneModel{ check_key(keyCode) });
+        scene_->set_model(MainSceneModel( check_key(keyCode) ));
     }
 
     
