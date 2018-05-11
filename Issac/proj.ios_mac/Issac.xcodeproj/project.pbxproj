@@ -69,6 +69,8 @@
 		5210A20120A533240081CC78 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 5210A1F120A533240081CC78 /* .gitkeep */; };
 		5210A20220A533240081CC78 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 5210A1F320A533240081CC78 /* .gitkeep */; };
 		5210A20320A533240081CC78 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 5210A1F320A533240081CC78 /* .gitkeep */; };
+		5210A20720A55B0A0081CC78 /* Peppa.png in Resources */ = {isa = PBXBuildFile; fileRef = 5210A20520A55B090081CC78 /* Peppa.png */; };
+		5210A20820A55B0A0081CC78 /* Peppa.png in Resources */ = {isa = PBXBuildFile; fileRef = 5210A20520A55B090081CC78 /* Peppa.png */; };
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
 		521A8EA919F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
@@ -202,6 +204,7 @@
 		5210A1EF20A533240081CC78 /* MainSceneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSceneModel.h; sourceTree = "<group>"; };
 		5210A1F120A533240081CC78 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		5210A1F320A533240081CC78 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		5210A20520A55B090081CC78 /* Peppa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Peppa.png; sourceTree = "<group>"; };
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		521A8EA819F11F5000D177D7 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
@@ -351,6 +354,7 @@
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
 				46880B7619C43A67006E1F66 /* CloseNormal.png */,
+				5210A20520A55B090081CC78 /* Peppa.png */,
 				46880B7719C43A67006E1F66 /* CloseSelected.png */,
 				46880B7A19C43A67006E1F66 /* HelloWorld.png */,
 				52421923204FF5F3009A404A /* character_001_isaac.png */,
@@ -623,6 +627,7 @@
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				5210A20220A533240081CC78 /* .gitkeep in Resources */,
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,
+				5210A20720A55B0A0081CC78 /* Peppa.png in Resources */,
 				52421940205153CF009A404A /* move_1.png in Resources */,
 				5242193C205153CF009A404A /* move_3.png in Resources */,
 				46880B7B19C43A67006E1F66 /* CloseNormal.png in Resources */,
@@ -646,6 +651,7 @@
 				5242192B204FFAD1009A404A /* tears.png in Resources */,
 				5242193D205153CF009A404A /* move_3.png in Resources */,
 				3EACC99019EE6D4300EB3C5E /* res in Resources */,
+				5210A20820A55B0A0081CC78 /* Peppa.png in Resources */,
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 				46880B7C19C43A67006E1F66 /* CloseNormal.png in Resources */,
 				46880B7E19C43A67006E1F66 /* CloseSelected.png in Resources */,

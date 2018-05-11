@@ -16,7 +16,7 @@ public:
     virtual bool init();
 
     CREATE_FUNC(MainSceneController);
-
+    
     void on_touch_began(Touch* touch, Event* event) override;
     void on_mouse_down(Event* event) override;
     void on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event) override;
