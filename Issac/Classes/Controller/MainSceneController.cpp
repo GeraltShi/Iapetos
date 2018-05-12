@@ -37,7 +37,7 @@ void MainSceneController::on_touch_began(Touch* touch, Event* event)
 void MainSceneController::on_mouse_down(Event *event)
 {
     cocos2d::log("main_scene_on_click");
-    
+    //TODO 程序失焦自动暂停
     //TODO 用AOP方式管理Scene和Service
     auto room = RoomSceneController::createScene();
     Director::getInstance()->pushScene(room);
@@ -45,6 +45,7 @@ void MainSceneController::on_mouse_down(Event *event)
 
 int check_key(EventKeyboard::KeyCode keyCode)
 {
+    //TODO 上下左右改为射击方向，放炸弹，ESC
     int dir = -1;
     switch (keyCode)
     {
