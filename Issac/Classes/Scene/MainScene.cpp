@@ -1,5 +1,5 @@
 #include "MainScene.h"
-
+#include <iostream>
 USING_NS_CC;
 using namespace std;
 
@@ -14,8 +14,37 @@ bool MainScene::init()
 	{
 		return false;
 	}
-
-
+    Size size = Director::getInstance()->getWinSize();
+    cout << size.width <<" "<< size.height << endl;
+    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/01_basement.png");
+    Sprite * room_piece1 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    room_piece1->setAnchorPoint(Point(0,0));
+    room_piece1->setScale(2, 2);
+    room_piece1->setPosition(0, 286);
+    addChild(room_piece1,0);
+    
+    Sprite * room_piece2 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    room_piece2->setFlippedX(true);
+    room_piece2->setAnchorPoint(Point(0,0));
+    room_piece2->setScale(2, 2);
+    room_piece2->setPosition(442, 286);
+    addChild(room_piece2,0);
+    
+    Sprite * room_piece3 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    room_piece3->setFlippedY(true);
+    room_piece3->setAnchorPoint(Point(0,0));
+    room_piece3->setScale(2, 2);
+    room_piece3->setPosition(0, 0);
+    addChild(room_piece3,0);
+    
+    Sprite * room_piece4 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    room_piece4->setFlippedX(true);
+    room_piece4->setFlippedY(true);
+    room_piece4->setAnchorPoint(Point(0,0));
+    room_piece4->setScale(2, 2);
+    room_piece4->setPosition(442, 0);
+    addChild(room_piece4,0);
+    
     peppa = Sprite::create("Peppa.png");
     peppa->setPosition(640, 360);
 

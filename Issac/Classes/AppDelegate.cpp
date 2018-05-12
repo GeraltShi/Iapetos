@@ -18,10 +18,10 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-static Size designResolutionSize = Size(1280, 720);
-static Size smallResolutionSize = Size(640, 360);
-static Size mediumResolutionSize = Size(1280, 720);
-static Size largeResolutionSize = Size(1920, 1080);
+static Size designResolutionSize = Size(886, 572);
+static Size smallResolutionSize = Size(886, 572);
+static Size mediumResolutionSize = Size(886, 572);
+static Size largeResolutionSize = Size(886, 1572);
 
 AppDelegate::AppDelegate()
 {
