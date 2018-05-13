@@ -3,6 +3,9 @@
 USING_NS_CC;
 using namespace std;
 
+#define XOFFSET 102
+#define XSTEP 4
+#define YSTEP 64
 Scene * MainScene::createScene()
 {
 	return create();
@@ -20,7 +23,50 @@ bool MainScene::init()
         //TODO 2.物品对象       gfx\items
         //TODO 3.怪物对象       gfx\monsters gfx\bosses
         //TODO 4.房间对象       gfx\backdrops
-    //TODO peppa的房子位置不对，现在在主界面。主界面应该是菜单，不是房间    gfx\ui
+    //TODO 菜单    gfx\ui
+    size = Director::getInstance()->getWinSize();
+    Texture2D *menutexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/gamemenu.png");
+    auto mymenubg = Sprite::createWithTexture(menutexture,Rect(0,0,480,270));
+    mymenubg->setAnchorPoint(Point(0,0));
+    mymenubg->setPosition(0,0);
+    mymenubg->setScale(size.width/480);
+    addChild(mymenubg,0);
+    
+    
+    auto mymenulist1 = Sprite::createWithTexture(menutexture, Rect(32,288,128,48));
+    mymenulist1->setAnchorPoint(Point(0,0));
+    mymenulist1->setPosition(size.width/2-XOFFSET,size.height/2+YSTEP);
+    mymenulist1->setScale(size.width/480);
+    addChild(mymenulist1,1);
+    
+    auto mymenulist2 = Sprite::createWithTexture(menutexture, Rect(32,288+48,128,48));
+    mymenulist2->setAnchorPoint(Point(0,0));
+    mymenulist2->setPosition(size.width/2-XOFFSET+XSTEP,size.height/2);
+    mymenulist2->setScale(size.width/480);
+    addChild(mymenulist2,1);
+    auto mymenulist3 = Sprite::createWithTexture(menutexture, Rect(32,288+96,128,48));
+    mymenulist3->setAnchorPoint(Point(0,0));
+    mymenulist3->setPosition(size.width/2-XOFFSET+XSTEP*2,size.height/2-YSTEP);
+    mymenulist3->setScale(size.width/480);
+    addChild(mymenulist3,1);
+    auto mymenulist4 = Sprite::createWithTexture(menutexture, Rect(32,288+144,128,48));
+    mymenulist4->setAnchorPoint(Point(0,0));
+    mymenulist4->setPosition(size.width/2-XOFFSET+XSTEP*3,size.height/2-YSTEP*2);
+    mymenulist4->setScale(size.width/480);
+    addChild(mymenulist4,1);
+    auto mymenulist5 = Sprite::createWithTexture(menutexture, Rect(32,288+196,128,48));
+    mymenulist5->setAnchorPoint(Point(0,0));
+    mymenulist5->setPosition(size.width/2-XOFFSET+XSTEP*4,size.height/2-YSTEP*3);
+    mymenulist5->setScale(size.width/480);
+    addChild(mymenulist5,1);
+    
+    selector_init_x = size.width/2-XOFFSET-48;
+    selector_init_y = size.height/2+YSTEP;
+    selector = Sprite::createWithTexture(menutexture, Rect(0,302,32,32));
+    selector->setAnchorPoint(Point(0,0));
+    selector->setPosition(selector_init_x,selector_init_y);
+    selector->setScale(size.width/480);
+    addChild(selector,1);
     /*
     Vector<MenuItem*> MenuItems;
     auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",
@@ -31,14 +77,14 @@ bool MainScene::init()
     auto menu = Menu::createWithArray(MenuItems);
     this->addChild(menu, 1);
     */
-    peppa = Sprite::create("Peppa.png");
-    peppa->setPosition(640, 360);
+    //peppa = Sprite::create("Peppa.png");
+    //peppa->setPosition(640, 360);
 
-    addChild(peppa,1,"pig");
+    //addChild(peppa,1,"pig");
 
     auto l = Label::createWithTTF("开场界面","fonts/simhei.ttf",30);
     l->setPosition(640, 500);
-    addChild(l);
+    addChild(l,1);
     
     scheduleUpdate();
 
@@ -89,16 +135,40 @@ void MainScene::set_model(MainSceneModel model)
 
 void MainScene::update(float delta)
 {
-    if (model.walking_direction != -1)
-    {
-        peppa_move(model.walking_direction);
-    }
-    //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
-        //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
-        //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-    cout << "Peppa Position: " << peppa->getPositionX() << " " << peppa->getPositionY()<<endl;
+    menu_update(model.menun);
 }
 
+void MainScene::menu_update(int n) const{
+    int new_posX = 0; int new_posY = 0;
+    switch (n)
+    {
+        case 0:
+            new_posX = selector_init_x;
+            new_posY = selector_init_y;
+            break;
+        case 1:
+            new_posX = selector_init_x+XSTEP;
+            new_posY = selector_init_y-YSTEP;
+            break;
+        case 2:
+            new_posX = selector_init_x+XSTEP*2;
+            new_posY = selector_init_y-YSTEP*2;
+            break;
+        case 3:
+            new_posX = selector_init_x+XSTEP*3;
+            new_posY = selector_init_y-YSTEP*3;
+            break;
+        case 4:
+            new_posX = selector_init_x+XSTEP*4;
+            new_posY = selector_init_y-YSTEP*4;
+            break;
+        default:
+            break;
+    }
+    const auto selectorMoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
+    selector->runAction(selectorMoveTo);
+}
+/*
 void MainScene::peppa_move(int direction) const
 {
     const int moveSpeed = 6.5;
@@ -129,3 +199,4 @@ void MainScene::peppa_move(int direction) const
     const auto peppaMoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
     peppa->runAction(peppaMoveTo);
 }
+*/

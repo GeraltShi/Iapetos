@@ -6,8 +6,8 @@ class MainSceneModel
 private:
 public:
     MainSceneModel(){};
-    MainSceneModel(int wd){walking_direction = wd;};
-    int walking_direction = -1;
+    MainSceneModel(int wd){menun = wd;};
+    int menun = 0;
 };
 
 #endif // __MAIN_SCENE_MODEL_H__

@@ -17,12 +17,16 @@ class MainScene : public cocos2d::Scene
     void update(float delta) override;
 
 private:
+    Size size;
     IMainSceneListener * listener_ = nullptr;
     MainSceneModel model;
+    void menu_update(int n) const;
+    //void peppa_move(int direction) const;
 
-    void peppa_move(int direction) const;
-
-    Sprite * peppa = nullptr;
+    Sprite * selector = nullptr;
+    int menuflag = 0;
+    int selector_init_x = 0;
+    int selector_init_y = 0;
 };
 
 #endif // __MAIN_SCENE_H__

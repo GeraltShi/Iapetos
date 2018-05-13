@@ -45,38 +45,20 @@ void MainSceneController::on_mouse_down(Event *event)
 
 int check_key(EventKeyboard::KeyCode keyCode)
 {
-    //TODO 上下左右改为射击方向，放炸弹，ESC
-    int dir = -1;
+    //TODO 上下切换目录，回车确认
+    int n = 0;
     switch (keyCode)
     {
-    case EventKeyboard::KeyCode::KEY_A:
-        dir = 0;
-        break;
-    case EventKeyboard::KeyCode::KEY_D:
-        dir = 1;
-        break;
-    case EventKeyboard::KeyCode::KEY_W:
-        dir = 2;
-        break;
-    case EventKeyboard::KeyCode::KEY_S:
-        dir = 3;
-        break;
-    case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        dir = 0;
-        break;
-    case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        dir = 1;
-        break;
     case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        dir = 2;
+        --n;
         break;
     case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        dir = 3;
+        ++n;
         break;
     default: break;
     }
-
-    return dir;
+    n = n % 5;
+    return n;
 }
 
 void MainSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -91,7 +73,7 @@ void MainSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event 
 
     if (key_map_.empty())
     {
-        scene_->set_model(MainSceneModel( -1 ));
+        scene_->set_model(MainSceneModel( 0 ));
     }
     else
     {
