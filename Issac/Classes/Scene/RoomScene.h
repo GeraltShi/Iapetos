@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Controller/Event/IRoomSceneListener.h"
 #include "Model/RoomSceneModel.hpp"
+#include "Issac.hpp"
 
 
 class RoomScene : public cocos2d::Scene
@@ -21,8 +22,7 @@ class RoomScene : public cocos2d::Scene
 private:
     IRoomSceneListener * listener_ = nullptr;
     RoomSceneModel model;
-    void peppa_move(int direction) const;
-    Sprite * issac = nullptr;
+    Issac * player = nullptr;
 };
 
 #endif // __ROOM_SCENE_H__

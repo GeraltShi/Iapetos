@@ -1,7 +1,6 @@
 #include "RoomScene.h"
 #include <sstream>
 #include <iostream>
-
 USING_NS_CC;
 using namespace std;
 
@@ -56,11 +55,12 @@ bool RoomScene::init()
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
-    issac = Sprite::create("Peppa.png");
-    issac->setPosition(640, 360);
-
-    addChild(issac);
-
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    player = Issac::create();
+    player->setPosition(Vec2(origin.x + visibleSize.width / 2
+                             , origin.y + visibleSize.height / 2));
+    this->addChild(player, 5);
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
@@ -132,14 +132,13 @@ void RoomScene::set_model(RoomSceneModel model)
 
 void RoomScene::update(float delta)
 {
-    if (model.walking_direction != 4)
-    {    peppa_move(model.walking_direction);
+    if(model.walking_direction != 4){
+        player->move(model.walking_direction);
     }
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
     std::cout << "Walking direction: "<<model.walking_direction<< endl;
-    //std::cout << "Peppa Position: " << issac->getPositionX() << " " << issac->getPositionY()<<endl;
 }
 
 void RoomScene::change_count(int c)
@@ -150,68 +149,3 @@ void RoomScene::change_count(int c)
     cl->setString(ss.str());
 }
 
-void RoomScene::peppa_move(int direction) const
-{
-    const int moveSpeed = 6.5;
-    int offsetX = 0, offsetY = 0;
-    //Todo 以身体作为Position计算，如有需要可重新定义锚点，头只是跟着身体动
-    switch (direction)
-    {
-        //012
-        //345
-        //678
-        case 3:if(issac->getPositionX() > 135)
-            offsetX = -moveSpeed;
-        else offsetX = 0;
-            break;
-        case 5:if(issac->getPositionX() < 749)
-            offsetX = moveSpeed;
-        else offsetX = 0;
-            break;
-        case 1:if(issac->getPositionY() < 500)
-            offsetY = moveSpeed;
-        else offsetY = 0;
-            break;
-        case 7:if(issac->getPositionY() > 190)
-            offsetY = -moveSpeed;
-        else offsetY = 0;
-            break;
-        
-        case 0:if(issac->getPositionX() > 135)
-            offsetX = -moveSpeed;
-        else offsetX = 0;
-            if(issac->getPositionY() < 500)
-                offsetY = moveSpeed;
-            else offsetY = 0;
-            break;
-        
-        case 2:if(issac->getPositionX() < 749)
-            offsetX = moveSpeed;
-        else offsetX = 0;
-            if(issac->getPositionY() < 500)
-                offsetY = moveSpeed;
-            else offsetY = 0;
-            break;
-            
-        case 6:if(issac->getPositionX() > 135)
-            offsetX = -moveSpeed;
-        else offsetX = 0;
-            if(issac->getPositionY() > 190)
-                offsetY = -moveSpeed;
-            else offsetY = 0;
-            break;
-            
-        case 8:if(issac->getPositionX() < 749)
-            offsetX = moveSpeed;
-        else offsetX = 0;
-            if(issac->getPositionY() > 190)
-                offsetY = -moveSpeed;
-            else offsetY = 0;
-            break;
-        default:break;
-    }
-    auto new_posX = issac->getPositionX() + offsetX;
-    auto new_posY = issac->getPositionY() + offsetY;
-    const auto peppaMoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
-    issac->runAction(peppaMoveTo);
-}
