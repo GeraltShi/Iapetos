@@ -45,7 +45,7 @@ void RoomSceneController::on_mouse_down(Event * event)
     scene_->change_count(count);
 }
 
-int check_key_inRoom(EventKeyboard::KeyCode keyCode)
+int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
 {
     //TODO 上下左右改为射击方向，放炸弹，ESC
     int dir = -1;
@@ -74,6 +74,9 @@ int check_key_inRoom(EventKeyboard::KeyCode keyCode)
             break;
         case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
             dir = 3;
+            break;
+        case EventKeyboard::KeyCode::KEY_ESCAPE:
+            //TODO 暂停Scene
             break;
         default: break;
     }
