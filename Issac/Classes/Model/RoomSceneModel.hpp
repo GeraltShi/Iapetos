@@ -9,6 +9,6 @@ public:
     RoomSceneModel(int wd){
         walking_direction = wd;
     };
-    int walking_direction = -1;
+    int walking_direction = 4;
 };
 #endif /* RoomSceneModel_hpp */

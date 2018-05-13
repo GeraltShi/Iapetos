@@ -132,7 +132,7 @@ void RoomScene::set_model(RoomSceneModel model)
 
 void RoomScene::update(float delta)
 {
-    if (model.walking_direction != -1)
+    if (model.walking_direction != 4)
     {    peppa_move(model.walking_direction);
     }
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
@@ -160,21 +160,53 @@ void RoomScene::peppa_move(int direction) const
         //012
         //345
         //678
-        case 0:if(issac->getPositionX() > 135)
+        case 3:if(issac->getPositionX() > 135)
             offsetX = -moveSpeed;
         else offsetX = 0;
             break;
-        case 1:if(issac->getPositionX() < 749)
+        case 5:if(issac->getPositionX() < 749)
             offsetX = moveSpeed;
         else offsetX = 0;
             break;
-        case 2:if(issac->getPositionY() < 500)
+        case 1:if(issac->getPositionY() < 500)
             offsetY = moveSpeed;
         else offsetY = 0;
             break;
-        case 3:if(issac->getPositionY() > 190)
+        case 7:if(issac->getPositionY() > 190)
             offsetY = -moveSpeed;
         else offsetY = 0;
+            break;
+        
+        case 0:if(issac->getPositionX() > 135)
+            offsetX = -moveSpeed;
+        else offsetX = 0;
+            if(issac->getPositionY() < 500)
+                offsetY = moveSpeed;
+            else offsetY = 0;
+            break;
+        
+        case 2:if(issac->getPositionX() < 749)
+            offsetX = moveSpeed;
+        else offsetX = 0;
+            if(issac->getPositionY() < 500)
+                offsetY = moveSpeed;
+            else offsetY = 0;
+            break;
+            
+        case 6:if(issac->getPositionX() > 135)
+            offsetX = -moveSpeed;
+        else offsetX = 0;
+            if(issac->getPositionY() > 190)
+                offsetY = -moveSpeed;
+            else offsetY = 0;
+            break;
+            
+        case 8:if(issac->getPositionX() < 749)
+            offsetX = moveSpeed;
+        else offsetX = 0;
+            if(issac->getPositionY() > 190)
+                offsetY = -moveSpeed;
+            else offsetY = 0;
             break;
         default:break;
     }
