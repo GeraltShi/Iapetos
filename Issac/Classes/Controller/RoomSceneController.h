@@ -22,13 +22,14 @@ public:
     void on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event) override;
     void on_key_released(EventKeyboard::KeyCode keyCode, Event* event) override;
     int check_key_inRoom(EventKeyboard::KeyCode keyCode);
+    
 private:
     map<EventKeyboard::KeyCode,int> key_map_;
     /**
      * \brief //TODO 应该创建Model类存储数据并放在Model文件夹中
      */
     int count = 0;
-
+    bool paused = false;
     LevelService level_service_;
 
 };

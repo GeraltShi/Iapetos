@@ -1,5 +1,6 @@
 #include "RoomSceneController.h"
 #include "Scene/RoomScene.h"
+#include <iostream>
 
 USING_NS_CC;
 using namespace std;
@@ -45,9 +46,9 @@ void RoomSceneController::on_mouse_down(Event * event)
     scene_->change_count(count);
 }
 
+
 int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
 {
-    //TODO 上下左右改为射击方向，放炸弹，ESC
     int dir = -1;
     switch (keyCode)
     {
@@ -77,6 +78,21 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
             break;
         case EventKeyboard::KeyCode::KEY_ESCAPE:
             //TODO 暂停Scene
+            //堆栈结构
+            //|---栈顶---|
+            //|暂停Scene |
+            //|RoomScene|
+            //|MainScene|
+            //|---------|
+            //TOOD
+            std::cout << "Status" <<paused << endl;
+            if(paused){
+                scene_->resumeSchedulerAndActions();
+                paused = false;
+            }else {
+                Director::getInstance()->popScene();
+                paused = true;
+            }
             break;
         default: break;
     }
@@ -87,7 +103,7 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
 void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
-    scene_->set_model(RoomSceneModel( check_key_inRoom(keyCode) ));
+    scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode) });
 }
 
 void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)
@@ -96,12 +112,12 @@ void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event 
     
     if (key_map_.empty())
     {
-        scene_->set_model(RoomSceneModel( -1 ));
+        scene_->set_model(RoomSceneModel{ -1 });
     }
     else
     {
         keyCode = key_map_.begin()->first;
-        scene_->set_model(RoomSceneModel( check_key_inRoom(keyCode) ));
+        scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode) });
     }
     
     

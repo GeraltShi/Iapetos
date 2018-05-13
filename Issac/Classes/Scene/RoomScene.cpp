@@ -133,13 +133,13 @@ void RoomScene::set_model(RoomSceneModel model)
 void RoomScene::update(float delta)
 {
     if (model.walking_direction != -1)
-    {
-        peppa_move(model.walking_direction);
+    {    peppa_move(model.walking_direction);
     }
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-    std::cout << "Peppa Position: " << issac->getPositionX() << " " << issac->getPositionY()<<endl;
+    std::cout << "Walking direction: "<<model.walking_direction<< endl;
+    //std::cout << "Peppa Position: " << issac->getPositionX() << " " << issac->getPositionY()<<endl;
 }
 
 void RoomScene::change_count(int c)
@@ -157,6 +157,9 @@ void RoomScene::peppa_move(int direction) const
     //Todo 以身体作为Position计算，如有需要可重新定义锚点，头只是跟着身体动
     switch (direction)
     {
+        //012
+        //345
+        //678
         case 0:if(issac->getPositionX() > 135)
             offsetX = -moveSpeed;
         else offsetX = 0;

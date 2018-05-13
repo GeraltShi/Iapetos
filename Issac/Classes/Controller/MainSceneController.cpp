@@ -59,7 +59,8 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode)
             shift = 0;
             if(scene_->model.menun == 0){
                 auto room = RoomSceneController::createScene();
-                Director::getInstance()->pushScene(room);
+                TransitionScene* tx = TransitionFade::create(0.7, room);
+                Director::getInstance()->pushScene(tx);
             }
             break;
     default: break;

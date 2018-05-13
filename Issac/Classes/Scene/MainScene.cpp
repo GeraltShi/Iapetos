@@ -135,8 +135,8 @@ void MainScene::set_model(MainSceneModel model)
 
 void MainScene::update(float delta)
 {
-    std::cout << "MenuItem " << model.menun <<" Selected"<< endl;
-    std::cout << "SelectorInit " << selector_init_x <<" "<< selector_init_y << endl;
+    //std::cout << "MenuItem " << model.menun <<" Selected"<< endl;
+    //std::cout << "SelectorInit " << selector_init_x <<" "<< selector_init_y << endl;
     menu_update(model.menun);
 }
 

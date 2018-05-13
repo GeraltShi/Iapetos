@@ -6,7 +6,9 @@ class RoomSceneModel
 private:
 public:
     RoomSceneModel(){};
-    RoomSceneModel(int wd){walking_direction = wd;};
+    RoomSceneModel(int wd){
+        walking_direction = wd;
+    };
     int walking_direction = -1;
 };
 #endif /* RoomSceneModel_hpp */
