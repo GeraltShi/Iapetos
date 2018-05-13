@@ -11,15 +11,15 @@ Issac::~Issac()
 
 Issac * Issac::create()
 {
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    //auto visibleSize = Director::getInstance()->getVisibleSize();
+    //Vec2 origin = Director::getInstance()->getVisibleOrigin();
     Issac * issac = new Issac();
     Texture2D * texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture, Rect(0,0,32,32));
     Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
-    
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture, Rect(0,32,32,32));
     Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+    
     if(issac)
     {
         issac->addChild(headSprite,1);
@@ -35,7 +35,7 @@ Issac * Issac::create()
 
 void Issac::move(int direction)
 {
-    //TODO 动画和初始化被static函数割裂
+    //TODO 动画和初始化时的Texture被static函数割裂，无法共享
     Texture2D * texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
     auto frame0 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*0,32,32));
     auto frame1 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*0,32,32));
@@ -76,6 +76,7 @@ void Issac::move(int direction)
     animation->setRestoreOriginalFrame(true);
     Action * bodyAction = Animate::create(animation);
     //this->runAction(bodyAction);
+    
     const int moveSpeed = 6.5;
     int offsetX = 0, offsetY = 0;
     SpriteFrame * newFrame;
@@ -86,7 +87,7 @@ void Issac::move(int direction)
             //012
             //345
             //678
-        case 3:{
+        case 3:{//左
             if(this->getPositionX() > 135){
                 offsetX = -moveSpeed;
             }
@@ -101,7 +102,7 @@ void Issac::move(int direction)
             this->addChild(newHead,1);
             break;
         }
-        case 5:{
+        case 5:{//右
             if(this->getPositionX() < 749){
                 offsetX = moveSpeed;
             }
@@ -115,7 +116,7 @@ void Issac::move(int direction)
             this->addChild(newHead,1);
             break;
         }
-        case 1:{
+        case 1:{//上
             if(this->getPositionY() < 500){
                 offsetY = moveSpeed;
             }
@@ -128,7 +129,7 @@ void Issac::move(int direction)
             newHead->setPosition(Vec2(0,10));
             this->addChild(newHead,1);
             break;}
-        case 7:{
+        case 7:{//下
             if(this->getPositionY() > 190)
             {
                 offsetY = -moveSpeed;
@@ -143,7 +144,7 @@ void Issac::move(int direction)
             this->addChild(newHead,1);
             break;}
             
-        case 0:{
+        case 0:{//左上
             if(this->getPositionX() > 135)
                 offsetX = -moveSpeed;
             else offsetX = 0;
@@ -158,7 +159,7 @@ void Issac::move(int direction)
             break;
         }
             
-        case 2:{
+        case 2:{//右上
             if(this->getPositionX() < 749)
                 offsetX = moveSpeed;
             else offsetX = 0;
@@ -173,7 +174,7 @@ void Issac::move(int direction)
             break;
         }
             
-        case 6:{
+        case 6:{//左下
             if(this->getPositionX() > 135)
                 offsetX = -moveSpeed;
             else offsetX = 0;
@@ -188,7 +189,7 @@ void Issac::move(int direction)
             break;
         }
             
-        case 8:{
+        case 8:{//右下
             if(this->getPositionX() < 749)
                 offsetX = moveSpeed;
             else offsetX = 0;
@@ -203,10 +204,17 @@ void Issac::move(int direction)
             break;
         }
             
-        case 4:
+        case 4:{//无，头要默认复位
             offsetX = 0;
             offsetY = 0;
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
             break;
+        }
+            
         default:
             break;
     }
@@ -215,13 +223,13 @@ void Issac::move(int direction)
     const auto MoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
     this->runAction(MoveTo);
 }
-
+//方向键更新头，与射击有关
 void Issac::updatehead(int direction){
     Texture2D * texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
     SpriteFrame * newFrame;
     Sprite * newHead;
     switch (direction) {
-        case 0:{
+        case 0:{//上
             this->removeChild(this->getChildByTag(1), true);
             newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(128,0,32,32));
             newHead = Sprite::createWithSpriteFrame(newFrame);
@@ -229,7 +237,7 @@ void Issac::updatehead(int direction){
             this->addChild(newHead,1);
             break;
         }
-        case 1:{
+        case 1:{//下
             this->removeChild(this->getChildByTag(1), true);
             newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
             newHead = Sprite::createWithSpriteFrame(newFrame);
@@ -237,7 +245,7 @@ void Issac::updatehead(int direction){
             this->addChild(newHead,1);
             break;
         }
-        case 2:{
+        case 2:{//左
             this->removeChild(this->getChildByTag(1), true);
             newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(64,0,32,32));
             newHead = Sprite::createWithSpriteFrame(newFrame);
@@ -246,18 +254,9 @@ void Issac::updatehead(int direction){
             this->addChild(newHead,1);
             break;
         }
-        case 3:{
+        case 3:{//右
             this->removeChild(this->getChildByTag(1), true);
             newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(64,0,32,32));
-            newHead = Sprite::createWithSpriteFrame(newFrame);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
-            break;
-        }
-            
-        case -1:{
-            this->removeChild(this->getChildByTag(1), true);
-            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
             newHead = Sprite::createWithSpriteFrame(newFrame);
             newHead->setPosition(Vec2(0,10));
             this->addChild(newHead,1);

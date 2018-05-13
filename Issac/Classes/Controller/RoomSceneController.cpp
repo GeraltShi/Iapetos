@@ -109,17 +109,4 @@ void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event 
 {
     key_map_.erase(keyCode);
     scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode), check_head() });
-//    key_map_.erase(keyCode);
-//
-//    if (key_map_.empty())
-//    {
-//        scene_->set_model(RoomSceneModel{ -1 });
-//    }
-//    else
-//    {
-//        keyCode = key_map_.begin()->first;
-//        scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode) });
-//    }
-//
-//
 }
