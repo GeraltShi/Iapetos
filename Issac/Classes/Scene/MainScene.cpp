@@ -21,7 +21,7 @@ bool MainScene::init()
         //TODO 3.怪物对象       gfx\monsters gfx\bosses
         //TODO 4.房间对象       gfx\backdrops
     //TODO peppa的房子位置不对，现在在主界面。主界面应该是菜单，不是房间    gfx\ui
-    
+    /*
     Vector<MenuItem*> MenuItems;
     auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",
                                            CC_CALLBACK_1(MainScene::menuCloseCallback, this));
@@ -30,7 +30,7 @@ bool MainScene::init()
     // repeat for as many menu items as needed
     auto menu = Menu::createWithArray(MenuItems);
     this->addChild(menu, 1);
-    
+    */
     peppa = Sprite::create("Peppa.png");
     peppa->setPosition(640, 360);
 

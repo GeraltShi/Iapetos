@@ -22,6 +22,7 @@ private:
     IRoomSceneListener * listener_ = nullptr;
     RoomSceneModel model;
     void peppa_move(int direction) const;
+    Sprite * issac = nullptr;
 };
 
 #endif // __ROOM_SCENE_H__

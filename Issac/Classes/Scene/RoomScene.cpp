@@ -56,10 +56,10 @@ bool RoomScene::init()
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
-    auto s = Sprite::create("Peppa.png");
-    s->setPosition(640, 360);
+    issac = Sprite::create("Peppa.png");
+    issac->setPosition(640, 360);
 
-    addChild(s);
+    addChild(issac);
 
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
@@ -85,6 +85,7 @@ bool RoomScene::init()
 
     //TODO 加载所有界面元素
 
+    scheduleUpdate();
     return true;
 }
 
@@ -138,7 +139,7 @@ void RoomScene::update(float delta)
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-    std::cout << "Peppa Position: " << s->getPositionX() << " " << s->getPositionY()<<endl;
+    std::cout << "Peppa Position: " << issac->getPositionX() << " " << issac->getPositionY()<<endl;
 }
 
 void RoomScene::change_count(int c)
@@ -156,26 +157,26 @@ void RoomScene::peppa_move(int direction) const
     //Todo 以身体作为Position计算，如有需要可重新定义锚点，头只是跟着身体动
     switch (direction)
     {
-        case 0:if(s->getPositionX() > 135)
+        case 0:if(issac->getPositionX() > 135)
             offsetX = -moveSpeed;
         else offsetX = 0;
             break;
-        case 1:if(s->getPositionX() < 749)
+        case 1:if(issac->getPositionX() < 749)
             offsetX = moveSpeed;
         else offsetX = 0;
             break;
-        case 2:if(s->getPositionY() < 500)
+        case 2:if(issac->getPositionY() < 500)
             offsetY = moveSpeed;
         else offsetY = 0;
             break;
-        case 3:if(s->getPositionY() > 190)
+        case 3:if(issac->getPositionY() > 190)
             offsetY = -moveSpeed;
         else offsetY = 0;
             break;
         default:break;
     }
-    auto new_posX = s->getPositionX() + offsetX;
-    auto new_posY = s->getPositionY() + offsetY;
+    auto new_posX = issac->getPositionX() + offsetX;
+    auto new_posY = issac->getPositionY() + offsetY;
     const auto peppaMoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
-    peppa->runAction(peppaMoveTo);
+    issac->runAction(peppaMoveTo);
 }

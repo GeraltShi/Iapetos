@@ -45,7 +45,7 @@ void RoomSceneController::on_mouse_down(Event * event)
     scene_->change_count(count);
 }
 
-int check_key(EventKeyboard::KeyCode keyCode)
+int check_key_inRoom(EventKeyboard::KeyCode keyCode)
 {
     //TODO 上下左右改为射击方向，放炸弹，ESC
     int dir = -1;
@@ -84,7 +84,7 @@ int check_key(EventKeyboard::KeyCode keyCode)
 void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
-    scene_->set_model(RoomSceneModel( check_key(keyCode) ));
+    scene_->set_model(RoomSceneModel( check_key_inRoom(keyCode) ));
 }
 
 void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)
@@ -98,7 +98,7 @@ void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event 
     else
     {
         keyCode = key_map_.begin()->first;
-        scene_->set_model(RoomSceneModel( check_key(keyCode) ));
+        scene_->set_model(RoomSceneModel( check_key_inRoom(keyCode) ));
     }
     
     
