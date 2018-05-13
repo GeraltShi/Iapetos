@@ -1,10 +1,3 @@
-//
-//  Issac.cpp
-//  Issac
-//
-//  Created by 光梓 on 13/05/2018.
-//
-
 #include "Issac.hpp"
 #include "cocos2d.h"
 
@@ -18,124 +11,197 @@ Issac::~Issac()
 
 Issac * Issac::create()
 {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
     Issac * issac = new Issac();
-    if(issac && issac->initWithFile("idle_1.png"))
+    Texture2D * texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+    SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture, Rect(0,0,32,32));
+    Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
+    
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture, Rect(0,32,32,32));
+    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+    if(issac)
     {
+        issac->addChild(headSprite,1);
+        issac->addChild(bodySprite,0);
+        headSprite->setPosition(Vec2(0,10));
+        issac->setPosition(Vec2(442, 286));
         issac->autorelease();
-        issac->initPlayer();
         return issac;
     }
-    
     CC_SAFE_DELETE(issac);
     return NULL;
 }
 
-void Issac::initPlayer()
-{
-    moving = false;
-    char str[100] = {0};
-    
-    Vector<SpriteFrame*> idleAnimFrames(6);
-    for(int i = 1; i <= 2; i++) //Iterate for the number of images you have
-    {
-        sprintf(str, "idle_%i.png",i);
-        auto frame = SpriteFrame::create(str,Rect(0,0,40,160)); //The size of the images in an action should be the same
-        idleAnimFrames.pushBack(frame);
-    }
-    
-    auto idleAnimation = Animation::createWithSpriteFrames(idleAnimFrames, 0.20f);
-    idleAnimate = Animate::create(idleAnimation);
-    idleAnimate->retain(); //Retain to use it later
-    this->runAction(RepeatForever::create(idleAnimate)); //This will be the starting animation
-    
-    Vector<SpriteFrame*> moveAnimFrames(6);
-    for(int i = 1; i <= 4; i++)
-    {
-        sprintf(str, "move_%i.png",i);
-        auto frame = SpriteFrame::create(str,Rect(0,0,68,160));
-        moveAnimFrames.pushBack(frame);
-    }
-    
-    auto moveAnimation = Animation::createWithSpriteFrames(moveAnimFrames, 0.09f);
-    moveAnimate = Animate::create(moveAnimation);
-    moveAnimate->retain();
-}
-
 void Issac::move(int direction)
 {
-    //this->stopAllActions();
-    //this->runAction(RepeatForever::create(moveAnimate));
-    //TODO 动画
-    //direction = directionParam;
+    //TODO 动画和初始化被static函数割裂
+    Texture2D * texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+    auto frame0 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*0,32,32));
+    auto frame1 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*0,32,32));
+    auto frame2 = SpriteFrame::createWithTexture(texture, Rect(32*0,32*1,32,32));
+    auto frame3 = SpriteFrame::createWithTexture(texture, Rect(32*1,32*1,32,32));
+    auto frame4 = SpriteFrame::createWithTexture(texture, Rect(32*2,32*1,32,32));
+    auto frame5 = SpriteFrame::createWithTexture(texture, Rect(32*3,32*1,32,32));
+    auto frame6 = SpriteFrame::createWithTexture(texture, Rect(32*4,32*1,32,32));
+    auto frame7 = SpriteFrame::createWithTexture(texture, Rect(32*5,32*1,32,32));
+    auto frame8 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*1,32,32));
+    auto frame9 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*1,32,32));
     
+    auto frame10 = SpriteFrame::createWithTexture(texture, Rect(32*0,32*2,32,32));
+    auto frame11 = SpriteFrame::createWithTexture(texture, Rect(32*1,32*2,32,32));
+    auto frame12 = SpriteFrame::createWithTexture(texture, Rect(32*2,32*2,32,32));
+    auto frame13 = SpriteFrame::createWithTexture(texture, Rect(32*3,32*2,32,32));
+    auto frame14 = SpriteFrame::createWithTexture(texture, Rect(32*4,32*2,32,32));
+    auto frame15 = SpriteFrame::createWithTexture(texture, Rect(32*5,32*2,32,32));
+    auto frame16 = SpriteFrame::createWithTexture(texture, Rect(32*6,32*2,32,32));
+    auto frame17 = SpriteFrame::createWithTexture(texture, Rect(32*7,32*2,32,32));
+    auto frame18 = SpriteFrame::createWithTexture(texture, Rect(32*0,32*3,32,32));
+    auto frame19 = SpriteFrame::createWithTexture(texture, Rect(32*1,32*3,32,32));
+    
+    Vector<cocos2d::SpriteFrame *> array;
+    array.clear();
+    array.pushBack(frame0);
+    array.pushBack(frame1);
+    array.pushBack(frame2);
+    array.pushBack(frame3);
+    array.pushBack(frame4);
+    array.pushBack(frame5);
+    array.pushBack(frame6);
+    array.pushBack(frame7);
+    array.pushBack(frame8);
+    array.pushBack(frame9);
+    auto animation = Animation::createWithSpriteFrames(array, 0.1f);
+    animation->setLoops(-1);
+    animation->setRestoreOriginalFrame(true);
+    Action * bodyAction = Animate::create(animation);
+    //this->runAction(bodyAction);
     const int moveSpeed = 6.5;
     int offsetX = 0, offsetY = 0;
+    SpriteFrame * newFrame;
+    Sprite * newHead;
     //Todo 以身体作为Position计算，如有需要可重新定义锚点，头只是跟着身体动
     switch (direction)
     {
             //012
             //345
             //678
-        case 3:if(this->getPositionX() > 135){
-            offsetX = -moveSpeed;
-        }
-        else {
-            offsetX = 0;
-        }
+        case 3:{
+            if(this->getPositionX() > 135){
+                offsetX = -moveSpeed;
+            }
+            else {
+                offsetX = 0;
+            }
+            this->removeChild(this->getChildByTag(1), true);
+            SpriteFrame *newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(64,0,32,32));
+            Sprite * newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setFlippedX(true);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
             break;
-        case 5:if(this->getPositionX() < 749)
-        {offsetX = moveSpeed;
         }
-        else {
-            offsetX = 0;
-        }
+        case 5:{
+            if(this->getPositionX() < 749){
+                offsetX = moveSpeed;
+            }
+            else {
+                offsetX = 0;
+            }
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(64,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
             break;
-        case 1:if(this->getPositionY() < 500)
-        {offsetY = moveSpeed;
         }
-        else {
-            offsetY = 0;
-        }
-            break;
-        case 7:if(this->getPositionY() > 190)
-        {offsetY = -moveSpeed;
-        }
-        else {
-            offsetY = 0;
-        }
-            break;
+        case 1:{
+            if(this->getPositionY() < 500){
+                offsetY = moveSpeed;
+            }
+            else {
+                offsetY = 0;
+            }
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(128,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
+            break;}
+        case 7:{
+            if(this->getPositionY() > 190)
+            {
+                offsetY = -moveSpeed;
+            }
+            else {
+                offsetY = 0;
+            }
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
+            break;}
             
-        case 0:if(this->getPositionX() > 135)
-            offsetX = -moveSpeed;
-        else offsetX = 0;
+        case 0:{
+            if(this->getPositionX() > 135)
+                offsetX = -moveSpeed;
+            else offsetX = 0;
             if(this->getPositionY() < 500)
                 offsetY = moveSpeed;
             else offsetY = 0;
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(128,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
             break;
+        }
             
-        case 2:if(this->getPositionX() < 749)
-            offsetX = moveSpeed;
-        else offsetX = 0;
+        case 2:{
+            if(this->getPositionX() < 749)
+                offsetX = moveSpeed;
+            else offsetX = 0;
             if(this->getPositionY() < 500)
                 offsetY = moveSpeed;
             else offsetY = 0;
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(128,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
             break;
+        }
             
-        case 6:if(this->getPositionX() > 135)
-            offsetX = -moveSpeed;
-        else offsetX = 0;
+        case 6:{
+            if(this->getPositionX() > 135)
+                offsetX = -moveSpeed;
+            else offsetX = 0;
             if(this->getPositionY() > 190)
                 offsetY = -moveSpeed;
             else offsetY = 0;
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
             break;
+        }
             
-        case 8:if(this->getPositionX() < 749)
-            offsetX = moveSpeed;
-        else offsetX = 0;
+        case 8:{
+            if(this->getPositionX() < 749)
+                offsetX = moveSpeed;
+            else offsetX = 0;
             if(this->getPositionY() > 190)
                 offsetY = -moveSpeed;
             else offsetY = 0;
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
             break;
+        }
             
         case 4:
             offsetX = 0;
@@ -150,9 +216,54 @@ void Issac::move(int direction)
     this->runAction(MoveTo);
 }
 
-void Issac::idle()
-{
-    moving = false;
-    this->stopAllActions();
-    this->runAction(RepeatForever::create(idleAnimate));
+void Issac::updatehead(int direction){
+    Texture2D * texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+    SpriteFrame * newFrame;
+    Sprite * newHead;
+    switch (direction) {
+        case 0:{
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(128,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
+            break;
+        }
+        case 1:{
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
+            break;
+        }
+        case 2:{
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(64,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setFlippedX(true);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
+            break;
+        }
+        case 3:{
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(64,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
+            break;
+        }
+            
+        case -1:{
+            this->removeChild(this->getChildByTag(1), true);
+            newFrame = SpriteFrame::createWithTexture(texture, cocos2d::Rect(0,0,32,32));
+            newHead = Sprite::createWithSpriteFrame(newFrame);
+            newHead->setPosition(Vec2(0,10));
+            this->addChild(newHead,1);
+            break;
+        }
+        default:
+            break;
+    }
 }

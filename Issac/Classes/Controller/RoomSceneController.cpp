@@ -46,36 +46,11 @@ void RoomSceneController::on_mouse_down(Event * event)
     scene_->change_count(count);
 }
 
-
 int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
 {
     int dir = -1;
     switch (keyCode)
     {
-        case EventKeyboard::KeyCode::KEY_A:
-            //dir = 0;
-            break;
-        case EventKeyboard::KeyCode::KEY_D:
-            //dir = 1;
-            break;
-        case EventKeyboard::KeyCode::KEY_W:
-            //dir = 2;
-            break;
-        case EventKeyboard::KeyCode::KEY_S:
-            //dir = 3;
-            break;
-//        case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-//            dir = 0;
-//            break;
-//        case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-//            dir = 1;
-//            break;
-//        case EventKeyboard::KeyCode::KEY_UP_ARROW:
-//            dir = 2;
-//            break;
-//        case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-//            dir = 3;
-//            break;
         case EventKeyboard::KeyCode::KEY_ESCAPE:
             //TODO 暂停Scene
             //堆栈结构
@@ -116,16 +91,24 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
     return 4;
 }
 
+int RoomSceneController::check_head(){
+    if(key_map_[EventKeyboard::KeyCode::KEY_UP_ARROW]) return 0;
+    if(key_map_[EventKeyboard::KeyCode::KEY_DOWN_ARROW]) return 1;
+    if(key_map_[EventKeyboard::KeyCode::KEY_LEFT_ARROW]) return 2;
+    if(key_map_[EventKeyboard::KeyCode::KEY_RIGHT_ARROW]) return 3;
+    return -1;
+}
+
 void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
-    scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode) });
+    scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode), check_head() });
 }
 
 void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)
 {
     key_map_.erase(keyCode);
-    scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode) });
+    scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode), check_head() });
 //    key_map_.erase(keyCode);
 //
 //    if (key_map_.empty())

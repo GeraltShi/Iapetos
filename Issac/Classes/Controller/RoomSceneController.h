@@ -22,6 +22,7 @@ public:
     void on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event) override;
     void on_key_released(EventKeyboard::KeyCode keyCode, Event* event) override;
     int check_key_inRoom(EventKeyboard::KeyCode keyCode);
+    int check_head();
     
 private:
     map<EventKeyboard::KeyCode,int> key_map_;

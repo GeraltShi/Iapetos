@@ -18,11 +18,10 @@ class RoomScene : public cocos2d::Scene
     void set_model(RoomSceneModel model);
     void update(float delta) override;
     void change_count(int c);
-
 private:
     IRoomSceneListener * listener_ = nullptr;
     RoomSceneModel model;
-    Issac * player = nullptr;
+    Issac *  player = nullptr;
 };
 
 #endif // __ROOM_SCENE_H__

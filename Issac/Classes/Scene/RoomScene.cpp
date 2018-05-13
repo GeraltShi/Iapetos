@@ -50,16 +50,11 @@ bool RoomScene::init()
     room_piece4->setPosition(442, 0);
     addChild(room_piece4,0);
     
-    //TODO peppa把房子卖给了Issac的身体
     //TODO Issac不能只有身体，还要有头，头要跟着身体动
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
     player = Issac::create();
-    player->setPosition(Vec2(origin.x + visibleSize.width / 2
-                             , origin.y + visibleSize.height / 2));
     this->addChild(player, 5);
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
@@ -82,9 +77,7 @@ bool RoomScene::init()
     auto cl = Label::createWithTTF("点击次数: 0", "fonts/simhei.ttf", 30);
     cl->setPosition(640, 200);
     addChild(cl,1,"c_label");
-
-    //TODO 加载所有界面元素
-
+    
     scheduleUpdate();
     return true;
 }
@@ -135,6 +128,7 @@ void RoomScene::update(float delta)
     if(model.walking_direction != 4){
         player->move(model.walking_direction);
     }
+    player->updatehead(model.head_direction);
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
