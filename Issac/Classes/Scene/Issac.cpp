@@ -243,6 +243,7 @@ void Issac::updatehead(int direction){
             newHead = Sprite::createWithSpriteFrame(newFrame);
             newHead->setPosition(Vec2(0,10));
             this->addChild(newHead,1);
+            
             break;
         }
         case 2:{//左
@@ -260,9 +261,21 @@ void Issac::updatehead(int direction){
             newHead = Sprite::createWithSpriteFrame(newFrame);
             newHead->setPosition(Vec2(0,10));
             this->addChild(newHead,1);
+            
             break;
         }
         default:
             break;
     }
 }
+
+//void Issac::fire(float dt){
+//    Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
+//    SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
+//    Sprite * tearSprite = Sprite::createWithSpriteFrame(tearFrame);
+//    tearSprite->setPosition(this->getPosition());
+//    tearSprite->runAction(MoveBy::create(1, Vec2(100,0)));
+//    tears.push_back(tearSprite);
+//    this->addChild(tearSprite, 3);
+//}
+

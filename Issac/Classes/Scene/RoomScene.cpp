@@ -130,10 +130,14 @@ void RoomScene::update(float delta)
         player->updatehead(model.head_direction);
     }
     
+    if(model.head_direction == 3){
+        this->schedule(schedule_selector(RoomScene::fire), 0.7);
+    }
+    
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-    std::cout << "Walking direction: "<<model.walking_direction<< endl;
+    std::cout << "Walking direction: "<<model.walking_direction<<" Head direction: " << model.head_direction << endl;
 }
 
 void RoomScene::change_count(int c)
@@ -144,3 +148,70 @@ void RoomScene::change_count(int c)
     cl->setString(ss.str());
 }
 
+void RoomScene::fire(float dt){
+    Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
+    SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
+    tearSprite = Sprite::createWithSpriteFrame(tearFrame);
+    tearSprite->setPosition(player->getPosition());
+    //子弹运行的距离和时间
+    auto actionMove = MoveBy::create(2.0, Vec2(300,0));
+    switch (model.head_direction) {
+        case 0:
+            actionMove = MoveBy::create(2.0, Vec2(0,300));
+            break;
+        case 1:
+            actionMove = MoveBy::create(2.0, Vec2(0,-300));
+            break;
+        case 2:
+            actionMove = MoveBy::create(2.0, Vec2(-300,0));
+            break;
+        case 3:
+            actionMove = MoveBy::create(2.0, Vec2(300,0));
+            break;
+            
+        default:
+            break;
+    }
+    //子弹执行完动作后进行函数回调，调用移除子弹函数
+    auto actionDone = CallFuncN::create(std::bind(&RoomScene::removeBullet, this, tearSprite));
+    
+    //子弹开始跑动
+    Sequence* sequence = Sequence::create(actionMove, actionDone, NULL);
+    tearSprite->runAction(sequence);
+    tears.push_back(tearSprite);
+    this->addChild(tearSprite, 3);
+}
+
+void RoomScene::removeBullet(Sprite* bullet){
+    Texture2D * poofTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_015_tearpoofa.png");
+    auto frame0 = SpriteFrame::createWithTexture(poofTexture, Rect(0,0,64,64));
+    auto frame1 = SpriteFrame::createWithTexture(poofTexture, Rect(64,0,64,64));
+    auto frame2 = SpriteFrame::createWithTexture(poofTexture, Rect(128,0,64,64));
+    auto frame3 = SpriteFrame::createWithTexture(poofTexture, Rect(192,0,64,64));
+    auto frame4 = SpriteFrame::createWithTexture(poofTexture, Rect(0,64,64,64));
+    auto frame5 = SpriteFrame::createWithTexture(poofTexture, Rect(64,64,64,64));
+    auto frame6 = SpriteFrame::createWithTexture(poofTexture, Rect(128,64,64,64));
+    auto frame7 = SpriteFrame::createWithTexture(poofTexture, Rect(192,64,64,64));
+    auto frame8 = SpriteFrame::createWithTexture(poofTexture, Rect(0,128,64,64));
+    auto frame9 = SpriteFrame::createWithTexture(poofTexture, Rect(64,128,64,64));
+    auto frame10 = SpriteFrame::createWithTexture(poofTexture, Rect(128,128,64,64));
+    auto frame11 = SpriteFrame::createWithTexture(poofTexture, Rect(192,128,64,64));
+    Vector<cocos2d::SpriteFrame *> array;
+    array.clear();
+    array.pushBack(frame0);
+    array.pushBack(frame1);
+    array.pushBack(frame2);
+    array.pushBack(frame3);
+    array.pushBack(frame4);
+    array.pushBack(frame5);
+    array.pushBack(frame6);
+    array.pushBack(frame7);
+    array.pushBack(frame8);
+    array.pushBack(frame9);
+    array.pushBack(frame10);
+    array.pushBack(frame11);
+    auto animation = Animation::createWithSpriteFrames(array, 0.05f);
+    Action * bodyAction = Animate::create(animation);
+    tearSprite->runAction(bodyAction);
+    this->removeChild(bullet);
+}

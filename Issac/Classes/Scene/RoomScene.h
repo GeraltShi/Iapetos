@@ -18,10 +18,14 @@ class RoomScene : public cocos2d::Scene
     void set_model(RoomSceneModel model);
     void update(float delta) override;
     void change_count(int c);
+    void fire(float dt);
+    void removeBullet(Sprite *);
+    vector <Sprite *> tears;
 private:
     IRoomSceneListener * listener_ = nullptr;
     RoomSceneModel model;
     Issac *  player = nullptr;
+    Sprite * tearSprite;
 };
 
 #endif // __ROOM_SCENE_H__
