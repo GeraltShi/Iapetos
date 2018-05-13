@@ -15,7 +15,6 @@ class MainScene : public cocos2d::Scene
     void set_event_listener(IMainSceneListener *listener);
     void set_model(MainSceneModel model);
     void update(float delta) override;
-    ~MainScene(){};
 
 private:
     IMainSceneListener * listener_ = nullptr;
