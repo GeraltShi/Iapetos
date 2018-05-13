@@ -15,11 +15,11 @@ class MainScene : public cocos2d::Scene
     void set_event_listener(IMainSceneListener *listener);
     void set_model(MainSceneModel model);
     void update(float delta) override;
-
+    MainSceneModel model;
 private:
     Size size;
     IMainSceneListener * listener_ = nullptr;
-    MainSceneModel model;
+    
     void menu_update(int n) const;
     //void peppa_move(int direction) const;
 

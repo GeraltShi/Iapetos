@@ -6,7 +6,12 @@ class MainSceneModel
 private:
 public:
     MainSceneModel(){};
-    MainSceneModel(int wd){menun = wd;};
+    MainSceneModel(int wd){
+        menun = wd;
+    }
+    void shiftMenu(int wd){
+        menun = (menun+wd+5)%5;
+    }
     int menun = 0;
 };
 

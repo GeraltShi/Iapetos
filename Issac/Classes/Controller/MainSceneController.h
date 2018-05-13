@@ -21,7 +21,7 @@ public:
     void on_mouse_down(Event* event) override;
     void on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event) override;
     void on_key_released(EventKeyboard::KeyCode keyCode, Event* event) override;
-
+    int check_key(EventKeyboard::KeyCode keyCode);
 private:
     map<EventKeyboard::KeyCode,int> key_map_;
 };

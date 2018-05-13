@@ -135,6 +135,8 @@ void MainScene::set_model(MainSceneModel model)
 
 void MainScene::update(float delta)
 {
+    std::cout << "MenuItem " << model.menun <<" Selected"<< endl;
+    std::cout << "SelectorInit " << selector_init_x <<" "<< selector_init_y << endl;
     menu_update(model.menun);
 }
 
@@ -165,7 +167,7 @@ void MainScene::menu_update(int n) const{
         default:
             break;
     }
-    const auto selectorMoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
+    const auto selectorMoveTo = MoveTo::create(0,Vec2(new_posX, new_posY));
     selector->runAction(selectorMoveTo);
 }
 /*

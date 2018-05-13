@@ -39,47 +39,53 @@ void MainSceneController::on_mouse_down(Event *event)
     cocos2d::log("main_scene_on_click");
     //TODO 程序失焦自动暂停
     //TODO 用AOP方式管理Scene和Service
-    auto room = RoomSceneController::createScene();
-    Director::getInstance()->pushScene(room);
+    //auto room = RoomSceneController::createScene();
+    //Director::getInstance()->pushScene(room);
 }
 
-int check_key(EventKeyboard::KeyCode keyCode)
+int MainSceneController::check_key(EventKeyboard::KeyCode keyCode)
 {
     //TODO 上下切换目录，回车确认
-    int n = 0;
+    int shift = 0;
     switch (keyCode)
     {
     case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        --n;
+        shift = -1;
         break;
     case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        ++n;
+        shift = 1;
         break;
+    case EventKeyboard::KeyCode::KEY_ENTER:
+            shift = 0;
+            if(scene_->model.menun == 0){
+                auto room = RoomSceneController::createScene();
+                Director::getInstance()->pushScene(room);
+            }
+            break;
     default: break;
     }
-    n = n % 5;
-    return n;
+    return shift;
 }
 
 void MainSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
-    scene_->set_model(MainSceneModel( check_key(keyCode) ));
+    scene_->model.shiftMenu(check_key(keyCode));//MainSceneModel( check_key(keyCode) )
 }
 
 void MainSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)
 {
     key_map_.erase(keyCode);
 
-    if (key_map_.empty())
-    {
-        scene_->set_model(MainSceneModel( 0 ));
-    }
-    else
-    {
-        keyCode = key_map_.begin()->first;
-        scene_->set_model(MainSceneModel( check_key(keyCode) ));
-    }
+//    if (key_map_.empty())
+//    {
+//        scene_->set_model(MainSceneModel( 0 ));
+//    }
+//    else
+//    {
+//        keyCode = key_map_.begin()->first;
+//        scene_->set_model(MainSceneModel( check_key(keyCode) ));
+//    }
 
     
 }
