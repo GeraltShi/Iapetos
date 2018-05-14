@@ -152,22 +152,26 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Scene\MainScene.cpp" />
     <ClCompile Include="..\Classes\Scene\RoomScene.cpp" />
+    <ClCompile Include="..\Classes\Scene\Issac.cpp" />
     <ClCompile Include="..\Classes\Controller\MainSceneController.cpp" />
     <ClCompile Include="..\Classes\Controller\RoomSceneController.cpp" />
     <ClCompile Include="..\Classes\Service\LevelService.cpp" />
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp" />
+    <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Scene\MainScene.h" />
     <ClInclude Include="..\Classes\Scene\RoomScene.h" />
+    <ClInclude Include="..\Classes\Scene\Issac.hpp" />
     <ClInclude Include="..\Classes\Controller\MainSceneController.h" />
     <ClInclude Include="..\Classes\Controller\RoomSceneController.h" />
     <ClInclude Include="..\Classes\Controller\Event\IMainSceneListener.h" />
     <ClInclude Include="..\Classes\Controller\Event\IRoomSceneListener.h" />
     <ClInclude Include="..\Classes\Service\LevelService.h" />
     <ClInclude Include="..\Classes\Model\MainSceneModel.h" />
+    <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

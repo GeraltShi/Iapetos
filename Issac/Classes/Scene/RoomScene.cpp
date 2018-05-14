@@ -178,7 +178,7 @@ void RoomScene::fire(float dt){
     //子弹开始跑动
     Sequence* sequence = Sequence::create(actionMove, actionDone, NULL);
     tearSprite->runAction(sequence);
-    tears.push_back(tearSprite);
+    //tears.push_back(tearSprite);
     this->addChild(tearSprite, 3);
 }
 
@@ -214,4 +214,5 @@ void RoomScene::removeBullet(Sprite* bullet){
     Action * bodyAction = Animate::create(animation);
     tearSprite->runAction(bodyAction);
     this->removeChild(bullet);
+    bullet->release();
 }

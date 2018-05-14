@@ -51,6 +51,12 @@
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scene\Issac.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp">
+      <Filter>src\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -81,6 +87,12 @@
       <Filter>src\Controller\Event</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\MainSceneModel.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\Issac.hpp">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp">
       <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>
