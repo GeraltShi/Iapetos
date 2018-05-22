@@ -70,8 +70,19 @@ Issac * Issac::createWithTexture(cocos2d::Texture2D *texture_)
     return nullptr;
 }
 
-void Issac::move(int direction)
+void Issac::move(int walk_direction, int head_direction)
 {
+    // Mask, 用于walk_direction和head_direction合并成direction
+    int walk_mask;
+    int head_mask;
+    if(head_direction == 5){
+        walk_mask = 1;
+        head_mask = 0;
+    } else {
+        walk_mask = 0;
+        head_mask = 1;
+    }
+    int direction = walk_direction * walk_mask + head_direction * head_mask;
 //    this->runAction(bodyAction);
     const int moveSpeed = 6.5;
     int offsetX = 0, offsetY = 0;
@@ -79,49 +90,59 @@ void Issac::move(int direction)
     //Todo 以身体作为Position计算，如有需要可重新定义锚点，头只是跟着身体动
     switch (direction)
     {
-            //012
-            //345
-            //678
-        case 3:{//左
+            //123
+            //456
+            //789
+        case 4:{//左
             if(this->getPositionX() > 135){
                 offsetX = -moveSpeed;
             }
             else {
                 offsetX = 0;
             }
-            this->removeChild(this->getChildByName("head"), true);
-            Sprite * newHead = Sprite::createWithSpriteFrame(lefthead);
-            newHead->setFlippedX(true);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 4){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(lefthead);
+                newHead->setFlippedX(true);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 4;
+            }
+            
             break;
         }
-        case 5:{//右
+        case 6:{//右
             if(this->getPositionX() < 749){
                 offsetX = moveSpeed;
             }
             else {
                 offsetX = 0;
             }
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(righthead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 6){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(righthead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 6;
+            }
             break;
         }
-        case 1:{//上
+        case 2:{//上
             if(this->getPositionY() < 500){
                 offsetY = moveSpeed;
             }
             else {
                 offsetY = 0;
             }
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(uphead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 2){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(uphead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 2;
+            }
             break;}
-        case 7:{//下
+        case 8:{//下
             if(this->getPositionY() > 190)
             {
                 offsetY = -moveSpeed;
@@ -129,75 +150,93 @@ void Issac::move(int direction)
             else {
                 offsetY = 0;
             }
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(downhead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 8){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(downhead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 8;
+            }
             break;}
             
-        case 0:{//左上
+        case 1:{//左上
             if(this->getPositionX() > 135)
                 offsetX = -moveSpeed;
             else offsetX = 0;
             if(this->getPositionY() < 500)
                 offsetY = moveSpeed;
             else offsetY = 0;
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(uphead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 2){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(uphead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 2;
+            }
             break;
         }
             
-        case 2:{//右上
+        case 3:{//右上
             if(this->getPositionX() < 749)
                 offsetX = moveSpeed;
             else offsetX = 0;
             if(this->getPositionY() < 500)
                 offsetY = moveSpeed;
             else offsetY = 0;
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(uphead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 2){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(uphead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 2;
+            }
             break;
         }
             
-        case 6:{//左下
+        case 7:{//左下
             if(this->getPositionX() > 135)
                 offsetX = -moveSpeed;
             else offsetX = 0;
             if(this->getPositionY() > 190)
                 offsetY = -moveSpeed;
             else offsetY = 0;
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(downhead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 8){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(downhead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 8;
+            }
             break;
         }
             
-        case 8:{//右下
+        case 9:{//右下
             if(this->getPositionX() < 749)
                 offsetX = moveSpeed;
             else offsetX = 0;
             if(this->getPositionY() > 190)
                 offsetY = -moveSpeed;
             else offsetY = 0;
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(downhead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 8){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(downhead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 8;
+            }
+            
             break;
         }
-            
-        case 4:{//无，头要默认复位
+        case 5:{//无，头要默认复位
             offsetX = 0;
             offsetY = 0;
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(downhead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
+            if(head_tmp != 5){
+                this->removeChild(this->getChildByName("head"), true);
+                newHead = Sprite::createWithSpriteFrame(downhead);
+                newHead->setPosition(Vec2(0,10));
+                this->addChild(newHead,1);
+                head_tmp = 5;
+            }
             break;
         }
             
@@ -209,44 +248,3 @@ void Issac::move(int direction)
     const auto MoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
     this->runAction(MoveTo);
 }
-//方向键更新头，与射击有关
-void Issac::updatehead(int direction){
-    SpriteFrame * newFrame;
-    Sprite * newHead;
-    switch (direction) {
-        case 0:{//上
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(uphead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
-            break;
-        }
-        case 1:{//下
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(downhead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
-            
-            break;
-        }
-        case 2:{//左
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(lefthead);
-            newHead->setFlippedX(true);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
-            break;
-        }
-        case 3:{//右
-            this->removeChild(this->getChildByName("head"), true);
-            newHead = Sprite::createWithSpriteFrame(righthead);
-            newHead->setPosition(Vec2(0,10));
-            this->addChild(newHead,1);
-            
-            break;
-        }
-        default:
-            break;
-    }
-}
-

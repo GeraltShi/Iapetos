@@ -10,7 +10,7 @@ public:
         walking_direction = wd;
         head_direction = hd;
     };
-    int walking_direction = 4;
-    int head_direction = -1;
+    int walking_direction = 5;
+    int head_direction = 5;
 };
 #endif /* RoomSceneModel_hpp */

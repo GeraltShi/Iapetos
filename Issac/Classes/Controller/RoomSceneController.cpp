@@ -78,25 +78,25 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
     if(key_map_[EventKeyboard::KeyCode::KEY_W]) diry = 0;
     if(key_map_[EventKeyboard::KeyCode::KEY_S]) diry = 1;
     if((!key_map_[EventKeyboard::KeyCode::KEY_W])&& (!key_map_[EventKeyboard::KeyCode::KEY_S])) diry = -1;
-    if(dirx == 0 && diry == 0){return 0;}
-    if(dirx == -1 && diry == 0){return 1;}
-    if(dirx == 1 && diry == 0){return 2;}
-    if(dirx == 0 && diry == -1){return 3;}
-    if(dirx == -1 && diry == -1){return 4;}
-    if(dirx == 1 && diry == -1){return 5;}
-    if(dirx == 0 && diry == 1){return 6;}
-    if(dirx == -1 && diry == 1){return 7;}
-    if(dirx == 1 && diry == 1){return 8;}
+    if(dirx == 0 && diry == 0){return 1;}
+    if(dirx == -1 && diry == 0){return 2;}
+    if(dirx == 1 && diry == 0){return 3;}
+    if(dirx == 0 && diry == -1){return 4;}
+    if(dirx == -1 && diry == -1){return 5;}
+    if(dirx == 1 && diry == -1){return 6;}
+    if(dirx == 0 && diry == 1){return 7;}
+    if(dirx == -1 && diry == 1){return 8;}
+    if(dirx == 1 && diry == 1){return 9;}
     
     return 4;
 }
 
 int RoomSceneController::check_head(){
-    if(key_map_[EventKeyboard::KeyCode::KEY_UP_ARROW]) return 0;
-    if(key_map_[EventKeyboard::KeyCode::KEY_DOWN_ARROW]) return 1;
-    if(key_map_[EventKeyboard::KeyCode::KEY_LEFT_ARROW]) return 2;
-    if(key_map_[EventKeyboard::KeyCode::KEY_RIGHT_ARROW]) return 3;
-    return -1;
+    if(key_map_[EventKeyboard::KeyCode::KEY_UP_ARROW]) return 2;
+    if(key_map_[EventKeyboard::KeyCode::KEY_DOWN_ARROW]) return 8;
+    if(key_map_[EventKeyboard::KeyCode::KEY_LEFT_ARROW]) return 4;
+    if(key_map_[EventKeyboard::KeyCode::KEY_RIGHT_ARROW]) return 6;
+    return 5;
 }
 
 void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
