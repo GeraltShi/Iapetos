@@ -7,19 +7,19 @@
 using namespace std;
 class Issac : public cocos2d::Sprite {
 public:
+    static Issac * createWithTexture(cocos2d::Texture2D *texture);
     cocos2d::Animate * idleAnimate;
     cocos2d::Animate * moveAnimate;
-    static Issac * create(void);
     void move(int direction);
     void updatehead(int direction);
-    //void fire(float dt);
-    //vector <Sprite *> tears;
+    cocos2d::Texture2D * texture;
+    cocos2d::SpriteFrame * lefthead;
+    cocos2d::SpriteFrame * righthead;
+    cocos2d::SpriteFrame * uphead;
+    cocos2d::SpriteFrame * downhead;
 private:
-    ~Issac();
-    
+    cocos2d::Action * bodyAction;
     bool moving;
-    //int direction;
-    
     void initPlayer();
 };
 #endif /* Issac_hpp */
