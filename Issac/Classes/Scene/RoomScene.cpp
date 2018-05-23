@@ -20,36 +20,44 @@ bool RoomScene::init()
     std::cout << size.width <<" "<< size.height << endl;
     //TODO 应该有更好的方法生成背景贴图，而不是暴力生成4个或多个碎片
     //TODO 动态加载贴图？如Issac的buff皮肤（在别的贴图上）如何更新
-    Texture2D *texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/01_basement.png");
+    Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/01_basement.png");
     //TODO 更小的地图切片和随机性支持
-    Sprite * room_piece1 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    Sprite * room_piece1 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece1->setAnchorPoint(Point(0,0));
-    room_piece1->setScale(2, 2);
-    room_piece1->setPosition(0, 286);
+//    room_piece1->setScale(2, 2);
+    room_piece1->setPosition(0, 143);
     addChild(room_piece1,0);
     
-    Sprite * room_piece2 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    Sprite * room_piece2 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece2->setFlippedX(true);
     room_piece2->setAnchorPoint(Point(0,0));
-    room_piece2->setScale(2, 2);
-    room_piece2->setPosition(442, 286);
+//    room_piece2->setScale(2, 2);
+    room_piece2->setPosition(221, 143);
     addChild(room_piece2,0);
     
-    Sprite * room_piece3 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    Sprite * room_piece3 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece3->setFlippedY(true);
     room_piece3->setAnchorPoint(Point(0,0));
-    room_piece3->setScale(2, 2);
+//    room_piece3->setScale(2, 2);
     room_piece3->setPosition(0, 0);
     addChild(room_piece3,0);
     
-    Sprite * room_piece4 = Sprite::createWithTexture(texture,Rect(0,0,221,143));
+    Sprite * room_piece4 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece4->setFlippedX(true);
     room_piece4->setFlippedY(true);
     room_piece4->setAnchorPoint(Point(0,0));
-    room_piece4->setScale(2, 2);
-    room_piece4->setPosition(442, 0);
+//    room_piece4->setScale(2, 2);
+    room_piece4->setPosition(221, 0);
     addChild(room_piece4,0);
     
+    Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_01_normaldoor.png");
+    Sprite * door = Sprite::createWithTexture(texture_door,Rect(0,96,64,48));
+    Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
+    door->setPosition(200, 250);
+    door_center->setPosition(200, 250);
+//    door->setScale(2, 2);
+//    door_center->setScale(2, 2);
+    addChild(door,1);addChild(door_center,1);
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
@@ -71,11 +79,11 @@ bool RoomScene::init()
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
     
     auto l = Label::createWithTTF("游戏界面/房间", "fonts/simhei.ttf", 30);
-    l->setPosition(640, 500);
+    l->setPosition(320, 250);
     addChild(l);
 
     auto cl = Label::createWithTTF("点击次数: 0", "fonts/simhei.ttf", 30);
-    cl->setPosition(640, 200);
+    cl->setPosition(320, 250);
     addChild(cl,1,"c_label");
     
     scheduleUpdate();

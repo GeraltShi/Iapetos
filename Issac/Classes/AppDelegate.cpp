@@ -19,10 +19,10 @@ using namespace CocosDenshion;
 USING_NS_CC;
 
 //TODO 分辨率适应，时间来不及就不做
-static Size designResolutionSize = Size(884, 572);
-static Size smallResolutionSize = Size(884, 572);
-static Size mediumResolutionSize = Size(884, 572);
-static Size largeResolutionSize = Size(884, 1572);
+static Size designResolutionSize = Size(442, 286);
+static Size smallResolutionSize = Size(442, 286);
+static Size mediumResolutionSize = Size(442, 286);
+static Size largeResolutionSize = Size(442, 286);
 
 AppDelegate::AppDelegate()
 {

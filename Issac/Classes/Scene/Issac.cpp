@@ -20,7 +20,7 @@ Issac * Issac::createWithTexture(cocos2d::Texture2D *texture_)
     sprite->addChild(headSprite,1,"head");
     sprite->addChild(bodySprite,0,"body");
     headSprite->setPosition(Vec2(0,10));
-    sprite->setPosition(Vec2(442, 286));
+    sprite->setPosition(Vec2(221, 143));
     sprite->lefthead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(64,0,32,32));
     sprite->righthead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(64,0,32,32));
     sprite->uphead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(128,0,32,32));
@@ -77,50 +77,50 @@ void Issac::move(int walk_direction, int head_direction)
             //456
             //789
         case 4://左
-            if(this->getPositionX() > 135){ offsetX = -moveSpeed;}
+            if(this->getPositionX() > 60){ offsetX = -moveSpeed;}
             else {offsetX = 0;}
             break;
         
         case 6://右
-            if(this->getPositionX() < 749){ offsetX = moveSpeed;}
+            if(this->getPositionX() < 441-60){ offsetX = moveSpeed;}
             else {offsetX = 0;}
             break;
         
         case 2://上
-            if(this->getPositionY() < 500){ offsetY = moveSpeed;}
+            if(this->getPositionY() < 286-60){ offsetY = moveSpeed;}
             else {offsetY = 0;}
             break;
             
         case 8://下
-            if(this->getPositionY() > 190){offsetY = -moveSpeed;}
+            if(this->getPositionY() > 60){offsetY = -moveSpeed;}
             else {offsetY = 0;}
             break;
             
         case 1://左上
-            if(this->getPositionX() > 135) offsetX = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offsetX = -moveSpeed/root2;
             else offsetX = 0;
-            if(this->getPositionY() < 500) offsetY = moveSpeed/root2;
+            if(this->getPositionY() < 441-60) offsetY = moveSpeed/root2;
             else offsetY = 0;
             break;
             
         case 3://右上
-            if(this->getPositionX() < 749) offsetX = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offsetX = moveSpeed/root2;
             else offsetX = 0;
-            if(this->getPositionY() < 500) offsetY = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offsetY = moveSpeed/root2;
             else offsetY = 0;
             break;
         
         case 7://左下
-            if(this->getPositionX() > 135) offsetX = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offsetX = -moveSpeed/root2;
             else offsetX = 0;
-            if(this->getPositionY() > 190) offsetY = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offsetY = -moveSpeed/root2;
             else offsetY = 0;
             break;
             
         case 9://右下
-            if(this->getPositionX() < 749) offsetX = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offsetX = moveSpeed/root2;
             else offsetX = 0;
-            if(this->getPositionY() > 190) offsetY = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offsetY = -moveSpeed/root2;
             else offsetY = 0;
             break;
             
