@@ -1,5 +1,6 @@
 #include "Issac.hpp"
 #include "cocos2d.h"
+#include <iostream>
 
 using namespace cocos2d;
 # define root2 1.41421356
@@ -24,44 +25,28 @@ Issac * Issac::createWithTexture(cocos2d::Texture2D *texture_)
     sprite->righthead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(64,0,32,32));
     sprite->uphead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(128,0,32,32));
     sprite->downhead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(0,0,32,32));
-    auto frame0 = SpriteFrame::createWithTexture(texture_, Rect(32*6,32*0,32,32));
-    auto frame1 = SpriteFrame::createWithTexture(texture_, Rect(32*7,32*0,32,32));
-    auto frame2 = SpriteFrame::createWithTexture(texture_, Rect(32*0,32*1,32,32));
-    auto frame3 = SpriteFrame::createWithTexture(texture_, Rect(32*1,32*1,32,32));
-    auto frame4 = SpriteFrame::createWithTexture(texture_, Rect(32*2,32*1,32,32));
-    auto frame5 = SpriteFrame::createWithTexture(texture_, Rect(32*3,32*1,32,32));
-    auto frame6 = SpriteFrame::createWithTexture(texture_, Rect(32*4,32*1,32,32));
-    auto frame7 = SpriteFrame::createWithTexture(texture_, Rect(32*5,32*1,32,32));
-    auto frame8 = SpriteFrame::createWithTexture(texture_, Rect(32*6,32*1,32,32));
-    auto frame9 = SpriteFrame::createWithTexture(texture_, Rect(32*7,32*1,32,32));
-    
-    auto frame10 = SpriteFrame::createWithTexture(texture_, Rect(32*0,32*2,32,32));
-    auto frame11 = SpriteFrame::createWithTexture(texture_, Rect(32*1,32*2,32,32));
-    auto frame12 = SpriteFrame::createWithTexture(texture_, Rect(32*2,32*2,32,32));
-    auto frame13 = SpriteFrame::createWithTexture(texture_, Rect(32*3,32*2,32,32));
-    auto frame14 = SpriteFrame::createWithTexture(texture_, Rect(32*4,32*2,32,32));
-    auto frame15 = SpriteFrame::createWithTexture(texture_, Rect(32*5,32*2,32,32));
-    auto frame16 = SpriteFrame::createWithTexture(texture_, Rect(32*6,32*2,32,32));
-    auto frame17 = SpriteFrame::createWithTexture(texture_, Rect(32*7,32*2,32,32));
-    auto frame18 = SpriteFrame::createWithTexture(texture_, Rect(32*0,32*3,32,32));
-    auto frame19 = SpriteFrame::createWithTexture(texture_, Rect(32*1,32*3,32,32));
-    
-    Vector<cocos2d::SpriteFrame *> array;
-    array.clear();
-    array.pushBack(frame0);
-    array.pushBack(frame1);
-    array.pushBack(frame2);
-    array.pushBack(frame3);
-    array.pushBack(frame4);
-    array.pushBack(frame5);
-    array.pushBack(frame6);
-    array.pushBack(frame7);
-    array.pushBack(frame8);
-    array.pushBack(frame9);
-    auto animation = Animation::createWithSpriteFrames(array, 0.1f);
-    animation->setLoops(-1);
-    animation->setRestoreOriginalFrame(true);
-    sprite->bodyAction = Animate::create(animation);
+    SpriteFrame* frame0 = SpriteFrame::createWithTexture(texture_, Rect(32*6,32*0,32,32));
+    SpriteFrame* frame1 = SpriteFrame::createWithTexture(texture_, Rect(32*7,32*0,32,32));
+    SpriteFrame* frame2 = SpriteFrame::createWithTexture(texture_, Rect(32*0,32*1,32,32));
+    SpriteFrame* frame3 = SpriteFrame::createWithTexture(texture_, Rect(32*1,32*1,32,32));
+    SpriteFrame* frame4 = SpriteFrame::createWithTexture(texture_, Rect(32*2,32*1,32,32));
+    SpriteFrame* frame5 = SpriteFrame::createWithTexture(texture_, Rect(32*3,32*1,32,32));
+    SpriteFrame* frame6 = SpriteFrame::createWithTexture(texture_, Rect(32*4,32*1,32,32));
+    SpriteFrame* frame7 = SpriteFrame::createWithTexture(texture_, Rect(32*5,32*1,32,32));
+    SpriteFrame* frame8 = SpriteFrame::createWithTexture(texture_, Rect(32*6,32*1,32,32));
+    SpriteFrame* frame9 = SpriteFrame::createWithTexture(texture_, Rect(32*7,32*1,32,32));
+    sprite->animFrames.pushBack(frame0);
+    sprite->animFrames.pushBack(frame1);
+    sprite->animFrames.pushBack(frame2);
+    sprite->animFrames.pushBack(frame3);
+    sprite->animFrames.pushBack(frame4);
+    sprite->animFrames.pushBack(frame5);
+    sprite->animFrames.pushBack(frame6);
+    sprite->animFrames.pushBack(frame7);
+    sprite->animFrames.pushBack(frame8);
+    sprite->animFrames.pushBack(frame9);
+    sprite->animation = Animation::createWithSpriteFrames(sprite->animFrames, 0.1f);
+    sprite->animate = Animate::create(sprite->animation);
     if (sprite)
     {
         sprite->autorelease(); return sprite;
@@ -83,7 +68,6 @@ void Issac::move(int walk_direction, int head_direction)
         head_mask = 1;
     }
     int direction = walk_direction * walk_mask + head_direction * head_mask;
-//    this->runAction(bodyAction);
     const int moveSpeed = 6.5;
     int offsetX = 0, offsetY = 0;
     Sprite * newHead;    //TODO 换头会导致绘制节点增加
@@ -143,6 +127,7 @@ void Issac::move(int walk_direction, int head_direction)
         case 5://无，头要默认复位
             offsetX = 0;
             offsetY = 0;
+            this->stopActionByTag(1);
             break;
             
         default:
@@ -200,6 +185,9 @@ void Issac::move(int walk_direction, int head_direction)
     }
     auto new_posX = getPositionX() + offsetX;
     auto new_posY = getPositionY() + offsetY;
-    const auto MoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
-    this->runAction(MoveTo);
+    ActionInterval * MoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
+    std::cout << animFrames.size() << std::endl;
+    Action * action = Spawn::create(MoveTo, NULL);
+    this->runAction(action);
+    //TODO 移动动画
 }

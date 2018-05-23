@@ -16,9 +16,11 @@ public:
     cocos2d::SpriteFrame * righthead;
     cocos2d::SpriteFrame * uphead;
     cocos2d::SpriteFrame * downhead;
+    cocos2d::Vector<cocos2d:: SpriteFrame*> animFrames;
+    cocos2d::Animation * animation;
+    cocos2d::Animate * animate;
     int head_tmp = 5;
 private:
-    cocos2d::Action * bodyAction;
     bool moving;
     void initPlayer();
 };

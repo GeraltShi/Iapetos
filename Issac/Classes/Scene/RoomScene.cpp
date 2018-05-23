@@ -128,9 +128,9 @@ void RoomScene::update(float delta)
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walking_direction, model.head_direction);
     
-//    if(model.head_direction == 3){
-//        this->schedule(schedule_selector(RoomScene::fire), 0.7);
-//    }
+    if(model.head_direction == 6){
+        this->schedule(schedule_selector(RoomScene::fire), 0.7);
+    }
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
