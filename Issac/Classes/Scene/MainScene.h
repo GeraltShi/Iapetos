@@ -10,7 +10,7 @@ class MainScene : public cocos2d::Scene
   public:
 	static Scene *createScene();
 	virtual bool init();
-	CREATE_FUNC(MainScene);
+	CREATE_FUNC(MainScene)
 
     void set_event_listener(IMainSceneListener *listener);
     void set_model(MainSceneModel model);

@@ -4,30 +4,29 @@
 #include <stdio.h>
 #include <vector>
 #include "cocos2d.h"
+
 USING_NS_CC;
 using namespace std;
-class Issac : public cocos2d::Sprite {
-public:
-    //static Issac * createWithTexture(cocos2d::Texture2D *texture);
 
+class Issac : public Sprite {
+public:
     static Issac *createIssac();
     static Sprite *createSprite();
     virtual bool init();
-    CREATE_FUNC(Issac);
 
+    CREATE_FUNC(Issac)
 
-    Animate * idleAnimate;
-    Animate * moveAnimate;
+    CC_SYNTHESIZE_RETAIN(Animate*, idleAnimate, IdleAnimate)
+    CC_SYNTHESIZE_RETAIN(Animate*, moveAnimate, MoveAnimate)
+
+    CC_SYNTHESIZE(bool, moving, Moving)
+    CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
+    CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
+
     void move(int walk_direction, int head_direction);
 
-    
-
-    int get_prev_head_orientation() const;
-
 private:
-    bool moving = false;
-    int prev_head_orientation = 5;
-    int prev_walk_orientation = 5;
-
+    void build_sprite_frame_cache(Texture2D *texture_);
+    void build_animation_cache();
 };
-#endif /* Issac_hpp */
+#endif

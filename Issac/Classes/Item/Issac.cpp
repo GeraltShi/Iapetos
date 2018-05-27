@@ -22,6 +22,11 @@ bool Issac::init()
         return false;
     }
 
+    //初始化类变量
+    prev_walk_orientation = 5;
+    prev_head_orientation = 5;
+    moving = false;
+
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
 
@@ -30,60 +35,68 @@ bool Issac::init()
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
     Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
 
+    build_sprite_frame_cache(texture_);
+    build_animation_cache();
+
     this->addChild(headSprite, 1, "head");
     this->addChild(bodySprite, 0, "body");
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
 
+
+    return true;
+}
+
+void Issac::build_sprite_frame_cache(Texture2D *texture_)
+{
     auto spriteCache = SpriteFrameCache::getInstance();
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "lefthead");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "righthead");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(128, 0, 32, 32)), "uphead");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32)),"downhead");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 0, 32, 32)),"vwalk_frame0");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 0, 32, 32)),"vwalk_frame1");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32 * 1, 32, 32)),"vwalk_frame2");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32 * 1, 32, 32)),"vwalk_frame3");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 2, 32 * 1, 32, 32)),"vwalk_frame4");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 3, 32 * 1, 32, 32)),"vwalk_frame5");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 4, 32 * 1, 32, 32)),"vwalk_frame6");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 5, 32 * 1, 32, 32)),"vwalk_frame7");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 1, 32, 32)),"vwalk_frame8");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 1, 32, 32)),"vwalk_frame9");
-    
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32 * 2, 32, 32)),"hwalk_frame0");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32 * 2, 32, 32)),"hwalk_frame1");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 2, 32 * 2, 32, 32)),"hwalk_frame2");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 3, 32 * 2, 32, 32)),"hwalk_frame3");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 4, 32 * 2, 32, 32)),"hwalk_frame4");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 5, 32 * 2, 32, 32)),"hwalk_frame5");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 2, 32, 32)),"hwalk_frame6");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 2, 32, 32)),"hwalk_frame7");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32 * 3, 32, 32)),"hwalk_frame8");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32 * 3, 32, 32)),"hwalk_frame9");
-    
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32, 0, 32, 32)),"downshake");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(96, 0, 32, 32)),"rightshake");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(160, 0, 32, 32)),"upshake");
-    return true;
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32)), "downhead");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 0, 32, 32)), "vwalk_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 0, 32, 32)), "vwalk_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32 * 1, 32, 32)), "vwalk_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32 * 1, 32, 32)), "vwalk_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 2, 32 * 1, 32, 32)), "vwalk_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 3, 32 * 1, 32, 32)), "vwalk_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 4, 32 * 1, 32, 32)), "vwalk_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 5, 32 * 1, 32, 32)), "vwalk_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 1, 32, 32)), "vwalk_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 1, 32, 32)), "vwalk_frame9");
+
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32 * 2, 32, 32)), "hwalk_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32 * 2, 32, 32)), "hwalk_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 2, 32 * 2, 32, 32)), "hwalk_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 3, 32 * 2, 32, 32)), "hwalk_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 4, 32 * 2, 32, 32)), "hwalk_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 5, 32 * 2, 32, 32)), "hwalk_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 2, 32, 32)), "hwalk_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 2, 32, 32)), "hwalk_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32 * 3, 32, 32)), "hwalk_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32 * 3, 32, 32)), "hwalk_frame9");
+
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32, 0, 32, 32)), "downshake");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(96, 0, 32, 32)), "rightshake");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(160, 0, 32, 32)), "upshake");
 }
 
-
-void Issac::move(int walk_direction, int tear_direction)
+void Issac::build_animation_cache()
 {
-    //直接获取缓存，不要将SpriteFrame保存在类中
     auto spriteCache = SpriteFrameCache::getInstance();
-    
+    auto aniCache = AnimationCache::getInstance();
+
     const auto lefthead = spriteCache->getSpriteFrameByName("lefthead");
     const auto leftshake = spriteCache->getSpriteFrameByName("rightshake");
+
     Vector<SpriteFrame*> leftshakeFrames;
     leftshakeFrames.pushBack(lefthead);
     leftshakeFrames.pushBack(leftshake);
     Animation * leftshakeAnimation = Animation::createWithSpriteFrames(leftshakeFrames, 0.3f);
     leftshakeAnimation->setLoops(-1);
     leftshakeAnimation->setRestoreOriginalFrame(true);
-    Animate * leftshakeAnimate = Animate::create(leftshakeAnimation);
-    
+    aniCache->addAnimation(leftshakeAnimation, "leftshakeAnimation");
+
     const auto righthead = spriteCache->getSpriteFrameByName("righthead");
     const auto rightshake = spriteCache->getSpriteFrameByName("rightshake");
     Vector<SpriteFrame*> rightshakeFrames;
@@ -92,8 +105,8 @@ void Issac::move(int walk_direction, int tear_direction)
     Animation * rightshakeAnimation = Animation::createWithSpriteFrames(rightshakeFrames, 0.3f);
     rightshakeAnimation->setLoops(-1);
     rightshakeAnimation->setRestoreOriginalFrame(true);
-    Animate * rightshakeAnimate = Animate::create(rightshakeAnimation);
-    
+    aniCache->addAnimation(rightshakeAnimation, "rightshakeAnimation");
+
     const auto downhead = spriteCache->getSpriteFrameByName("downhead");
     const auto downshake = spriteCache->getSpriteFrameByName("downshake");
     Vector<SpriteFrame*> downshakeFrames;
@@ -102,8 +115,8 @@ void Issac::move(int walk_direction, int tear_direction)
     Animation * downshakeAnimation = Animation::createWithSpriteFrames(downshakeFrames, 0.3f);
     downshakeAnimation->setLoops(-1);
     downshakeAnimation->setRestoreOriginalFrame(true);
-    Animate * downshakeAnimate = Animate::create(downshakeAnimation);
-    
+    aniCache->addAnimation(downshakeAnimation, "downshakeAnimation");
+
     const auto uphead = spriteCache->getSpriteFrameByName("uphead");
     const auto upshake = spriteCache->getSpriteFrameByName("upshake");
     Vector<SpriteFrame*> upshakeFrames;
@@ -112,9 +125,8 @@ void Issac::move(int walk_direction, int tear_direction)
     Animation * upshakeAnimation = Animation::createWithSpriteFrames(upshakeFrames, 0.3f);
     upshakeAnimation->setLoops(-1);
     upshakeAnimation->setRestoreOriginalFrame(true);
-    Animate * upshakeAnimate = Animate::create(upshakeAnimation);
-    
-    
+    aniCache->addAnimation(upshakeAnimation, "upshakeAnimation");
+
     const auto vwalk_frame0 = spriteCache->getSpriteFrameByName("vwalk_frame0");
     const auto vwalk_frame1 = spriteCache->getSpriteFrameByName("vwalk_frame1");
     const auto vwalk_frame2 = spriteCache->getSpriteFrameByName("vwalk_frame2");
@@ -139,8 +151,9 @@ void Issac::move(int walk_direction, int tear_direction)
     Animation * vwalk_animation = Animation::createWithSpriteFrames(vwalkFrames, 0.1f);
     vwalk_animation->setLoops(-1);
     vwalk_animation->setRestoreOriginalFrame(true);
-    Animate * vwalk_animate = Animate::create(vwalk_animation);
-    
+    aniCache->addAnimation(vwalk_animation, "vwalk_animation");
+
+
     const auto hwalk_frame0 = spriteCache->getSpriteFrameByName("hwalk_frame0");
     const auto hwalk_frame1 = spriteCache->getSpriteFrameByName("hwalk_frame1");
     const auto hwalk_frame2 = spriteCache->getSpriteFrameByName("hwalk_frame2");
@@ -165,6 +178,28 @@ void Issac::move(int walk_direction, int tear_direction)
     Animation * hwalk_animation = Animation::createWithSpriteFrames(hwalkFrames, 0.1f);
     hwalk_animation->setLoops(-1);
     hwalk_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(hwalk_animation, "hwalk_animation");
+}
+
+
+void Issac::move(int walk_direction, int tear_direction)
+{
+    //直接获取缓存，不要将SpriteFrame保存在类中
+    auto spriteCache = SpriteFrameCache::getInstance();
+    auto aniCache = AnimationCache::getInstance();
+
+    const auto leftshakeAnimation = aniCache->getAnimation("leftshakeAnimation");
+    const auto rightshakeAnimation = aniCache->getAnimation("rightshakeAnimation");
+    const auto downshakeAnimation = aniCache->getAnimation("downshakeAnimation");
+    const auto upshakeAnimation = aniCache->getAnimation("upshakeAnimation");
+    const auto vwalk_animation = aniCache->getAnimation("vwalk_animation");
+    const auto hwalk_animation = aniCache->getAnimation("hwalk_animation");
+    
+    Animate * leftshakeAnimate = Animate::create(leftshakeAnimation);
+    Animate * rightshakeAnimate = Animate::create(rightshakeAnimation);
+    Animate * downshakeAnimate = Animate::create(downshakeAnimation);
+    Animate * upshakeAnimate = Animate::create(upshakeAnimation);
+    Animate * vwalk_animate = Animate::create(vwalk_animation);
     Animate * hwalk_animate = Animate::create(hwalk_animation);
     
     // Mask, 用于walk_direction和head_direction合并成direction
@@ -335,11 +370,5 @@ void Issac::move(int walk_direction, int tear_direction)
         this->runAction(action);
     }
     
-    
     //TODO 移动动画
-}
-
-int Issac::get_prev_head_orientation() const
-{
-    return prev_head_orientation;
 }

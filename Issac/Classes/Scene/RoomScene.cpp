@@ -127,11 +127,6 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_keyboard_listener, this);
 }
 
-void RoomScene::set_model(RoomSceneModel model)
-{
-    this->model = model;
-}
-
 void RoomScene::update(float delta)
 {
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
@@ -143,15 +138,12 @@ void RoomScene::update(float delta)
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-    std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->get_prev_head_orientation()<<endl;
+    //std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
 }
 
 void RoomScene::change_count(int c)
 {
-    auto cl = dynamic_cast<Label *>(getChildByName("c_label"));
-    stringstream ss;
-    ss << "点击次数: " << c;
-    cl->setString(ss.str());
+    
 }
 
 void RoomScene::fire(float dt){

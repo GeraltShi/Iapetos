@@ -102,11 +102,11 @@ int RoomSceneController::check_head(){
 void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
-    scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode), check_head() });
+    scene_->setModel(RoomSceneModel{ check_key_inRoom(keyCode), check_head() });
 }
 
 void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)
 {
     key_map_.erase(keyCode);
-    scene_->set_model(RoomSceneModel{ check_key_inRoom(keyCode), check_head() });
+    scene_->setModel(RoomSceneModel{ check_key_inRoom(keyCode), check_head() });
 }
