@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 USING_NS_CC;
+#define random(a,b) (rand()%(b-a+1)+a)
 using namespace std;
 
 Scene *RoomScene::createScene()
@@ -64,7 +65,9 @@ bool RoomScene::init()
     build_frame_cache();
     player = Issac::createIssac();
 
-    addChild(player, 5);
+    addChild(player, 3);
+    
+    srand((unsigned)time(NULL));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
@@ -190,7 +193,32 @@ void RoomScene::fire(float dt){
     Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
     SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
     tearSprite = Sprite::createWithSpriteFrame(tearFrame);
-    tearSprite->setPosition(player->getPosition());
+    const int advance = 15;
+    int x_advance;
+    int y_advance;
+    switch (model.tear_direction) {
+        case 2:
+            x_advance = 0;
+            y_advance = advance+random(-10,10);
+            break;
+        case 4:
+            x_advance = -advance+random(-10,10);
+            y_advance = 0;
+            break;
+        case 6:
+            x_advance = advance+random(-10,10);
+            y_advance = 0;
+            break;
+        case 8:
+            x_advance = 0;
+            y_advance = -advance+random(-10,10);
+            break;
+        default:
+            x_advance = 0;
+            y_advance = 0;
+    }
+    
+    tearSprite->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
     const float speed = 0.38;
     //子弹运行的距离和时间
     cocos2d::MoveBy * tear_move = nullptr;
