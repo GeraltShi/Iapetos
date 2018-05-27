@@ -220,37 +220,43 @@ void Issac::move(int walk_direction, int tear_direction)
         case 4://左
             if(this->getPositionX() > 60){ offset_x = -moveSpeed;}
             else {offset_x = 0;}
-            prev_walk_orientation = 4;
             if(prev_walk_orientation != 4){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(-1);//翻转
                 this->getChildByName("body")->runAction(hwalk_animate);
             }
+            prev_walk_orientation = 4;
             break;
         
         case 6://右
             if(this->getPositionX() < 441-60){ offset_x = moveSpeed;}
             else {offset_x = 0;}
-            prev_walk_orientation = 6;
             if(prev_walk_orientation != 6){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(1);//翻转
                 this->getChildByName("body")->runAction(hwalk_animate);
             }
+            prev_walk_orientation = 6;
             break;
         
         case 2://上
             if(this->getPositionY() < 286-60){ offset_y = moveSpeed;}
             else {offset_y = 0;}
-            prev_walk_orientation = 2;
             if(prev_walk_orientation != 2){
-                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
             }
+            prev_walk_orientation = 2;
             break;
             
         case 8://下
             if(this->getPositionY() > 60){offset_y = -moveSpeed;}
             else {offset_y = 0;}
-            prev_walk_orientation = 8;
             if(prev_walk_orientation != 8){
+                this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
             }
+            prev_walk_orientation = 8;
             break;
             
         case 1://左上
@@ -258,6 +264,10 @@ void Issac::move(int walk_direction, int tear_direction)
             else offset_x = 0;
             if(this->getPositionY() < 441-60) offset_y = moveSpeed/root2;
             else offset_y = 0;
+            if(prev_walk_orientation != 1){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+            }
             prev_walk_orientation = 1;
             break;
             
@@ -266,6 +276,10 @@ void Issac::move(int walk_direction, int tear_direction)
             else offset_x = 0;
             if(this->getPositionY() < 286-60) offset_y = moveSpeed/root2;
             else offset_y = 0;
+            if(prev_walk_orientation != 3){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+            }
             prev_walk_orientation = 3;
             break;
         
@@ -274,6 +288,10 @@ void Issac::move(int walk_direction, int tear_direction)
             else offset_x = 0;
             if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
             else offset_y = 0;
+            if(prev_walk_orientation != 7){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
             prev_walk_orientation = 7;
             break;
             
@@ -282,13 +300,17 @@ void Issac::move(int walk_direction, int tear_direction)
             else offset_x = 0;
             if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
             else offset_y = 0;
+            if(prev_walk_orientation != 9){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
             prev_walk_orientation = 9;
             break;
             
         case 5://无，头要默认复位
             offset_x = 0;
             offset_y = 0;
-            this->stopActionByTag(1);
+            this->getChildByName("body")->stopAllActions();
             prev_walk_orientation = 5;
             break;
             

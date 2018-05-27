@@ -191,20 +191,21 @@ void RoomScene::fire(float dt){
     SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
     tearSprite = Sprite::createWithSpriteFrame(tearFrame);
     tearSprite->setPosition(player->getPosition());
+    const float speed = 0.38;
     //子弹运行的距离和时间
     cocos2d::MoveBy * tear_move = nullptr;
     switch (model.tear_direction) {
         case 2:
-            tear_move = MoveBy::create(0.5, Vec2(0,100));
+            tear_move = MoveBy::create(speed, Vec2(0,100));
             break;
         case 4:
-            tear_move = MoveBy::create(0.5, Vec2(-100,0));
+            tear_move = MoveBy::create(speed, Vec2(-100,0));
             break;
         case 6:
-            tear_move = MoveBy::create(0.5, Vec2(100,0));
+            tear_move = MoveBy::create(speed, Vec2(100,0));
             break;
         case 8:
-            tear_move = MoveBy::create(0.5, Vec2(0,-100));
+            tear_move = MoveBy::create(speed, Vec2(0,-100));
             break;
         default:
             break;
