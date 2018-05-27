@@ -6,11 +6,11 @@ class RoomSceneModel
 private:
 public:
     RoomSceneModel(){};
-    RoomSceneModel(int wd, int hd){
-        walking_direction = wd;
-        head_direction = hd;
+    RoomSceneModel(int wd, int td){
+        walk_direction = wd;
+        tear_direction = td;
     };
-    int walking_direction = 5;
-    int head_direction = 5;
+    int walk_direction = 5;
+    int tear_direction = 5;
 };
 #endif /* RoomSceneModel_hpp */

@@ -135,15 +135,15 @@ void RoomScene::set_model(RoomSceneModel model)
 void RoomScene::update(float delta)
 {
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
-    player->move(model.walking_direction, model.head_direction);
+    player->move(model.walk_direction, model.tear_direction);
     
-    if(model.head_direction == 5){
+    if(model.tear_direction == 5){
         this->schedule(schedule_selector(RoomScene::fire), 0.7);
     }
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-    std::cout << "Walking direction: "<<model.walking_direction<<" Head direction: " << model.head_direction << " "<< player->get_prev_head_orientation()<<endl;
+    std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->get_prev_head_orientation()<<endl;
 }
 
 void RoomScene::change_count(int c)
@@ -201,24 +201,24 @@ void RoomScene::fire(float dt){
     tearSprite->setPosition(player->getPosition());
     //子弹运行的距离和时间
     cocos2d::MoveBy * tear_move = nullptr;
-    switch (model.head_direction) {
+    switch (model.tear_direction) {
         case 2:
-            tear_move = MoveBy::create(0.7, Vec2(0,100));
+            tear_move = MoveBy::create(0.5, Vec2(0,100));
             break;
         case 4:
-            tear_move = MoveBy::create(0.7, Vec2(-100,0));
+            tear_move = MoveBy::create(0.5, Vec2(-100,0));
             break;
         case 6:
-            tear_move = MoveBy::create(0.7, Vec2(100,0));
+            tear_move = MoveBy::create(0.5, Vec2(100,0));
             break;
         case 8:
-            tear_move = MoveBy::create(0.7, Vec2(0,-100));
+            tear_move = MoveBy::create(0.5, Vec2(0,-100));
             break;
         default:
             break;
     }
     //子弹执行完动作后进行函数回调，调用移除子弹函数
-    if(model.head_direction != 5){
+    if(model.tear_direction != 5){
         //子弹开始跑动
         this->addChild(tearSprite, 3);
         Sequence* sequence = Sequence::create(tear_move, poof_anim, RemoveSelf::create(true),NULL);
