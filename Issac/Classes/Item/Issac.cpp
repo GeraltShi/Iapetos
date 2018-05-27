@@ -262,7 +262,7 @@ void Issac::move(int walk_direction, int tear_direction)
         case 1://左上
             if(this->getPositionX() > 60) offset_x = -moveSpeed/root2;
             else offset_x = 0;
-            if(this->getPositionY() < 441-60) offset_y = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offset_y = moveSpeed/root2;
             else offset_y = 0;
             if(prev_walk_orientation != 1){
                 this->getChildByName("body")->stopAllActions();
