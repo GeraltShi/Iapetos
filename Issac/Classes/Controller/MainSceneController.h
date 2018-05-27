@@ -15,7 +15,7 @@ public:
     static Scene *createScene();
     virtual bool init();
 
-    CREATE_FUNC(MainSceneController);
+    CREATE_FUNC(MainSceneController)
     
     void on_touch_began(Touch* touch, Event* event) override;
     void on_mouse_down(Event* event) override;

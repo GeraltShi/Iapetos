@@ -67,20 +67,6 @@ bool MainScene::init()
     selector->setPosition(selector_init_x,selector_init_y);
 //    selector->setScale(size.width/480);
     addChild(selector,1);
-    /*
-    Vector<MenuItem*> MenuItems;
-    auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",
-                                           CC_CALLBACK_1(MainScene::menuCloseCallback, this));
-    MenuItems.pushBack(closeItem);
-    
-    // repeat for as many menu items as needed
-    auto menu = Menu::createWithArray(MenuItems);
-    this->addChild(menu, 1);
-    */
-    //peppa = Sprite::create("Peppa.png");
-    //peppa->setPosition(640, 360);
-
-    //addChild(peppa,1,"pig");
 
     auto l = Label::createWithTTF("开场界面","fonts/simhei.ttf",30);
     l->setPosition(640, 500);
@@ -170,35 +156,3 @@ void MainScene::menu_update(int n) const{
     const auto selectorMoveTo = MoveTo::create(0,Vec2(new_posX, new_posY));
     selector->runAction(selectorMoveTo);
 }
-/*
-void MainScene::peppa_move(int direction) const
-{
-    const int moveSpeed = 6.5;
-    int offsetX = 0, offsetY = 0;
-    //Todo 以身体作为Position计算，如有需要可重新定义锚点，头只是跟着身体动
-    switch (direction)
-    {
-        case 0:if(peppa->getPositionX() > 135)
-                offsetX = -moveSpeed;
-            else offsetX = 0;
-            break;
-        case 1:if(peppa->getPositionX() < 749)
-                offsetX = moveSpeed;
-            else offsetX = 0;
-            break;
-        case 2:if(peppa->getPositionY() < 500)
-            offsetY = moveSpeed;
-            else offsetY = 0;
-            break;
-        case 3:if(peppa->getPositionY() > 190)
-            offsetY = -moveSpeed;
-            else offsetY = 0;
-            break;
-    default:break;
-    }
-    auto new_posX = peppa->getPositionX() + offsetX;
-    auto new_posY = peppa->getPositionY() + offsetY;
-    const auto peppaMoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
-    peppa->runAction(peppaMoveTo);
-}
-*/

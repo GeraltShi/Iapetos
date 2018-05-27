@@ -6,27 +6,26 @@
 #include "Model/RoomSceneModel.hpp"
 #include "Item/Issac.hpp"
 
+USING_NS_CC;
 
-class RoomScene : public cocos2d::Scene
+class RoomScene : public Scene
 {
   public:
     static Scene *createScene();
     virtual bool init();
-    CREATE_FUNC(RoomScene);
+    CREATE_FUNC(RoomScene)
     
+    CC_SYNTHESIZE(RoomSceneModel, model, Model)
+    CC_SYNTHESIZE_RETAIN(Issac*, player, Player)
+    CC_SYNTHESIZE_RETAIN(Sprite*, tearSprite, TearSprite)
+
     void set_event_listener(IRoomSceneListener *listener);
-    void set_model(RoomSceneModel model);
     void update(float delta) override;
     void change_count(int c);
     void fire(float dt);
-    void removeBullet(Sprite *);
-    vector <Sprite *> tears;
+
 private:
     IRoomSceneListener * listener_ = nullptr;
-    RoomSceneModel model;
-    Issac *  player = nullptr;
-    Sprite * tearSprite;
-
     void build_frame_cache() const;
 };
 
