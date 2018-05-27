@@ -137,7 +137,7 @@ void RoomScene::update(float delta)
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walking_direction, model.head_direction);
     
-    if(model.head_direction == 6){
+    if(model.head_direction == 5){
         this->schedule(schedule_selector(RoomScene::fire), 0.7);
     }
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
@@ -155,40 +155,6 @@ void RoomScene::change_count(int c)
 }
 
 void RoomScene::fire(float dt){
-    Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
-    SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
-    tearSprite = Sprite::createWithSpriteFrame(tearFrame);
-    tearSprite->setPosition(player->getPosition());
-    //子弹运行的距离和时间
-    auto actionMove = MoveBy::create(2.0, Vec2(300,0));
-    switch (model.head_direction) {
-        case 0:
-            actionMove = MoveBy::create(2.0, Vec2(0,300));
-            break;
-        case 1:
-            actionMove = MoveBy::create(2.0, Vec2(0,-300));
-            break;
-        case 2:
-            actionMove = MoveBy::create(2.0, Vec2(-300,0));
-            break;
-        case 3:
-            actionMove = MoveBy::create(2.0, Vec2(300,0));
-            break;
-            
-        default:
-            break;
-    }
-    //子弹执行完动作后进行函数回调，调用移除子弹函数
-    auto actionDone = CallFuncN::create(std::bind(&RoomScene::removeBullet, this, tearSprite));
-    
-    //子弹开始跑动
-    Sequence* sequence = Sequence::create(actionMove, actionDone, NULL);
-    tearSprite->runAction(sequence);
-    //tears.push_back(tearSprite);
-    this->addChild(tearSprite, 3);
-}
-
-void RoomScene::removeBullet(Sprite* bullet){
     auto fcache = SpriteFrameCache::getInstance();
     const auto frame0 = fcache->getSpriteFrameByName("t_frame0");
     const auto frame1 = fcache->getSpriteFrameByName("t_frame1");
@@ -202,8 +168,12 @@ void RoomScene::removeBullet(Sprite* bullet){
     const auto frame9 = fcache->getSpriteFrameByName("t_frame9");
     const auto frame10 = fcache->getSpriteFrameByName("t_frame10");
     const auto frame11 = fcache->getSpriteFrameByName("t_frame11");
-
-
+    const auto frame12 = fcache->getSpriteFrameByName("t_frame12");
+    const auto frame13 = fcache->getSpriteFrameByName("t_frame13");
+    const auto frame14 = fcache->getSpriteFrameByName("t_frame14");
+    const auto frame15 = fcache->getSpriteFrameByName("t_frame15");
+    
+    
     Vector<SpriteFrame *> array;
     array.pushBack(frame0);
     array.pushBack(frame1);
@@ -217,11 +187,43 @@ void RoomScene::removeBullet(Sprite* bullet){
     array.pushBack(frame9);
     array.pushBack(frame10);
     array.pushBack(frame11);
-
+    array.pushBack(frame12);
+    array.pushBack(frame13);
+    array.pushBack(frame14);
+    array.pushBack(frame15);
+    
     const auto animation = Animation::createWithSpriteFrames(array, 0.05f);
-    Action * body_action = Animate::create(animation);
-    tearSprite->runAction(body_action);
-    this->removeChild(bullet);
+    Action * poof_anim = Animate::create(animation);
+    
+    Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
+    SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
+    tearSprite = Sprite::createWithSpriteFrame(tearFrame);
+    tearSprite->setPosition(player->getPosition());
+    //子弹运行的距离和时间
+    cocos2d::MoveBy * tear_move = nullptr;
+    switch (model.head_direction) {
+        case 2:
+            tear_move = MoveBy::create(0.7, Vec2(0,100));
+            break;
+        case 4:
+            tear_move = MoveBy::create(0.7, Vec2(-100,0));
+            break;
+        case 6:
+            tear_move = MoveBy::create(0.7, Vec2(100,0));
+            break;
+        case 8:
+            tear_move = MoveBy::create(0.7, Vec2(0,-100));
+            break;
+        default:
+            break;
+    }
+    //子弹执行完动作后进行函数回调，调用移除子弹函数
+    if(model.head_direction != 5){
+        //子弹开始跑动
+        this->addChild(tearSprite, 3);
+        Sequence* sequence = Sequence::create(tear_move, poof_anim, RemoveSelf::create(true),NULL);
+        tearSprite->runAction(sequence);
+    }
 }
 
 void RoomScene::build_frame_cache() const
@@ -239,6 +241,10 @@ void RoomScene::build_frame_cache() const
     const auto frame9 = SpriteFrame::createWithTexture(poofTexture, Rect(64, 128, 64, 64));
     const auto frame10 = SpriteFrame::createWithTexture(poofTexture, Rect(128, 128, 64, 64));
     const auto frame11 = SpriteFrame::createWithTexture(poofTexture, Rect(192, 128, 64, 64));
+    const auto frame12 = SpriteFrame::createWithTexture(poofTexture, Rect(0, 192, 64, 64));
+    const auto frame13 = SpriteFrame::createWithTexture(poofTexture, Rect(64, 192, 64, 64));
+    const auto frame14 = SpriteFrame::createWithTexture(poofTexture, Rect(128, 192, 64, 64));
+    const auto frame15 = SpriteFrame::createWithTexture(poofTexture, Rect(192, 192, 64, 64));
 
     auto fcache = SpriteFrameCache::getInstance();
     fcache->addSpriteFrame(frame0, "t_frame0");
@@ -253,4 +259,8 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(frame9, "t_frame9");
     fcache->addSpriteFrame(frame10, "t_frame10");
     fcache->addSpriteFrame(frame11, "t_frame11");
+    fcache->addSpriteFrame(frame12, "t_frame12");
+    fcache->addSpriteFrame(frame13, "t_frame13");
+    fcache->addSpriteFrame(frame14, "t_frame14");
+    fcache->addSpriteFrame(frame15, "t_frame15");
 }

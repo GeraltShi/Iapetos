@@ -20,15 +20,14 @@ public:
     Animate * moveAnimate;
     void move(int walk_direction, int head_direction);
 
-    Vector<SpriteFrame*> animFrames;
-    Animation * animation;
-    Animate * animate;
+    
 
     int get_prev_head_orientation() const;
 
 private:
     bool moving = false;
     int prev_head_orientation = 5;
+    int prev_walk_orientation = 5;
 
 };
 #endif /* Issac_hpp */
