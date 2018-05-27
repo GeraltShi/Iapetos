@@ -4,59 +4,78 @@
 
 using namespace cocos2d;
 # define root2 1.41421356
-//Issac::~Issac()
-//{
-//    CC_SAFE_RELEASE(idleAnimate);
-//    CC_SAFE_RELEASE(moveAnimate);
-//}
-Issac * Issac::createWithTexture(cocos2d::Texture2D *texture_)
+
+Issac *Issac::createIssac()
 {
-    Issac * sprite = new Issac();
-    SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture_, Rect(0,0,32,32));
-    Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
-    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0,32,32,32));
-    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
-    sprite->texture = texture_;
-    sprite->addChild(headSprite,1,"head");
-    sprite->addChild(bodySprite,0,"body");
-    headSprite->setPosition(Vec2(0,10));
-    sprite->setPosition(Vec2(221, 143));
-    sprite->lefthead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(64,0,32,32));
-    sprite->righthead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(64,0,32,32));
-    sprite->uphead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(128,0,32,32));
-    sprite->downhead = SpriteFrame::createWithTexture(texture_, cocos2d::Rect(0,0,32,32));
-    SpriteFrame* frame0 = SpriteFrame::createWithTexture(texture_, Rect(32*6,32*0,32,32));
-    SpriteFrame* frame1 = SpriteFrame::createWithTexture(texture_, Rect(32*7,32*0,32,32));
-    SpriteFrame* frame2 = SpriteFrame::createWithTexture(texture_, Rect(32*0,32*1,32,32));
-    SpriteFrame* frame3 = SpriteFrame::createWithTexture(texture_, Rect(32*1,32*1,32,32));
-    SpriteFrame* frame4 = SpriteFrame::createWithTexture(texture_, Rect(32*2,32*1,32,32));
-    SpriteFrame* frame5 = SpriteFrame::createWithTexture(texture_, Rect(32*3,32*1,32,32));
-    SpriteFrame* frame6 = SpriteFrame::createWithTexture(texture_, Rect(32*4,32*1,32,32));
-    SpriteFrame* frame7 = SpriteFrame::createWithTexture(texture_, Rect(32*5,32*1,32,32));
-    SpriteFrame* frame8 = SpriteFrame::createWithTexture(texture_, Rect(32*6,32*1,32,32));
-    SpriteFrame* frame9 = SpriteFrame::createWithTexture(texture_, Rect(32*7,32*1,32,32));
-    sprite->animFrames.pushBack(frame0);
-    sprite->animFrames.pushBack(frame1);
-    sprite->animFrames.pushBack(frame2);
-    sprite->animFrames.pushBack(frame3);
-    sprite->animFrames.pushBack(frame4);
-    sprite->animFrames.pushBack(frame5);
-    sprite->animFrames.pushBack(frame6);
-    sprite->animFrames.pushBack(frame7);
-    sprite->animFrames.pushBack(frame8);
-    sprite->animFrames.pushBack(frame9);
-    sprite->animation = Animation::createWithSpriteFrames(sprite->animFrames, 0.1f);
-    sprite->animate = Animate::create(sprite->animation);
-    if (sprite)
-    {
-        sprite->autorelease(); return sprite;
-    }
-    CC_SAFE_DELETE(sprite);
-    return nullptr;
+    return create();
 }
+
+Sprite *Issac::createSprite()
+{
+    return create();
+}
+
+bool Issac::init()
+{
+    if (!Sprite::init())
+    {
+        return false;
+    }
+
+    auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+
+    
+
+    SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32));
+    Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
+    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+    this->texture = texture_;
+    this->addChild(headSprite, 1, "head");
+    this->addChild(bodySprite, 0, "body");
+    headSprite->setPosition(Vec2(0, 10));
+    this->setPosition(Vec2(221, 143));
+    this->lefthead = SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32));
+    this->righthead = SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32));
+    this->uphead = SpriteFrame::createWithTexture(texture_, Rect(128, 0, 32, 32));
+    this->downhead = SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32));
+    SpriteFrame* frame0 = SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 0, 32, 32));
+    SpriteFrame* frame1 = SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 0, 32, 32));
+    SpriteFrame* frame2 = SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32 * 1, 32, 32));
+    SpriteFrame* frame3 = SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32 * 1, 32, 32));
+    SpriteFrame* frame4 = SpriteFrame::createWithTexture(texture_, Rect(32 * 2, 32 * 1, 32, 32));
+    SpriteFrame* frame5 = SpriteFrame::createWithTexture(texture_, Rect(32 * 3, 32 * 1, 32, 32));
+    SpriteFrame* frame6 = SpriteFrame::createWithTexture(texture_, Rect(32 * 4, 32 * 1, 32, 32));
+    SpriteFrame* frame7 = SpriteFrame::createWithTexture(texture_, Rect(32 * 5, 32 * 1, 32, 32));
+    SpriteFrame* frame8 = SpriteFrame::createWithTexture(texture_, Rect(32 * 6, 32 * 1, 32, 32));
+    SpriteFrame* frame9 = SpriteFrame::createWithTexture(texture_, Rect(32 * 7, 32 * 1, 32, 32));
+    this->animFrames.pushBack(frame0);
+    this->animFrames.pushBack(frame1);
+    this->animFrames.pushBack(frame2);
+    this->animFrames.pushBack(frame3);
+    this->animFrames.pushBack(frame4);
+    this->animFrames.pushBack(frame5);
+    this->animFrames.pushBack(frame6);
+    this->animFrames.pushBack(frame7);
+    this->animFrames.pushBack(frame8);
+    this->animFrames.pushBack(frame9);
+    this->animation = Animation::createWithSpriteFrames(this->animFrames, 0.1f);
+    this->animate = Animate::create(this->animation);
+
+    auto spriteCache = SpriteFrameCache::getInstance();
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "lefthead");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "righthead");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(128, 0, 32, 32)), "uphead");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32)),"downhead");
+
+    return true;
+}
+
 
 void Issac::move(int walk_direction, int head_direction)
 {
+    auto spriteCache = SpriteFrameCache::getInstance();
+
     // Mask, 用于walk_direction和head_direction合并成direction
     int walk_mask;
     int head_mask;
@@ -137,7 +156,7 @@ void Issac::move(int walk_direction, int head_direction)
         case 1: case 2: case 3:
             if(head_tmp != 2){
                 this->removeChild(this->getChildByName("head"), true);
-                newHead = Sprite::createWithSpriteFrame(uphead);
+                newHead = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("uphead"));
                 newHead->setPosition(Vec2(0,10));
                 this->addChild(newHead,1);
                 head_tmp = 2;
@@ -146,7 +165,7 @@ void Issac::move(int walk_direction, int head_direction)
         case 4:
             if(head_tmp != 4){
                 this->removeChild(this->getChildByName("head"), true);
-                newHead = Sprite::createWithSpriteFrame(lefthead);
+                newHead = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("lefthead"));
                 newHead->setFlippedX(true);
                 newHead->setPosition(Vec2(0,10));
                 this->addChild(newHead,1);
@@ -156,7 +175,7 @@ void Issac::move(int walk_direction, int head_direction)
         case 5:
             if(head_tmp != 8){
                 this->removeChild(this->getChildByName("head"), true);
-                newHead = Sprite::createWithSpriteFrame(downhead);
+                newHead = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("downhead"));
                 newHead->setPosition(Vec2(0,10));
                 this->addChild(newHead,1);
                 head_tmp = 8;
@@ -165,7 +184,7 @@ void Issac::move(int walk_direction, int head_direction)
         case 6:
             if(head_tmp != 6){
                 this->removeChild(this->getChildByName("head"), true);
-                newHead = Sprite::createWithSpriteFrame(righthead);
+                newHead = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("righthead"));
                 newHead->setPosition(Vec2(0,10));
                 this->addChild(newHead,1);
                 head_tmp = 6;
@@ -174,7 +193,7 @@ void Issac::move(int walk_direction, int head_direction)
         case 7: case 8: case 9:
             if(head_tmp != 8){
                 this->removeChild(this->getChildByName("head"), true);
-                newHead = Sprite::createWithSpriteFrame(downhead);
+                newHead = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("downhead"));
                 newHead->setPosition(Vec2(0,10));
                 this->addChild(newHead,1);
                 head_tmp = 8;

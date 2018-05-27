@@ -61,8 +61,10 @@ bool RoomScene::init()
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
-    Texture2D * issac_tex = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
-    player = Issac::createWithTexture(issac_tex);
+    //Texture2D * issac_tex = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+    
+    player = Issac::createIssac();
+
     addChild(player, 5);
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
@@ -78,13 +80,13 @@ bool RoomScene::init()
     //TODO 99. 联机模式，素材中有babyIssac
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
     
-    auto l = Label::createWithTTF("游戏界面/房间", "fonts/simhei.ttf", 30);
-    l->setPosition(320, 250);
-    addChild(l);
+    //auto l = Label::createWithTTF("游戏界面/房间", "fonts/simhei.ttf", 30);
+    //l->setPosition(320, 250);
+    //addChild(l);
 
-    auto cl = Label::createWithTTF("点击次数: 0", "fonts/simhei.ttf", 30);
-    cl->setPosition(320, 250);
-    addChild(cl,1,"c_label");
+    //auto cl = Label::createWithTTF("点击次数: 0", "fonts/simhei.ttf", 30);
+    //cl->setPosition(320, 250);
+    //addChild(cl,1,"c_label");
     
     scheduleUpdate();
     return true;

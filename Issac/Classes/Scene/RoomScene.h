@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "Controller/Event/IRoomSceneListener.h"
 #include "Model/RoomSceneModel.hpp"
-#include "Issac.hpp"
+#include "Item/Issac.hpp"
 
 
 class RoomScene : public cocos2d::Scene

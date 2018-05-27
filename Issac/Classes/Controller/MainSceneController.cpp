@@ -18,9 +18,9 @@ bool MainSceneController::init()
     }
 
 
-    auto l = Label::createWithTTF("Controlled", "fonts/simhei.ttf", 30);
-    l->setPosition(640, 600);
-    addChild(l);
+    //auto l = Label::createWithTTF("Controlled", "fonts/simhei.ttf", 30);
+    //l->setPosition(640, 600);
+    //addChild(l);
 
     scene_ = MainScene::create();
     scene_->set_event_listener(this);

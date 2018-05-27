@@ -25,6 +25,9 @@
     <Filter Include="src\Model">
       <UniqueIdentifier>{0c2ac1d8-a421-4512-b710-41663b6836c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Item">
+      <UniqueIdentifier>{ce488c1c-d6dc-43e8-9a89-e702e4f2f200}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,11 +54,11 @@
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Scene\Issac.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp">
       <Filter>src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Item\Issac.cpp">
+      <Filter>src\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,11 +92,11 @@
     <ClInclude Include="..\Classes\Model\MainSceneModel.h">
       <Filter>src\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Scene\Issac.hpp">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp">
       <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Item\Issac.hpp">
+      <Filter>src\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
