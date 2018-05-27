@@ -89,9 +89,9 @@
 		52421941205153CF009A404A /* move_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 52421935205153CE009A404A /* move_1.png */; };
 		5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
-		5299141A20A85C2300FBFBB4 /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141820A85C2300FBFBB4 /* Issac.cpp */; };
-		5299141B20A85C2300FBFBB4 /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141820A85C2300FBFBB4 /* Issac.cpp */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
+		52C4253420BACA6600AE189C /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C4253220BACA6600AE189C /* Issac.cpp */; };
+		52C4253520BACA6600AE189C /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C4253220BACA6600AE189C /* Issac.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -216,9 +216,9 @@
 		52421935205153CE009A404A /* move_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = move_1.png; sourceTree = "<group>"; };
 		5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoomSceneModel.cpp; sourceTree = "<group>"; };
 		5299141520A7E04900FBFBB4 /* RoomSceneModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RoomSceneModel.hpp; sourceTree = "<group>"; };
-		5299141820A85C2300FBFBB4 /* Issac.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Issac.cpp; sourceTree = "<group>"; };
-		5299141920A85C2300FBFBB4 /* Issac.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Issac.hpp; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		52C4253220BACA6600AE189C /* Issac.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Issac.cpp; sourceTree = "<group>"; };
+		52C4253320BACA6600AE189C /* Issac.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Issac.hpp; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -375,6 +375,7 @@
 			children = (
 				5210A1DC20A533230081CC78 /* Controller */,
 				5210A1F220A533240081CC78 /* Misc */,
+				52C4253120BACA6600AE189C /* Item */,
 				5210A1ED20A533240081CC78 /* Model */,
 				5210A1E520A533240081CC78 /* Scene */,
 				5210A1EA20A533240081CC78 /* Service */,
@@ -461,8 +462,6 @@
 				5210A1E720A533240081CC78 /* MainScene.h */,
 				5210A1E820A533240081CC78 /* RoomScene.cpp */,
 				5210A1E920A533240081CC78 /* RoomScene.h */,
-				5299141820A85C2300FBFBB4 /* Issac.cpp */,
-				5299141920A85C2300FBFBB4 /* Issac.hpp */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -501,6 +500,15 @@
 				5210A1F320A533240081CC78 /* .gitkeep */,
 			);
 			path = Misc;
+			sourceTree = "<group>";
+		};
+		52C4253120BACA6600AE189C /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				52C4253220BACA6600AE189C /* Issac.cpp */,
+				52C4253320BACA6600AE189C /* Issac.hpp */,
+			);
+			path = Item;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -678,7 +686,7 @@
 				5210A1FA20A533240081CC78 /* RoomScene.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				5210A1F620A533240081CC78 /* RoomSceneController.cpp in Sources */,
-				5299141A20A85C2300FBFBB4 /* Issac.cpp in Sources */,
+				52C4253420BACA6600AE189C /* Issac.cpp in Sources */,
 				5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
 				5210A1FC20A533240081CC78 /* LevelService.cpp in Sources */,
 			);
@@ -691,7 +699,7 @@
 				5210A1FB20A533240081CC78 /* RoomScene.cpp in Sources */,
 				5210A1FD20A533240081CC78 /* LevelService.cpp in Sources */,
 				5210A1FF20A533240081CC78 /* MainSceneModel.cpp in Sources */,
-				5299141B20A85C2300FBFBB4 /* Issac.cpp in Sources */,
+				52C4253520BACA6600AE189C /* Issac.cpp in Sources */,
 				5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
 				5210A1F720A533240081CC78 /* RoomSceneController.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
