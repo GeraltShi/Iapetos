@@ -26,6 +26,8 @@ private:
     RoomSceneModel model;
     Issac *  player = nullptr;
     Sprite * tearSprite;
+
+    void build_frame_cache() const;
 };
 
 #endif // __ROOM_SCENE_H__

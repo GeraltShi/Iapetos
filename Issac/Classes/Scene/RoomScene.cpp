@@ -61,8 +61,7 @@ bool RoomScene::init()
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
-    //Texture2D * issac_tex = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
-    
+    build_frame_cache();
     player = Issac::createIssac();
 
     addChild(player, 5);
@@ -144,7 +143,7 @@ void RoomScene::update(float delta)
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-    std::cout << "Walking direction: "<<model.walking_direction<<" Head direction: " << model.head_direction << " "<< player->head_tmp<<endl;
+    std::cout << "Walking direction: "<<model.walking_direction<<" Head direction: " << model.head_direction << " "<< player->get_prev_head_orientation()<<endl;
 }
 
 void RoomScene::change_count(int c)
@@ -190,21 +189,22 @@ void RoomScene::fire(float dt){
 }
 
 void RoomScene::removeBullet(Sprite* bullet){
-    Texture2D * poofTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_015_tearpoofa.png");
-    auto frame0 = SpriteFrame::createWithTexture(poofTexture, Rect(0,0,64,64));
-    auto frame1 = SpriteFrame::createWithTexture(poofTexture, Rect(64,0,64,64));
-    auto frame2 = SpriteFrame::createWithTexture(poofTexture, Rect(128,0,64,64));
-    auto frame3 = SpriteFrame::createWithTexture(poofTexture, Rect(192,0,64,64));
-    auto frame4 = SpriteFrame::createWithTexture(poofTexture, Rect(0,64,64,64));
-    auto frame5 = SpriteFrame::createWithTexture(poofTexture, Rect(64,64,64,64));
-    auto frame6 = SpriteFrame::createWithTexture(poofTexture, Rect(128,64,64,64));
-    auto frame7 = SpriteFrame::createWithTexture(poofTexture, Rect(192,64,64,64));
-    auto frame8 = SpriteFrame::createWithTexture(poofTexture, Rect(0,128,64,64));
-    auto frame9 = SpriteFrame::createWithTexture(poofTexture, Rect(64,128,64,64));
-    auto frame10 = SpriteFrame::createWithTexture(poofTexture, Rect(128,128,64,64));
-    auto frame11 = SpriteFrame::createWithTexture(poofTexture, Rect(192,128,64,64));
-    Vector<cocos2d::SpriteFrame *> array;
-    array.clear();
+    auto fcache = SpriteFrameCache::getInstance();
+    const auto frame0 = fcache->getSpriteFrameByName("t_frame0");
+    const auto frame1 = fcache->getSpriteFrameByName("t_frame1");
+    const auto frame2 = fcache->getSpriteFrameByName("t_frame2");
+    const auto frame3 = fcache->getSpriteFrameByName("t_frame3");
+    const auto frame4 = fcache->getSpriteFrameByName("t_frame4");
+    const auto frame5 = fcache->getSpriteFrameByName("t_frame5");
+    const auto frame6 = fcache->getSpriteFrameByName("t_frame6");
+    const auto frame7 = fcache->getSpriteFrameByName("t_frame7");
+    const auto frame8 = fcache->getSpriteFrameByName("t_frame8");
+    const auto frame9 = fcache->getSpriteFrameByName("t_frame9");
+    const auto frame10 = fcache->getSpriteFrameByName("t_frame10");
+    const auto frame11 = fcache->getSpriteFrameByName("t_frame11");
+
+
+    Vector<SpriteFrame *> array;
     array.pushBack(frame0);
     array.pushBack(frame1);
     array.pushBack(frame2);
@@ -217,9 +217,40 @@ void RoomScene::removeBullet(Sprite* bullet){
     array.pushBack(frame9);
     array.pushBack(frame10);
     array.pushBack(frame11);
-    auto animation = Animation::createWithSpriteFrames(array, 0.05f);
-    Action * bodyAction = Animate::create(animation);
-    tearSprite->runAction(bodyAction);
+
+    const auto animation = Animation::createWithSpriteFrames(array, 0.05f);
+    Action * body_action = Animate::create(animation);
+    tearSprite->runAction(body_action);
     this->removeChild(bullet);
-    bullet->release();
+}
+
+void RoomScene::build_frame_cache() const
+{
+    Texture2D * poofTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_015_tearpoofa.png");
+    const auto frame0 = SpriteFrame::createWithTexture(poofTexture, Rect(0, 0, 64, 64));
+    const auto frame1 = SpriteFrame::createWithTexture(poofTexture, Rect(64, 0, 64, 64));
+    const auto frame2 = SpriteFrame::createWithTexture(poofTexture, Rect(128, 0, 64, 64));
+    const auto frame3 = SpriteFrame::createWithTexture(poofTexture, Rect(192, 0, 64, 64));
+    const auto frame4 = SpriteFrame::createWithTexture(poofTexture, Rect(0, 64, 64, 64));
+    const auto frame5 = SpriteFrame::createWithTexture(poofTexture, Rect(64, 64, 64, 64));
+    const auto frame6 = SpriteFrame::createWithTexture(poofTexture, Rect(128, 64, 64, 64));
+    const auto frame7 = SpriteFrame::createWithTexture(poofTexture, Rect(192, 64, 64, 64));
+    const auto frame8 = SpriteFrame::createWithTexture(poofTexture, Rect(0, 128, 64, 64));
+    const auto frame9 = SpriteFrame::createWithTexture(poofTexture, Rect(64, 128, 64, 64));
+    const auto frame10 = SpriteFrame::createWithTexture(poofTexture, Rect(128, 128, 64, 64));
+    const auto frame11 = SpriteFrame::createWithTexture(poofTexture, Rect(192, 128, 64, 64));
+
+    auto fcache = SpriteFrameCache::getInstance();
+    fcache->addSpriteFrame(frame0, "t_frame0");
+    fcache->addSpriteFrame(frame1, "t_frame1");
+    fcache->addSpriteFrame(frame2, "t_frame2");
+    fcache->addSpriteFrame(frame3, "t_frame3");
+    fcache->addSpriteFrame(frame4, "t_frame4");
+    fcache->addSpriteFrame(frame5, "t_frame5");
+    fcache->addSpriteFrame(frame6, "t_frame6");
+    fcache->addSpriteFrame(frame7, "t_frame7");
+    fcache->addSpriteFrame(frame8, "t_frame8");
+    fcache->addSpriteFrame(frame9, "t_frame9");
+    fcache->addSpriteFrame(frame10, "t_frame10");
+    fcache->addSpriteFrame(frame11, "t_frame11");
 }

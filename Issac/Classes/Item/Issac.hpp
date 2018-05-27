@@ -19,19 +19,16 @@ public:
     Animate * idleAnimate;
     Animate * moveAnimate;
     void move(int walk_direction, int head_direction);
-    Texture2D * texture;
-    SpriteFrame * lefthead;
-    SpriteFrame * righthead;
-    SpriteFrame * uphead;
-    SpriteFrame * downhead;
 
-    
     Vector<SpriteFrame*> animFrames;
     Animation * animation;
     Animate * animate;
-    int head_tmp = 5;
+
+    int get_prev_head_orientation() const;
+
 private:
-    bool moving;
-    void initPlayer();
+    bool moving = false;
+    int prev_head_orientation = 5;
+
 };
 #endif /* Issac_hpp */
