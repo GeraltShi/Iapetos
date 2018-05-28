@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iostream>
 USING_NS_CC;
-#define random(a,b) (rand()%(b-a+1)+a)
+#define random(a,b) (rand()%((b)-(a)+1)+(a))
 using namespace std;
 
 Scene *RoomScene::createScene()

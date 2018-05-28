@@ -23,7 +23,7 @@ public:
     CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
     CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
 
-    void move(int walk_direction, int head_direction);
+    void move(int walk_direction, int tear_direction);
 
 private:
     void build_sprite_frame_cache(Texture2D *texture_);
