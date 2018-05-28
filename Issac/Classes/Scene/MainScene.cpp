@@ -68,7 +68,7 @@ bool MainScene::init()
 //    selector->setScale(size.width/480);
     addChild(selector,1);
 
-    auto l = Label::createWithTTF("开场界面","fonts/simhei.ttf",30);
+    auto l = Label::createWithTTF("","fonts/simhei.ttf",30);
     l->setPosition(640, 500);
     addChild(l,1);
     
