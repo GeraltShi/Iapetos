@@ -67,6 +67,12 @@ bool RoomScene::init()
 
     addChild(player, 3);
     
+    monster = Monster::createMonster();
+    addChild(monster, 3, "fatty1");
+    
+    monster2 = Monster::createMonster();
+    addChild(monster2, 3, "fatty2");
+    
     srand((unsigned)time(NULL));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
@@ -132,6 +138,8 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
+    monster->move(1,0);
+    monster2->move(2,0);
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walk_direction, model.tear_direction);
     

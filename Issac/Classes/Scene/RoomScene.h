@@ -5,6 +5,7 @@
 #include "Controller/Event/IRoomSceneListener.h"
 #include "Model/RoomSceneModel.hpp"
 #include "Item/Issac.hpp"
+#include "Item/Monster.hpp"
 
 USING_NS_CC;
 
@@ -17,12 +18,15 @@ class RoomScene : public Scene
     
     CC_SYNTHESIZE(RoomSceneModel, model, Model)
     CC_SYNTHESIZE_RETAIN(Issac*, player, Player)
+    CC_SYNTHESIZE_RETAIN(Monster*, monster, Monster)
+    CC_SYNTHESIZE_RETAIN(Monster*, monster2, Monster2)
     CC_SYNTHESIZE_RETAIN(Sprite*, tearSprite, TearSprite)
 
     void set_event_listener(IRoomSceneListener *listener);
     void update(float delta) override;
     void change_count(int c);
     void fire(float dt);
+    void monster_move(float dt);
 
 private:
     IRoomSceneListener * listener_ = nullptr;

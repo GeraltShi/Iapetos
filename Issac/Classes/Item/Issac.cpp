@@ -391,6 +391,4 @@ void Issac::move(int walk_direction, int tear_direction)
         Action * action = Spawn::create(MoveTo, NULL);
         this->runAction(action);
     }
-    
-    //TODO 移动动画
 }
