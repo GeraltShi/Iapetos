@@ -3,13 +3,13 @@
 
 class MainSceneModel
 {
-private:
 public:
-    MainSceneModel(){};
-    MainSceneModel(int wd){
+    MainSceneModel() = default;
+
+    explicit MainSceneModel(int wd){
         menun = wd;
     }
-    void shiftMenu(int wd){
+    void shift_menu(int wd){
         menun = (menun+wd+5)%5;
     }
     int menun = 0;

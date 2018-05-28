@@ -1,7 +1,8 @@
 #include "RoomScene.h"
-#include <sstream>
 #include <iostream>
+
 USING_NS_CC;
+#define random(a,b) (rand()%((b)-(a)+1)+(a))
 using namespace std;
 
 Scene *RoomScene::createScene()
@@ -16,7 +17,7 @@ bool RoomScene::init()
         return false;
     }
 
-    Size size = Director::getInstance()->getWinSize();
+    const Size size = Director::getInstance()->getWinSize();
     std::cout << size.width <<" "<< size.height << endl;
     //TODO 应该有更好的方法生成背景贴图，而不是暴力生成4个或多个碎片
     //TODO 动态加载贴图？如Issac的buff皮肤（在别的贴图上）如何更新
@@ -61,10 +62,24 @@ bool RoomScene::init()
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
+    //TODO 这不是遮罩，遮罩应该在整个Scene最顶部，是一种颜色混合模式
+    Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
+    Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
+    overlay->setPosition(221,143);
+    addChild(overlay,2);
+    
     build_frame_cache();
     player = Issac::createIssac();
 
-    addChild(player, 5);
+    addChild(player, 3);
+    
+    monster = Monster::createMonster();
+    addChild(monster, 3, "fatty1");
+    
+    monster2 = Monster::createMonster();
+    addChild(monster2, 3, "fatty2");
+    
+    srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
@@ -78,15 +93,7 @@ bool RoomScene::init()
     //TODO 7.Issac 吃buff后状态的变化，如换了个皮肤，与类内皮肤成员有关
     //TODO 99. 联机模式，素材中有babyIssac
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
-    
-    //auto l = Label::createWithTTF("游戏界面/房间", "fonts/simhei.ttf", 30);
-    //l->setPosition(320, 250);
-    //addChild(l);
-
-    //auto cl = Label::createWithTTF("点击次数: 0", "fonts/simhei.ttf", 30);
-    //cl->setPosition(320, 250);
-    //addChild(cl,1,"c_label");
-    
+   
     scheduleUpdate();
     return true;
 }
@@ -129,21 +136,19 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
+    //TODO 每隔一定时间更新monster位置，monster不会自己撞墙
+    monster->move(1,0);
+    monster2->move(2,0);
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walk_direction, model.tear_direction);
     
     if(model.tear_direction == 5){
-        this->schedule(schedule_selector(RoomScene::fire), 0.7);
+        this->schedule(schedule_selector(RoomScene::fire), 0.5);
     }
     //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
     //std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
-}
-
-void RoomScene::change_count(int c)
-{
-    
 }
 
 void RoomScene::fire(float dt){
@@ -190,21 +195,47 @@ void RoomScene::fire(float dt){
     Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
     SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
     tearSprite = Sprite::createWithSpriteFrame(tearFrame);
-    tearSprite->setPosition(player->getPosition());
-    //子弹运行的距离和时间
-    cocos2d::MoveBy * tear_move = nullptr;
+    const int advance = 15;
+    int x_advance;
+    int y_advance;
     switch (model.tear_direction) {
         case 2:
-            tear_move = MoveBy::create(0.5, Vec2(0,100));
+            x_advance = 0;
+            y_advance = advance+random(-10,10);
             break;
         case 4:
-            tear_move = MoveBy::create(0.5, Vec2(-100,0));
+            x_advance = -advance+random(-10,10);
+            y_advance = 0;
             break;
         case 6:
-            tear_move = MoveBy::create(0.5, Vec2(100,0));
+            x_advance = advance+random(-10,10);
+            y_advance = 0;
             break;
         case 8:
-            tear_move = MoveBy::create(0.5, Vec2(0,-100));
+            x_advance = 0;
+            y_advance = -advance+random(-10,10);
+            break;
+        default:
+            x_advance = 0;
+            y_advance = 0;
+    }
+    
+    tearSprite->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
+    const float speed = 0.38;
+    //子弹运行的距离和时间
+    MoveBy * tear_move = nullptr;
+    switch (model.tear_direction) {
+        case 2:
+            tear_move = MoveBy::create(speed, Vec2(0,100));
+            break;
+        case 4:
+            tear_move = MoveBy::create(speed, Vec2(-100,0));
+            break;
+        case 6:
+            tear_move = MoveBy::create(speed, Vec2(100,0));
+            break;
+        case 8:
+            tear_move = MoveBy::create(speed, Vec2(0,-100));
             break;
         default:
             break;
@@ -216,6 +247,11 @@ void RoomScene::fire(float dt){
         Sequence* sequence = Sequence::create(tear_move, poof_anim, RemoveSelf::create(true),NULL);
         tearSprite->runAction(sequence);
     }
+}
+
+void RoomScene::monster_move(float dt)
+{
+
 }
 
 void RoomScene::build_frame_cache() const

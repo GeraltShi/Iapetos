@@ -1,9 +1,8 @@
 #include "Issac.hpp"
 #include "cocos2d.h"
-#include <iostream>
 
 using namespace cocos2d;
-# define root2 1.41421356
+# define ROOT2 1.41421356
 
 Issac *Issac::createIssac()
 {
@@ -29,15 +28,18 @@ bool Issac::init()
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
-
+    const auto shadow_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/shadow.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32));
-    Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
+    Sprite * headSprite = createWithSpriteFrame(headFrame);
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
-    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+    Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
+    Sprite * shadow = createWithTexture(shadow_);
+    shadow->setScale(0.15, 0.15);
+    shadow->setPosition(0,-7);
 
     build_sprite_frame_cache(texture_);
     build_animation_cache();
-
+    this->addChild(shadow, -1);
     this->addChild(headSprite, 1, "head");
     this->addChild(bodySprite, 0, "body");
     headSprite->setPosition(Vec2(0, 10));
@@ -47,7 +49,7 @@ bool Issac::init()
     return true;
 }
 
-void Issac::build_sprite_frame_cache(Texture2D *texture_)
+void Issac::build_sprite_frame_cache(Texture2D *texture_) const
 {
     auto spriteCache = SpriteFrameCache::getInstance();
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "lefthead");
@@ -220,75 +222,97 @@ void Issac::move(int walk_direction, int tear_direction)
         case 4://左
             if(this->getPositionX() > 60){ offset_x = -moveSpeed;}
             else {offset_x = 0;}
-            prev_walk_orientation = 4;
             if(prev_walk_orientation != 4){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(-1);//翻转
                 this->getChildByName("body")->runAction(hwalk_animate);
             }
+            prev_walk_orientation = 4;
             break;
         
         case 6://右
             if(this->getPositionX() < 441-60){ offset_x = moveSpeed;}
             else {offset_x = 0;}
-            prev_walk_orientation = 6;
             if(prev_walk_orientation != 6){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(1);//翻转
                 this->getChildByName("body")->runAction(hwalk_animate);
             }
+            prev_walk_orientation = 6;
             break;
         
         case 2://上
             if(this->getPositionY() < 286-60){ offset_y = moveSpeed;}
             else {offset_y = 0;}
-            prev_walk_orientation = 2;
             if(prev_walk_orientation != 2){
-                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
             }
+            prev_walk_orientation = 2;
             break;
             
         case 8://下
             if(this->getPositionY() > 60){offset_y = -moveSpeed;}
             else {offset_y = 0;}
-            prev_walk_orientation = 8;
             if(prev_walk_orientation != 8){
+                this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
             }
+            prev_walk_orientation = 8;
             break;
             
         case 1://左上
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 441-60) offset_y = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
+            if(prev_walk_orientation != 1){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+            }
             prev_walk_orientation = 1;
             break;
             
         case 3://右上
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 286-60) offset_y = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
+            if(prev_walk_orientation != 3){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+            }
             prev_walk_orientation = 3;
             break;
         
         case 7://左下
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
+            if(prev_walk_orientation != 7){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
             prev_walk_orientation = 7;
             break;
             
         case 9://右下
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
+            if(prev_walk_orientation != 9){
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
             prev_walk_orientation = 9;
             break;
             
         case 5://无，头要默认复位
             offset_x = 0;
             offset_y = 0;
-            this->stopActionByTag(1);
+            this->getChildByName("body")->stopAllActions();
             prev_walk_orientation = 5;
             break;
             
@@ -369,6 +393,4 @@ void Issac::move(int walk_direction, int tear_direction)
         Action * action = Spawn::create(MoveTo, NULL);
         this->runAction(action);
     }
-    
-    //TODO 移动动画
 }
