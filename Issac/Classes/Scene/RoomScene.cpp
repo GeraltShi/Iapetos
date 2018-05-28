@@ -54,8 +54,8 @@ bool RoomScene::init()
     Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_01_normaldoor.png");
     Sprite * door = Sprite::createWithTexture(texture_door,Rect(0,96,64,48));
     Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
-    door->setPosition(200, 250);
-    door_center->setPosition(200, 250);
+    door->setPosition(221, 250);
+    door_center->setPosition(221, 250);
 //    door->setScale(2, 2);
 //    door_center->setScale(2, 2);
     addChild(door,1);addChild(door_center,1);
@@ -68,6 +68,11 @@ bool RoomScene::init()
     overlay->setPosition(221,143);
     addChild(overlay,2);
     
+    Texture2D *texture_rainbowpoop = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/grid_poop_rainbow.png");
+    Sprite * rainbowpoop = Sprite::createWithTexture(texture_rainbowpoop,Rect(0,0,32,32));// TODO 地面物品都有着损坏状态，不应该在这里生成
+    rainbowpoop->setPosition(300,150);// TODO 地面物品网格化，对齐
+    addChild(rainbowpoop,3);
+    
     build_frame_cache();
     player = Issac::createIssac();
 
@@ -78,6 +83,33 @@ bool RoomScene::init()
     
     monster2 = Monster::createMonster();
     addChild(monster2, 3, "fatty2");
+    //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
+    Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
+    Sprite * heart = Sprite::createWithTexture(texture_heart, Rect(0,0,16,16));
+    heart->setPosition(70,250);
+    addChild(heart, 8);
+    
+    //TODO 物品栏层应该独立于RoomScene，物品用状态reg统一管理
+    Texture2D * texture_hud = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/hudpickups.png");
+    Sprite * coin = Sprite::createWithTexture(texture_hud, Rect(0,0,16,16));
+    coin->setPosition(30,224);
+    Sprite * bomb = Sprite::createWithTexture(texture_hud, Rect(0,16,16,16));
+    bomb->setPosition(30,208);
+    Sprite * goldkey = Sprite::createWithTexture(texture_hud, Rect(16,16,16,16));
+    goldkey->setPosition(30,192);
+    Sprite * silverkey = Sprite::createWithTexture(texture_hud, Rect(16,0,16,16));
+    silverkey->setPosition(30,176);
+    addChild(coin, 8);
+    addChild(bomb, 8);
+    addChild(goldkey, 8);
+    addChild(silverkey, 8);
+    
+    //TODO 小地图应加载到缓存，并设置透明度，独立于RoomScene，元素都在texture_minimap中
+    Texture2D * texture_minimap = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/minimap1.png");
+    Sprite * minimap = Sprite::createWithTexture(texture_minimap, Rect(0,0,56,48));
+    minimap->setPosition(370,240);
+    addChild(minimap, 8);
+    
     
     srand((unsigned)time(NULL));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
