@@ -18,11 +18,10 @@ using namespace CocosDenshion;
 
 USING_NS_CC;
 
-//TODO 分辨率适应，时间来不及就不做
 static Size designResolutionSize = Size(442, 286);
-static Size smallResolutionSize = Size(442, 286);
+static Size smallResolutionSize = Size(221, 143);
 static Size mediumResolutionSize = Size(442, 286);
-static Size largeResolutionSize = Size(442, 286);
+static Size largeResolutionSize = Size(884, 572);
 
 AppDelegate::AppDelegate()
 {
@@ -60,7 +59,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("Issac", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("Issac", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height), 1.0,true);
 #else
         glview = GLViewImpl::create("Issac");
 #endif
