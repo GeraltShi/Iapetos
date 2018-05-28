@@ -54,16 +54,30 @@ bool RoomScene::init()
     BlendFunc blend = {GL_SRC_ALPHA,GL_ONE};
     shading->setBlendFunc(blend);
     
-    Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_01_normaldoor.png");
-    Sprite * door = Sprite::createWithTexture(texture_door,Rect(0,96,64,48));
-    Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
-    door->setPosition(221, 250);
-    door_center->setPosition(221, 250);
-    addChild(door,1);addChild(door_center,1);
-    //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
-    //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
+    Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
+    Sprite * controls = Sprite::createWithTexture(texture_controls, Rect(0,0,325,85));
+    controls->setPosition(221,143);
+    addChild(controls,1);
     
-    //TODO 这不是遮罩，遮罩应该在整个Scene最顶部，是一种颜色混合模式
+    //门需要在service中通过位置id控制方向、position
+    Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_01_normaldoor.png");
+    Sprite * door = Sprite::createWithTexture(texture_door,Rect(0,0,64,48));
+    Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
+    door->setPosition(221, 286-36);
+    door_center->setPosition(221, 286-36);
+    addChild(door,1);addChild(door_center,1);
+    
+    Texture2D *texture_door2 = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_02_treasureroomdoor.png");
+    Sprite * door2 = Sprite::createWithTexture(texture_door2,Rect(0,0,64,48));
+    Sprite * door_center2 = Sprite::createWithTexture(texture_door2,Rect(64,0,64,48));
+    door2->setPosition(442-36, 143);
+    door2->setRotation(90);
+    door_center2->setPosition(442-36, 143);
+    door_center2->setRotation(90);
+    addChild(door2,1);addChild(door_center2,1);
+    //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
+    
+    //遮罩，在整个Scene最顶部
     Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
     overlay->setPosition(221,143);
@@ -92,18 +106,18 @@ bool RoomScene::init()
     
     //TODO 物品栏层应该独立于RoomScene，物品用状态reg统一管理
     Texture2D * texture_hud = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/hudpickups.png");
-    Sprite * coin = Sprite::createWithTexture(texture_hud, Rect(0,0,16,16));
-    coin->setPosition(30,224);
-    Sprite * bomb = Sprite::createWithTexture(texture_hud, Rect(0,16,16,16));
-    bomb->setPosition(30,208);
-    Sprite * goldkey = Sprite::createWithTexture(texture_hud, Rect(16,16,16,16));
-    goldkey->setPosition(30,192);
-    Sprite * silverkey = Sprite::createWithTexture(texture_hud, Rect(16,0,16,16));
-    silverkey->setPosition(30,176);
-    addChild(coin, 8);
-    addChild(bomb, 8);
-    addChild(goldkey, 8);
-    addChild(silverkey, 8);
+    Sprite * hud_coin = Sprite::createWithTexture(texture_hud, Rect(0,0,16,16));
+    hud_coin->setPosition(30,224);
+    Sprite * hud_bomb = Sprite::createWithTexture(texture_hud, Rect(0,16,16,16));
+    hud_bomb->setPosition(30,208);
+    Sprite * hud_goldkey = Sprite::createWithTexture(texture_hud, Rect(16,16,16,16));
+    hud_goldkey->setPosition(30,192);
+    Sprite * hud_silverkey = Sprite::createWithTexture(texture_hud, Rect(16,0,16,16));
+    hud_silverkey->setPosition(30,176);
+    addChild(hud_coin, 8);
+    addChild(hud_bomb, 8);
+    addChild(hud_goldkey, 8);
+    addChild(hud_silverkey, 8);
     
     //TODO 小地图应加载到缓存，并设置透明度，独立于RoomScene，元素都在texture_minimap中
     Texture2D * texture_minimap = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/minimap1.png");
@@ -206,7 +220,6 @@ void RoomScene::fire(float dt){
     const auto frame13 = fcache->getSpriteFrameByName("t_frame13");
     const auto frame14 = fcache->getSpriteFrameByName("t_frame14");
     const auto frame15 = fcache->getSpriteFrameByName("t_frame15");
-    
     
     Vector<SpriteFrame *> array;
     array.pushBack(frame0);

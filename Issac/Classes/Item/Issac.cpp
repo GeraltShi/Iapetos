@@ -190,7 +190,7 @@ void Issac::build_animation_cache()
     aniCache->addAnimation(hwalk_animation, "hwalk_animation");
 }
 
-
+//TODO MoveTo 有bug，贴墙以后在墙附近怼墙 会卡住
 void Issac::move(int walk_direction, int tear_direction)
 {
     //直接获取缓存，不要将SpriteFrame保存在类中
@@ -227,7 +227,7 @@ void Issac::move(int walk_direction, int tear_direction)
             //456
             //789
         case 4://左
-            if(this->getPositionX() > 60){ offset_x = -moveSpeed;}
+            if(this->getPositionX() > 76){ offset_x = -moveSpeed;}
             else {offset_x = 0;}
             if(prev_walk_orientation != 4){
                 this->getChildByName("body")->stopAllActions();
@@ -238,7 +238,7 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 6://右
-            if(this->getPositionX() < 441-60){ offset_x = moveSpeed;}
+            if(this->getPositionX() < 442-76){ offset_x = moveSpeed;}
             else {offset_x = 0;}
             if(prev_walk_orientation != 6){
                 this->getChildByName("body")->stopAllActions();
@@ -249,7 +249,7 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 2://上
-            if(this->getPositionY() < 286-60){ offset_y = moveSpeed;}
+            if(this->getPositionY() < 286-76){ offset_y = moveSpeed;}
             else {offset_y = 0;}
             if(prev_walk_orientation != 2){
                 this->getChildByName("body")->stopAllActions();
@@ -259,7 +259,7 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 8://下
-            if(this->getPositionY() > 60){offset_y = -moveSpeed;}
+            if(this->getPositionY() > 76){offset_y = -moveSpeed;}
             else {offset_y = 0;}
             if(prev_walk_orientation != 8){
                 this->getChildByName("body")->stopAllActions();
@@ -269,9 +269,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 1://左上
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
+            if(this->getPositionX() > 76) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
+            if(this->getPositionY() < 286-76) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 1){
                 this->getChildByName("body")->stopAllActions();
@@ -281,9 +281,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 3://右上
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
+            if(this->getPositionX() < 442-76) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
+            if(this->getPositionY() < 286-76) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 3){
                 this->getChildByName("body")->stopAllActions();
@@ -293,9 +293,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 7://左下
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
+            if(this->getPositionX() > 76) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
+            if(this->getPositionY() > 76) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 7){
                 this->getChildByName("body")->stopAllActions();
@@ -305,9 +305,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 9://右下
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
+            if(this->getPositionX() < 442-76) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
+            if(this->getPositionY() > 76) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 9){
                 this->getChildByName("body")->stopAllActions();
