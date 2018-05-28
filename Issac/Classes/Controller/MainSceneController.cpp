@@ -43,7 +43,7 @@ void MainSceneController::on_mouse_down(Event *event)
     //Director::getInstance()->pushScene(room);
 }
 
-int MainSceneController::check_key(EventKeyboard::KeyCode keyCode)
+int MainSceneController::check_key(EventKeyboard::KeyCode keyCode) const
 {
     //TODO 上下切换目录，回车确认
     int shift = 0;
@@ -58,7 +58,7 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode)
     case EventKeyboard::KeyCode::KEY_ENTER:
             shift = 0;
             if(scene_->model.menun == 0){
-                auto room = RoomSceneController::createScene();
+                const auto room = RoomSceneController::createScene();
                 TransitionScene* tx = TransitionFade::create(0.7, room);
                 Director::getInstance()->pushScene(tx);
             }
@@ -71,7 +71,7 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode)
 void MainSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
-    scene_->model.shiftMenu(check_key(keyCode));//MainSceneModel( check_key(keyCode) )
+    scene_->model.shift_menu(check_key(keyCode));//MainSceneModel( check_key(keyCode) )
 }
 
 void MainSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)

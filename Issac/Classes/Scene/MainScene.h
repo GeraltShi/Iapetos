@@ -5,12 +5,14 @@
 #include "Controller/Event/IMainSceneListener.h"
 #include "Model/MainSceneModel.h"
 
-class MainScene : public cocos2d::Scene
+class MainScene : public Scene
 {
   public:
 	static Scene *createScene();
-	virtual bool init();
+    bool init() override;
 	CREATE_FUNC(MainScene)
+    CC_SYNTHESIZE_RETAIN(Sprite*, selector, Selector)
+    CC_SYNTHESIZE(IMainSceneListener*,listener_,Listener)
 
     void set_event_listener(IMainSceneListener *listener);
     void set_model(MainSceneModel model);
@@ -18,15 +20,11 @@ class MainScene : public cocos2d::Scene
     MainSceneModel model;
 private:
     Size size;
-    IMainSceneListener * listener_ = nullptr;
     
     void menu_update(int n) const;
-    //void peppa_move(int direction) const;
-
-    Sprite * selector = nullptr;
-    int menuflag = 0;
-    int selector_init_x = 0;
-    int selector_init_y = 0;
+    int menuflag_ = 0;
+    int selector_init_x_ = 0;
+    int selector_init_y_ = 0;
 };
 
 #endif // __MAIN_SCENE_H__

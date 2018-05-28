@@ -60,6 +60,9 @@
     <ClCompile Include="..\Classes\Item\Issac.cpp">
       <Filter>src\Item</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Item\Monster.cpp">
+      <Filter>src\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -96,6 +99,9 @@
       <Filter>src\Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Item\Issac.hpp">
+      <Filter>src\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Item\Monster.hpp">
       <Filter>src\Item</Filter>
     </ClInclude>
   </ItemGroup>

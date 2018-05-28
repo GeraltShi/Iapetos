@@ -17,11 +17,6 @@ bool RoomSceneController::init()
         return false;
     }
 
-
-    auto l = Label::createWithTTF("Controlled", "fonts/simhei.ttf", 30);
-    l->setPosition(640, 600);
-    addChild(l);
-
     scene_ = RoomScene::create();
     scene_->set_event_listener(this);
     addChild(scene_);
@@ -40,10 +35,7 @@ void RoomSceneController::on_touch_began(Touch * touch, Event * event)
 void RoomSceneController::on_mouse_down(Event * event)
 {
     cocos2d::log("room_scene_on_touch");
-
     count++;
-
-    scene_->change_count(count);
 }
 
 int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)

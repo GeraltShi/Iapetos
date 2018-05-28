@@ -1,9 +1,8 @@
 #include "Issac.hpp"
 #include "cocos2d.h"
-#include <iostream>
 
 using namespace cocos2d;
-# define root2 1.41421356
+# define ROOT2 1.41421356
 
 Issac *Issac::createIssac()
 {
@@ -31,10 +30,10 @@ bool Issac::init()
     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
     const auto shadow_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/shadow.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32));
-    Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
+    Sprite * headSprite = createWithSpriteFrame(headFrame);
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
-    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
-    Sprite * shadow = Sprite::createWithTexture(shadow_);
+    Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
+    Sprite * shadow = createWithTexture(shadow_);
     shadow->setScale(0.15, 0.15);
     shadow->setPosition(0,-7);
 
@@ -50,7 +49,7 @@ bool Issac::init()
     return true;
 }
 
-void Issac::build_sprite_frame_cache(Texture2D *texture_)
+void Issac::build_sprite_frame_cache(Texture2D *texture_) const
 {
     auto spriteCache = SpriteFrameCache::getInstance();
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "lefthead");
@@ -263,9 +262,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 1://左上
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 286-60) offset_y = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 1){
                 this->getChildByName("body")->stopAllActions();
@@ -275,9 +274,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 3://右上
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 286-60) offset_y = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 3){
                 this->getChildByName("body")->stopAllActions();
@@ -287,9 +286,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 7://左下
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 7){
                 this->getChildByName("body")->stopAllActions();
@@ -299,9 +298,9 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 9://右下
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 9){
                 this->getChildByName("body")->stopAllActions();

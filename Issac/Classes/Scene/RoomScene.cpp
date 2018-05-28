@@ -1,6 +1,6 @@
 #include "RoomScene.h"
-#include <sstream>
 #include <iostream>
+
 USING_NS_CC;
 #define random(a,b) (rand()%((b)-(a)+1)+(a))
 using namespace std;
@@ -17,7 +17,7 @@ bool RoomScene::init()
         return false;
     }
 
-    Size size = Director::getInstance()->getWinSize();
+    const Size size = Director::getInstance()->getWinSize();
     std::cout << size.width <<" "<< size.height << endl;
     //TODO 应该有更好的方法生成背景贴图，而不是暴力生成4个或多个碎片
     //TODO 动态加载贴图？如Issac的buff皮肤（在别的贴图上）如何更新
@@ -79,7 +79,7 @@ bool RoomScene::init()
     monster2 = Monster::createMonster();
     addChild(monster2, 3, "fatty2");
     
-    srand((unsigned)time(NULL));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
+    srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
@@ -93,15 +93,7 @@ bool RoomScene::init()
     //TODO 7.Issac 吃buff后状态的变化，如换了个皮肤，与类内皮肤成员有关
     //TODO 99. 联机模式，素材中有babyIssac
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
-    
-    //auto l = Label::createWithTTF("游戏界面/房间", "fonts/simhei.ttf", 30);
-    //l->setPosition(320, 250);
-    //addChild(l);
-
-    //auto cl = Label::createWithTTF("点击次数: 0", "fonts/simhei.ttf", 30);
-    //cl->setPosition(320, 250);
-    //addChild(cl,1,"c_label");
-    
+   
     scheduleUpdate();
     return true;
 }
@@ -157,11 +149,6 @@ void RoomScene::update(float delta)
     //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
     //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
     //std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
-}
-
-void RoomScene::change_count(int c)
-{
-    
 }
 
 void RoomScene::fire(float dt){
@@ -236,7 +223,7 @@ void RoomScene::fire(float dt){
     tearSprite->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
     const float speed = 0.38;
     //子弹运行的距离和时间
-    cocos2d::MoveBy * tear_move = nullptr;
+    MoveBy * tear_move = nullptr;
     switch (model.tear_direction) {
         case 2:
             tear_move = MoveBy::create(speed, Vec2(0,100));
@@ -260,6 +247,11 @@ void RoomScene::fire(float dt){
         Sequence* sequence = Sequence::create(tear_move, poof_anim, RemoveSelf::create(true),NULL);
         tearSprite->runAction(sequence);
     }
+}
+
+void RoomScene::monster_move(float dt)
+{
+
 }
 
 void RoomScene::build_frame_cache() const

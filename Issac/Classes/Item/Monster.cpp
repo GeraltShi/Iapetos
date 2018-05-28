@@ -1,9 +1,8 @@
 #include "Monster.hpp"
 #include "cocos2d.h"
-#include <iostream>
 
 using namespace cocos2d;
-# define root2 1.41421356
+# define ROOT2 1.41421356
 
 Monster *Monster::createMonster()
 {
@@ -30,9 +29,9 @@ bool Monster::init()
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(0, 0, 32, 32));
-    Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
+    Sprite * headSprite = createWithSpriteFrame(headFrame);
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(192, 224, 64, 64));
-    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+    Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
     
     build_sprite_frame_cache(monster_texture_);
     build_animation_cache();
@@ -46,7 +45,7 @@ bool Monster::init()
     return true;
 }
 
-void Monster::build_sprite_frame_cache(Texture2D *texture_)
+void Monster::build_sprite_frame_cache(Texture2D *texture_) const
 {
     auto spriteCache = SpriteFrameCache::getInstance();
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0,0,32,32)), "head_frame0");
@@ -245,9 +244,9 @@ void Monster::move(int walk_direction, int tear_direction)
             break;
             
         case 1://左上
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 286-60) offset_y = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 1){
                 this->getChildByName("body")->stopAllActions();
@@ -258,9 +257,9 @@ void Monster::move(int walk_direction, int tear_direction)
             break;
             
         case 3://右上
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() < 286-60) offset_y = moveSpeed/root2;
+            if(this->getPositionY() < 286-60) offset_y = moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 3){
                 this->getChildByName("body")->stopAllActions();
@@ -271,9 +270,9 @@ void Monster::move(int walk_direction, int tear_direction)
             break;
             
         case 7://左下
-            if(this->getPositionX() > 60) offset_x = -moveSpeed/root2;
+            if(this->getPositionX() > 60) offset_x = -moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 7){
                 this->getChildByName("body")->stopAllActions();
@@ -284,9 +283,9 @@ void Monster::move(int walk_direction, int tear_direction)
             break;
             
         case 9://右下
-            if(this->getPositionX() < 441-60) offset_x = moveSpeed/root2;
+            if(this->getPositionX() < 441-60) offset_x = moveSpeed/ROOT2;
             else offset_x = 0;
-            if(this->getPositionY() > 60) offset_y = -moveSpeed/root2;
+            if(this->getPositionY() > 60) offset_y = -moveSpeed/ROOT2;
             else offset_y = 0;
             if(prev_walk_orientation != 9){
                 this->getChildByName("body")->stopAllActions();

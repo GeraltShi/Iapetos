@@ -1,8 +1,6 @@
 #ifndef Issac_hpp
 #define Issac_hpp
 
-#include <stdio.h>
-#include <vector>
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -12,7 +10,7 @@ class Issac : public Sprite {
 public:
     static Issac *createIssac();
     static Sprite *createSprite();
-    virtual bool init();
+    bool init() override;
 
     CREATE_FUNC(Issac)
 
@@ -26,7 +24,7 @@ public:
     void move(int walk_direction, int tear_direction);
 
 private:
-    void build_sprite_frame_cache(Texture2D *texture_);
-    void build_animation_cache();
+    void build_sprite_frame_cache(Texture2D *texture_) const;
+    static void build_animation_cache();
 };
 #endif
