@@ -34,17 +34,24 @@ bool Issac::init()
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
     Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
     Sprite * shadow = createWithTexture(shadow_);
+    shadow->setOpacity(0x44);//更改shadow透明度
     shadow->setScale(0.15, 0.15);
-    shadow->setPosition(0,-7);
-
+    shadow->setPosition(0,-8);
+    const auto light_gradient_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/light_gradient.png");
+    Sprite * light_gradient = Sprite::createWithTexture(light_gradient_texture);
+    //light_gradient->setScale(2, 2);
     build_sprite_frame_cache(texture_);
     build_animation_cache();
     this->addChild(shadow, -1);
     this->addChild(headSprite, 1, "head");
     this->addChild(bodySprite, 0, "body");
+    this->addChild(light_gradient,2);
+    light_gradient->setOpacity(0x99);//更改light gradient透明度
+    BlendFunc blend = {GL_SRC_ALPHA,GL_ONE};
+    light_gradient->setBlendFunc(blend);
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
-
+    
 
     return true;
 }

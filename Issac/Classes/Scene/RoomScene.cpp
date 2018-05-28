@@ -46,6 +46,13 @@ bool RoomScene::init()
     room_piece4->setPosition(221, 0);
     addChild(room_piece4,0);
     
+    Texture2D *texture_shading = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/shading_utero.png");
+    Sprite * shading = Sprite::createWithTexture(texture_shading,Rect(0,0,442,286));
+    shading->setPosition(221,143);
+    addChild(shading,0);
+    BlendFunc blend = {GL_SRC_ALPHA,GL_ONE};
+    shading->setBlendFunc(blend);
+    
     Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_01_normaldoor.png");
     Sprite * door = Sprite::createWithTexture(texture_door,Rect(0,96,64,48));
     Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
