@@ -13,7 +13,7 @@ class RoomScene : public Scene
 {
   public:
     static Scene *createScene();
-    virtual bool init();
+    bool init() override;
     CREATE_FUNC(RoomScene)
     
     CC_SYNTHESIZE(RoomSceneModel, model, Model)
@@ -24,7 +24,6 @@ class RoomScene : public Scene
 
     void set_event_listener(IRoomSceneListener *listener);
     void update(float delta) override;
-    void change_count(int c);
     void fire(float dt);
     void monster_move(float dt);
 

@@ -10,12 +10,12 @@
  */
 class RoomSceneController : public Scene, IRoomSceneListener
 {
-    RoomScene * scene_ = nullptr;
 public:
     static Scene *createScene();
-    virtual bool init();
+    bool init() override;
 
     CREATE_FUNC(RoomSceneController)
+    CC_SYNTHESIZE_RETAIN(RoomScene*,scene_,MScene)
 
     void on_touch_began(Touch* touch, Event* event) override;
     void on_mouse_down(Event* event) override;
@@ -26,9 +26,7 @@ public:
     
 private:
     map<EventKeyboard::KeyCode,int> key_map_;
-    /**
-     * \brief //TODO 应该创建Model类存储数据并放在Model文件夹中
-     */
+
     int count = 0;
     bool paused = false;
     LevelService level_service_;

@@ -10,18 +10,19 @@
  */
 class MainSceneController : public Scene , IMainSceneListener
 {
-    MainScene * scene_ = nullptr;
 public:
     static Scene *createScene();
-    virtual bool init();
+    bool init() override;
 
     CREATE_FUNC(MainSceneController)
+    CC_SYNTHESIZE_RETAIN(MainScene*, scene_, MScene)
     
     void on_touch_began(Touch* touch, Event* event) override;
     void on_mouse_down(Event* event) override;
     void on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event) override;
     void on_key_released(EventKeyboard::KeyCode keyCode, Event* event) override;
-    int check_key(EventKeyboard::KeyCode keyCode);
+    int check_key(EventKeyboard::KeyCode keyCode) const;
+
 private:
     map<EventKeyboard::KeyCode,int> key_map_;
 };

@@ -60,11 +60,11 @@ bool MainScene::init()
 //    mymenulist5->setScale(size.width/480);
     addChild(mymenulist5,1);
     
-    selector_init_x = size.width/2-XOFFSET-24;
-    selector_init_y = size.height/2+YSTEP;
+    selector_init_x_ = size.width/2-XOFFSET-24;
+    selector_init_y_ = size.height/2+YSTEP;
     selector = Sprite::createWithTexture(menutexture, Rect(0,302,32,32));
     selector->setAnchorPoint(Point(0,0));
-    selector->setPosition(selector_init_x,selector_init_y);
+    selector->setPosition(selector_init_x_,selector_init_y_);
 //    selector->setScale(size.width/480);
     addChild(selector,1);
 
@@ -131,24 +131,24 @@ void MainScene::menu_update(int n) const{
     switch (n)
     {
         case 0:
-            new_posX = selector_init_x;
-            new_posY = selector_init_y;
+            new_posX = selector_init_x_;
+            new_posY = selector_init_y_;
             break;
         case 1:
-            new_posX = selector_init_x+XSTEP;
-            new_posY = selector_init_y-YSTEP;
+            new_posX = selector_init_x_+XSTEP;
+            new_posY = selector_init_y_-YSTEP;
             break;
         case 2:
-            new_posX = selector_init_x+XSTEP*2;
-            new_posY = selector_init_y-YSTEP*2;
+            new_posX = selector_init_x_+XSTEP*2;
+            new_posY = selector_init_y_-YSTEP*2;
             break;
         case 3:
-            new_posX = selector_init_x+XSTEP*3;
-            new_posY = selector_init_y-YSTEP*3;
+            new_posX = selector_init_x_+XSTEP*3;
+            new_posY = selector_init_y_-YSTEP*3;
             break;
         case 4:
-            new_posX = selector_init_x+XSTEP*4;
-            new_posY = selector_init_y-YSTEP*4;
+            new_posX = selector_init_x_+XSTEP*4;
+            new_posY = selector_init_y_-YSTEP*4;
             break;
         default:
             break;

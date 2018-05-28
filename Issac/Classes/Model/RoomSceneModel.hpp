@@ -1,11 +1,10 @@
-#ifndef RoomSceneModel_hpp
-#define RoomSceneModel_hpp
+#ifndef ROOM_SCENE_MODEL_HPP
+#define ROOM_SCENE_MODEL_HPP
 
 class RoomSceneModel
 {
-private:
 public:
-    RoomSceneModel(){};
+    RoomSceneModel() = default;
     RoomSceneModel(int wd, int td){
         walk_direction = wd;
         tear_direction = td;

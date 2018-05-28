@@ -75,7 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
-    auto frameSize = glview->getFrameSize();
+    const auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
@@ -95,7 +95,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = MainSceneController::createScene();
+    const auto scene = MainSceneController::createScene();
 
     // run
     director->runWithScene(scene);
