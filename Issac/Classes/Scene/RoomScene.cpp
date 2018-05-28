@@ -2,7 +2,6 @@
 #include <iostream>
 
 USING_NS_CC;
-#define random(a,b) (rand()%((b)-(a)+1)+(a))
 using namespace std;
 
 Scene *RoomScene::createScene()
@@ -25,21 +24,18 @@ bool RoomScene::init()
     //TODO 更小的地图切片和随机性支持
     Sprite * room_piece1 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece1->setAnchorPoint(Point(0,0));
-//    room_piece1->setScale(2, 2);
     room_piece1->setPosition(0, 143);
     addChild(room_piece1,0);
     
     Sprite * room_piece2 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece2->setFlippedX(true);
     room_piece2->setAnchorPoint(Point(0,0));
-//    room_piece2->setScale(2, 2);
     room_piece2->setPosition(221, 143);
     addChild(room_piece2,0);
     
     Sprite * room_piece3 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece3->setFlippedY(true);
     room_piece3->setAnchorPoint(Point(0,0));
-//    room_piece3->setScale(2, 2);
     room_piece3->setPosition(0, 0);
     addChild(room_piece3,0);
     
@@ -47,7 +43,6 @@ bool RoomScene::init()
     room_piece4->setFlippedX(true);
     room_piece4->setFlippedY(true);
     room_piece4->setAnchorPoint(Point(0,0));
-//    room_piece4->setScale(2, 2);
     room_piece4->setPosition(221, 0);
     addChild(room_piece4,0);
     
@@ -56,8 +51,6 @@ bool RoomScene::init()
     Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
     door->setPosition(221, 250);
     door_center->setPosition(221, 250);
-//    door->setScale(2, 2);
-//    door_center->setScale(2, 2);
     addChild(door,1);addChild(door_center,1);
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
@@ -116,7 +109,7 @@ bool RoomScene::init()
     num0->setPosition(46,224);
     addChild(num0, 8);
     
-    srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
+    //srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
@@ -178,7 +171,6 @@ void RoomScene::update(float delta)
     monster2->move(2,0);
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walk_direction, model.tear_direction);
-    
     if(model.tear_direction == 5){
         this->schedule(schedule_selector(RoomScene::fire), 0.5);
     }

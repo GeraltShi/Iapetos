@@ -25,6 +25,7 @@ private:
     int menuflag_ = 0;
     int selector_init_x_ = 0;
     int selector_init_y_ = 0;
+    //void build_mainscene_cache() const;
 };
 
 #endif // __MAIN_SCENE_H__

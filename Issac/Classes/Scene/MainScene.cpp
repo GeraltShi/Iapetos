@@ -24,53 +24,57 @@ bool MainScene::init()
         //TODO 3.怪物对象       gfx\monsters gfx\bosses
         //TODO 4.房间对象       gfx\backdrops
     //TODO 菜单    gfx\ui
+    Texture2D *gamemenutexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/gamemenu.png");
+    auto gamemenubg = Sprite::createWithTexture(gamemenutexture,Rect(0,0,480,270));
+    gamemenubg->setAnchorPoint(Point(0,0));
+    gamemenubg->setPosition(0,0);
+    addChild(gamemenubg,0);
+    Texture2D *titlemenutexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/titlemenu.png");
+    auto titlemenubg = Sprite::createWithTexture(titlemenutexture, Rect(0,0,480,270));
+    titlemenubg->setAnchorPoint(Point(0,0));
+    titlemenubg->setPosition(0,270);
+    addChild(titlemenubg,0);
+    Texture2D *emptyscreentexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/emptyscreen.png");
+    auto emptyscreenbg = Sprite::createWithTexture(emptyscreentexture, Rect(0,0,480,270));
+    emptyscreenbg->setAnchorPoint(Point(0,0));
+    emptyscreenbg->setPosition(-480,270);
+    addChild(emptyscreenbg,0);
+    
+    
+    // 菜单列表
     size = Director::getInstance()->getWinSize();
-    Texture2D *menutexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/gamemenu.png");
-    auto mymenubg = Sprite::createWithTexture(menutexture,Rect(0,0,480,270));
-    mymenubg->setAnchorPoint(Point(0,0));
-    mymenubg->setPosition(0,0);
-//    mymenubg->setScale(size.width/480);
-    addChild(mymenubg,0);
+    auto gamemenulist1 = Sprite::createWithTexture(gamemenutexture, Rect(32,288,128,48));
+    gamemenulist1->setAnchorPoint(Point(0,0));
+    gamemenulist1->setPosition(size.width/2-XOFFSET,size.height/2+YSTEP);
+    addChild(gamemenulist1,1);
     
+    auto gamemenulist2 = Sprite::createWithTexture(gamemenutexture, Rect(32,288+48,128,48));
+    gamemenulist2->setAnchorPoint(Point(0,0));
+    gamemenulist2->setPosition(size.width/2-XOFFSET+XSTEP,size.height/2);
+    addChild(gamemenulist2,1);
+    auto gamemenulist3 = Sprite::createWithTexture(gamemenutexture, Rect(32,288+96,128,48));
+    gamemenulist3->setAnchorPoint(Point(0,0));
+    gamemenulist3->setPosition(size.width/2-XOFFSET+XSTEP*2,size.height/2-YSTEP);
+    addChild(gamemenulist3,1);
+    auto gamemenulist4 = Sprite::createWithTexture(gamemenutexture, Rect(32,288+144,128,48));
+    gamemenulist4->setAnchorPoint(Point(0,0));
+    gamemenulist4->setPosition(size.width/2-XOFFSET+XSTEP*3,size.height/2-YSTEP*2);
+    addChild(gamemenulist4,1);
+    auto gamemenulist5 = Sprite::createWithTexture(gamemenutexture, Rect(32,288+196,128,48));
+    gamemenulist5->setAnchorPoint(Point(0,0));
+    gamemenulist5->setPosition(size.width/2-XOFFSET+XSTEP*4,size.height/2-YSTEP*3);
+    addChild(gamemenulist5,1);
     
-    auto mymenulist1 = Sprite::createWithTexture(menutexture, Rect(32,288,128,48));
-    mymenulist1->setAnchorPoint(Point(0,0));
-    mymenulist1->setPosition(size.width/2-XOFFSET,size.height/2+YSTEP);
-//    mymenulist1->setScale(size.width/480);
-    addChild(mymenulist1,1);
-    
-    auto mymenulist2 = Sprite::createWithTexture(menutexture, Rect(32,288+48,128,48));
-    mymenulist2->setAnchorPoint(Point(0,0));
-    mymenulist2->setPosition(size.width/2-XOFFSET+XSTEP,size.height/2);
-//    mymenulist2->setScale(size.width/480);
-    addChild(mymenulist2,1);
-    auto mymenulist3 = Sprite::createWithTexture(menutexture, Rect(32,288+96,128,48));
-    mymenulist3->setAnchorPoint(Point(0,0));
-    mymenulist3->setPosition(size.width/2-XOFFSET+XSTEP*2,size.height/2-YSTEP);
-//    mymenulist3->setScale(size.width/480);
-    addChild(mymenulist3,1);
-    auto mymenulist4 = Sprite::createWithTexture(menutexture, Rect(32,288+144,128,48));
-    mymenulist4->setAnchorPoint(Point(0,0));
-    mymenulist4->setPosition(size.width/2-XOFFSET+XSTEP*3,size.height/2-YSTEP*2);
-//    mymenulist4->setScale(size.width/480);
-    addChild(mymenulist4,1);
-    auto mymenulist5 = Sprite::createWithTexture(menutexture, Rect(32,288+196,128,48));
-    mymenulist5->setAnchorPoint(Point(0,0));
-    mymenulist5->setPosition(size.width/2-XOFFSET+XSTEP*4,size.height/2-YSTEP*3);
-//    mymenulist5->setScale(size.width/480);
-    addChild(mymenulist5,1);
-    
+    //光标
     selector_init_x_ = size.width/2-XOFFSET-24;
     selector_init_y_ = size.height/2+YSTEP;
-    selector = Sprite::createWithTexture(menutexture, Rect(0,302,32,32));
+    selector = Sprite::createWithTexture(gamemenutexture, Rect(0,302,32,32));
     selector->setAnchorPoint(Point(0,0));
     selector->setPosition(selector_init_x_,selector_init_y_);
-//    selector->setScale(size.width/480);
     addChild(selector,1);
-
-    auto l = Label::createWithTTF("开场界面","fonts/simhei.ttf",30);
-    l->setPosition(640, 500);
-    addChild(l,1);
+//    auto l = Label::createWithTTF("开场界面","fonts/simhei.ttf",30);
+//    l->setPosition(640, 500);
+//    addChild(l,1);
     
     scheduleUpdate();
 
@@ -156,3 +160,4 @@ void MainScene::menu_update(int n) const{
     const auto selectorMoveTo = MoveTo::create(0,Vec2(new_posX, new_posY));
     selector->runAction(selectorMoveTo);
 }
+
