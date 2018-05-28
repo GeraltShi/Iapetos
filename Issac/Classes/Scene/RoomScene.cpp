@@ -62,6 +62,12 @@ bool RoomScene::init()
     //TODO Issac比peppa灵活，他动的时候全身都在跳舞，不动的时候也会眨眼睛，SpriteFrame
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存），Tear生成时头会抖
     
+    //TODO 这不是遮罩，遮罩应该在整个Scene最顶部，是一种颜色混合模式
+    Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
+    Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
+    overlay->setPosition(221,143);
+    addChild(overlay,2);
+    
     build_frame_cache();
     player = Issac::createIssac();
 
@@ -138,6 +144,7 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
+    //TODO 每隔一定时间更新monster位置，monster不会自己撞墙
     monster->move(1,0);
     monster2->move(2,0);
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”

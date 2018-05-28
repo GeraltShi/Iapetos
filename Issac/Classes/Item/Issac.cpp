@@ -29,15 +29,18 @@ bool Issac::init()
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
-
+    const auto shadow_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/shadow.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32));
     Sprite * headSprite = Sprite::createWithSpriteFrame(headFrame);
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
     Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+    Sprite * shadow = Sprite::createWithTexture(shadow_);
+    shadow->setScale(0.15, 0.15);
+    shadow->setPosition(0,-7);
 
     build_sprite_frame_cache(texture_);
     build_animation_cache();
-
+    this->addChild(shadow, -1);
     this->addChild(headSprite, 1, "head");
     this->addChild(bodySprite, 0, "body");
     headSprite->setPosition(Vec2(0, 10));
