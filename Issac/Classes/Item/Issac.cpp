@@ -38,7 +38,7 @@ bool Issac::init()
     shadow->setScale(0.15, 0.15);
     shadow->setPosition(0,-8);
     const auto light_gradient_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/light_gradient.png");
-    Sprite * light_gradient = Sprite::createWithTexture(light_gradient_texture);
+    Sprite * light_gradient = Sprite::createWithTexture(light_gradient_texture, Rect(200,100,100,100));
     //light_gradient->setScale(2, 2);
     build_sprite_frame_cache(texture_);
     build_animation_cache();
@@ -396,7 +396,7 @@ void Issac::move(int walk_direction, int tear_direction)
     if(walk_direction != 5){
         const auto new_posX = getPositionX() + offset_x;
         const auto new_posY = getPositionY() + offset_y;
-        ActionInterval * MoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
+        ActionInterval * MoveTo = MoveTo::create(0.2, Vec2(new_posX, new_posY));
         Action * action = Spawn::create(MoveTo, NULL);
         this->runAction(action);
     }

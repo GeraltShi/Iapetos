@@ -98,6 +98,7 @@ bool RoomScene::init()
     
     monster2 = Monster::createMonster();
     addChild(monster2, 3, "fatty2");
+    
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
     Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
     Sprite * heart = Sprite::createWithTexture(texture_heart, Rect(0,0,16,16));
