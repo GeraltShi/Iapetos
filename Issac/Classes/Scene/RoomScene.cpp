@@ -110,6 +110,11 @@ bool RoomScene::init()
     minimap->setPosition(370,240);
     addChild(minimap, 8);
     
+    //TODO 数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
+    Texture2D * texture_font = Director::getInstance()->getTextureCache()->addImage("res/font/pftempestasevencondensed_0.png");
+    Sprite * num0 = Sprite::createWithTexture(texture_font, Rect(18*14,21*3,18,21));
+    num0->setPosition(46,224);
+    addChild(num0, 8);
     
     srand((unsigned)time(NULL));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
