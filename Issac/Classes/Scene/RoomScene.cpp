@@ -50,6 +50,7 @@ bool RoomScene::init()
     Sprite * shading = Sprite::createWithTexture(texture_shading,Rect(0,0,442,286));
     shading->setPosition(221,143);
     addChild(shading,0);
+    shading->setOpacity(0xFF);
     BlendFunc blend = {GL_SRC_ALPHA,GL_ONE};
     shading->setBlendFunc(blend);
     
@@ -66,7 +67,7 @@ bool RoomScene::init()
     Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
     overlay->setPosition(221,143);
-    addChild(overlay,2);
+    addChild(overlay,7);
     
     Texture2D *texture_rainbowpoop = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/grid_poop_rainbow.png");
     Sprite * rainbowpoop = Sprite::createWithTexture(texture_rainbowpoop,Rect(0,0,32,32));// TODO 地面物品都有着损坏状态，不应该在这里生成
