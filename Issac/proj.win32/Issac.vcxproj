@@ -152,21 +152,25 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Scene\MainScene.cpp" />
     <ClCompile Include="..\Classes\Scene\RoomScene.cpp" />
-    <ClCompile Include="..\Classes\Item\Issac.cpp" />
-    <ClCompile Include="..\Classes\Item\Monster.cpp" />
+    <ClCompile Include="..\Classes\Character\Issac.cpp" />
+    <ClCompile Include="..\Classes\Character\Monster.cpp" />
+    <ClCompile Include="..\Classes\Character\SimpleItem.cpp" />
     <ClCompile Include="..\Classes\Controller\MainSceneController.cpp" />
     <ClCompile Include="..\Classes\Controller\RoomSceneController.cpp" />
     <ClCompile Include="..\Classes\Service\LevelService.cpp" />
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp" />
     <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp" />
+    <ClCompile Include="..\Classes\ViewModel\SimpleItemViewModel.cpp" />
+    <ClCompile Include="..\Classes\Model\LevelModel.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Scene\MainScene.h" />
     <ClInclude Include="..\Classes\Scene\RoomScene.h" />
-    <ClInclude Include="..\Classes\Item\Issac.hpp" />
-    <ClInclude Include="..\Classes\Item\Monster.hpp" />
+    <ClInclude Include="..\Classes\Character\Issac.hpp" />
+    <ClInclude Include="..\Classes\Character\Monster.hpp" />
+    <ClInclude Include="..\Classes\Character\SimpleItem.h" />
     <ClInclude Include="..\Classes\Controller\MainSceneController.h" />
     <ClInclude Include="..\Classes\Controller\RoomSceneController.h" />
     <ClInclude Include="..\Classes\Controller\Event\IMainSceneListener.h" />
@@ -174,6 +178,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Service\LevelService.h" />
     <ClInclude Include="..\Classes\Model\MainSceneModel.h" />
     <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp" />
+    <ClInclude Include="..\Classes\ViewModel\SimpleItemViewModel.h" />
+    <ClInclude Include="..\Classes\Model\LevelModel.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

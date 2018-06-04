@@ -25,8 +25,11 @@
     <Filter Include="src\Model">
       <UniqueIdentifier>{0c2ac1d8-a421-4512-b710-41663b6836c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Item">
+    <Filter Include="src\Character">
       <UniqueIdentifier>{ce488c1c-d6dc-43e8-9a89-e702e4f2f200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ViewModel">
+      <UniqueIdentifier>{4c812184-59d0-4771-b8c7-8cba0b056ce7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,11 +60,20 @@
     <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Item\Issac.cpp">
-      <Filter>src\Item</Filter>
+    <ClCompile Include="..\Classes\Character\Issac.cpp">
+      <Filter>src\Character</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Item\Monster.cpp">
-      <Filter>src\Item</Filter>
+    <ClCompile Include="..\Classes\Character\Monster.cpp">
+      <Filter>src\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Character\SimpleItem.cpp">
+      <Filter>src\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ViewModel\SimpleItemViewModel.cpp">
+      <Filter>src\ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\LevelModel.cpp">
+      <Filter>src\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,11 +110,20 @@
     <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp">
       <Filter>src\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Item\Issac.hpp">
-      <Filter>src\Item</Filter>
+    <ClInclude Include="..\Classes\Character\Issac.hpp">
+      <Filter>src\Character</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Item\Monster.hpp">
-      <Filter>src\Item</Filter>
+    <ClInclude Include="..\Classes\Character\Monster.hpp">
+      <Filter>src\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Character\SimpleItem.h">
+      <Filter>src\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ViewModel\SimpleItemViewModel.h">
+      <Filter>src\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\LevelModel.h">
+      <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

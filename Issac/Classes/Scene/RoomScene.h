@@ -4,8 +4,8 @@
 #include "cocos2d.h"
 #include "Controller/Event/IRoomSceneListener.h"
 #include "Model/RoomSceneModel.hpp"
-#include "Item/Issac.hpp"
-#include "Item/Monster.hpp"
+#include "Character/Issac.hpp"
+#include "Character/Monster.hpp"
 
 USING_NS_CC;
 
