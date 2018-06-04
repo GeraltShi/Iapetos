@@ -3,8 +3,15 @@
 
 using namespace cocos2d;
 # define ROOT2 1.41421356
+#ifndef _max_
+#define _max_
 #define max(x,y) ((x)>(y)?(x):(y))
+#endif
+#ifndef _abs_
+#define _abs_
 #define abs(x)	((x)<0?(-x):x)
+#endif
+
 
 Monster *Monster::createMonster()
 {
@@ -26,6 +33,8 @@ bool Monster::init()
     //初始化类变量
     prev_walk_orientation = 5;
     prev_head_orientation = 5;
+	moveSpeed = 3;
+	widthSize = 10;
     moving = false;
     
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
@@ -170,7 +179,7 @@ void Monster::build_animation_cache()
 }
 
 
-void Monster::move(int walk_direction, int tear_direction)
+void Monster::move(int walk_direction)
 {
     //直接获取缓存，不要将SpriteFrame保存在类中
 //    auto spriteCache = SpriteFrameCache::getInstance();
@@ -184,14 +193,6 @@ void Monster::move(int walk_direction, int tear_direction)
     Animate * hwalk_animate = Animate::create(hwalk_animation);
     Animate * head_animate = Animate::create(head_animation);
     
-    // Mask, 用于walk_direction和head_direction合并成direction
-    int head_direction;
-    if(tear_direction == 5){
-        head_direction = walk_direction;
-    } else {
-        head_direction = tear_direction;
-    }
-    const double moveSpeed = 3;
     int offset_x = 0, offset_y = 0;
 //    Sprite * new_head;
     switch (walk_direction)
@@ -416,4 +417,14 @@ int Monster::ToPointDir(Vec2 PlayerPos)
 		if (diff_x > 0.3) return 9;
 	}
 	return 5;
+}
+
+Rect Monster::boundingBox()
+{
+	return Rect(getPositionX() - widthSize / 2, getPositionX() + widthSize / 2,
+		widthSize, widthSize);
+}
+
+void Monster::update(float dt)
+{
 }

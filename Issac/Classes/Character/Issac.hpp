@@ -20,9 +20,11 @@ public:
     CC_SYNTHESIZE(bool, moving, Moving)
     CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
     CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
+	CC_SYNTHESIZE(double, moveSpeed, MoveSpeed)
+	CC_SYNTHESIZE(double, widthSize, widthSize)
 
     void move(int walk_direction, int tear_direction);
-
+	virtual Rect boundingBox();
 private:
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();

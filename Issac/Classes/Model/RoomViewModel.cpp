@@ -1,9 +1,2 @@
-#include "LevelModel.h"
+#include "RoomViewModel.h"
 
-LevelModel::LevelModel()
-{
-}
-
-LevelModel::~LevelModel()
-{
-}
