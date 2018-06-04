@@ -3,6 +3,8 @@
 
 using namespace cocos2d;
 # define ROOT2 1.41421356
+#define max(x,y) ((x)>(y)?(x):(y))
+#define abs(x)	((x)<0?(-x):x)
 
 Monster *Monster::createMonster()
 {
@@ -383,5 +385,35 @@ void Monster::move(int walk_direction, int tear_direction)
         this->runAction(action);
         
     }
-    
+}
+
+int Monster::ToPointDir(Vec2 PlayerPos)
+{
+	double diff_x = PlayerPos.x - getPositionX();
+	double diff_y = PlayerPos.y - getPositionY();
+	//将坐标差标准化
+	double max_xy = max(abs(diff_x), abs(diff_y));
+	diff_x /= max_xy;
+	diff_y /= max_xy;
+	if (diff_x == 1) {
+		if (diff_y < -0.3) return 9;
+		if (abs(diff_y) < 0.3)	return 6;
+		if (diff_y > 0.3) return 3;
+	}
+	if (diff_x == -1) {
+		if (diff_y < -0.3) return 7;
+		if (abs(diff_y) < 0.3)	return 4;
+		if (diff_y > 0.3) return 1;
+	}
+	if (diff_y == 1) {
+		if (diff_x < -0.3) return 1;
+		if (abs(diff_x) < 0.3)	return 2;
+		if (diff_x > 0.3) return 3;
+	}
+	if (diff_y == -1) {
+		if (diff_x < -0.3) return 7;
+		if (abs(diff_x) < 0.3)	return 8;
+		if (diff_x > 0.3) return 9;
+	}
+	return 5;
 }

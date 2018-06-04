@@ -17,6 +17,7 @@ bool MainScene::init()
 	{
 		return false;
 	}
+	
     //TODO 做！类！ 面！向！对！象！
         //TODO 1.Issac对象    gfx\characters
         //TODO 1.1 Tear对象

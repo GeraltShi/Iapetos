@@ -20,9 +20,9 @@ public:
     CC_SYNTHESIZE(bool, moving, Moving)
     CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
     CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
-    
-    void move(int walk_direction, int tear_direction);
-    
+	
+	void move(int walk_direction, int tear_direction);
+	int ToPointDir(Vec2);
 private:
     void build_sprite_frame_cache(Texture2D *texture_) const;//必要时需要重载
     static void build_animation_cache();

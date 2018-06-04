@@ -72,8 +72,11 @@
     <ClCompile Include="..\Classes\ViewModel\SimpleItemViewModel.cpp">
       <Filter>src\ViewModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Model\LevelModel.cpp">
-      <Filter>src\Model</Filter>
+    <ClCompile Include="RoomService.cpp">
+      <Filter>src\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\RoomViewModel.cpp">
+      <Filter>src\ViewModel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,8 +125,11 @@
     <ClInclude Include="..\Classes\ViewModel\SimpleItemViewModel.h">
       <Filter>src\ViewModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Model\LevelModel.h">
-      <Filter>src\Model</Filter>
+    <ClInclude Include="RoomService.h">
+      <Filter>src\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\RoomViewModel.h">
+      <Filter>src\ViewModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

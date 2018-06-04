@@ -161,8 +161,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp" />
     <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp" />
     <ClCompile Include="..\Classes\ViewModel\SimpleItemViewModel.cpp" />
-    <ClCompile Include="..\Classes\Model\LevelModel.cpp" />
+    <ClCompile Include="..\Classes\Model\RoomViewModel.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RoomService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -179,8 +180,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Model\MainSceneModel.h" />
     <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp" />
     <ClInclude Include="..\Classes\ViewModel\SimpleItemViewModel.h" />
-    <ClInclude Include="..\Classes\Model\LevelModel.h" />
+    <ClInclude Include="..\Classes\Model\RoomViewModel.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="RoomService.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">

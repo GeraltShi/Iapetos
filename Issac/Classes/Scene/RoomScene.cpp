@@ -67,13 +67,14 @@ bool RoomScene::init()
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
     overlay->setPosition(221,143);
     addChild(overlay,2);
-    
+ 
     build_frame_cache();
     player = Issac::createIssac();
 
     addChild(player, 3);
     
     monster = Monster::createMonster();
+	monster->setPosition(Vec2(20,50));
     addChild(monster, 3, "fatty1");
     
     monster2 = Monster::createMonster();
@@ -137,7 +138,7 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 void RoomScene::update(float delta)
 {
     //TODO 每隔一定时间更新monster位置，monster不会自己撞墙
-    monster->move(1,0);
+	monster->move(monster->ToPointDir(player->getPosition()),0);
     monster2->move(2,0);
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walk_direction, model.tear_direction);
