@@ -18,6 +18,14 @@ bool RoomScene::init()
 
     const Size size = Director::getInstance()->getWinSize();
     std::cout << size.width <<" "<< size.height << endl;
+    /** zorder
+     * 8 HUD
+     * 7 Overlay
+     * 3 Issac, Monster
+     * 2 Room shading
+     * 1 Controls, Door, Door Center
+     * 0 Room Background
+     */
     //TODO 应该有更好的方法生成背景贴图，而不是暴力生成4个或多个碎片
     //TODO 动态加载贴图？如Issac的buff皮肤（在别的贴图上）如何更新
     Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/01_basement.png");
@@ -49,10 +57,7 @@ bool RoomScene::init()
     Texture2D *texture_shading = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/shading_utero.png");
     Sprite * shading = Sprite::createWithTexture(texture_shading,Rect(0,0,442,286));
     shading->setPosition(221,143);
-    addChild(shading,0);
-    shading->setOpacity(0xFF);
-    BlendFunc blend = {GL_SRC_ALPHA,GL_ONE};
-    shading->setBlendFunc(blend);
+    addChild(shading,2);
     
     Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
     Sprite * controls = Sprite::createWithTexture(texture_controls, Rect(0,0,325,85));
@@ -77,7 +82,7 @@ bool RoomScene::init()
     addChild(door2,1);addChild(door_center2,1);
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
     
-    //遮罩，在整个Scene最顶部
+    //光影遮罩，在整个Scene最顶部
     Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
     overlay->setPosition(221,143);
