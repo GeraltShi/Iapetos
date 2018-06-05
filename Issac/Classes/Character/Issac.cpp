@@ -16,17 +16,10 @@ Sprite *Issac::createSprite()
 
 bool Issac::init()
 {
-    if (!Sprite::init())
+    if (!Moveable::init())
     {
         return false;
     }
-
-    //初始化类变量
-    prev_walk_orientation = 5;
-    prev_head_orientation = 5;
-	moveSpeed = 3;
-	widthSize = 10;
-	moving = false;
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
@@ -394,10 +387,4 @@ void Issac::move(int walk_direction, int tear_direction)
         Action * action = Spawn::create(MoveTo, NULL);
         this->runAction(action);
     }
-}
-
-Rect Issac::boundingBox()
-{
-	return Rect(getPositionX() - widthSize / 2, getPositionY() + widthSize / 2,
-		widthSize, widthSize);
 }

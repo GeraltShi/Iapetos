@@ -78,6 +78,9 @@
     <ClCompile Include="..\Classes\Model\RoomViewModel.cpp">
       <Filter>src\ViewModel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Character\Moveable.cpp">
+      <Filter>src\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Model\RoomViewModel.h">
       <Filter>src\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Character\Moveable.h">
+      <Filter>src\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

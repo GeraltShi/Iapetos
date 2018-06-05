@@ -2,15 +2,9 @@
 #include "cocos2d.h"
 
 using namespace cocos2d;
+
 # define ROOT2 1.41421356
-#ifndef _max_
-#define _max_
-#define max(x,y) ((x)>(y)?(x):(y))
-#endif
-#ifndef _abs_
-#define _abs_
-#define abs(x)	((x)<0?(-x):x)
-#endif
+
 
 
 Monster *Monster::createMonster()
@@ -25,18 +19,11 @@ Sprite *Monster::createSprite()
 
 bool Monster::init()
 {
-    if (!Sprite::init())
+    if (!Moveable::init())
     {
         return false;
     }
-    
-    //初始化类变量
-    prev_walk_orientation = 5;
-    prev_head_orientation = 5;
-	moveSpeed = 3;
-	widthSize = 10;
-    moving = false;
-    
+
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(0, 0, 32, 32));
@@ -307,77 +294,6 @@ void Monster::move(int walk_direction)
         default:
             break;
     }
-//    switch (head_direction) {
-//        case 1: case 2: case 3:
-//            if(prev_head_orientation != 2){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("uphead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1,"head");
-//                prev_head_orientation = 2;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(upshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 2 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(upshakeAnimate);
-////            }
-//            break;
-//        case 4:
-//            if(prev_head_orientation != 4){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("lefthead"));
-//                new_head->setFlippedX(true);
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 4;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(leftshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 4 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(leftshakeAnimate);
-////            }
-//            break;
-//        case 5:
-//            if(prev_head_orientation != 5){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("downhead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 5;
-//            }
-//
-//            break;
-//        case 6:
-//            if(prev_head_orientation != 6){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("righthead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 6;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(rightshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 6 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(rightshakeAnimate);
-////            }
-//            break;
-//        case 7: case 8: case 9:
-//            if(prev_head_orientation != 8){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("downhead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 8;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(downshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 8 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(downshakeAnimate);
-////            }
-//            break;
-//        default:
-//            break;
-//    }
     if(walk_direction != 5){
         const auto new_posX = getPositionX() + offset_x;
         const auto new_posY = getPositionY() + offset_y;
@@ -419,12 +335,4 @@ int Monster::ToPointDir(Vec2 PlayerPos)
 	return 5;
 }
 
-Rect Monster::boundingBox()
-{
-	return Rect(getPositionX() - widthSize / 2, getPositionY() + widthSize / 2,
-		widthSize, widthSize);
-}
 
-void Monster::update(float dt)
-{
-}
