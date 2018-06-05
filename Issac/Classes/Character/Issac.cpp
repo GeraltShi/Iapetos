@@ -398,6 +398,6 @@ void Issac::move(int walk_direction, int tear_direction)
 
 Rect Issac::boundingBox()
 {
-	return Rect(getPositionX() - widthSize / 2, getPositionX() + widthSize / 2,
+	return Rect(getPositionX() - widthSize / 2, getPositionY() + widthSize / 2,
 		widthSize, widthSize);
 }

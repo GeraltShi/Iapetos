@@ -421,7 +421,7 @@ int Monster::ToPointDir(Vec2 PlayerPos)
 
 Rect Monster::boundingBox()
 {
-	return Rect(getPositionX() - widthSize / 2, getPositionX() + widthSize / 2,
+	return Rect(getPositionX() - widthSize / 2, getPositionY() + widthSize / 2,
 		widthSize, widthSize);
 }
 

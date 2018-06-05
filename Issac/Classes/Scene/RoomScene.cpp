@@ -139,15 +139,16 @@ void RoomScene::update(float delta)
     //monster移动
 	monster[0]->move(monster[0]->ToPointDir(player->getPosition()));
 	monster[0]->boundingBox();
+
+    // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
+    player->move(model.walk_direction, model.tear_direction);
+
 	//碰撞检测
 	if (monster[0]->boundingBox().intersectsRect(player->boundingBox())) {
 		int col_Dir = monster[0]->ToPointDir(player->getPosition());
-		monster[0]->move(10-col_Dir);
-		//player头方向应该不变，而不是0
-		player->move(col_Dir, 0);
+		monster[0]->move(10 - col_Dir);
+		player->move(col_Dir, model.tear_direction);
 	}
-    // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
-    player->move(model.walk_direction, model.tear_direction);
     
     if(model.tear_direction == 5){
         this->schedule(schedule_selector(RoomScene::fire), 0.5);
