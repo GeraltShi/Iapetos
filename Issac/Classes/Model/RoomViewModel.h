@@ -10,8 +10,6 @@ using namespace std;
 class LevelModel
 {
 public:
-    LevelModel();
-    ~LevelModel();
     //房间：门的位置（enable），门的样式，地面物品（棋盘），地面的样子，光影，边界（棋盘）。
     //棋盘13*7
     //0,0,0,0,0,0,0,0,0,0,0,0,0

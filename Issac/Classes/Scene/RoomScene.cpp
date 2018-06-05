@@ -75,8 +75,8 @@ bool RoomScene::init()
     
 	Monster* temp_monster = Monster::createMonster();
 	temp_monster->setPosition(Vec2(20,50));
-	monster.push_back(temp_monster);
-    addChild(monster[0], 3, "fatty1");
+	monsters_.pushBack(temp_monster);
+    addChild(monsters_.at(0), 3, "fatty1");
  
     
     srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
@@ -137,16 +137,16 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 void RoomScene::update(float delta)
 {
     //monster移动
-	monster[0]->move(monster[0]->ToPointDir(player->getPosition()));
-	monster[0]->boundingBox();
+	monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
+	monsters_.at(0)->boundingBox();
 
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walk_direction, model.tear_direction);
 
 	//碰撞检测
-	if (monster[0]->boundingBox().intersectsRect(player->boundingBox())) {
-		int col_Dir = monster[0]->ToPointDir(player->getPosition());
-		monster[0]->move(10 - col_Dir);
+	if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
+		int col_Dir = monsters_.at(0)->ToPointDir(player->getPosition());
+		monsters_.at(0)->move(10 - col_Dir);
 		player->move(col_Dir, model.tear_direction);
 	}
     

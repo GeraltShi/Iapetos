@@ -29,7 +29,9 @@ class RoomScene : public Scene
 private:
     IRoomSceneListener * listener_ = nullptr;
     void build_frame_cache() const;
-	vector<Monster*> monster;
+    //使用cocos2d内置Vector管理Sprite等Ref类型的内存
+    //和CC_SYNTHESIZE_RETAIN作用类似
+	Vector<Monster*> monsters_;
 };
 
 #endif // __ROOM_SCENE_H__

@@ -169,7 +169,6 @@ void Monster::build_animation_cache()
 void Monster::move(int walk_direction)
 {
     //直接获取缓存，不要将SpriteFrame保存在类中
-//    auto spriteCache = SpriteFrameCache::getInstance();
     auto aniCache = AnimationCache::getInstance();
     
     const auto vwalk_animation = aniCache->getAnimation("monster_vwalk_animation");
@@ -181,7 +180,6 @@ void Monster::move(int walk_direction)
     Animate * head_animate = Animate::create(head_animation);
     
     int offset_x = 0, offset_y = 0;
-//    Sprite * new_head;
     switch (walk_direction)
     {
             //123

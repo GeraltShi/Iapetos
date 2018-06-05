@@ -1,4 +1,4 @@
-#include"Moveable.h"
+#include "Moveable.h"
 
 bool Moveable::init()
 {
@@ -7,7 +7,7 @@ bool Moveable::init()
 		return false;
 	}
 
-	//初始化类变量
+	//鍒濆鍖栫被鍙橀噺
 	prev_walk_orientation = 5;
 	prev_head_orientation = 5;
 	moveSpeed = 3;
@@ -20,5 +20,5 @@ bool Moveable::init()
 Rect Moveable::boundingBox()
 {
 	return Rect(getPositionX() - widthSize / 2, getPositionY() + widthSize / 2,
-		widthSize, widthSize);
+				widthSize, widthSize);
 }
