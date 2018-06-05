@@ -36,7 +36,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0'">v140</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '14.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v140_xp</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0'">v141</PlatformToolset>
-    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v141_xp</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '15.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -150,23 +150,30 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Character\Moveable.cpp" />
     <ClCompile Include="..\Classes\Scene\MainScene.cpp" />
     <ClCompile Include="..\Classes\Scene\RoomScene.cpp" />
-    <ClCompile Include="..\Classes\Item\Issac.cpp" />
-    <ClCompile Include="..\Classes\Item\Monster.cpp" />
+    <ClCompile Include="..\Classes\Character\Issac.cpp" />
+    <ClCompile Include="..\Classes\Character\Monster.cpp" />
+    <ClCompile Include="..\Classes\Character\SimpleItem.cpp" />
     <ClCompile Include="..\Classes\Controller\MainSceneController.cpp" />
     <ClCompile Include="..\Classes\Controller\RoomSceneController.cpp" />
     <ClCompile Include="..\Classes\Service\LevelService.cpp" />
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp" />
     <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp" />
+    <ClCompile Include="..\Classes\ViewModel\SimpleItemViewModel.cpp" />
+    <ClCompile Include="..\Classes\Model\RoomViewModel.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RoomService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\Character\Moveable.h" />
     <ClInclude Include="..\Classes\Scene\MainScene.h" />
     <ClInclude Include="..\Classes\Scene\RoomScene.h" />
-    <ClInclude Include="..\Classes\Item\Issac.hpp" />
-    <ClInclude Include="..\Classes\Item\Monster.hpp" />
+    <ClInclude Include="..\Classes\Character\Issac.hpp" />
+    <ClInclude Include="..\Classes\Character\Monster.hpp" />
+    <ClInclude Include="..\Classes\Character\SimpleItem.h" />
     <ClInclude Include="..\Classes\Controller\MainSceneController.h" />
     <ClInclude Include="..\Classes\Controller\RoomSceneController.h" />
     <ClInclude Include="..\Classes\Controller\Event\IMainSceneListener.h" />
@@ -174,7 +181,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Service\LevelService.h" />
     <ClInclude Include="..\Classes\Model\MainSceneModel.h" />
     <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp" />
+    <ClInclude Include="..\Classes\ViewModel\SimpleItemViewModel.h" />
+    <ClInclude Include="..\Classes\Model\RoomViewModel.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="RoomService.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">

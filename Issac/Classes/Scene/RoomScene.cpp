@@ -98,11 +98,11 @@ bool RoomScene::init()
 
     addChild(player, 3);
     
-    monster = Monster::createMonster();
-    addChild(monster, 3, "fatty1");
-    
-    monster2 = Monster::createMonster();
-    addChild(monster2, 3, "fatty2");
+	Monster* temp_monster = Monster::createMonster();
+	temp_monster->setPosition(Vec2(20,50));
+	monsters_.pushBack(temp_monster);
+    addChild(monsters_.at(0), 3, "fatty1");
+ 
     
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
     Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
@@ -194,11 +194,20 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
-    //TODO 每隔一定时间更新monster位置，monster不会自己撞墙
-    monster->move(1,0);
-    monster2->move(2,0);
+    //monster移动
+	monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
+	monsters_.at(0)->boundingBox();
+
     // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
     player->move(model.walk_direction, model.tear_direction);
+
+	//碰撞检测
+	if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
+		int col_Dir = monsters_.at(0)->ToPointDir(player->getPosition());
+		monsters_.at(0)->move(10 - col_Dir);
+		player->move(col_Dir, model.tear_direction);
+	}
+    
     if(model.tear_direction == 5){
         this->schedule(schedule_selector(RoomScene::fire), 0.5);
     }

@@ -2,7 +2,10 @@
 #include "cocos2d.h"
 
 using namespace cocos2d;
+
 # define ROOT2 1.41421356
+
+
 
 Monster *Monster::createMonster()
 {
@@ -16,16 +19,11 @@ Sprite *Monster::createSprite()
 
 bool Monster::init()
 {
-    if (!Sprite::init())
+    if (!Moveable::init())
     {
         return false;
     }
-    
-    //初始化类变量
-    prev_walk_orientation = 5;
-    prev_head_orientation = 5;
-    moving = false;
-    
+
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(0, 0, 32, 32));
@@ -168,10 +166,9 @@ void Monster::build_animation_cache()
 }
 
 
-void Monster::move(int walk_direction, int tear_direction)
+void Monster::move(int walk_direction)
 {
     //直接获取缓存，不要将SpriteFrame保存在类中
-//    auto spriteCache = SpriteFrameCache::getInstance();
     auto aniCache = AnimationCache::getInstance();
     
     const auto vwalk_animation = aniCache->getAnimation("monster_vwalk_animation");
@@ -182,16 +179,7 @@ void Monster::move(int walk_direction, int tear_direction)
     Animate * hwalk_animate = Animate::create(hwalk_animation);
     Animate * head_animate = Animate::create(head_animation);
     
-    // Mask, 用于walk_direction和head_direction合并成direction
-    int head_direction;
-    if(tear_direction == 5){
-        head_direction = walk_direction;
-    } else {
-        head_direction = tear_direction;
-    }
-    const double moveSpeed = 3;
     int offset_x = 0, offset_y = 0;
-//    Sprite * new_head;
     switch (walk_direction)
     {
             //123
@@ -304,77 +292,6 @@ void Monster::move(int walk_direction, int tear_direction)
         default:
             break;
     }
-//    switch (head_direction) {
-//        case 1: case 2: case 3:
-//            if(prev_head_orientation != 2){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("uphead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1,"head");
-//                prev_head_orientation = 2;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(upshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 2 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(upshakeAnimate);
-////            }
-//            break;
-//        case 4:
-//            if(prev_head_orientation != 4){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("lefthead"));
-//                new_head->setFlippedX(true);
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 4;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(leftshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 4 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(leftshakeAnimate);
-////            }
-//            break;
-//        case 5:
-//            if(prev_head_orientation != 5){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("downhead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 5;
-//            }
-//
-//            break;
-//        case 6:
-//            if(prev_head_orientation != 6){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("righthead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 6;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(rightshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 6 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(rightshakeAnimate);
-////            }
-//            break;
-//        case 7: case 8: case 9:
-//            if(prev_head_orientation != 8){
-//                this->removeChild(this->getChildByName("head"), true);
-//                new_head = createWithSpriteFrame(spriteCache->getSpriteFrameByName("downhead"));
-//                new_head->setPosition(Vec2(0,10));
-//                this->addChild(new_head,1, "head");
-//                prev_head_orientation = 8;
-////                if(tear_direction != 5)
-////                    this->getChildByName("head")->runAction(downshakeAnimate);
-//            }
-////            else if(prev_head_orientation == 8 && tear_direction == 5){
-////                this->getChildByName("head")->runAction(downshakeAnimate);
-////            }
-//            break;
-//        default:
-//            break;
-//    }
     if(walk_direction != 5){
         const auto new_posX = getPositionX() + offset_x;
         const auto new_posY = getPositionY() + offset_y;
@@ -383,5 +300,37 @@ void Monster::move(int walk_direction, int tear_direction)
         this->runAction(action);
         
     }
-    
 }
+
+int Monster::ToPointDir(Vec2 PlayerPos)
+{
+	double diff_x = PlayerPos.x - getPositionX();
+	double diff_y = PlayerPos.y - getPositionY();
+	//将坐标差标准化
+	double max_xy = max(abs(diff_x), abs(diff_y));
+	diff_x /= max_xy;
+	diff_y /= max_xy;
+	if (diff_x == 1) {
+		if (diff_y < -0.3) return 9;
+		if (abs(diff_y) < 0.3)	return 6;
+		if (diff_y > 0.3) return 3;
+	}
+	if (diff_x == -1) {
+		if (diff_y < -0.3) return 7;
+		if (abs(diff_y) < 0.3)	return 4;
+		if (diff_y > 0.3) return 1;
+	}
+	if (diff_y == 1) {
+		if (diff_x < -0.3) return 1;
+		if (abs(diff_x) < 0.3)	return 2;
+		if (diff_x > 0.3) return 3;
+	}
+	if (diff_y == -1) {
+		if (diff_x < -0.3) return 7;
+		if (abs(diff_x) < 0.3)	return 8;
+		if (diff_x > 0.3) return 9;
+	}
+	return 5;
+}
+
+

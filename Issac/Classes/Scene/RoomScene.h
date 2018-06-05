@@ -4,8 +4,9 @@
 #include "cocos2d.h"
 #include "Controller/Event/IRoomSceneListener.h"
 #include "Model/RoomSceneModel.hpp"
-#include "Item/Issac.hpp"
-#include "Item/Monster.hpp"
+#include "Character/Issac.hpp"
+#include "Character/Monster.hpp"
+#include<vector>
 
 USING_NS_CC;
 
@@ -18,8 +19,6 @@ class RoomScene : public Scene
     
     CC_SYNTHESIZE(RoomSceneModel, model, Model)
     CC_SYNTHESIZE_RETAIN(Issac*, player, Player)
-    CC_SYNTHESIZE_RETAIN(Monster*, monster, Monster)
-    CC_SYNTHESIZE_RETAIN(Monster*, monster2, Monster2)
     CC_SYNTHESIZE_RETAIN(Sprite*, tearSprite, TearSprite)
 
     void set_event_listener(IRoomSceneListener *listener);
@@ -30,6 +29,9 @@ class RoomScene : public Scene
 private:
     IRoomSceneListener * listener_ = nullptr;
     void build_frame_cache() const;
+    //使用cocos2d内置Vector管理Sprite等Ref类型的内存
+    //和CC_SYNTHESIZE_RETAIN作用类似
+	Vector<Monster*> monsters_;
 };
 
 #endif // __ROOM_SCENE_H__
