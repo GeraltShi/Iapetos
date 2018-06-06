@@ -25,18 +25,28 @@ bool MainScene::init()
         //TODO 3.怪物对象       gfx\monsters gfx\bosses
         //TODO 4.房间对象       gfx\backdrops
     //TODO 菜单    gfx\ui
-    
+    // 主界面
     Texture2D *titlemenutexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/titlemenu.png");
     bg = Sprite::createWithTexture(titlemenutexture, Rect(0,0,480,270));
     auto title = Sprite::createWithTexture(titlemenutexture, Rect(0,270,480,108));
     bg->setAnchorPoint(Point(0,0));
-    bg->setPosition(0,16); // TODO 这里为了添上黑边，y轴加了16
+    bg->setPosition(0,16); // TODO 这里为了填上黑边，y轴加了16
     title->setPosition(221,200);
     addChild(bg,0);
     bg->addChild(title,1);
-    auto startplay = Sprite::createWithTexture(titlemenutexture, Rect(0,378,164,162));
-    startplay->setPosition(221,100);
-    bg->addChild(startplay,1);
+    auto start = Sprite::createWithTexture(titlemenutexture, Rect(0,378,164,162));
+    auto startplay0 = SpriteFrame::createWithTexture(titlemenutexture, Rect(0,378,162,162));
+    auto startplay1 = SpriteFrame::createWithTexture(titlemenutexture, Rect(162,378,162,162));
+    start->setPosition(221,100);
+    bg->addChild(start,1);
+    Vector<SpriteFrame*> startFrames;
+    startFrames.pushBack(startplay0);
+    startFrames.pushBack(startplay1);
+    Animation * startAnimation = Animation::createWithSpriteFrames(startFrames, 0.3f);
+    startAnimation->setLoops(-1);
+    startAnimation->setRestoreOriginalFrame(true);
+    Animate * startAnimate = Animate::create(startAnimation);
+    start->runAction(startAnimate);
     
     Texture2D *gamemenutexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/gamemenu.png");
     auto gamemenubg = Sprite::createWithTexture(gamemenutexture,Rect(0,0,480,270));
@@ -178,7 +188,7 @@ void MainScene::menu_update(int n) const{
 void MainScene::view_update(int view) {
     if(view == 0){
         if(viewflag_!= 0){
-            const auto BgMoveBack = MoveTo::create(0.3,Vec2(0, 16)); // TODO 这里为了添上黑边，y轴加了16
+            const auto BgMoveBack = MoveTo::create(0.3,Vec2(0, 16)); // TODO 这里为了填上黑边，y轴加了16
             bg->stopAllActions();
             bg->runAction(BgMoveBack);
             viewflag_ = 0;

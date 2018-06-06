@@ -17,9 +17,12 @@ class RoomScene : public Scene
     bool init() override;
     CREATE_FUNC(RoomScene)
     
-    CC_SYNTHESIZE(RoomSceneModel, model, Model)
+//    CC_SYNTHESIZE(RoomSceneModel, model, Model)
+    RoomSceneModel model;
+    void set_model(RoomSceneModel model);
     CC_SYNTHESIZE_RETAIN(Issac*, player, Player)
     CC_SYNTHESIZE_RETAIN(Sprite*, tearSprite, TearSprite)
+    CC_SYNTHESIZE_RETAIN(Sprite*, pausescreen, Pausescreen)
 
     void set_event_listener(IRoomSceneListener *listener);
     void update(float delta) override;

@@ -21,14 +21,14 @@ public:
     void on_mouse_down(Event* event) override;
     void on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event) override;
     void on_key_released(EventKeyboard::KeyCode keyCode, Event* event) override;
-    int check_key_inRoom(EventKeyboard::KeyCode keyCode);
+    int check_key_inRoom(EventKeyboard::KeyCode keyCode) ;
     int check_head();
+    int check_pause(EventKeyboard::KeyCode keyCode);
     
 private:
     map<EventKeyboard::KeyCode,int> key_map_;
 
     int count = 0;
-    bool paused = false;
     LevelService level_service_;
 
 };
