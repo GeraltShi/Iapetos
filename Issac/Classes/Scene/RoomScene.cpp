@@ -21,7 +21,7 @@ bool RoomScene::init()
     /** zorder
      * 8 HUD
      * 7 Overlay
-     * 3 Issac, Monster
+     * 3 Issac, Monster,Rock
      * 2 Room shading
      * 1 Controls, Door, Door Center
      * 0 Room Background
@@ -140,6 +140,28 @@ bool RoomScene::init()
     //srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
+    Texture2D * texture_rocks = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
+    Sprite * rock0 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    Sprite * rock1 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    Sprite * rock2 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    Sprite * rock3 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    rock0->setPosition(39+26*1,39+26*1);
+    addChild(rock0,3);
+    rock1->setPosition(39+26*2,39+26*3);
+    addChild(rock1,3);
+    rock2->setPosition(39+26*3,39+26*4);
+    addChild(rock2,3);
+    rock3->setPosition(39+26*4,39+26*5);
+    addChild(rock3,3);
+    rock4->setPosition(39+26*5,39+26*6);
+    addChild(rock4,3);
+    rock5->setPosition(39+26*6,39+26*7);
+    addChild(rock5,3);
+    rock6->setPosition(39+26*12,39+26*7);
+    addChild(rock6,3);
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
     //TODO 3.物品生成       gfx\items
     

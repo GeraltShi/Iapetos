@@ -90,10 +90,16 @@
 		5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
-		52C4253420BACA6600AE189C /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C4253220BACA6600AE189C /* Issac.cpp */; };
-		52C4253520BACA6600AE189C /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C4253220BACA6600AE189C /* Issac.cpp */; };
-		52C4253820BBBAFB00AE189C /* Monster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C4253620BBBAFB00AE189C /* Monster.cpp */; };
-		52C4253920BBBAFB00AE189C /* Monster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C4253620BBBAFB00AE189C /* Monster.cpp */; };
+		52D2D49C20C6E1960000798E /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49420C6E1960000798E /* Issac.cpp */; };
+		52D2D49D20C6E1960000798E /* Issac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49420C6E1960000798E /* Issac.cpp */; };
+		52D2D49E20C6E1960000798E /* Monster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49620C6E1960000798E /* Monster.cpp */; };
+		52D2D49F20C6E1960000798E /* Monster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49620C6E1960000798E /* Monster.cpp */; };
+		52D2D4A020C6E1960000798E /* Moveable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49820C6E1960000798E /* Moveable.cpp */; };
+		52D2D4A120C6E1960000798E /* Moveable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49820C6E1960000798E /* Moveable.cpp */; };
+		52D2D4A220C6E1960000798E /* SimpleItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49A20C6E1960000798E /* SimpleItem.cpp */; };
+		52D2D4A320C6E1960000798E /* SimpleItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D49A20C6E1960000798E /* SimpleItem.cpp */; };
+		52D2D4A720C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D4A520C6E1AA0000798E /* SimpleItemViewModel.cpp */; };
+		52D2D4A820C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52D2D4A520C6E1AA0000798E /* SimpleItemViewModel.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -219,10 +225,16 @@
 		5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoomSceneModel.cpp; sourceTree = "<group>"; };
 		5299141520A7E04900FBFBB4 /* RoomSceneModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RoomSceneModel.hpp; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
-		52C4253220BACA6600AE189C /* Issac.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Issac.cpp; sourceTree = "<group>"; };
-		52C4253320BACA6600AE189C /* Issac.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Issac.hpp; sourceTree = "<group>"; };
-		52C4253620BBBAFB00AE189C /* Monster.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Monster.cpp; sourceTree = "<group>"; };
-		52C4253720BBBAFB00AE189C /* Monster.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Monster.hpp; sourceTree = "<group>"; };
+		52D2D49420C6E1960000798E /* Issac.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Issac.cpp; sourceTree = "<group>"; };
+		52D2D49520C6E1960000798E /* Issac.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Issac.hpp; sourceTree = "<group>"; };
+		52D2D49620C6E1960000798E /* Monster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Monster.cpp; sourceTree = "<group>"; };
+		52D2D49720C6E1960000798E /* Monster.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Monster.hpp; sourceTree = "<group>"; };
+		52D2D49820C6E1960000798E /* Moveable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Moveable.cpp; sourceTree = "<group>"; };
+		52D2D49920C6E1960000798E /* Moveable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Moveable.h; sourceTree = "<group>"; };
+		52D2D49A20C6E1960000798E /* SimpleItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleItem.cpp; sourceTree = "<group>"; };
+		52D2D49B20C6E1960000798E /* SimpleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleItem.h; sourceTree = "<group>"; };
+		52D2D4A520C6E1AA0000798E /* SimpleItemViewModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleItemViewModel.cpp; sourceTree = "<group>"; };
+		52D2D4A620C6E1AA0000798E /* SimpleItemViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleItemViewModel.h; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -379,10 +391,11 @@
 			children = (
 				5210A1DC20A533230081CC78 /* Controller */,
 				5210A1F220A533240081CC78 /* Misc */,
-				52C4253120BACA6600AE189C /* Item */,
+				52D2D49320C6E1960000798E /* Character */,
 				5210A1ED20A533240081CC78 /* Model */,
 				5210A1E520A533240081CC78 /* Scene */,
 				5210A1EA20A533240081CC78 /* Service */,
+				52D2D4A420C6E1AA0000798E /* ViewModel */,
 				5210A1F020A533240081CC78 /* Util */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
@@ -506,15 +519,28 @@
 			path = Misc;
 			sourceTree = "<group>";
 		};
-		52C4253120BACA6600AE189C /* Item */ = {
+		52D2D49320C6E1960000798E /* Character */ = {
 			isa = PBXGroup;
 			children = (
-				52C4253220BACA6600AE189C /* Issac.cpp */,
-				52C4253320BACA6600AE189C /* Issac.hpp */,
-				52C4253620BBBAFB00AE189C /* Monster.cpp */,
-				52C4253720BBBAFB00AE189C /* Monster.hpp */,
+				52D2D49420C6E1960000798E /* Issac.cpp */,
+				52D2D49520C6E1960000798E /* Issac.hpp */,
+				52D2D49620C6E1960000798E /* Monster.cpp */,
+				52D2D49720C6E1960000798E /* Monster.hpp */,
+				52D2D49820C6E1960000798E /* Moveable.cpp */,
+				52D2D49920C6E1960000798E /* Moveable.h */,
+				52D2D49A20C6E1960000798E /* SimpleItem.cpp */,
+				52D2D49B20C6E1960000798E /* SimpleItem.h */,
 			);
-			path = Item;
+			path = Character;
+			sourceTree = "<group>";
+		};
+		52D2D4A420C6E1AA0000798E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				52D2D4A520C6E1AA0000798E /* SimpleItemViewModel.cpp */,
+				52D2D4A620C6E1AA0000798E /* SimpleItemViewModel.h */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -684,6 +710,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				52D2D4A220C6E1960000798E /* SimpleItem.cpp in Sources */,
 				5210A1F420A533240081CC78 /* MainSceneController.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				5210A1F820A533240081CC78 /* MainScene.cpp in Sources */,
@@ -692,8 +719,10 @@
 				5210A1FA20A533240081CC78 /* RoomScene.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				5210A1F620A533240081CC78 /* RoomSceneController.cpp in Sources */,
-				52C4253820BBBAFB00AE189C /* Monster.cpp in Sources */,
-				52C4253420BACA6600AE189C /* Issac.cpp in Sources */,
+				52D2D49E20C6E1960000798E /* Monster.cpp in Sources */,
+				52D2D4A020C6E1960000798E /* Moveable.cpp in Sources */,
+				52D2D49C20C6E1960000798E /* Issac.cpp in Sources */,
+				52D2D4A720C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */,
 				5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
 				5210A1FC20A533240081CC78 /* LevelService.cpp in Sources */,
 			);
@@ -703,14 +732,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52C4253920BBBAFB00AE189C /* Monster.cpp in Sources */,
+				52D2D49F20C6E1960000798E /* Monster.cpp in Sources */,
 				5210A1FB20A533240081CC78 /* RoomScene.cpp in Sources */,
 				5210A1FD20A533240081CC78 /* LevelService.cpp in Sources */,
 				5210A1FF20A533240081CC78 /* MainSceneModel.cpp in Sources */,
-				52C4253520BACA6600AE189C /* Issac.cpp in Sources */,
+				52D2D49D20C6E1960000798E /* Issac.cpp in Sources */,
 				5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
 				5210A1F720A533240081CC78 /* RoomSceneController.cpp in Sources */,
+				52D2D4A820C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */,
+				52D2D4A320C6E1960000798E /* SimpleItem.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				52D2D4A120C6E1960000798E /* Moveable.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				5210A1F920A533240081CC78 /* MainScene.cpp in Sources */,
 				5210A1F520A533240081CC78 /* MainSceneController.cpp in Sources */,
