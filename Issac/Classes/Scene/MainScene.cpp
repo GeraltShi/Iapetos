@@ -179,6 +179,7 @@ void MainScene::view_update(int view) {
     if(view == 0){
         if(viewflag_!= 0){
             const auto BgMoveBack = MoveTo::create(0.3,Vec2(0, 16)); // TODO 这里为了添上黑边，y轴加了16
+            bg->stopAllActions();
             bg->runAction(BgMoveBack);
             viewflag_ = 0;
         }
@@ -186,6 +187,7 @@ void MainScene::view_update(int view) {
     else{
         if(viewflag_!= 1){
             const auto BgMoveTo = MoveTo::create(0.3,Vec2(0, 270));
+            bg->stopAllActions();
             bg->runAction(BgMoveTo);
             viewflag_ = 1;
         }
