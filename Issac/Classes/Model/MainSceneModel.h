@@ -13,6 +13,7 @@ public:
         menun = (menun+wd+5)%5;
     }
     int menun = 0;
+    int view = 0;
 };
 
 #endif // __MAIN_SCENE_MODEL_H__

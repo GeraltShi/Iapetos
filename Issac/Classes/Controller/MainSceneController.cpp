@@ -47,23 +47,36 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode) const
 {
     //TODO 上下切换目录，回车确认
     int shift = 0;
-    switch (keyCode)
-    {
-    case EventKeyboard::KeyCode::KEY_UP_ARROW:
-        shift = -1;
-        break;
-    case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-        shift = 1;
-        break;
-    case EventKeyboard::KeyCode::KEY_ENTER:
-            shift = 0;
-            if(scene_->model.menun == 0){
-                const auto room = RoomSceneController::createScene();
-                TransitionScene* tx = TransitionFade::create(0.7, room);
-                Director::getInstance()->pushScene(tx);
-            }
-            break;
-    default: break;
+    if(scene_->model.view == 1){
+        switch (keyCode)
+        {
+            case EventKeyboard::KeyCode::KEY_UP_ARROW:
+                shift = -1;
+                break;
+            case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+                shift = 1;
+                break;
+            case EventKeyboard::KeyCode::KEY_ENTER:
+                shift = 0;
+                if(scene_->model.menun == 0){
+                    const auto room = RoomSceneController::createScene();
+                    TransitionScene* tx = TransitionFade::create(0.7, room);
+                    Director::getInstance()->pushScene(tx);
+                }
+                break;
+            case EventKeyboard::KeyCode::KEY_ESCAPE:
+                scene_->model.view = 0;
+                break;
+            default: break;
+        }
+    } else {
+        switch (keyCode)
+        {
+            case EventKeyboard::KeyCode::KEY_ENTER:
+                    scene_->model.view = 1;
+                break;
+            default: break;
+        }
     }
     return shift;
 }
