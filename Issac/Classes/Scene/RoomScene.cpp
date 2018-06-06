@@ -82,6 +82,7 @@ bool RoomScene::init()
     addChild(door2,1);addChild(door_center2,1);
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
     
+    //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
     //光影遮罩，在整个Scene最顶部
     Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
@@ -103,7 +104,7 @@ bool RoomScene::init()
 	monsters_.pushBack(temp_monster);
     addChild(monsters_.at(0), 3, "fatty1");
  
-    
+    //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
     Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
     Sprite * heart = Sprite::createWithTexture(texture_heart, Rect(0,0,16,16));
@@ -147,7 +148,9 @@ bool RoomScene::init()
     Sprite * rock3 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,96,64,64));
+    //TODO 石头应该要scaling 26/32
+    //TODO 小石头的center是13,13
     rock0->setPosition(39+26*1,39+26*1);
     addChild(rock0,3);
     rock1->setPosition(39+26*2,39+26*3);
@@ -160,12 +163,12 @@ bool RoomScene::init()
     addChild(rock4,3);
     rock5->setPosition(39+26*6,39+26*7);
     addChild(rock5,3);
-    rock6->setPosition(39+26*12,39+26*7);
+    //TODO 大石头的center是26,26
+    rock6->setPosition(52+26*12,52+26*6);
     addChild(rock6,3);
-    //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
+    
     //TODO 3.物品生成       gfx\items
     
-    //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 4.1 计分板，原版好像没有这个东西，可以做成计时闯关，时间短分高（如果做不出难度更新）
     
     //TODO 5.生成怪物               gfx\monsters gfx\bosses
