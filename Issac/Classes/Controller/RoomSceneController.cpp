@@ -66,26 +66,7 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
         if(dirx == 0 && diry == 1){return 7;}
         if(dirx == -1 && diry == 1){return 8;}
         if(dirx == 1 && diry == 1){return 9;}
-    } else {
-        switch (keyCode) {
-            case EventKeyboard::KeyCode::KEY_UP_ARROW:
-                scene_->model.paused_menu_cursor = (scene_->model.paused_menu_cursor +1)%2;
-                break;
-            case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-                scene_->model.paused_menu_cursor = (scene_->model.paused_menu_cursor +3)%2;
-                break;
-            case EventKeyboard::KeyCode::KEY_ENTER:
-                if(scene_->model.paused_menu_cursor == 0){
-                    scene_->model.paused = false;
-                } else{
-                    Director::getInstance()->popScene();
-                }
-                break;
-            default:
-                break;
-        }
     }
-   
     return 4;
 }
 
@@ -108,10 +89,11 @@ int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
                 shift = 1;
                 break;
             case EventKeyboard::KeyCode::KEY_ENTER:
-                if(scene_->model.paused_menu_cursor == 0){
+                //TODO cursor = 0,跳转到option
+                if(scene_->model.paused_menu_cursor == 1){
                     scene_->model.paused = false;
-                } else{
-                    //Director::getInstance()->popScene();
+                } else if (scene_->model.paused_menu_cursor == 2){
+                    Director::getInstance()->popScene();
                 }
                 break;
             default:

@@ -13,7 +13,7 @@ public:
     int tear_direction = 5;
     
     void shift_pausemenu(int wd){
-        paused_menu_cursor = (paused_menu_cursor+wd+2)%2;
+        paused_menu_cursor = (paused_menu_cursor+wd+3)%3;
     }
     bool paused = false;
     int paused_menu_generated_flag = 0;

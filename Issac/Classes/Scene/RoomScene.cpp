@@ -19,8 +19,10 @@ bool RoomScene::init()
     const Size size = Director::getInstance()->getWinSize();
     std::cout << size.width <<" "<< size.height << endl;
     /** zorder
-     * 8 HUD
-     * 7 Overlay
+     * 8 HUD, PauseMenu
+     * 7 PauseScreen
+     * 6 Overlay
+     * 5 MiniMap
      * 3 Issac, Monster,Rock
      * 2 Room shading
      * 1 Controls, Door, Door Center
@@ -87,7 +89,7 @@ bool RoomScene::init()
     Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
     overlay->setPosition(221,143);
-    addChild(overlay,7);
+    addChild(overlay,6);
     
     Texture2D *texture_rainbowpoop = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/grid_poop_rainbow.png");
     Sprite * rainbowpoop = Sprite::createWithTexture(texture_rainbowpoop,Rect(0,0,32,32));// TODO 地面物品都有着损坏状态，不应该在这里生成
@@ -130,7 +132,7 @@ bool RoomScene::init()
     Texture2D * texture_minimap = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/minimap1.png");
     Sprite * minimap = Sprite::createWithTexture(texture_minimap, Rect(0,0,56,48));
     minimap->setPosition(370,240);
-    addChild(minimap, 8);
+    addChild(minimap, 5);
     
     //TODO 数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
     Texture2D * texture_font = Director::getInstance()->getTextureCache()->addImage("res/font/pftempestasevencondensed_0.png");
@@ -178,13 +180,19 @@ bool RoomScene::init()
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
    
     Texture2D * pausescreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/pausescreen.png");
-    pausescreen = Sprite::createWithTexture(pausescreenTexture, Rect(0,0,240,208));
+    Texture2D * pausescreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
+    pausescreen = Sprite::createWithTexture(pausescreenBgTexture, Rect(0,0,442,286));
     Sprite * pausecursor = Sprite::createWithTexture(pausescreenTexture, Rect(240,0,14,14));
-    pausecursor->setPosition(60,40);
-    pausescreen->addChild(pausecursor,1,"pausecursor");
-    pausescreen->setPosition(250,143);
-    addChild(pausescreen,9);
+    Sprite * pausemenu = Sprite::createWithTexture(pausescreenTexture, Rect(0,0,240,208));
+    pausemenu->setPosition(-250,143);//初始在屏幕外
+    pausecursor->setPosition(180,95);
+    pausescreen->setOpacity(0x7f);
+    pausemenu->addChild(pausecursor,1,"pausecursor");
+    pausescreen->setPosition(221,143);
+    pausescreen->addChild(pausemenu,0,"pausemenu");
+    addChild(pausescreen,7);
     pausescreen->setVisible(false);
+    
     scheduleUpdate();
     return true;
 }
@@ -230,6 +238,8 @@ void RoomScene::update(float delta)
     if(!model.paused){
         if(pausescreen->isVisible()){
             pausescreen->setVisible(false);
+            auto pausescreenmovein = MoveTo::create(0.2,Vec2(-250, 143));
+            pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
             model.paused_menu_generated_flag = 0;
         }
         
@@ -259,14 +269,22 @@ void RoomScene::update(float delta)
         if(model.paused_menu_generated_flag == 0){
             this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
             pausescreen->setVisible(true);
+            auto pausescreenmovein = MoveTo::create(0.2,Vec2(250, 143));
+            pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
             model.paused_menu_generated_flag = 1;
         }
-        if(model.paused_menu_cursor == 0){
-            const auto cursorMoveTo = MoveTo::create(0,Vec2(50, 55));
-            pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
-        } else {
-            const auto cursorMoveTo = MoveTo::create(0,Vec2(65, 35));
-            pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
+        switch (model.paused_menu_cursor){
+            case 0:
+                pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0,Vec2(60, 85)));
+                break;
+            case 1:
+                pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0,Vec2(45, 60)));
+                break;
+            case 2:
+                pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0,Vec2(65, 35)));
+                break;
+            default:
+                break;
         }
     }
 //   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
