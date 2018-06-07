@@ -6,12 +6,22 @@ using namespace std;
 
 Scene *RoomScene::createScene()
 {
-    return create();
+	//创建有物理空间的场景  
+	Scene* scene = Scene::createWithPhysics();
+	//设置Debug模式，你会看到物体的表面被线条包围，主要为了在调试中更容易地观察  
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	RoomScene* layer = RoomScene::create();
+	//把空间保持我们创建的层中，就是上面所说m_world的作用，方便后面设置空间的参数  
+	layer->setPhyWorld(scene->getPhysicsWorld());
+	scene->addChild(layer);
+	return scene;
+
+   // return create();
 }
 
 bool RoomScene::init()
 {
-    if (!Scene::init())
+    if (!Layer::init())
     {
         return false;
     }
@@ -95,15 +105,29 @@ bool RoomScene::init()
     addChild(rainbowpoop,3);
     
     build_frame_cache();
-    player = Issac::createIssac();
 
+	//创建一个盒子，用来碰撞  
+	Sprite* edgeSpace = Sprite::create();
+	PhysicsBody* boundBody = PhysicsBody::createEdgeBox(size, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+	boundBody->getShape(0)->setFriction(0.0f);
+	boundBody->getShape(0)->setRestitution(1.0f);
+
+	edgeSpace->setPhysicsBody(boundBody);
+	edgeSpace->setPosition(Point(size.width / 2, size.height / 2));
+	this->addChild(edgeSpace);
+	edgeSpace->setTag(0);
+
+    player = Issac::createIssac();
+	player->createPhyBody();
     addChild(player, 3);
-    
+
+  /*
 	Monster* temp_monster = Monster::createMonster();
 	temp_monster->setPosition(Vec2(20,50));
+	temp_monster->createPhyBody();
 	monsters_.pushBack(temp_monster);
     addChild(monsters_.at(0), 3, "fatty1");
- 
+ */
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
     Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
@@ -142,30 +166,30 @@ bool RoomScene::init()
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     Texture2D * texture_rocks = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
-    Sprite * rock0 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock1 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock2 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock0 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock1 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock2 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     Sprite * rock3 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,96,64,64));
+    //Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+   // Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,96,64,64));
     //TODO 石头应该要scaling 26/32
     //TODO 小石头的center是13,13
-    rock0->setPosition(39+26*1,39+26*1);
-    addChild(rock0,3);
-    rock1->setPosition(39+26*2,39+26*3);
-    addChild(rock1,3);
-    rock2->setPosition(39+26*3,39+26*4);
-    addChild(rock2,3);
+    //rock0->setPosition(39+26*1,39+26*1);
+    //addChild(rock0,3);
+    //rock1->setPosition(39+26*2,39+26*3);
+    //addChild(rock1,3);
+    //rock2->setPosition(39+26*3,39+26//*4);
+    //addChild(rock2,3);
     rock3->setPosition(39+26*4,39+26*5);
     addChild(rock3,3);
-    rock4->setPosition(39+26*5,39+26*6);
-    addChild(rock4,3);
-    rock5->setPosition(39+26*6,39+26*7);
-    addChild(rock5,3);
+    //rock4->setPosition(39+26*5,39+26*6);
+    //addChild(rock4,3);
+    //rock5->setPosition(39+26*6,39+26*7);
+    //addChild(rock5,3);
     //TODO 大石头的center是26,26
-    rock6->setPosition(52+26*12,52+26*6);
-    addChild(rock6,3);
+	//rock6->setPosition(52+26*12,52+26*6);
+	//addChild(rock6,3);
     
     //TODO 3.物品生成       gfx\items
     
@@ -234,18 +258,18 @@ void RoomScene::update(float delta)
         }
         
         //monster移动
-        monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
-        monsters_.at(0)->boundingBox();
+        //monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
+       // monsters_.at(0)->boundingBox();
         
         // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
         player->move(model.walk_direction, model.tear_direction);
         
         //碰撞检测
-        if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
+        /*if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
             int col_Dir = monsters_.at(0)->ToPointDir(player->getPosition());
             monsters_.at(0)->move(10 - col_Dir);
             player->move(col_Dir, model.tear_direction);
-        }
+        }*/
         
         if(model.tear_direction == 5){
             this->schedule(schedule_selector(RoomScene::fire), 0.5);

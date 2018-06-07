@@ -10,9 +10,12 @@
 
 USING_NS_CC;
 
-class RoomScene : public Scene
+class RoomScene : public cocos2d::Layer
 {
-  public:
+public:
+	 PhysicsWorld * m_world;
+	 void setPhyWorld(PhysicsWorld* world) { m_world = world; };
+
     static Scene *createScene();
     bool init() override;
     CREATE_FUNC(RoomScene)

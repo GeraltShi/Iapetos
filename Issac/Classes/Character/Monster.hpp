@@ -15,6 +15,7 @@ public:
     
     CREATE_FUNC(Monster)
     
+	virtual void createPhyBody();
 	void move(int walk_direction);
 	int ToPointDir(Vec2);
 private:

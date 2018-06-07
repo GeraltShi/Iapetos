@@ -21,14 +21,18 @@ public:
 
 	CC_SYNTHESIZE_RETAIN(Animate*, idleAnimate, IdleAnimate)
 	CC_SYNTHESIZE_RETAIN(Animate*, moveAnimate, MoveAnimate)
-
+	
+	CC_SYNTHESIZE(PhysicsBody*, phyBody, PhyBody)
 	CC_SYNTHESIZE(bool, moving, Moving)
 	CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
 	CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
 	CC_SYNTHESIZE(double, moveSpeed, MoveSpeed)
-	CC_SYNTHESIZE(double, widthSize, WidthSize)
+	CC_SYNTHESIZE(double, radiusSize, RadiusSize)
+	CC_SYNTHESIZE(double, bodyMass, BodyMass)
 
-	virtual Rect boundingBox();
+
+	virtual void createPhyBody() = 0;
+//	virtual Rect boundingBox();
 };
 
 #endif
