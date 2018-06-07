@@ -15,6 +15,7 @@ public:
     void shift_pausemenu(int wd){
         paused_menu_cursor = (paused_menu_cursor+wd+3)%3;
     }
+    bool bomb = false;
     bool paused = false;
     int paused_menu_generated_flag = 0;
     int paused_menu_cursor = 1;

@@ -19,8 +19,8 @@ class Moveable : public Sprite {
 public:
 	bool init() override;
 
-	CC_SYNTHESIZE_RETAIN(Animate*, idleAnimate, IdleAnimate)
-	CC_SYNTHESIZE_RETAIN(Animate*, moveAnimate, MoveAnimate)
+	//CC_SYNTHESIZE_RETAIN(Animate*, idleAnimate, IdleAnimate)
+	//CC_SYNTHESIZE_RETAIN(Animate*, moveAnimate, MoveAnimate)
 
 	CC_SYNTHESIZE(bool, moving, Moving)
 	CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)

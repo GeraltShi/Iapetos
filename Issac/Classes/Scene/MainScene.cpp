@@ -3,8 +3,8 @@
 USING_NS_CC;
 using namespace std;
 
-#define XOFFSET 51
-#define XSTEP 2
+#define XOFFSET 45
+#define XSTEP 3
 #define YSTEP 32
 Scene * MainScene::createScene()
 {

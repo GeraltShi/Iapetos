@@ -24,6 +24,7 @@ public:
     int check_key_inRoom(EventKeyboard::KeyCode keyCode) ;
     int check_head();
     int check_pause(EventKeyboard::KeyCode keyCode);
+    void check_bomb(EventKeyboard::KeyCode keyCode);
     
 private:
     map<EventKeyboard::KeyCode,int> key_map_;

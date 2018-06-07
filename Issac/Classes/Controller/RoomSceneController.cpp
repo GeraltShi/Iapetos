@@ -44,7 +44,6 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
         switch (keyCode)
         {
             case EventKeyboard::KeyCode::KEY_ESCAPE:
-                //std::cout << "ESC pressed" << endl;
                 scene_->stopAllActions();
                 scene_->model.paused = true;
                 break;
@@ -102,6 +101,19 @@ int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
     }
     return shift;
 }
+
+void RoomSceneController::check_bomb(EventKeyboard::KeyCode keyCode){
+    if(!scene_->model.paused){
+        switch (keyCode) {
+            case cocos2d::EventKeyboard::KeyCode::KEY_E:
+                scene_->model.bomb = true;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
     key_map_[keyCode] = 1;
@@ -109,6 +121,7 @@ void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* 
     scene_->model.walk_direction = check_key_inRoom(keyCode);
     scene_->model.tear_direction = check_head();
     scene_->model.shift_pausemenu(check_pause(keyCode));
+    check_bomb(keyCode);
 }
 
 void RoomSceneController::on_key_released(EventKeyboard::KeyCode keyCode, Event * event)

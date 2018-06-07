@@ -193,6 +193,11 @@ bool RoomScene::init()
     addChild(pausescreen,7);
     pausescreen->setVisible(false);
     
+    //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
+    bomb = SimpleItem::createSimpleItem();
+    bomb->setVisible(false);
+    addChild(bomb,3);
+    
     scheduleUpdate();
     return true;
 }
@@ -242,6 +247,13 @@ void RoomScene::update(float delta)
             pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
             model.paused_menu_generated_flag = 0;
         }
+        if(model.bomb){
+            cout << "bomb placed"<<endl;
+            //TODO 炸弹爆炸动画，爆炸范围判定，销毁
+            bomb->setPosition(player->getPositionX(),player->getPositionY());
+            bomb->setVisible(true);
+            model.bomb = false;
+        }
         
         //monster移动
         monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
@@ -258,7 +270,7 @@ void RoomScene::update(float delta)
         }
         
         if(model.tear_direction == 5 && scheduled == 0){
-            this->schedule(schedule_selector(RoomScene::fire), 0.5);
+            this->schedule(schedule_selector(RoomScene::fire), 0.4, 65536,0.001);
             scheduled = 1;
         }
         //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
@@ -288,7 +300,6 @@ void RoomScene::update(float delta)
                 break;
         }
     }
-//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
 
 void RoomScene::set_model(RoomSceneModel model)

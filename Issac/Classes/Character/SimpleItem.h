@@ -6,9 +6,15 @@
 USING_NS_CC;
 using namespace std;
 
-class SimpleItem
+class SimpleItem : public Sprite
 {
-
+public:
+    static SimpleItem *createSimpleItem();
+    static Sprite *createSprite();
+    bool init() override;
+    
+    CREATE_FUNC(SimpleItem)
+    
 };
 
 
