@@ -388,10 +388,10 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
     }
     if(walk_direction != 5){
-        const auto new_posX = getPositionX() + offset_x;
-        const auto new_posY = getPositionY() + offset_y;
-        ActionInterval * MoveTo = MoveTo::create(0.2, Vec2(new_posX, new_posY));
-        Action * action = Spawn::create(MoveTo, NULL);
+        //const auto new_posX = getPositionX() + offset_x;
+        //const auto new_posY = getPositionY() + offset_y;
+        ActionInterval * Move = MoveBy::create(0.2, Vec2(offset_x, offset_y));
+        Action * action = Spawn::create(Move, NULL);
         this->runAction(action);
     }
 }

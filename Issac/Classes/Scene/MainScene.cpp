@@ -38,7 +38,7 @@ bool MainScene::init()
     auto startplay0 = SpriteFrame::createWithTexture(titlemenutexture, Rect(0,378,162,162));
     auto startplay1 = SpriteFrame::createWithTexture(titlemenutexture, Rect(162,378,162,162));
     start->setPosition(221,100);
-    bg->addChild(start,1);
+    bg->addChild(start,0);
     Vector<SpriteFrame*> startFrames;
     startFrames.pushBack(startplay0);
     startFrames.pushBack(startplay1);

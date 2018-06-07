@@ -257,8 +257,9 @@ void RoomScene::update(float delta)
             player->move(col_Dir, model.tear_direction);
         }
         
-        if(model.tear_direction == 5){
+        if(model.tear_direction == 5 && scheduled == 0){
             this->schedule(schedule_selector(RoomScene::fire), 0.5);
+            scheduled = 1;
         }
         //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
         //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
