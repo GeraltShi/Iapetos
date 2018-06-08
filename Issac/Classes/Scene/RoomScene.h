@@ -30,7 +30,6 @@ class RoomScene : public Scene
     void update(float delta) override;
     void fire(float dt);
     void monster_move(float dt);
-    int scheduled = 0;
 private:
     IRoomSceneListener * listener_ = nullptr;
     void build_frame_cache() const;
