@@ -335,23 +335,23 @@ int Monster::ToPointDir(Vec2 PlayerPos)
 
 void Monster::createPhyBody()
 {
-	this->phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
-	//是否设置物体为静态  
-	this->phyBody->setDynamic(false);
-	//设置物体的恢复力  
-	this->phyBody->getShape(0)->setRestitution(1.0f);
-	//设置物体的摩擦力  
-	this->phyBody->getShape(0)->setFriction(0.0f);
-	//设置物体密度  
-	this->phyBody->getShape(0)->setDensity(1.0f);
-	//设置质量  
-	this->phyBody->getShape(0)->setMass(50);
-	//设置物体是否受重力系数影响  
-	this->phyBody->setGravityEnable(false);
-	//速度
-	this->phyBody->setVelocity(Vec2(0, 0));
-	//添加物理躯体
-	this->setPhysicsBody(this->phyBody);
+	//this->phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
+	////是否设置物体为静态  
+	//this->phyBody->setDynamic(false);
+	////设置物体的恢复力  
+	//this->phyBody->getShape(0)->setRestitution(1.0f);
+	////设置物体的摩擦力  
+	//this->phyBody->getShape(0)->setFriction(0.0f);
+	////设置物体密度  
+	//this->phyBody->getShape(0)->setDensity(1.0f);
+	////设置质量  
+	//this->phyBody->getShape(0)->setMass(50);
+	////设置物体是否受重力系数影响  
+	//this->phyBody->setGravityEnable(false);
+	////速度
+	//this->phyBody->setVelocity(Vec2(0, 0));
+	////添加物理躯体
+	//this->setPhysicsBody(this->phyBody);
 }
 
 

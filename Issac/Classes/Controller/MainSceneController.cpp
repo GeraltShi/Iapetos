@@ -59,7 +59,7 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode) const
             case EventKeyboard::KeyCode::KEY_ENTER:
                 shift = 0;
                 if(scene_->model.menun == 0){
-                    const auto room = RoomSceneController::createScene();
+                    const auto room = RoomSceneController::createScene(0);
                     TransitionScene* tx = TransitionFade::create(0.7, room);
                     Director::getInstance()->pushScene(tx);
                 }

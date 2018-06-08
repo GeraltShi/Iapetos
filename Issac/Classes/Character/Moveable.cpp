@@ -11,7 +11,7 @@ bool Moveable::init()
 	prev_walk_orientation = 5;
 	prev_head_orientation = 5;
 	moveSpeed = 100;
-	radiusSize = 10;
+	radiusSize = 5;
 	bodyMass = 50;
 	moving = false;
 

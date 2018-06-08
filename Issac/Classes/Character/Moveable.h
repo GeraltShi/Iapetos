@@ -22,7 +22,7 @@ public:
 	CC_SYNTHESIZE_RETAIN(Animate*, idleAnimate, IdleAnimate)
 	CC_SYNTHESIZE_RETAIN(Animate*, moveAnimate, MoveAnimate)
 	
-	CC_SYNTHESIZE(PhysicsBody*, phyBody, PhyBody)
+	//CC_SYNTHESIZE_RETAIN(PhysicsBody*, phyBody, PhyBody)
 	CC_SYNTHESIZE(bool, moving, Moving)
 	CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
 	CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)

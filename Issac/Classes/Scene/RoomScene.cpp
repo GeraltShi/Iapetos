@@ -1,33 +1,26 @@
 #include "RoomScene.h"
+#include "AppDelegate.h"
 #include <iostream>
 
 USING_NS_CC;
 using namespace std;
 
-Scene *RoomScene::createScene()
+Scene * RoomScene::createScene(int roomID)
 {
-	//创建有物理空间的场景  
-	Scene* scene = Scene::createWithPhysics();
-	//设置Debug模式，你会看到物体的表面被线条包围，主要为了在调试中更容易地观察  
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	RoomScene* layer = RoomScene::create();
-	//把空间保持我们创建的层中，就是上面所说m_world的作用，方便后面设置空间的参数  
-	layer->setPhyWorld(scene->getPhysicsWorld());
-	scene->addChild(layer);
-	return scene;
-
-   // return create();
+	return create(roomID);
 }
 
-bool RoomScene::init()
+bool RoomScene::init(int roomID)
 {
-    if (!Layer::init())
+    if (!Scene::initWithPhysics())
     {
         return false;
     }
 
+	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
     const Size size = Director::getInstance()->getWinSize();
-    std::cout << size.width <<" "<< size.height << endl;
+   // std::cout << size.width <<" "<< size.height << endl;
     /** zorder
      * 8 HUD
      * 7 Overlay
@@ -108,18 +101,29 @@ bool RoomScene::init()
 
 	//创建一个盒子，用来碰撞  
 	Sprite* edgeSpace = Sprite::create();
-	PhysicsBody* boundBody = PhysicsBody::createEdgeBox(size, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+	PhysicsBody* boundBody = PhysicsBody::createEdgeBox(size, PHYSICSBODY_MATERIAL_DEFAULT, 5);
 	boundBody->getShape(0)->setFriction(0.0f);
 	boundBody->getShape(0)->setRestitution(1.0f);
-
 	edgeSpace->setPhysicsBody(boundBody);
 	edgeSpace->setPosition(Point(size.width / 2, size.height / 2));
 	this->addChild(edgeSpace);
 	edgeSpace->setTag(0);
 
+
     player = Issac::createIssac();
-	player->createPhyBody();
-    addChild(player, 3);
+
+	auto phyBody = PhysicsBody::createCircle(player->getRadiusSize(), PHYSICSBODY_MATERIAL_DEFAULT);
+	phyBody->setDynamic(true);
+	phyBody->getShape(0)->setRestitution(1.0f);
+	phyBody->getShape(0)->setFriction(0.0f);
+	phyBody->getShape(0)->setDensity(1.0f);
+	phyBody->getShape(0)->setMass(50);
+	phyBody->setGravityEnable(false);
+	phyBody->setVelocity(Vec2(100, 0));
+	addChild(player, 3);
+	
+	player->addComponent(phyBody);
+
 
   /*
 	Monster* temp_monster = Monster::createMonster();
@@ -262,7 +266,7 @@ void RoomScene::update(float delta)
        // monsters_.at(0)->boundingBox();
         
         // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
-        player->move(model.walk_direction, model.tear_direction);
+        //player->move(model.walk_direction, model.tear_direction);
         
         //碰撞检测
         /*if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {

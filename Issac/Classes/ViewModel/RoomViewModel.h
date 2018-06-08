@@ -2,12 +2,12 @@
 #define LEVEL_MODEL_H_
 
 #include "cocos2d.h"
-#include "ViewModel/SimpleItemViewModel.h"
+#include "SimpleItemViewModel.h"
 
 USING_NS_CC;
 using namespace std;
 
-class LevelModel
+class RoomViewModel
 {
 public:
     //房间：门的位置（enable），门的样式，地面物品（棋盘），地面的样子，光影，边界（棋盘）。

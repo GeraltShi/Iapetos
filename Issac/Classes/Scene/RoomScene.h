@@ -10,15 +10,29 @@
 
 USING_NS_CC;
 
-class RoomScene : public cocos2d::Layer
+class RoomScene : public cocos2d::Scene
 {
 public:
-	 PhysicsWorld * m_world;
-	 void setPhyWorld(PhysicsWorld* world) { m_world = world; };
+    static Scene *createScene(int roomID);
+    //bool init() override;
 
-    static Scene *createScene();
-    bool init() override;
-    CREATE_FUNC(RoomScene)
+	bool init(int roomID);
+    //CREATE_FUNC(RoomScene)
+	static RoomScene* create(int roomID) 
+	{ 
+		RoomScene *pRet = new(std::nothrow) RoomScene(); 
+		if (pRet && pRet->init(roomID)) 
+		{ 
+			pRet->autorelease(); 
+			return pRet; 
+		} 
+		else 
+		{ 
+			delete pRet; 
+			pRet = nullptr; 
+			return nullptr; 
+		} 
+	}
     
 //    CC_SYNTHESIZE(RoomSceneModel, model, Model)
     RoomSceneModel model;
@@ -26,6 +40,7 @@ public:
     CC_SYNTHESIZE_RETAIN(Issac*, player, Player)
     CC_SYNTHESIZE_RETAIN(Sprite*, tearSprite, TearSprite)
     CC_SYNTHESIZE_RETAIN(Sprite*, pausescreen, Pausescreen)
+	CC_SYNTHESIZE(int, roomID, RoomID)
 
     void set_event_listener(IRoomSceneListener *listener);
     void update(float delta) override;
