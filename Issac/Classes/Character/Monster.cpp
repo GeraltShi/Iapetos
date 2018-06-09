@@ -24,11 +24,11 @@ bool Monster::init()
         return false;
     }
 
-	//初始化类变量
-	moveSpeed = 2;
+	//初始化类变量	
 	radiusSize = 15;
 	bodyMass = 50;
 	moving = false;
+	moveSpeed = 120;
 	//普通怪血量5
 	health = 5;
 	//普通怪攻击1
@@ -201,15 +201,12 @@ void Monster::move(int walk_direction)
     Animate * hwalk_animate = Animate::create(hwalk_animation);
     Animate * head_animate = Animate::create(head_animation);
     
-    int offset_x = 0, offset_y = 0;
     switch (walk_direction)
     {
             //123
             //456
             //789
         case 4://左
-            if(this->getPositionX() > 76){ offset_x = -moveSpeed;}
-            else {offset_x = 0;}
             if(prev_walk_orientation != 4){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->setScaleX(-1);//翻转
@@ -220,8 +217,6 @@ void Monster::move(int walk_direction)
             break;
             
         case 6://右
-            if(this->getPositionX() < 442-76){ offset_x = moveSpeed;}
-            else {offset_x = 0;}
             if(prev_walk_orientation != 6){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->setScaleX(1);//翻转
@@ -232,8 +227,6 @@ void Monster::move(int walk_direction)
             break;
             
         case 2://上
-            if(this->getPositionY() < 286-76){ offset_y = moveSpeed;}
-            else {offset_y = 0;}
             if(prev_walk_orientation != 2){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
@@ -243,8 +236,6 @@ void Monster::move(int walk_direction)
             break;
             
         case 8://下
-            if(this->getPositionY() > 76){offset_y = -moveSpeed;}
-            else {offset_y = 0;}
             if(prev_walk_orientation != 8){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -254,10 +245,6 @@ void Monster::move(int walk_direction)
             break;
             
         case 1://左上
-            if(this->getPositionX() > 76) offset_x = -moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() < 286-76) offset_y = moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 1){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());
@@ -267,10 +254,6 @@ void Monster::move(int walk_direction)
             break;
             
         case 3://右上
-            if(this->getPositionX() < 442-76) offset_x = moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() < 286-76) offset_y = moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 3){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());
@@ -280,10 +263,6 @@ void Monster::move(int walk_direction)
             break;
             
         case 7://左下
-            if(this->getPositionX() > 76) offset_x = -moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() > 76) offset_y = -moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 7){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -293,10 +272,6 @@ void Monster::move(int walk_direction)
             break;
             
         case 9://右下
-            if(this->getPositionX() < 442-76) offset_x = moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() > 76) offset_y = -moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 9){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -305,21 +280,12 @@ void Monster::move(int walk_direction)
             break;
             
         case 5://无，头要默认复位
-            offset_x = 0;
-            offset_y = 0;
             this->getChildByName("body")->stopAllActions();
             prev_walk_orientation = 5;
             break;
             
         default:
             break;
-    }
-    if(walk_direction != 5){
-        const auto new_posX = getPositionX() + offset_x;
-        const auto new_posY = getPositionY() + offset_y;
-        ActionInterval * MoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
-        Action * action = Spawn::create(MoveTo, NULL);
-        this->runAction(action);
     }
 
 	if (colClog == 0) {

@@ -269,6 +269,10 @@ void RoomScene::update(float delta)
 			else {
 				monsters_.at(i)->move( monsters_.at(i)->ToPointDir(player->getPosition()));
 			}
+			//无敌时间的倒计时
+			if (monsters_.at(i)->getInvincibleTime() > 0) {
+				monsters_.at(i)->setInvincibleTime(monsters_.at(i)->getInvincibleTime() - 1);
+			}
 		}
         
 		//player移动	
@@ -281,7 +285,10 @@ void RoomScene::update(float delta)
 		else {
 			player->move(model.walk_direction, model.tear_direction);
 		}
-        
+		//player无敌时间的倒计时
+		if (player->getInvincibleTime() > 0) {
+			player->setInvincibleTime(player->getInvincibleTime() - 1);
+		}
         
 		if(model.tear_direction == 5){
 			this->schedule(schedule_selector(RoomScene::fire), 0.5);
@@ -453,23 +460,33 @@ void RoomScene::build_frame_cache() const
 
 bool RoomScene::onContactBegin(PhysicsContact& contact)
 {
-	auto nodeA = contact.getShapeA()->getBody()->getNode();
-	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (contact.getShapeA()->getBody()->getNode()->getTag() == 0
+		|| contact.getShapeB()->getBody()->getNode()->getTag() == 0) {
+		return true;
+	}
+
+	Moveable* nodeA = (Moveable*)contact.getShapeA()->getBody()->getNode();
+	Moveable* nodeB = (Moveable*)contact.getShapeB()->getBody()->getNode();
+	
 	if (nodeA->getTag() > nodeB->getTag()) {
-		auto tempnode = nodeA;
+		Moveable* tempnode = nodeA;
 		nodeA = nodeB;
 		nodeB = tempnode;
 	}
+	
 	//tagA<=tagB
 	//tag=0 stone; tag=1:player; tag=2:monster; tag=3:tear;
 	int tagA = nodeA->getTag(), tagB = nodeB->getTag();
 	if (nodeA && nodeB)
 	{
-		if ((tagA==1 && tagB==2))
+		if (tagA==1 && tagB==2 && nodeA->getInvincibleTime()==0 )
 		{
 			//Issac被monster碰到，受伤
-			
-			log("AAAAAAAAAAA");
+			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+			//Issac进入短暂无敌状态
+			nodeA->setInvincibleTime(20);
+			//TO DO添加受伤动画？
+			log("Health:%lf",nodeA->getHealth());
 		}
 	}
 

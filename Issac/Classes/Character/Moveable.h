@@ -31,6 +31,7 @@ public:
 	CC_SYNTHESIZE(double, moveSpeed, MoveSpeed)
 	CC_SYNTHESIZE(double, radiusSize, RadiusSize)
 	CC_SYNTHESIZE(double, bodyMass, BodyMass)
+	CC_SYNTHESIZE(int, invincibleTime, InvincibleTime)
 	
 	//初步设定Issac的血量为整数，单位为半颗血。Monster血量为实数，<0时死亡
 	CC_SYNTHESIZE(double, health, Health)

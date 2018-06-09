@@ -22,7 +22,7 @@ bool Issac::init()
     }
 
 	//初始化类变量
-	moveSpeed = 100;
+	moveSpeed = 150;
 	radiusSize = 10;
 	bodyMass = 50;
 	moving = false;
