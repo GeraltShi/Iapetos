@@ -14,6 +14,9 @@ using namespace std;
 #define _abs_
 #define abs(x)	((x)<0?(-x):x)
 #endif
+#ifndef _ColClogTime_
+#define ColClogTime 3
+#endif
 
 class Moveable : public Sprite {
 public:
@@ -22,17 +25,17 @@ public:
 	CC_SYNTHESIZE_RETAIN(Animate*, idleAnimate, IdleAnimate)
 	CC_SYNTHESIZE_RETAIN(Animate*, moveAnimate, MoveAnimate)
 	
-	//CC_SYNTHESIZE_RETAIN(PhysicsBody*, phyBody, PhyBody)
 	CC_SYNTHESIZE(bool, moving, Moving)
 	CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
 	CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
 	CC_SYNTHESIZE(double, moveSpeed, MoveSpeed)
 	CC_SYNTHESIZE(double, radiusSize, RadiusSize)
 	CC_SYNTHESIZE(double, bodyMass, BodyMass)
-
+	//ColClogÓÃÓÚÅö×²×èÈû
+	CC_SYNTHESIZE(int, colClog, ColClog)
 
 	virtual void createPhyBody() = 0;
-//	virtual Rect boundingBox();
+	Vec2 calSpeed(int dir);
 };
 
 #endif

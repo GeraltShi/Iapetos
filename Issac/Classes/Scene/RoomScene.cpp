@@ -111,18 +111,8 @@ bool RoomScene::init(int roomID)
 
 
     player = Issac::createIssac();
-
-	auto phyBody = PhysicsBody::createCircle(player->getRadiusSize(), PHYSICSBODY_MATERIAL_DEFAULT);
-	phyBody->setDynamic(true);
-	phyBody->getShape(0)->setRestitution(1.0f);
-	phyBody->getShape(0)->setFriction(0.0f);
-	phyBody->getShape(0)->setDensity(1.0f);
-	phyBody->getShape(0)->setMass(50);
-	phyBody->setGravityEnable(false);
-	phyBody->setVelocity(Vec2(100, 0));
+	player->createPhyBody();
 	addChild(player, 3);
-	
-	player->addComponent(phyBody);
 
 
   /*
@@ -261,43 +251,51 @@ void RoomScene::update(float delta)
             model.paused_menu_generated_flag = 0;
         }
         
-        //monster移动
-        //monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
-       // monsters_.at(0)->boundingBox();
+		//monster移动
+		//monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
+		// monsters_.at(0)->boundingBox();
         
-        // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
-        //player->move(model.walk_direction, model.tear_direction);
+		//player移动	
+		if (player->getColClog() != ColClogTime) {
+			player->setColClog(player->getColClog() + 1);
+			if (player->getColClog() == ColClogTime) {
+				player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+			}	
+		}
+		else {
+			player->move(model.walk_direction, model.tear_direction);
+		}
         
-        //碰撞检测
-        /*if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
-            int col_Dir = monsters_.at(0)->ToPointDir(player->getPosition());
-            monsters_.at(0)->move(10 - col_Dir);
-            player->move(col_Dir, model.tear_direction);
-        }*/
+		//碰撞检测
+		/*if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
+			int col_Dir = monsters_.at(0)->ToPointDir(player->getPosition());
+			monsters_.at(0)->move(10 - col_Dir);
+			player->move(col_Dir, model.tear_direction);
+		}*/
         
-        if(model.tear_direction == 5){
-            this->schedule(schedule_selector(RoomScene::fire), 0.5);
-        }
-        //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
-        //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
-        //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-        //std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
-    } else {
-        
-        if(model.paused_menu_generated_flag == 0){
-            this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
-            pausescreen->setVisible(true);
-            model.paused_menu_generated_flag = 1;
-        }
-        if(model.paused_menu_cursor == 0){
-            const auto cursorMoveTo = MoveTo::create(0,Vec2(50, 55));
-            pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
-        } else {
-            const auto cursorMoveTo = MoveTo::create(0,Vec2(65, 35));
-            pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
-        }
-    }
-//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
+		if(model.tear_direction == 5){
+			this->schedule(schedule_selector(RoomScene::fire), 0.5);
+		}
+		//TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
+		//TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
+		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
+		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
+	} 
+	else {     
+		if(model.paused_menu_generated_flag == 0){
+			this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
+			pausescreen->setVisible(true);
+			model.paused_menu_generated_flag = 1;
+		}
+		if(model.paused_menu_cursor == 0){
+			const auto cursorMoveTo = MoveTo::create(0,Vec2(50, 55));
+			pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
+		} else {
+			const auto cursorMoveTo = MoveTo::create(0,Vec2(65, 35));
+			pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
+		}
+	}
+	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
 
 void RoomScene::set_model(RoomSceneModel model)

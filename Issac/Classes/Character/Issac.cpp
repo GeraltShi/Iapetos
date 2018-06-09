@@ -2,7 +2,7 @@
 #include "cocos2d.h"
 
 using namespace cocos2d;
-# define ROOT2 1.41421356
+
 
 Issac *Issac::createIssac()
 {
@@ -20,6 +20,13 @@ bool Issac::init()
     {
         return false;
     }
+
+	//初始化类变量
+	moveSpeed = 100;
+	radiusSize = 10;
+	bodyMass = 50;
+	moving = false;
+
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
@@ -188,6 +195,17 @@ void Issac::build_animation_cache()
 //TODO MoveTo 有bug，贴墙以后在墙附近怼墙 会卡住
 void Issac::move(int walk_direction, int tear_direction)
 {
+	//移动
+	//移动速度不是之前的情况，说明发生碰撞
+	if (colClog == ColClogTime
+		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
+		colClog = 0;
+	}
+	else {
+		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+	}
+
+	//移动的图形显示
     //直接获取缓存，不要将SpriteFrame保存在类中
     auto spriteCache = SpriteFrameCache::getInstance();
     auto aniCache = AnimationCache::getInstance();
@@ -213,7 +231,6 @@ void Issac::move(int walk_direction, int tear_direction)
     } else {
         head_direction = tear_direction;
     }
-    int offset_x = 0, offset_y = 0;
     Sprite * new_head;
     switch (walk_direction)
     {
@@ -221,7 +238,6 @@ void Issac::move(int walk_direction, int tear_direction)
             //456
             //789
         case 4://左
-            offset_x = -moveSpeed;
             if(prev_walk_orientation != 4){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->setScaleX(-1);//翻转
@@ -231,7 +247,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 6://右
-            offset_x = moveSpeed;
             if(prev_walk_orientation != 6){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->setScaleX(1);//翻转
@@ -241,7 +256,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 2://上
-            offset_y = moveSpeed;
             if(prev_walk_orientation != 2){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
@@ -250,7 +264,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 8://下
-            offset_y = -moveSpeed;
             if(prev_walk_orientation != 8){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -259,8 +272,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 1://左上
-            offset_x = -moveSpeed/ROOT2;
-            offset_y = moveSpeed/ROOT2;
             if(prev_walk_orientation != 1){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());
@@ -269,8 +280,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 3://右上
-            offset_x = moveSpeed/ROOT2;
-            offset_y = moveSpeed/ROOT2;
             if(prev_walk_orientation != 3){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());
@@ -279,8 +288,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 7://左下
-            offset_x = -moveSpeed/ROOT2;
-            offset_y = -moveSpeed/ROOT2;
             if(prev_walk_orientation != 7){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -289,8 +296,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 9://右下
-            offset_x = moveSpeed/ROOT2;
-            offset_y = -moveSpeed/ROOT2;
             if(prev_walk_orientation != 9){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -299,8 +304,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 5://无，头要默认复位
-            offset_x = 0;
-            offset_y = 0;
             this->getChildByName("body")->stopAllActions();
             prev_walk_orientation = 5;
             break;
@@ -344,7 +347,6 @@ void Issac::move(int walk_direction, int tear_direction)
                 this->addChild(new_head,1, "head");
                 prev_head_orientation = 5;
             }
-            
             break;
         case 6:
             if(prev_head_orientation != 6){
@@ -375,21 +377,18 @@ void Issac::move(int walk_direction, int tear_direction)
         default:
             break;
     }
-    
-	this->getPhysicsBody()->setVelocity(Vec2(offset_x, offset_y));
-       //  const auto new_posX = getPositionX() + offset_x;
-       //  const auto new_posY = getPositionY() + offset_y;
-       // ActionInterval * MoveTo = MoveTo::create(0.2, Vec2(new_posX, new_posY));
-       // Action * action = Spawn::create(MoveTo, NULL);
-       // this->runAction(action);
- 
+
+
+	if (colClog == 0) {
+		prev_walk_orientation = 5;
+	}
 }
 
 void Issac::createPhyBody()
 {
 	auto phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
 	//是否设置物体为静态  
-	phyBody->setDynamic(false);
+	phyBody->setDynamic(true);
 	//设置物体的恢复力  
 	phyBody->getShape(0)->setRestitution(1.0f);
 	//设置物体的摩擦力  

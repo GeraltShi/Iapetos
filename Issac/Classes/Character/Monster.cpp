@@ -24,6 +24,12 @@ bool Monster::init()
         return false;
     }
 
+	//初始化类变量
+	moveSpeed = 100;
+	radiusSize = 5;
+	bodyMass = 50;
+	moving = false;
+
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
     SpriteFrame *headFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(0, 0, 32, 32));
