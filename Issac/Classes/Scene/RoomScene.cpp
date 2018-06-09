@@ -115,11 +115,12 @@ bool RoomScene::init(int roomID)
 	addChild(player, 3);
   
 	//monster生成
-	Monster* temp_monster = Monster::createMonster();
-	temp_monster->setPosition(Vec2(50,50));
-	temp_monster->createPhyBody();
-	monsters_.pushBack(temp_monster);
-	addChild(monsters_.at(0) , 3, "fatty1");
+	for (int i = 0; i < 2; i++) {
+		Fatty* temp_fatty = Fatty::createFatty();
+		temp_fatty->setPosition(Vec2(50, 50));
+		monsters_.pushBack((Monster*)temp_fatty);
+		addChild(monsters_.at(i), 3, "fatty1");
+	}
  
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
@@ -267,7 +268,8 @@ void RoomScene::update(float delta)
 				}
 			}
 			else {
-				monsters_.at(i)->move( monsters_.at(i)->ToPointDir(player->getPosition()));
+				//monsters_.at(i)->move( monsters_.at(i)->ToPointDir(player->getPosition()));
+				monsters_.at(i)->moveStrategy(monsters_.at(i)->ToPointDir(player->getPosition()));
 			}
 			//无敌时间的倒计时
 			if (monsters_.at(i)->getInvincibleTime() > 0) {

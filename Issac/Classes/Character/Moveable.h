@@ -15,7 +15,7 @@ using namespace std;
 #define abs(x)	((x)<0?(-x):x)
 #endif
 #ifndef _ColClogTime_
-#define ColClogTime 1
+#define ColClogTime 2
 #endif
 
 class Moveable : public Sprite {
