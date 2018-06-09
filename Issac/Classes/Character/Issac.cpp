@@ -26,6 +26,11 @@ bool Issac::init()
 	radiusSize = 10;
 	bodyMass = 50;
 	moving = false;
+	//初始血量6个半心（3颗心）
+	health = 6;
+	//初始攻击
+	attack = 1.3;
+	this->setTag(1);
 
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
@@ -378,7 +383,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
     }
 
-
 	if (colClog == 0) {
 		prev_walk_orientation = 5;
 	}
@@ -396,11 +400,15 @@ void Issac::createPhyBody()
 	//设置物体密度  
 	phyBody->getShape(0)->setDensity(1.0f);
 	//设置质量  
-	phyBody->getShape(0)->setMass(50);
+	phyBody->getShape(0)->setMass(bodyMass);
 	//设置物体是否受重力系数影响  
 	phyBody->setGravityEnable(false);
 	//速度
 	phyBody->setVelocity(Vec2(0, 0));
+	//碰撞筛选
+	phyBody->setCategoryBitmask(0xFF);    // 1111_1111
+	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
+	phyBody->setContactTestBitmask(0x01);	//0000_0001
 	//添加物理躯体
 	this->addComponent(phyBody);
 }

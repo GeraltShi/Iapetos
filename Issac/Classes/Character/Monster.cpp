@@ -25,10 +25,15 @@ bool Monster::init()
     }
 
 	//初始化类变量
-	moveSpeed = 100;
-	radiusSize = 5;
+	moveSpeed = 2;
+	radiusSize = 15;
 	bodyMass = 50;
 	moving = false;
+	//普通怪血量5
+	health = 5;
+	//普通怪攻击1
+	attack = 1;
+	this->setTag(2);
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
@@ -174,7 +179,18 @@ void Monster::build_animation_cache()
 
 void Monster::move(int walk_direction)
 {
-    //直接获取缓存，不要将SpriteFrame保存在类中
+	//移动
+	//移动速度不是之前的情况，说明发生碰撞
+	if (colClog == ColClogTime
+		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
+		colClog = 0;
+	}
+	else {
+		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+	}
+
+	//移动的图形显示
+	//直接获取缓存，不要将SpriteFrame保存在类中
     auto aniCache = AnimationCache::getInstance();
     
     const auto vwalk_animation = aniCache->getAnimation("monster_vwalk_animation");
@@ -304,8 +320,11 @@ void Monster::move(int walk_direction)
         ActionInterval * MoveTo = MoveTo::create(0.3, Vec2(new_posX, new_posY));
         Action * action = Spawn::create(MoveTo, NULL);
         this->runAction(action);
-        
     }
+
+	if (colClog == 0) {
+		prev_walk_orientation = 5;
+	}
 }
 
 int Monster::ToPointDir(Vec2 PlayerPos)
@@ -341,23 +360,27 @@ int Monster::ToPointDir(Vec2 PlayerPos)
 
 void Monster::createPhyBody()
 {
-	//this->phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
-	////是否设置物体为静态  
-	//this->phyBody->setDynamic(false);
-	////设置物体的恢复力  
-	//this->phyBody->getShape(0)->setRestitution(1.0f);
-	////设置物体的摩擦力  
-	//this->phyBody->getShape(0)->setFriction(0.0f);
-	////设置物体密度  
-	//this->phyBody->getShape(0)->setDensity(1.0f);
-	////设置质量  
-	//this->phyBody->getShape(0)->setMass(50);
-	////设置物体是否受重力系数影响  
-	//this->phyBody->setGravityEnable(false);
-	////速度
-	//this->phyBody->setVelocity(Vec2(0, 0));
-	////添加物理躯体
-	//this->setPhysicsBody(this->phyBody);
+	auto phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
+	//是否设置物体为静态  
+	phyBody->setDynamic(true);
+	//设置物体的恢复力  
+	phyBody->getShape(0)->setRestitution(1.0f);
+	//设置物体的摩擦力  
+	phyBody->getShape(0)->setFriction(0.0f);
+	//设置物体密度  
+	phyBody->getShape(0)->setDensity(1.0f);
+	//设置质量  
+	phyBody->getShape(0)->setMass(bodyMass);
+	//设置物体是否受重力系数影响  
+	phyBody->setGravityEnable(false);
+	//速度
+	phyBody->setVelocity(Vec2(0, 0));
+	//碰撞筛选
+	phyBody->setCategoryBitmask(0xFF);    // 1111_1111
+	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
+	phyBody->setContactTestBitmask(0x01);	//0000_0001
+	//添加物理躯体
+	this->addComponent(phyBody);
 }
 
 

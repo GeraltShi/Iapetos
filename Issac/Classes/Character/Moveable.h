@@ -15,7 +15,7 @@ using namespace std;
 #define abs(x)	((x)<0?(-x):x)
 #endif
 #ifndef _ColClogTime_
-#define ColClogTime 3
+#define ColClogTime 1
 #endif
 
 class Moveable : public Sprite {
@@ -31,6 +31,11 @@ public:
 	CC_SYNTHESIZE(double, moveSpeed, MoveSpeed)
 	CC_SYNTHESIZE(double, radiusSize, RadiusSize)
 	CC_SYNTHESIZE(double, bodyMass, BodyMass)
+	
+	//初步设定Issac的血量为整数，单位为半颗血。Monster血量为实数，<0时死亡
+	CC_SYNTHESIZE(double, health, Health)
+	//初步设定Issac的攻击为实数。Monster攻击为整数，普通怪1，精英怪2
+	CC_SYNTHESIZE(double, attack, Attack)
 	//ColClog用于碰撞阻塞
 	CC_SYNTHESIZE(int, colClog, ColClog)
 

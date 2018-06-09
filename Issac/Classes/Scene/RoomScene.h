@@ -46,6 +46,7 @@ public:
     void update(float delta) override;
     void fire(float dt);
     void monster_move(float dt);
+	bool onContactBegin(PhysicsContact& contact);
 
 private:
     IRoomSceneListener * listener_ = nullptr;

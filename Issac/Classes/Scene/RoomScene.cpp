@@ -109,19 +109,18 @@ bool RoomScene::init(int roomID)
 	this->addChild(edgeSpace);
 	edgeSpace->setTag(0);
 
-
+	//player生成
     player = Issac::createIssac();
 	player->createPhyBody();
 	addChild(player, 3);
-
-
-  /*
+  
+	//monster生成
 	Monster* temp_monster = Monster::createMonster();
-	temp_monster->setPosition(Vec2(20,50));
+	temp_monster->setPosition(Vec2(50,50));
 	temp_monster->createPhyBody();
 	monsters_.pushBack(temp_monster);
-    addChild(monsters_.at(0), 3, "fatty1");
- */
+	addChild(monsters_.at(0) , 3, "fatty1");
+ 
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
     Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
@@ -241,6 +240,14 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_keyboard_listener, this);
+
+	//碰撞listener
+	//添加监听器
+	auto contactListener = EventListenerPhysicsContact::create();
+	//设置监听器的碰撞开始函数  
+	contactListener->onContactBegin = CC_CALLBACK_1(RoomScene::onContactBegin, this);
+	//添加到事件分发器中
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
 void RoomScene::update(float delta)
@@ -252,8 +259,17 @@ void RoomScene::update(float delta)
         }
         
 		//monster移动
-		//monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
-		// monsters_.at(0)->boundingBox();
+		for (int i = 0; i < monsters_.size(); i++) {
+			if (monsters_.at(i)->getColClog() != ColClogTime) {
+				monsters_.at(i)->setColClog(monsters_.at(i)->getColClog() + 1);
+				if (monsters_.at(i)->getColClog() == ColClogTime) {
+					monsters_.at(i)->getPhysicsBody()->setVelocity(Vec2(0, 0));
+				}
+			}
+			else {
+				monsters_.at(i)->move( monsters_.at(i)->ToPointDir(player->getPosition()));
+			}
+		}
         
 		//player移动	
 		if (player->getColClog() != ColClogTime) {
@@ -266,12 +282,6 @@ void RoomScene::update(float delta)
 			player->move(model.walk_direction, model.tear_direction);
 		}
         
-		//碰撞检测
-		/*if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
-			int col_Dir = monsters_.at(0)->ToPointDir(player->getPosition());
-			monsters_.at(0)->move(10 - col_Dir);
-			player->move(col_Dir, model.tear_direction);
-		}*/
         
 		if(model.tear_direction == 5){
 			this->schedule(schedule_selector(RoomScene::fire), 0.5);
@@ -400,11 +410,6 @@ void RoomScene::fire(float dt){
     }
 }
 
-void RoomScene::monster_move(float dt)
-{
-
-}
-
 void RoomScene::build_frame_cache() const
 {
     Texture2D * poofTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_015_tearpoofa.png");
@@ -444,4 +449,30 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(frame15, "t_frame15");
     
     
+}
+
+bool RoomScene::onContactBegin(PhysicsContact& contact)
+{
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (nodeA->getTag() > nodeB->getTag()) {
+		auto tempnode = nodeA;
+		nodeA = nodeB;
+		nodeB = tempnode;
+	}
+	//tagA<=tagB
+	//tag=0 stone; tag=1:player; tag=2:monster; tag=3:tear;
+	int tagA = nodeA->getTag(), tagB = nodeB->getTag();
+	if (nodeA && nodeB)
+	{
+		if ((tagA==1 && tagB==2))
+		{
+			//Issac被monster碰到，受伤
+			
+			log("AAAAAAAAAAA");
+		}
+	}
+
+	//bodies can collide
+	return true;
 }
