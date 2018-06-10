@@ -12,10 +12,12 @@ Scene * RoomScene::createScene(int roomID)
 
 bool RoomScene::init(int roomID)
 {
-    if (!Scene::initWithPhysics())
+    if (!initWithPhysics())
     {
         return false;
     }
+
+
 
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 

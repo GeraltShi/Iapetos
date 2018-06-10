@@ -6,7 +6,11 @@
 #include "Model/RoomSceneModel.hpp"
 #include "Character/Issac.hpp"
 #include "Character/Monster.hpp"
-#include<vector>
+#include "ViewModel/MiniMapViewModel.h"
+#include "ViewModel/RoomViewModel.h"
+#include "ViewModel/SimpleItemViewModel.h"
+
+#include <vector>
 
 USING_NS_CC;
 
@@ -54,6 +58,9 @@ private:
     //使用cocos2d内置Vector管理Sprite等Ref类型的内存
     //和CC_SYNTHESIZE_RETAIN作用类似
 	Vector<Monster*> monsters_;
+
+    MiniMapViewModel mini_map_vm_;
+    RoomViewModel room_vm_;
 };
 
 #endif // __ROOM_SCENE_H__

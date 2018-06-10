@@ -36,6 +36,45 @@ RoomViewModel RoomService::get_room(const int room_id)
     throw runtime_error("Room Not Found");
 }
 
+MiniMapViewModel RoomService::get_mini_map(int room_id)
+{
+    if (room_id <= 0)
+    {
+        throw runtime_error("Room Not Found");
+    }
+    const auto m = room_map_[room_id];
+    const auto l = m.left_room_id;
+    const auto r = m.right_room_id;
+    const auto u = m.up_room_id;
+    const auto d = m.down_room_id;
+
+    vector<vector<int>> masks;
+
+    vector<int> row1;
+    vector<int> row2;
+    vector<int> row3;
+
+    row1.push_back(0);
+    row1.push_back(u == 0 ? 0 : 1);
+    row1.push_back(0);
+
+    row2.push_back(l == 0 ? 0 : 1);
+    row2.push_back(1);//current
+    row2.push_back(r == 0 ? 0 : 1);
+
+    row3.push_back(0);
+    row3.push_back(d == 0 ? 0 : 1);
+    row3.push_back(0);
+
+    masks.push_back(row1);
+    masks.push_back(row2);
+    masks.push_back(row3);
+
+    auto mini = MiniMapViewModel();
+    mini.setMiniMask(masks);
+    return mini;
+}
+
 
 /**
  * \brief 初始化所有房间信息

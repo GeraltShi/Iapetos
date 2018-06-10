@@ -81,6 +81,9 @@
     <ClCompile Include="..\Classes\ViewModel\RoomViewModel.cpp">
       <Filter>src\ViewModel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\ViewModel\MiniMapViewModel.cpp">
+      <Filter>src\ViewModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -135,6 +138,9 @@
       <Filter>src\Service</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ViewModel\RoomViewModel.h">
+      <Filter>src\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ViewModel\MiniMapViewModel.h">
       <Filter>src\ViewModel</Filter>
     </ClInclude>
   </ItemGroup>

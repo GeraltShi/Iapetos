@@ -4,6 +4,7 @@
 #include <map>
 
 #include "ViewModel/RoomViewModel.h"
+#include "ViewModel/MiniMapViewModel.h"
 
 struct Room
 {
@@ -20,6 +21,7 @@ class RoomService
 public:
 	static RoomService* getInstance();
 	RoomViewModel get_room(int room_id);
+    MiniMapViewModel get_mini_map(int room_id);
 
 private:
     static RoomService *inst_;
