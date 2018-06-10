@@ -73,7 +73,6 @@ bool RoomScene::init(int roomID)
     controls->setPosition(221,143);
     addChild(controls,1);
     
-    //门需要在service中通过位置id控制方向、position
     auto door_mask = room_vm_.getDoorEnable();
     auto door_style = room_vm_.getDoorStyle();
 
