@@ -23,12 +23,13 @@ bool Monster::init()
 
 	//不要将Texture保存在类,用的时候直接从TextureCache中获取
 	const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
+    const auto monster_dead_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_002_bloodpoof.png");
 	SpriteFrame *headFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(0, 0, 32, 32));
 	Sprite * headSprite = createWithSpriteFrame(headFrame);
 	SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(192, 224, 64, 64));
 	Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
 
-	build_sprite_frame_cache(monster_texture_);
+	build_sprite_frame_cache(monster_texture_, monster_dead_texture_);
 	build_animation_cache();
 
 	this->addChild(headSprite, 1, "head");
@@ -40,7 +41,7 @@ bool Monster::init()
 	return true;
 }
 
-void Monster::build_sprite_frame_cache(Texture2D *texture_) const
+void Monster::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
 {
 	auto spriteCache = SpriteFrameCache::getInstance();
 	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32)), "head_frame0");
@@ -75,6 +76,18 @@ void Monster::build_sprite_frame_cache(Texture2D *texture_) const
 	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 224, 64, 64)), "monster_vwalk_frame9");
 	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 224, 64, 64)), "monster_vwalk_frame10");
 	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 224, 64, 64)), "monster_vwalk_frame11");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 0,64,64)), "dead_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 0,64,64)), "dead_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 0,64,64)), "dead_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 0,64,64)), "dead_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 1,64,64)), "dead_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 1,64,64)), "dead_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 1,64,64)), "dead_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 1,64,64)), "dead_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 2,64,64)), "dead_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 2,64,64)), "dead_frame9");
+    
 }
 
 void Monster::build_animation_cache()
@@ -160,6 +173,31 @@ void Monster::build_animation_cache()
 	hwalk_animation->setLoops(-1);
 	hwalk_animation->setRestoreOriginalFrame(true);
 	aniCache->addAnimation(hwalk_animation, "monster_hwalk_animation");
+    
+    const auto dead_frame0 = spriteCache->getSpriteFrameByName("dead_frame0");
+    const auto dead_frame1 = spriteCache->getSpriteFrameByName("dead_frame1");
+    const auto dead_frame2 = spriteCache->getSpriteFrameByName("dead_frame2");
+    const auto dead_frame3 = spriteCache->getSpriteFrameByName("dead_frame3");
+    const auto dead_frame4 = spriteCache->getSpriteFrameByName("dead_frame4");
+    const auto dead_frame5 = spriteCache->getSpriteFrameByName("dead_frame5");
+    const auto dead_frame6 = spriteCache->getSpriteFrameByName("dead_frame6");
+    const auto dead_frame7 = spriteCache->getSpriteFrameByName("dead_frame7");
+    const auto dead_frame8 = spriteCache->getSpriteFrameByName("dead_frame8");
+    const auto dead_frame9 = spriteCache->getSpriteFrameByName("dead_frame9");
+    Vector<SpriteFrame*> deadFrames;
+    deadFrames.pushBack(dead_frame0);
+    deadFrames.pushBack(dead_frame1);
+    deadFrames.pushBack(dead_frame2);
+    deadFrames.pushBack(dead_frame3);
+    deadFrames.pushBack(dead_frame4);
+    deadFrames.pushBack(dead_frame5);
+    deadFrames.pushBack(dead_frame6);
+    deadFrames.pushBack(dead_frame7);
+    deadFrames.pushBack(dead_frame8);
+    deadFrames.pushBack(dead_frame9);
+    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames,0.1f);
+    dead_animation->setLoops(0);
+    aniCache->addAnimation(dead_animation, "dead_animation");
 }
 
 
