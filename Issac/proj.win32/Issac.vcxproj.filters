@@ -90,6 +90,9 @@
     <ClCompile Include="..\Classes\Character\Stone.cpp">
       <Filter>src\Character</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Character\Door.cpp">
+      <Filter>src\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -153,6 +156,9 @@
       <Filter>src\Character</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Character\Stone.h">
+      <Filter>src\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Character\Door.h">
       <Filter>src\Character</Filter>
     </ClInclude>
   </ItemGroup>

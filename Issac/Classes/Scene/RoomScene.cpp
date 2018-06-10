@@ -80,25 +80,15 @@ bool RoomScene::init(int roomID)
 
     //左门
     if (door_mask[0] > 0)
-    {
-        const auto style = door_style[0];
-
-        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
-        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
-        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
-        door->setRotation(270);
-        door_center->setRotation(270);
-        door->setPosition(36, size.height/2);
-        door_center->setPosition(36, size.height / 2);
-        addChild(door, 1); 
-        addChild(door_center, 1);
+    {	
+		doors_.pushBack(Door::createDoor(0, door_style[0], size));
+		addChild(doors_.at(0), 3);
     }
 
     //上门
     if (door_mask[1] > 0)
     {
         const auto style = door_style[1];
-
         Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
         Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
         Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
@@ -111,8 +101,7 @@ bool RoomScene::init(int roomID)
     //右门
     if (door_mask[2] > 0)
     {
-        const auto style = door_style[2];
-
+		const auto style = door_style[2];
         Texture2D *texture_door2 = Director::getInstance()->getTextureCache()->addImage(style);
         Sprite * door2 = Sprite::createWithTexture(texture_door2, Rect(0, 0, 64, 48));
         Sprite * door_center2 = Sprite::createWithTexture(texture_door2, Rect(64, 0, 64, 48));
@@ -128,7 +117,6 @@ bool RoomScene::init(int roomID)
     if (door_mask[3] > 0)
     {
         const auto style = door_style[3];
-
         Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
         Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
         Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
@@ -163,9 +151,13 @@ bool RoomScene::init(int roomID)
 	boundBody->getShape(0)->setRestitution(1.0f);
 	edgeSpace->setPhysicsBody(boundBody);
 	edgeSpace->setPosition(Point(size.width / 2, size.height / 2));
-	this->addChild(edgeSpace);
+	addChild(edgeSpace);
 	edgeSpace->setTag(0);
-
+	
+	//边界无形石头生成
+	//stones_.pushBack(Stone::createStone(0, Size(50, 120)));
+	//stones_.at(stones_.size() - 1)->setPosition(25, 60);
+	//addChild(stones_.at(stones_.size() - 1), 3);
 	//player生成
     player = Issac::createIssac();
 	player->createPhyBody();
@@ -173,11 +165,15 @@ bool RoomScene::init(int roomID)
   
 	//monster生成
 	for (int i = 0; i < 2; i++) {
-		Fatty* temp_fatty = Fatty::createFatty();
-		temp_fatty->setPosition(Vec2(50, 50));
-		monsters_.pushBack((Monster*)temp_fatty);
+		monsters_.pushBack((Monster*)Fatty::createFatty());
+		monsters_.at(i)->setPosition(Vec2(50, 50));
 		addChild(monsters_.at(i), 3, "fatty1");
 	}
+
+	//石头生成
+	//stones_.pushBack(Stone::createStone(0, Size(32, 200)));
+	//stones_.at(stones_.size() - 1)->setPosition(16, 100);
+	//addChild(stones_.at(stones_.size() - 1), 3);
  
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
@@ -216,33 +212,9 @@ bool RoomScene::init(int roomID)
     //srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
-    //Texture2D * texture_rocks = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
-    //Sprite * rock0 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    //Sprite * rock1 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    //Sprite * rock2 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-   // Sprite * rock3 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    //Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    //Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-   // Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,96,64,64));
-    //TODO 石头应该要scaling 26/32
-    //TODO 小石头的center是13,13
-    //rock0->setPosition(39+26*1,39+26*1);
-    //addChild(rock0,3);
-    //rock1->setPosition(39+26*2,39+26*3);
-    //addChild(rock1,3);
-    //rock2->setPosition(39+26*3,39+26//*4);
-    //addChild(rock2,3);
-	Stone* temp_stone = Stone::createStone(2,Size(64,64));
-	temp_stone->setPosition(39 + 26 * 5, 39 + 26 * 6);
-	stones_.pushBack(temp_stone);
-    addChild(stones_.at(stones_.size()-1),3);
-    //rock4->setPosition(39+26*5,39+26*6);
-    //addChild(rock4,3);
-    //rock5->setPosition(39+26*6,39+26*7);
-    //addChild(rock5,3);
-    //TODO 大石头的center是26,26
-	//rock6->setPosition(52+26*12,52+26*6);
-	//addChild(rock6,3);
+
+
+
     
     //TODO 3.物品生成       gfx\items
     
@@ -539,7 +511,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 		tagA = tagB;
 		tagB = temp_tag;
 	}
-	//tag=0 stone; tag=1:player; tag=2:monster; tag=3:tear;
+	//tag=0 静止障碍物; tag=1:player; tag=2:monster; tag=3:tear;
 	if (nodeA && nodeB)
 	{
 		if (tagA==1 && tagB==2 && nodeA->getInvincibleTime()==0 )

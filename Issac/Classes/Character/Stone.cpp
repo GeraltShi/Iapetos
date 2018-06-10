@@ -1,6 +1,7 @@
 #include"Stone.h"
 
-Stone* Stone::createStone(int type_,Size stoneSize_) {
+Stone* Stone::createStone(int type_,Size stoneSize_) 
+{
 	Stone *pRet = new(std::nothrow)  Stone();
 	if (pRet && pRet->init(type_, stoneSize_))
 	{
@@ -15,7 +16,8 @@ Stone* Stone::createStone(int type_,Size stoneSize_) {
 	}
 }
 
-bool Stone::init(int stoneType,Size stoneSize) {
+bool Stone::init(int stoneType,Size stoneSize) 
+{
 	if (!Sprite::init())
 	{
 		return false;
@@ -39,9 +41,9 @@ bool Stone::init(int stoneType,Size stoneSize) {
 	phyBody->getShape(0)->setRestitution(0.0f);
 	//设置物体的摩擦力  
 	phyBody->getShape(0)->setFriction(1.0f);
-	//碰撞筛选:所有都碰撞，选择性监听:和tear碰撞监听
+	//碰撞筛选:不和石头碰撞，选择性监听:和tear碰撞监听
 	phyBody->setCategoryBitmask(0x10);    // 0001_0000
-	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
+	phyBody->setCollisionBitmask(0xEF);   // 1110_1111
 	phyBody->setContactTestBitmask(0x04);	//0000_0100
 	//添加物理躯体
 	this->addComponent(phyBody);

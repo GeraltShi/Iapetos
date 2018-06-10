@@ -12,6 +12,7 @@
 #include "ViewModel/SimpleItemViewModel.h"
 #include "Character/SimpleItem.h"
 #include "Character/Stone.h"
+#include "Character/Door.h"
 
 #include <vector>
 
@@ -63,7 +64,8 @@ private:
     //和CC_SYNTHESIZE_RETAIN作用类似
 	Vector<Monster*> monsters_;
 	Vector<Tear*> tears_;
-	Vector<Sprite*> stones_;
+	Vector<Stone*> stones_;
+	Vector<Door*> doors_;
 
     MiniMapViewModel mini_map_vm_;
     RoomViewModel room_vm_;
