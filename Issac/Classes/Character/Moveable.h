@@ -8,23 +8,24 @@ using namespace std;
 
 #ifndef _max_
 #define _max_
-#define max(x,y) ((x)>(y)?(x):(y))
+#define max(x, y) ((x) > (y) ? (x) : (y))
 #endif
 #ifndef _abs_
 #define _abs_
-#define abs(x)	((x)<0?(-x):x)
+#define abs(x) ((x) < 0 ? (-x) : x)
 #endif
 #ifndef _ColClogTime_
 #define ColClogTime 2
 #endif
 
-class Moveable : public Sprite {
-public:
+class Moveable : public Sprite
+{
+  public:
 	bool init() override;
 
-	CC_SYNTHESIZE_RETAIN(Animate*, idleAnimate, IdleAnimate)
-	CC_SYNTHESIZE_RETAIN(Animate*, moveAnimate, MoveAnimate)
-	
+	CC_SYNTHESIZE_RETAIN(Animate *, idleAnimate, IdleAnimate)
+	CC_SYNTHESIZE_RETAIN(Animate *, moveAnimate, MoveAnimate)
+
 	CC_SYNTHESIZE(bool, moving, Moving)
 	CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
 	CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
@@ -32,12 +33,12 @@ public:
 	CC_SYNTHESIZE(double, radiusSize, RadiusSize)
 	CC_SYNTHESIZE(double, bodyMass, BodyMass)
 	CC_SYNTHESIZE(int, invincibleTime, InvincibleTime)
-	
-	//³õ²½Éè¶¨IssacµÄÑªÁ¿ÎªÕûÊı£¬µ¥Î»Îª°ë¿ÅÑª¡£MonsterÑªÁ¿ÎªÊµÊı£¬<0Ê±ËÀÍö
+
+	//åˆæ­¥è®¾å®šIssacçš„è¡€é‡ä¸ºæ•´æ•°ï¼Œå•ä½ä¸ºåŠé¢—è¡€ã€‚Monsterè¡€é‡ä¸ºå®æ•°ï¼Œ<0æ—¶æ­»äº¡
 	CC_SYNTHESIZE(double, health, Health)
-	//³õ²½Éè¶¨IssacµÄ¹¥»÷ÎªÊµÊı¡£Monster¹¥»÷ÎªÕûÊı£¬ÆÕÍ¨¹Ö1£¬¾«Ó¢¹Ö2
+	//åˆæ­¥è®¾å®šIssacçš„æ”»å‡»ä¸ºå®æ•°ã€‚Monsteræ”»å‡»ä¸ºæ•´æ•°ï¼Œæ™®é€šæ€ª1ï¼Œç²¾è‹±æ€ª2
 	CC_SYNTHESIZE(double, attack, Attack)
-	//ColClogÓÃÓÚÅö×²×èÈû
+	//ColClogç”¨äºç¢°æ’é˜»å¡
 	CC_SYNTHESIZE(int, colClog, ColClog)
 
 	virtual void createPhyBody() = 0;

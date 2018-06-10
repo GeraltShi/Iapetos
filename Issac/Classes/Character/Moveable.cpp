@@ -4,8 +4,6 @@
 #define ROOT2 1.41421356
 #endif // !_ROOT2_
 
-
-
 bool Moveable::init()
 {
 	if (!Sprite::init())
@@ -23,50 +21,48 @@ bool Moveable::init()
 
 Vec2 Moveable::calSpeed(int dir)
 {
-	Vec2 speed(0,0);
+	Vec2 speed(0, 0);
 	switch (dir)
 	{
 		//123
 		//456
 		//789
-	case 4: //×ó
+	case 4: //å·¦
 		speed.x = -moveSpeed;
 		speed.y = 0;
 		break;
-	case 6://ÓÒ
+	case 6: //å³
 		speed.x = moveSpeed;
 		speed.y = 0;
 		break;
-	case 2://ÉÏ
+	case 2: //ä¸Š
 		speed.x = 0;
 		speed.y = moveSpeed;
 		break;
-	case 8://ÏÂ
+	case 8: //ä¸‹
 		speed.x = 0;
 		speed.y = -moveSpeed;
 		break;
-	case 1://×óÉÏ
+	case 1: //å·¦ä¸Š
 		speed.x = -moveSpeed / ROOT2;
 		speed.y = moveSpeed / ROOT2;
 		break;
-	case 3://ÓÒÉÏ
+	case 3: //å³ä¸Š
 		speed.x = moveSpeed / ROOT2;
 		speed.y = moveSpeed / ROOT2;
 		break;
-	case 7://×óÏÂ
+	case 7: //å·¦ä¸‹
 		speed.x = -moveSpeed / ROOT2;
 		speed.y = -moveSpeed / ROOT2;
 		break;
-	case 9://ÓÒÏÂ
+	case 9: //å³ä¸‹
 		speed.x = moveSpeed / ROOT2;
 		speed.y = -moveSpeed / ROOT2;
 		break;
-	case 5://ÎŞ£¬Í·ÒªÄ¬ÈÏ¸´Î»
+	case 5: //æ— ï¼Œå¤´è¦é»˜è®¤å¤ä½
 		speed.x = 0;
 		speed.y = 0;
 		break;
 	}
 	return speed;
 }
-
-
