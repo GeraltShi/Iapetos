@@ -1,6 +1,7 @@
 #include "RoomScene.h"
 #include "AppDelegate.h"
 #include <iostream>
+#include "Service/RoomService.h"
 
 USING_NS_CC;
 using namespace std;
@@ -17,8 +18,11 @@ bool RoomScene::init(int roomID)
         return false;
     }
 
+    //根据ViewMode渲染
+    room_vm_ = RoomService::getInstance()->get_room(roomID);
+    mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
 
-
+    //画物理引擎框
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     const Size size = Director::getInstance()->getWinSize();
@@ -69,22 +73,71 @@ bool RoomScene::init(int roomID)
     controls->setPosition(221,143);
     addChild(controls,1);
     
-    //门需要在service中通过位置id控制方向、position
-    Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_01_normaldoor.png");
-    Sprite * door = Sprite::createWithTexture(texture_door,Rect(0,0,64,48));
-    Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
-    door->setPosition(221, 286-36);
-    door_center->setPosition(221, 286-36);
-    addChild(door,1);addChild(door_center,1);
+    auto door_mask = room_vm_.getDoorEnable();
+    auto door_style = room_vm_.getDoorStyle();
+
+    //左门
+    if (door_mask[0] > 0)
+    {
+        const auto style = door_style[0];
+
+        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
+        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
+        door->setRotation(270);
+        door_center->setRotation(270);
+        door->setPosition(36, size.height/2);
+        door_center->setPosition(36, size.height / 2);
+        addChild(door, 1); 
+        addChild(door_center, 1);
+    }
+
+    //上门
+    if (door_mask[1] > 0)
+    {
+        const auto style = door_style[1];
+
+        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
+        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
+        door->setPosition(size.width / 2, size.height - 36);
+        door_center->setPosition(size.width / 2, size.height - 36);
+        addChild(door, 1); 
+        addChild(door_center, 1);
+    }
+
+    //右门
+    if (door_mask[2] > 0)
+    {
+        const auto style = door_style[2];
+
+        Texture2D *texture_door2 = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door2 = Sprite::createWithTexture(texture_door2, Rect(0, 0, 64, 48));
+        Sprite * door_center2 = Sprite::createWithTexture(texture_door2, Rect(64, 0, 64, 48));
+        door2->setPosition(size.width - 36, size.height /2);
+        door2->setRotation(90);
+        door_center2->setPosition(size.width - 36, size.height / 2);
+        door_center2->setRotation(90);
+        addChild(door2, 1);
+        addChild(door_center2, 1);
+    }
+
+    //下门
+    if (door_mask[3] > 0)
+    {
+        const auto style = door_style[3];
+
+        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
+        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
+        door->setRotation(180);
+        door_center->setRotation(180);
+        door->setPosition(size.width / 2, 36);
+        door_center->setPosition(size.width / 2, 36);
+        addChild(door, 1); 
+        addChild(door_center, 1);
+    }
     
-    Texture2D *texture_door2 = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_02_treasureroomdoor.png");
-    Sprite * door2 = Sprite::createWithTexture(texture_door2,Rect(0,0,64,48));
-    Sprite * door_center2 = Sprite::createWithTexture(texture_door2,Rect(64,0,64,48));
-    door2->setPosition(442-36, 143);
-    door2->setRotation(90);
-    door_center2->setPosition(442-36, 143);
-    door_center2->setRotation(90);
-    addChild(door2,1);addChild(door_center2,1);
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
     
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
