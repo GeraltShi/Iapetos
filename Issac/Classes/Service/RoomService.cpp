@@ -1,5 +1,7 @@
 #include "RoomService.h"
 #include "cocos2d.h"
+#include <string>
+#include <vector>
 
 using namespace std;
 USING_NS_CC;
@@ -75,15 +77,41 @@ MiniMapViewModel RoomService::get_mini_map(int room_id)
     return mini;
 }
 
+int RoomService::get_init_room_id() const
+{
+    return init_room_id_;
+}
+
 
 /**
  * \brief 初始化所有房间信息
  */
 RoomService::RoomService()
 {
-    for (int i = 0; i < 10; ++i)
+    auto room1 = RoomViewModel();
+    auto door = vector<int>();
+    door.push_back(1);
+    door.push_back(1);
+    door.push_back(1);
+    door.push_back(1);
+    room1.setDoorEnable(door);
+
+    auto door_style = vector<string>();
+    door_style.emplace_back("res/gfx/grid/door_01_normaldoor.png");
+    door_style.emplace_back("res/gfx/grid/door_02_treasureroomdoor.png");
+    door_style.emplace_back("res/gfx/grid/door_03_ambushroomdoor.png");
+    door_style.emplace_back("res/gfx/grid/door_04_selfsacrificeroomdoor.png");
+    room1.setDoorStyle(door_style);
+
+    store_[1] = room1;
+
+    for (int i = 1; i < 10; ++i)
     {
         store_[i + 1] = RoomViewModel();
         room_map_[i + 1] = Room();
     }
+
+    init_room_id_ = 1;
 }
+
+RoomService* RoomService::inst_ = nullptr;

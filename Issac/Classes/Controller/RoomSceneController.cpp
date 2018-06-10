@@ -1,6 +1,7 @@
 #include "RoomSceneController.h"
 #include "Scene/RoomScene.h"
 #include <iostream>
+#include "Service/RoomService.h"
 
 USING_NS_CC;
 using namespace std;
