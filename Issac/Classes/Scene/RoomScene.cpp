@@ -216,11 +216,11 @@ bool RoomScene::init(int roomID)
     //srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
-    Texture2D * texture_rocks = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
+    //Texture2D * texture_rocks = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
     //Sprite * rock0 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     //Sprite * rock1 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     //Sprite * rock2 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock3 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+   // Sprite * rock3 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     //Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     //Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
    // Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,96,64,64));
@@ -232,8 +232,10 @@ bool RoomScene::init(int roomID)
     //addChild(rock1,3);
     //rock2->setPosition(39+26*3,39+26//*4);
     //addChild(rock2,3);
-    rock3->setPosition(39+26*4,39+26*5);
-    addChild(rock3,3);
+	Stone* temp_stone = Stone::createStone(2,Size(64,64));
+	temp_stone->setPosition(39 + 26 * 5, 39 + 26 * 6);
+	stones_.pushBack(temp_stone);
+    addChild(stones_.at(stones_.size()-1),3);
     //rock4->setPosition(39+26*5,39+26*6);
     //addChild(rock4,3);
     //rock5->setPosition(39+26*6,39+26*7);
@@ -322,6 +324,9 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 void RoomScene::update(float delta)
 {
     if(!model.paused){
+		//开始 
+		//Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1);
+
         if(pausescreen->isVisible()){
             pausescreen->setVisible(false);
             auto pausescreenmovein = MoveTo::create(0.2,Vec2(-250, 143));
@@ -335,24 +340,42 @@ void RoomScene::update(float delta)
             bomb->setVisible(true);
             model.bomb = false;
         }
-        
-		//monster移动
-		for (int i = 0; i < monsters_.size(); i++) {
-			if (monsters_.at(i)->getColClog() != ColClogTime) {
-				monsters_.at(i)->setColClog(monsters_.at(i)->getColClog() + 1);
-				if (monsters_.at(i)->getColClog() == ColClogTime) {
-					monsters_.at(i)->getPhysicsBody()->setVelocity(Vec2(0, 0));
-				}
+		
+		//tear倒计时和消失
+		for (auto it = tears_.begin(); it!=tears_.end();) {
+			if ((*it)->getTearExistTime() == 0) {
+				(*it)->removeFromParent();
+				it=tears_.erase(it);
 			}
 			else {
-				//monsters_.at(i)->move( monsters_.at(i)->ToPointDir(player->getPosition()));
-				monsters_.at(i)->moveStrategy(monsters_.at(i)->ToPointDir(player->getPosition()));
-			}
-			//无敌时间的倒计时
-			if (monsters_.at(i)->getInvincibleTime() > 0) {
-				monsters_.at(i)->setInvincibleTime(monsters_.at(i)->getInvincibleTime() - 1);
-			}
+				(*it)->setTearExistTime((*it)->getTearExistTime() - 1);
+				it++;
+			}			
 		}
+        
+		//monster移动和死亡
+		for (auto it = monsters_.begin(); it != monsters_.end(); ) 
+			if ((*it)->getHealth() <= 0) {
+			//血量<0死亡了
+				(*it)->removeFromParent();
+				it = monsters_.erase(it);
+			}
+			else {
+				if ((*it)->getColClog() != ColClogTime) {
+					(*it)->setColClog((*it)->getColClog() + 1);
+					if ((*it)->getColClog() == ColClogTime) {
+						(*it)->getPhysicsBody()->setVelocity(Vec2(0, 0));
+					}
+				}
+				else {
+					(*it)->moveStrategy((*it)->ToPointDir(player->getPosition()));
+				}
+				//无敌时间的倒计时
+				if ((*it)->getInvincibleTime() > 0) {
+					(*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
+				}
+				it++;
+			}
         
 		//player移动	
 		if (player->getColClog() != ColClogTime) {
@@ -377,8 +400,11 @@ void RoomScene::update(float delta)
 		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
 		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
 	} 
-	else {     
-        if (model.paused_menu_generated_flag == 0) {
+	else {		
+		//暂停 
+		//Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
+        
+		if (model.paused_menu_generated_flag == 0) {
             this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
             pausescreen->setVisible(true);
             auto pausescreenmovein = MoveTo::create(0.2, Vec2(250, 143));
@@ -408,100 +434,53 @@ void RoomScene::set_model(RoomSceneModel model)
 }
 
 void RoomScene::fire(float dt){
-    auto fcache = SpriteFrameCache::getInstance();
-    const auto frame0 = fcache->getSpriteFrameByName("t_frame0");
-    const auto frame1 = fcache->getSpriteFrameByName("t_frame1");
-    const auto frame2 = fcache->getSpriteFrameByName("t_frame2");
-    const auto frame3 = fcache->getSpriteFrameByName("t_frame3");
-    const auto frame4 = fcache->getSpriteFrameByName("t_frame4");
-    const auto frame5 = fcache->getSpriteFrameByName("t_frame5");
-    const auto frame6 = fcache->getSpriteFrameByName("t_frame6");
-    const auto frame7 = fcache->getSpriteFrameByName("t_frame7");
-    const auto frame8 = fcache->getSpriteFrameByName("t_frame8");
-    const auto frame9 = fcache->getSpriteFrameByName("t_frame9");
-    const auto frame10 = fcache->getSpriteFrameByName("t_frame10");
-    const auto frame11 = fcache->getSpriteFrameByName("t_frame11");
-    const auto frame12 = fcache->getSpriteFrameByName("t_frame12");
-    const auto frame13 = fcache->getSpriteFrameByName("t_frame13");
-    const auto frame14 = fcache->getSpriteFrameByName("t_frame14");
-    const auto frame15 = fcache->getSpriteFrameByName("t_frame15");
-    
-    Vector<SpriteFrame *> array;
-    array.pushBack(frame0);
-    array.pushBack(frame1);
-    array.pushBack(frame2);
-    array.pushBack(frame3);
-    array.pushBack(frame4);
-    array.pushBack(frame5);
-    array.pushBack(frame6);
-    array.pushBack(frame7);
-    array.pushBack(frame8);
-    array.pushBack(frame9);
-    array.pushBack(frame10);
-    array.pushBack(frame11);
-    array.pushBack(frame12);
-    array.pushBack(frame13);
-    array.pushBack(frame14);
-    array.pushBack(frame15);
-    
-    const auto animation = Animation::createWithSpriteFrames(array, 0.05f);
-    Action * poof_anim = Animate::create(animation);
-    
-    Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
-    SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0,32,32,32));
-    tearSprite = Sprite::createWithSpriteFrame(tearFrame);
+	//创建一个Tear
+	Tear* temp_tear = Tear::createTear();
+
+	//设定初始tear位置和速度
     const int advance = 15;
     int x_advance;
     int y_advance;
+	double tear_V = player->getMoveSpeed() + player->getTearSpeed();
     switch (model.tear_direction) {
         case 2:
             x_advance = 0;
             y_advance = advance+random(-10,10);
+			temp_tear->getPhysicsBody()->setVelocity(Vec2(0,tear_V));
             break;
         case 4:
             x_advance = -advance+random(-10,10);
             y_advance = 0;
+			temp_tear->getPhysicsBody()->setVelocity(Vec2(-tear_V, 0));
             break;
         case 6:
             x_advance = advance+random(-10,10);
             y_advance = 0;
+			temp_tear->getPhysicsBody()->setVelocity(Vec2(tear_V, 0));
             break;
         case 8:
             x_advance = 0;
             y_advance = -advance+random(-10,10);
+			temp_tear->getPhysicsBody()->setVelocity(Vec2(0, -tear_V));
             break;
         default:
             x_advance = 0;
             y_advance = 0;
     }
-    
-    tearSprite->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
-    const float speed = 0.38;
-    //子弹运行的距离和时间
-    MoveBy * tear_move = nullptr;
-    switch (model.tear_direction) {
-        case 2:
-            tear_move = MoveBy::create(speed, Vec2(0,100));
-            break;
-        case 4:
-            tear_move = MoveBy::create(speed, Vec2(-100,0));
-            break;
-        case 6:
-            tear_move = MoveBy::create(speed, Vec2(100,0));
-            break;
-        case 8:
-            tear_move = MoveBy::create(speed, Vec2(0,-100));
-            break;
-        default:
-            break;
-    }
+	//初始位置
+    temp_tear->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
+	//存在时间,攻击
+	temp_tear->setTearExistTime(player->getTearExistTime());
+	temp_tear->setAttack(player->getAttack());
+	tears_.pushBack((Tear*)temp_tear);
+	addChild(tears_.at(tears_.size() - 1),3);
     //子弹执行完动作后进行函数回调，调用移除子弹函数
-    if(model.tear_direction != 5){
-        //子弹开始跑动
-        this->addChild(tearSprite, 3);
-        Sequence* sequence = Sequence::create(tear_move, poof_anim, RemoveSelf::create(true),NULL);
-        tearSprite->runAction(sequence);
-    }
+    //if(model.tear_direction != 5){
+    //    //子弹开始跑动
+    //    this->addChild(tearSprite, 3);
+    //    Sequence* sequence = Sequence::create(tear_move, poof_anim, RemoveSelf::create(true),NULL);
+    //    tearSprite->runAction(sequence);
+    //}
 }
 
 void RoomScene::build_frame_cache() const
@@ -547,23 +526,20 @@ void RoomScene::build_frame_cache() const
 
 bool RoomScene::onContactBegin(PhysicsContact& contact)
 {
-	if (contact.getShapeA()->getBody()->getNode()->getTag() == 0
-		|| contact.getShapeB()->getBody()->getNode()->getTag() == 0) {
-		return true;
-	}
-
 	Moveable* nodeA = (Moveable*)contact.getShapeA()->getBody()->getNode();
 	Moveable* nodeB = (Moveable*)contact.getShapeB()->getBody()->getNode();
-	
-	if (nodeA->getTag() > nodeB->getTag()) {
+	int tagA = contact.getShapeA()->getBody()->getNode()->getTag();
+	int tagB = contact.getShapeB()->getBody()->getNode()->getTag();
+	//tag小的为A
+	if (tagA > tagB) {
 		Moveable* tempnode = nodeA;
 		nodeA = nodeB;
 		nodeB = tempnode;
+		int temp_tag = tagA;
+		tagA = tagB;
+		tagB = temp_tag;
 	}
-	
-	//tagA<=tagB
 	//tag=0 stone; tag=1:player; tag=2:monster; tag=3:tear;
-	int tagA = nodeA->getTag(), tagB = nodeB->getTag();
 	if (nodeA && nodeB)
 	{
 		if (tagA==1 && tagB==2 && nodeA->getInvincibleTime()==0 )
@@ -573,8 +549,17 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			//Issac进入短暂无敌状态
 			nodeA->setInvincibleTime(20);
 			//TO DO添加受伤动画？
-			log("Health:%lf",nodeA->getHealth());
+			log("Issac Health:%lf",nodeA->getHealth());
 		}
+		if ((tagA == 1 || tagA == 2) && (tagB == 3)) {
+			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+			//Issac进入短暂无敌状态
+			if (tagA==1) nodeA->setInvincibleTime(20);
+			//TO DO添加受伤动画？
+			nodeB->setTearExistTime(0);
+		}
+		if (tagA == 3) nodeA->setTearExistTime(0);
+		if (tagB == 3) nodeB->setTearExistTime(0);
 	}
 
 	//bodies can collide

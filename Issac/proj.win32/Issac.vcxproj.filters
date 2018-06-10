@@ -84,6 +84,12 @@
     <ClCompile Include="..\Classes\ViewModel\MiniMapViewModel.cpp">
       <Filter>src\ViewModel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Character\Tear.cpp">
+      <Filter>src\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Character\Stone.cpp">
+      <Filter>src\Character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -142,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ViewModel\MiniMapViewModel.h">
       <Filter>src\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Character\Tear.h">
+      <Filter>src\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Character\Stone.h">
+      <Filter>src\Character</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -327,11 +327,11 @@ void Monster::createPhyBody()
 	phyBody->setGravityEnable(false);
 	//速度
 	phyBody->setVelocity(Vec2(0, 0));
-	//碰撞筛选
-	phyBody->setCategoryBitmask(0xFF);    // 1111_1111
+	//碰撞筛选:所有都碰撞，选择性监听:和tear，issac，monster碰撞监听，石头不监听
+	phyBody->setCategoryBitmask(0x02);    // 0000_0010
 	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
-	phyBody->setContactTestBitmask(0x01);	//0000_0001
-											//添加物理躯体
+	phyBody->setContactTestBitmask(0x07);	//0000_0111
+	//添加物理躯体
 	this->addComponent(phyBody);
 }
 
@@ -350,7 +350,7 @@ bool Fatty::init() {
 	//Fatty碰撞大小	
 	radiusSize = 15;
 	//Fatty重量
-	bodyMass = 50;
+	bodyMass = 500;
 	//Fatty行走速度
 	moveSpeed = 120;
 	//Fatty血量5
