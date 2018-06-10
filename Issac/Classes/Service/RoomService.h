@@ -22,6 +22,7 @@ public:
 	static RoomService* getInstance();
 	RoomViewModel get_room(int room_id);
     MiniMapViewModel get_mini_map(int room_id);
+    int get_init_room_id() const;
 
 private:
     static RoomService *inst_;
@@ -29,9 +30,10 @@ private:
 
     map<int, RoomViewModel> store_;
     map<int, Room> room_map_;
+
+    int init_room_id_;
 };
 
-RoomService* RoomService::inst_ = nullptr;
 
 #endif // _ROOMSERVICE_H_
 

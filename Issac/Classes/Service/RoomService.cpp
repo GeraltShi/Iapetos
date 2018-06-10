@@ -75,6 +75,11 @@ MiniMapViewModel RoomService::get_mini_map(int room_id)
     return mini;
 }
 
+int RoomService::get_init_room_id() const
+{
+    return init_room_id_;
+}
+
 
 /**
  * \brief 初始化所有房间信息
@@ -86,4 +91,8 @@ RoomService::RoomService()
         store_[i + 1] = RoomViewModel();
         room_map_[i + 1] = Room();
     }
+
+    init_room_id_ = 1;
 }
+
+RoomService* RoomService::inst_ = nullptr;

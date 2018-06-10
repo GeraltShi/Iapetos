@@ -1,6 +1,7 @@
 #include "RoomScene.h"
 #include "AppDelegate.h"
 #include <iostream>
+#include "Service/RoomService.h"
 
 USING_NS_CC;
 using namespace std;
@@ -17,8 +18,11 @@ bool RoomScene::init(int roomID)
         return false;
     }
 
+    //根据ViewMode渲染
+    room_vm_ = RoomService::getInstance()->get_room(roomID);
+    mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
 
-
+    //画物理引擎框
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     const Size size = Director::getInstance()->getWinSize();
