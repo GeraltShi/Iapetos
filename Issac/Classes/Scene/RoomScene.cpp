@@ -370,7 +370,7 @@ void RoomScene::update(float delta)
 		}
         
 		if(model.tear_direction == 5){
-			this->schedule(schedule_selector(RoomScene::fire), 0.5);
+			this->schedule(schedule_selector(RoomScene::fire), 0.4,65536,0.001);
 		}
 		//TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
 		//TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
@@ -378,18 +378,26 @@ void RoomScene::update(float delta)
 		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
 	} 
 	else {     
-		if(model.paused_menu_generated_flag == 0){
-			this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
-			pausescreen->setVisible(true);
-			model.paused_menu_generated_flag = 1;
-		}
-		if(model.paused_menu_cursor == 0){
-			const auto cursorMoveTo = MoveTo::create(0,Vec2(50, 55));
-			pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
-		} else {
-			const auto cursorMoveTo = MoveTo::create(0,Vec2(65, 35));
-			pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
-		}
+        if (model.paused_menu_generated_flag == 0) {
+            this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
+            pausescreen->setVisible(true);
+            auto pausescreenmovein = MoveTo::create(0.2, Vec2(250, 143));
+            pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
+            model.paused_menu_generated_flag = 1;
+        }
+        switch (model.paused_menu_cursor) {
+        case 0:
+            pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0, Vec2(60, 85)));
+            break;
+        case 1:
+            pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0, Vec2(45, 60)));
+            break;
+        case 2:
+            pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0, Vec2(65, 35)));
+            break;
+        default:
+            break;
+        }
 	}
 	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }

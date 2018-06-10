@@ -9,6 +9,7 @@
 #include "ViewModel/MiniMapViewModel.h"
 #include "ViewModel/RoomViewModel.h"
 #include "ViewModel/SimpleItemViewModel.h"
+#include "Character/SimpleItem.h"
 
 #include <vector>
 
@@ -44,6 +45,7 @@ public:
     CC_SYNTHESIZE_RETAIN(Issac*, player, Player)
     CC_SYNTHESIZE_RETAIN(Sprite*, tearSprite, TearSprite)
     CC_SYNTHESIZE_RETAIN(Sprite*, pausescreen, Pausescreen)
+    CC_SYNTHESIZE_RETAIN(SimpleItem*, bomb, Bomb)
 	CC_SYNTHESIZE(int, roomID, RoomID)
 
     void set_event_listener(IRoomSceneListener *listener);
