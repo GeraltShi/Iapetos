@@ -1,23 +1,32 @@
 #include "RoomScene.h"
+#include "AppDelegate.h"
 #include <iostream>
+#include "Service/RoomService.h"
 
 USING_NS_CC;
 using namespace std;
 
-Scene *RoomScene::createScene()
+Scene * RoomScene::createScene(int roomID)
 {
-    return create();
+	return create(roomID);
 }
 
-bool RoomScene::init()
+bool RoomScene::init(int roomID)
 {
-    if (!Scene::init())
+    if (!initWithPhysics())
     {
         return false;
     }
 
+    //根据ViewMode渲染
+    room_vm_ = RoomService::getInstance()->get_room(roomID);
+    mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
+
+    //画物理引擎框
+	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
     const Size size = Director::getInstance()->getWinSize();
-    std::cout << size.width <<" "<< size.height << endl;
+   // std::cout << size.width <<" "<< size.height << endl;
     /** zorder
      * 8 HUD, PauseMenu
      * 7 PauseScreen
@@ -66,22 +75,71 @@ bool RoomScene::init()
     controls->setPosition(221,143);
     addChild(controls,1);
     
-    //门需要在service中通过位置id控制方向、position
-    Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_01_normaldoor.png");
-    Sprite * door = Sprite::createWithTexture(texture_door,Rect(0,0,64,48));
-    Sprite * door_center = Sprite::createWithTexture(texture_door,Rect(64,0,64,48));
-    door->setPosition(221, 286-36);
-    door_center->setPosition(221, 286-36);
-    addChild(door,1);addChild(door_center,1);
+    auto door_mask = room_vm_.getDoorEnable();
+    auto door_style = room_vm_.getDoorStyle();
+
+    //左门
+    if (door_mask[0] > 0)
+    {
+        const auto style = door_style[0];
+
+        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
+        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
+        door->setRotation(270);
+        door_center->setRotation(270);
+        door->setPosition(36, size.height/2);
+        door_center->setPosition(36, size.height / 2);
+        addChild(door, 1); 
+        addChild(door_center, 1);
+    }
+
+    //上门
+    if (door_mask[1] > 0)
+    {
+        const auto style = door_style[1];
+
+        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
+        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
+        door->setPosition(size.width / 2, size.height - 36);
+        door_center->setPosition(size.width / 2, size.height - 36);
+        addChild(door, 1); 
+        addChild(door_center, 1);
+    }
+
+    //右门
+    if (door_mask[2] > 0)
+    {
+        const auto style = door_style[2];
+
+        Texture2D *texture_door2 = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door2 = Sprite::createWithTexture(texture_door2, Rect(0, 0, 64, 48));
+        Sprite * door_center2 = Sprite::createWithTexture(texture_door2, Rect(64, 0, 64, 48));
+        door2->setPosition(size.width - 36, size.height /2);
+        door2->setRotation(90);
+        door_center2->setPosition(size.width - 36, size.height / 2);
+        door_center2->setRotation(90);
+        addChild(door2, 1);
+        addChild(door_center2, 1);
+    }
+
+    //下门
+    if (door_mask[3] > 0)
+    {
+        const auto style = door_style[3];
+
+        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
+        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
+        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
+        door->setRotation(180);
+        door_center->setRotation(180);
+        door->setPosition(size.width / 2, 36);
+        door_center->setPosition(size.width / 2, 36);
+        addChild(door, 1); 
+        addChild(door_center, 1);
+    }
     
-    Texture2D *texture_door2 = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/door_02_treasureroomdoor.png");
-    Sprite * door2 = Sprite::createWithTexture(texture_door2,Rect(0,0,64,48));
-    Sprite * door_center2 = Sprite::createWithTexture(texture_door2,Rect(64,0,64,48));
-    door2->setPosition(442-36, 143);
-    door2->setRotation(90);
-    door_center2->setPosition(442-36, 143);
-    door_center2->setRotation(90);
-    addChild(door2,1);addChild(door_center2,1);
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
     
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
@@ -97,14 +155,29 @@ bool RoomScene::init()
     addChild(rainbowpoop,3);
     
     build_frame_cache();
-    player = Issac::createIssac();
 
-    addChild(player, 3);
-    
-	Monster* temp_monster = Monster::createMonster();
-	temp_monster->setPosition(Vec2(20,50));
-	monsters_.pushBack(temp_monster);
-    addChild(monsters_.at(0), 3, "fatty1");
+	//创建一个盒子，用来碰撞  
+	Sprite* edgeSpace = Sprite::create();
+	PhysicsBody* boundBody = PhysicsBody::createEdgeBox(size, PHYSICSBODY_MATERIAL_DEFAULT, 5);
+	boundBody->getShape(0)->setFriction(0.0f);
+	boundBody->getShape(0)->setRestitution(1.0f);
+	edgeSpace->setPhysicsBody(boundBody);
+	edgeSpace->setPosition(Point(size.width / 2, size.height / 2));
+	this->addChild(edgeSpace);
+	edgeSpace->setTag(0);
+
+	//player生成
+    player = Issac::createIssac();
+	player->createPhyBody();
+	addChild(player, 3);
+  
+	//monster生成
+	for (int i = 0; i < 2; i++) {
+		Fatty* temp_fatty = Fatty::createFatty();
+		temp_fatty->setPosition(Vec2(50, 50));
+		monsters_.pushBack((Monster*)temp_fatty);
+		addChild(monsters_.at(i), 3, "fatty1");
+	}
  
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
@@ -144,30 +217,30 @@ bool RoomScene::init()
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     Texture2D * texture_rocks = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
-    Sprite * rock0 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock1 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock2 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock0 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock1 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock2 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
     Sprite * rock3 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
-    Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,96,64,64));
+    //Sprite * rock4 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+    //Sprite * rock5 = Sprite::createWithTexture(texture_rocks, Rect(0,0,32,32));
+   // Sprite * rock6 = Sprite::createWithTexture(texture_rocks, Rect(0,96,64,64));
     //TODO 石头应该要scaling 26/32
     //TODO 小石头的center是13,13
-    rock0->setPosition(39+26*1,39+26*1);
-    addChild(rock0,3);
-    rock1->setPosition(39+26*2,39+26*3);
-    addChild(rock1,3);
-    rock2->setPosition(39+26*3,39+26*4);
-    addChild(rock2,3);
+    //rock0->setPosition(39+26*1,39+26*1);
+    //addChild(rock0,3);
+    //rock1->setPosition(39+26*2,39+26*3);
+    //addChild(rock1,3);
+    //rock2->setPosition(39+26*3,39+26//*4);
+    //addChild(rock2,3);
     rock3->setPosition(39+26*4,39+26*5);
     addChild(rock3,3);
-    rock4->setPosition(39+26*5,39+26*6);
-    addChild(rock4,3);
-    rock5->setPosition(39+26*6,39+26*7);
-    addChild(rock5,3);
+    //rock4->setPosition(39+26*5,39+26*6);
+    //addChild(rock4,3);
+    //rock5->setPosition(39+26*6,39+26*7);
+    //addChild(rock5,3);
     //TODO 大石头的center是26,26
-    rock6->setPosition(52+26*12,52+26*6);
-    addChild(rock6,3);
+	//rock6->setPosition(52+26*12,52+26*6);
+	//addChild(rock6,3);
     
     //TODO 3.物品生成       gfx\items
     
@@ -236,6 +309,14 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_mouseListener, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(_keyboard_listener, this);
+
+	//碰撞listener
+	//添加监听器
+	auto contactListener = EventListenerPhysicsContact::create();
+	//设置监听器的碰撞开始函数  
+	contactListener->onContactBegin = CC_CALLBACK_1(RoomScene::onContactBegin, this);
+	//添加到事件分发器中
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
 void RoomScene::update(float delta)
@@ -255,50 +336,62 @@ void RoomScene::update(float delta)
             model.bomb = false;
         }
         
-        //monster移动
-        monsters_.at(0)->move(monsters_.at(0)->ToPointDir(player->getPosition()));
-        monsters_.at(0)->boundingBox();
+		//monster移动
+		for (int i = 0; i < monsters_.size(); i++) {
+			if (monsters_.at(i)->getColClog() != ColClogTime) {
+				monsters_.at(i)->setColClog(monsters_.at(i)->getColClog() + 1);
+				if (monsters_.at(i)->getColClog() == ColClogTime) {
+					monsters_.at(i)->getPhysicsBody()->setVelocity(Vec2(0, 0));
+				}
+			}
+			else {
+				//monsters_.at(i)->move( monsters_.at(i)->ToPointDir(player->getPosition()));
+				monsters_.at(i)->moveStrategy(monsters_.at(i)->ToPointDir(player->getPosition()));
+			}
+			//无敌时间的倒计时
+			if (monsters_.at(i)->getInvincibleTime() > 0) {
+				monsters_.at(i)->setInvincibleTime(monsters_.at(i)->getInvincibleTime() - 1);
+			}
+		}
         
-        // Move对头部的频度更高，但优先级比方向键低。相当于方向键是“插队”
-        player->move(model.walk_direction, model.tear_direction);
+		//player移动	
+		if (player->getColClog() != ColClogTime) {
+			player->setColClog(player->getColClog() + 1);
+			if (player->getColClog() == ColClogTime) {
+				player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+			}	
+		}
+		else {
+			player->move(model.walk_direction, model.tear_direction);
+		}
+		//player无敌时间的倒计时
+		if (player->getInvincibleTime() > 0) {
+			player->setInvincibleTime(player->getInvincibleTime() - 1);
+		}
         
-        //碰撞检测
-        if (monsters_.at(0)->boundingBox().intersectsRect(player->boundingBox())) {
-            int col_Dir = monsters_.at(0)->ToPointDir(player->getPosition());
-            monsters_.at(0)->move(10 - col_Dir);
-            player->move(col_Dir, model.tear_direction);
-        }
-        
-        if(model.tear_direction == 5){
-            this->schedule(schedule_selector(RoomScene::fire), 0.4, 65536,0.001);
-        }
-        //TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
-        //TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
-        //TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-        //std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
-    } else {
-        
-        if(model.paused_menu_generated_flag == 0){
-            this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
-            pausescreen->setVisible(true);
-            auto pausescreenmovein = MoveTo::create(0.2,Vec2(250, 143));
-            pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
-            model.paused_menu_generated_flag = 1;
-        }
-        switch (model.paused_menu_cursor){
-            case 0:
-                pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0,Vec2(60, 85)));
-                break;
-            case 1:
-                pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0,Vec2(45, 60)));
-                break;
-            case 2:
-                pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0,Vec2(65, 35)));
-                break;
-            default:
-                break;
-        }
-    }
+		if(model.tear_direction == 5){
+			this->schedule(schedule_selector(RoomScene::fire), 0.5);
+		}
+		//TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
+		//TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
+		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
+		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
+	} 
+	else {     
+		if(model.paused_menu_generated_flag == 0){
+			this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
+			pausescreen->setVisible(true);
+			model.paused_menu_generated_flag = 1;
+		}
+		if(model.paused_menu_cursor == 0){
+			const auto cursorMoveTo = MoveTo::create(0,Vec2(50, 55));
+			pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
+		} else {
+			const auto cursorMoveTo = MoveTo::create(0,Vec2(65, 35));
+			pausescreen->getChildByName("pausecursor")->runAction(cursorMoveTo);
+		}
+	}
+	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
 
 void RoomScene::set_model(RoomSceneModel model)
@@ -403,11 +496,6 @@ void RoomScene::fire(float dt){
     }
 }
 
-void RoomScene::monster_move(float dt)
-{
-
-}
-
 void RoomScene::build_frame_cache() const
 {
     Texture2D * poofTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_015_tearpoofa.png");
@@ -447,4 +535,40 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(frame15, "t_frame15");
     
     
+}
+
+bool RoomScene::onContactBegin(PhysicsContact& contact)
+{
+	if (contact.getShapeA()->getBody()->getNode()->getTag() == 0
+		|| contact.getShapeB()->getBody()->getNode()->getTag() == 0) {
+		return true;
+	}
+
+	Moveable* nodeA = (Moveable*)contact.getShapeA()->getBody()->getNode();
+	Moveable* nodeB = (Moveable*)contact.getShapeB()->getBody()->getNode();
+	
+	if (nodeA->getTag() > nodeB->getTag()) {
+		Moveable* tempnode = nodeA;
+		nodeA = nodeB;
+		nodeB = tempnode;
+	}
+	
+	//tagA<=tagB
+	//tag=0 stone; tag=1:player; tag=2:monster; tag=3:tear;
+	int tagA = nodeA->getTag(), tagB = nodeB->getTag();
+	if (nodeA && nodeB)
+	{
+		if (tagA==1 && tagB==2 && nodeA->getInvincibleTime()==0 )
+		{
+			//Issac被monster碰到，受伤
+			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+			//Issac进入短暂无敌状态
+			nodeA->setInvincibleTime(20);
+			//TO DO添加受伤动画？
+			log("Health:%lf",nodeA->getHealth());
+		}
+	}
+
+	//bodies can collide
+	return true;
 }

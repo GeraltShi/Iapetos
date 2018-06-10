@@ -72,14 +72,17 @@
     <ClCompile Include="..\Classes\ViewModel\SimpleItemViewModel.cpp">
       <Filter>src\ViewModel</Filter>
     </ClCompile>
-    <ClCompile Include="RoomService.cpp">
-      <Filter>src\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Model\RoomViewModel.cpp">
-      <Filter>src\ViewModel</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Character\Moveable.cpp">
       <Filter>src\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Service\RoomService.cpp">
+      <Filter>src\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ViewModel\RoomViewModel.cpp">
+      <Filter>src\ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ViewModel\MiniMapViewModel.cpp">
+      <Filter>src\ViewModel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,14 +131,17 @@
     <ClInclude Include="..\Classes\ViewModel\SimpleItemViewModel.h">
       <Filter>src\ViewModel</Filter>
     </ClInclude>
-    <ClInclude Include="RoomService.h">
-      <Filter>src\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Model\RoomViewModel.h">
-      <Filter>src\ViewModel</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Character\Moveable.h">
       <Filter>src\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Service\RoomService.h">
+      <Filter>src\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ViewModel\RoomViewModel.h">
+      <Filter>src\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ViewModel\MiniMapViewModel.h">
+      <Filter>src\ViewModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

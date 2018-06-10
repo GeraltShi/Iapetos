@@ -1,23 +1,26 @@
 #include "RoomSceneController.h"
 #include "Scene/RoomScene.h"
 #include <iostream>
+#include "Service/RoomService.h"
 
 USING_NS_CC;
 using namespace std;
 
-Scene * RoomSceneController::createScene()
+Scene * RoomSceneController::createScene(int roomID)
 {
-    return create();
+    return create(roomID);
 }
 
-bool RoomSceneController::init()
+bool RoomSceneController::init(int roomID)
 {
-    if (!Scene::init())
+    if (!Scene::initWithPhysics())
     {
         return false;
     }
 
-    scene_ = RoomScene::create();
+	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
+    scene_ = RoomScene::create(roomID);
     scene_->set_event_listener(this);
     addChild(scene_);
 

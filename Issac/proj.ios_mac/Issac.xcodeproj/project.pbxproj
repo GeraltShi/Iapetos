@@ -87,6 +87,12 @@
 		5242193F205153CF009A404A /* idle_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 52421934205153CE009A404A /* idle_2.png */; };
 		52421940205153CF009A404A /* move_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 52421935205153CE009A404A /* move_1.png */; };
 		52421941205153CF009A404A /* move_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 52421935205153CE009A404A /* move_1.png */; };
+		5259AC4B20CD443F0017A803 /* MiniMapViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4620CD443F0017A803 /* MiniMapViewModel.cpp */; };
+		5259AC4C20CD443F0017A803 /* MiniMapViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4620CD443F0017A803 /* MiniMapViewModel.cpp */; };
+		5259AC4D20CD443F0017A803 /* RoomViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4920CD443F0017A803 /* RoomViewModel.cpp */; };
+		5259AC4E20CD443F0017A803 /* RoomViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4920CD443F0017A803 /* RoomViewModel.cpp */; };
+		5259AC5120CD446F0017A803 /* RoomService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4F20CD446F0017A803 /* RoomService.cpp */; };
+		5259AC5220CD446F0017A803 /* RoomService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4F20CD446F0017A803 /* RoomService.cpp */; };
 		5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
@@ -222,6 +228,12 @@
 		52421933205153CE009A404A /* move_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = move_3.png; sourceTree = "<group>"; };
 		52421934205153CE009A404A /* idle_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = idle_2.png; sourceTree = "<group>"; };
 		52421935205153CE009A404A /* move_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = move_1.png; sourceTree = "<group>"; };
+		5259AC4620CD443F0017A803 /* MiniMapViewModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniMapViewModel.cpp; sourceTree = "<group>"; };
+		5259AC4820CD443F0017A803 /* RoomViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewModel.h; sourceTree = "<group>"; };
+		5259AC4920CD443F0017A803 /* RoomViewModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomViewModel.cpp; sourceTree = "<group>"; };
+		5259AC4A20CD443F0017A803 /* MiniMapViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMapViewModel.h; sourceTree = "<group>"; };
+		5259AC4F20CD446F0017A803 /* RoomService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomService.cpp; sourceTree = "<group>"; };
+		5259AC5020CD446F0017A803 /* RoomService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomService.h; sourceTree = "<group>"; };
 		5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoomSceneModel.cpp; sourceTree = "<group>"; };
 		5299141520A7E04900FBFBB4 /* RoomSceneModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RoomSceneModel.hpp; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -488,6 +500,8 @@
 			children = (
 				5210A1EB20A533240081CC78 /* LevelService.cpp */,
 				5210A1EC20A533240081CC78 /* LevelService.h */,
+				5259AC4F20CD446F0017A803 /* RoomService.cpp */,
+				5259AC5020CD446F0017A803 /* RoomService.h */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -537,6 +551,10 @@
 		52D2D4A420C6E1AA0000798E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				5259AC4620CD443F0017A803 /* MiniMapViewModel.cpp */,
+				5259AC4A20CD443F0017A803 /* MiniMapViewModel.h */,
+				5259AC4920CD443F0017A803 /* RoomViewModel.cpp */,
+				5259AC4820CD443F0017A803 /* RoomViewModel.h */,
 				52D2D4A520C6E1AA0000798E /* SimpleItemViewModel.cpp */,
 				52D2D4A620C6E1AA0000798E /* SimpleItemViewModel.h */,
 			);
@@ -709,10 +727,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5259AC4B20CD443F0017A803 /* MiniMapViewModel.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				52D2D4A220C6E1960000798E /* SimpleItem.cpp in Sources */,
 				5210A1F420A533240081CC78 /* MainSceneController.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				5259AC4D20CD443F0017A803 /* RoomViewModel.cpp in Sources */,
 				5210A1F820A533240081CC78 /* MainScene.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				5210A1FE20A533240081CC78 /* MainSceneModel.cpp in Sources */,
@@ -724,6 +744,7 @@
 				52D2D49C20C6E1960000798E /* Issac.cpp in Sources */,
 				52D2D4A720C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */,
 				5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
+				5259AC5120CD446F0017A803 /* RoomService.cpp in Sources */,
 				5210A1FC20A533240081CC78 /* LevelService.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -743,9 +764,12 @@
 				52D2D4A320C6E1960000798E /* SimpleItem.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				52D2D4A120C6E1960000798E /* Moveable.cpp in Sources */,
+				5259AC4E20CD443F0017A803 /* RoomViewModel.cpp in Sources */,
+				5259AC4C20CD443F0017A803 /* MiniMapViewModel.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				5210A1F920A533240081CC78 /* MainScene.cpp in Sources */,
 				5210A1F520A533240081CC78 /* MainSceneController.cpp in Sources */,
+				5259AC5220CD446F0017A803 /* RoomService.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

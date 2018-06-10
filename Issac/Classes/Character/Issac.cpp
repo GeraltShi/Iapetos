@@ -2,7 +2,7 @@
 #include "cocos2d.h"
 
 using namespace cocos2d;
-# define ROOT2 1.41421356
+
 
 Issac *Issac::createIssac()
 {
@@ -20,6 +20,18 @@ bool Issac::init()
     {
         return false;
     }
+
+	//初始化类变量
+	moveSpeed = 150;
+	radiusSize = 10;
+	bodyMass = 50;
+	moving = false;
+	//初始血量6个半心（3颗心）
+	health = 6;
+	//初始攻击
+	attack = 1.3;
+	this->setTag(1);
+
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
@@ -188,6 +200,17 @@ void Issac::build_animation_cache()
 //TODO MoveTo 有bug，贴墙以后在墙附近怼墙 会卡住
 void Issac::move(int walk_direction, int tear_direction)
 {
+	//移动
+	//移动速度不是之前的情况，说明发生碰撞
+	if (colClog == ColClogTime
+		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
+		colClog = 0;
+	}
+	else {
+		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+	}
+
+	//移动的图形显示
     //直接获取缓存，不要将SpriteFrame保存在类中
     auto spriteCache = SpriteFrameCache::getInstance();
     auto aniCache = AnimationCache::getInstance();
@@ -213,7 +236,6 @@ void Issac::move(int walk_direction, int tear_direction)
     } else {
         head_direction = tear_direction;
     }
-    int offset_x = 0, offset_y = 0;
     Sprite * new_head;
     switch (walk_direction)
     {
@@ -221,8 +243,6 @@ void Issac::move(int walk_direction, int tear_direction)
             //456
             //789
         case 4://左
-            if(this->getPositionX() > 76){ offset_x = -moveSpeed;}
-            else {offset_x = 0;}
             if(prev_walk_orientation != 4){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->setScaleX(-1);//翻转
@@ -232,8 +252,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 6://右
-            if(this->getPositionX() < 442-76){ offset_x = moveSpeed;}
-            else {offset_x = 0;}
             if(prev_walk_orientation != 6){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->setScaleX(1);//翻转
@@ -243,8 +261,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 2://上
-            if(this->getPositionY() < 286-76){ offset_y = moveSpeed;}
-            else {offset_y = 0;}
             if(prev_walk_orientation != 2){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
@@ -253,8 +269,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 8://下
-            if(this->getPositionY() > 76){offset_y = -moveSpeed;}
-            else {offset_y = 0;}
             if(prev_walk_orientation != 8){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -263,10 +277,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 1://左上
-            if(this->getPositionX() > 76) offset_x = -moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() < 286-76) offset_y = moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 1){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());
@@ -275,10 +285,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 3://右上
-            if(this->getPositionX() < 442-76) offset_x = moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() < 286-76) offset_y = moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 3){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate->reverse());
@@ -287,10 +293,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
         
         case 7://左下
-            if(this->getPositionX() > 76) offset_x = -moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() > 76) offset_y = -moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 7){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -299,10 +301,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 9://右下
-            if(this->getPositionX() < 442-76) offset_x = moveSpeed/ROOT2;
-            else offset_x = 0;
-            if(this->getPositionY() > 76) offset_y = -moveSpeed/ROOT2;
-            else offset_y = 0;
             if(prev_walk_orientation != 9){
                 this->getChildByName("body")->stopAllActions();
                 this->getChildByName("body")->runAction(vwalk_animate);
@@ -311,8 +309,6 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
             
         case 5://无，头要默认复位
-            offset_x = 0;
-            offset_y = 0;
             this->getChildByName("body")->stopAllActions();
             prev_walk_orientation = 5;
             break;
@@ -356,7 +352,6 @@ void Issac::move(int walk_direction, int tear_direction)
                 this->addChild(new_head,1, "head");
                 prev_head_orientation = 5;
             }
-            
             break;
         case 6:
             if(prev_head_orientation != 6){
@@ -387,11 +382,33 @@ void Issac::move(int walk_direction, int tear_direction)
         default:
             break;
     }
-    if(walk_direction != 5){
-        //const auto new_posX = getPositionX() + offset_x;
-        //const auto new_posY = getPositionY() + offset_y;
-        ActionInterval * Move = MoveBy::create(0.2, Vec2(offset_x, offset_y));
-        Action * action = Spawn::create(Move, NULL);
-        this->runAction(action);
-    }
+
+	if (colClog == 0) {
+		prev_walk_orientation = 5;
+	}
+}
+
+void Issac::createPhyBody()
+{
+	auto phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
+	//是否设置物体为静态  
+	phyBody->setDynamic(true);
+	//设置物体的恢复力  
+	phyBody->getShape(0)->setRestitution(1.0f);
+	//设置物体的摩擦力  
+	phyBody->getShape(0)->setFriction(0.0f);
+	//设置物体密度  
+	phyBody->getShape(0)->setDensity(1.0f);
+	//设置质量  
+	phyBody->getShape(0)->setMass(bodyMass);
+	//设置物体是否受重力系数影响  
+	phyBody->setGravityEnable(false);
+	//速度
+	phyBody->setVelocity(Vec2(0, 0));
+	//碰撞筛选
+	phyBody->setCategoryBitmask(0xFF);    // 1111_1111
+	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
+	phyBody->setContactTestBitmask(0x01);	//0000_0001
+	//添加物理躯体
+	this->addComponent(phyBody);
 }

@@ -9,16 +9,26 @@ using namespace std;
 
 class Monster : public Moveable {
 public:
-    static Monster *createMonster();
-    static Sprite *createSprite();
-    bool init() override;
-    
-    CREATE_FUNC(Monster)
-    
+	static Sprite *createSprite();
+	virtual bool init();
+
+	//CREATE_FUNC(Monster)
+
+	virtual void createPhyBody();
 	void move(int walk_direction);
 	int ToPointDir(Vec2);
-private:
-    void build_sprite_frame_cache(Texture2D *texture_) const;//必要时需要重载
-    static void build_animation_cache();
+	//怪物的移动策略，这是接口。子类每个怪物重写。
+	virtual void moveStrategy(int walk_direction) = 0;
+protected:
+	void build_sprite_frame_cache(Texture2D *texture_) const;//必要时需要重载
+	static void build_animation_cache();
+};
+
+class Fatty : public Monster {
+public:
+	static Fatty *createFatty();
+	virtual bool init();
+	CREATE_FUNC(Fatty)
+	virtual void moveStrategy(int walk_direction);
 };
 #endif /* Monster_hpp */

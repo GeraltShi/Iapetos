@@ -11,10 +11,29 @@
 class RoomSceneController : public Scene, IRoomSceneListener
 {
 public:
-    static Scene *createScene();
-    bool init() override;
+    static Scene *createScene(int roomID);
+    //bool init() override;
+	bool init(int roomID);
 
-    CREATE_FUNC(RoomSceneController)
+    //CREATE_FUNC(RoomSceneController)
+	static RoomSceneController* create(int roomID)
+	{
+		RoomSceneController *pRet = new(std::nothrow) RoomSceneController();
+		if (pRet && pRet->init(roomID))
+		{
+			pRet->autorelease();
+			return pRet;
+		}
+		else
+		{
+			delete pRet;
+			pRet = nullptr;
+			return nullptr;
+		}
+	}
+
+
+
     CC_SYNTHESIZE_RETAIN(RoomScene*,scene_,MScene)
 
     void on_touch_began(Touch* touch, Event* event) override;
