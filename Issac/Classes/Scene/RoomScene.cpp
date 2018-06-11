@@ -292,8 +292,9 @@ void RoomScene::update(float delta)
 {
     if(!model.paused){
 		//开始 
-		//Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1);
-
+		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!=NULL) {
+			Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
+		}
         if(pausescreen->isVisible()){
             pausescreen->setVisible(false);
             auto pausescreenmovein = MoveTo::create(0.2,Vec2(-250, 143));
@@ -376,7 +377,7 @@ void RoomScene::update(float delta)
 	} 
 	else {		
 		//暂停 
-		//Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
+		Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         
 		if (model.paused_menu_generated_flag == 0) {
             this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
