@@ -78,55 +78,25 @@ bool RoomScene::init(int roomID)
     auto door_mask = room_vm_.getDoorEnable();
     auto door_style = room_vm_.getDoorStyle();
 
-    //左门
-    if (door_mask[0] > 0)
-    {	
-		doors_.pushBack(Door::createDoor(0, door_style[0], size));
-		addChild(doors_.at(0), 3);
-    }
-
-    //上门
-    if (door_mask[1] > 0)
-    {
-        const auto style = door_style[1];
-        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
-        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
-        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
-        door->setPosition(size.width / 2, size.height - 36);
-        door_center->setPosition(size.width / 2, size.height - 36);
-        addChild(door, 1); 
-        addChild(door_center, 1);
-    }
-
-    //右门
-    if (door_mask[2] > 0)
-    {
-		const auto style = door_style[2];
-        Texture2D *texture_door2 = Director::getInstance()->getTextureCache()->addImage(style);
-        Sprite * door2 = Sprite::createWithTexture(texture_door2, Rect(0, 0, 64, 48));
-        Sprite * door_center2 = Sprite::createWithTexture(texture_door2, Rect(64, 0, 64, 48));
-        door2->setPosition(size.width - 36, size.height /2);
-        door2->setRotation(90);
-        door_center2->setPosition(size.width - 36, size.height / 2);
-        door_center2->setRotation(90);
-        addChild(door2, 1);
-        addChild(door_center2, 1);
-    }
-
-    //下门
-    if (door_mask[3] > 0)
-    {
-        const auto style = door_style[3];
-        Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(style);
-        Sprite * door = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
-        Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
-        door->setRotation(180);
-        door_center->setRotation(180);
-        door->setPosition(size.width / 2, 36);
-        door_center->setPosition(size.width / 2, 36);
-        addChild(door, 1); 
-        addChild(door_center, 1);
-    }
+	//门的生成
+	//门0,1,2,3是左，上，右，下4门
+	for (int i = 0; i < 4; i++) {
+		if (door_mask[i] > 0) {	//有门生成门（碰撞体积略小）
+			doors_.pushBack(Door::createDoor(i, door_style[i], size));
+			addChild(doors_.at(i), 1);
+		}
+		else {	//无门生成墙
+			stones_.pushBack(Stone::createStone(0, Size(64, 48)));
+			stones_.at(stones_.size() - 1)->setRotation(270 + i * 90);
+			switch (i) {
+			case(0): stones_.at(stones_.size() - 1)->setPosition(24, size.height / 2); break;
+			case(1): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, size.height-24); break;
+			case(2): stones_.at(stones_.size() - 1)->setPosition(size.width-24, size.height / 2); break;
+			case(3): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, 24); break;
+			}
+			addChild(stones_.at(stones_.size() - 1), 1);
+		}
+	}
     
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
     

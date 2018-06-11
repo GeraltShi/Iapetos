@@ -352,7 +352,7 @@ bool Fatty::init() {
 	//Fatty重量
 	bodyMass = 500;
 	//Fatty行走速度
-	moveSpeed = 120;
+	moveSpeed = 80;
 	//Fatty血量5
 	health = 5;
 	//Fatty攻击1
