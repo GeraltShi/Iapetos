@@ -93,6 +93,12 @@
 		5259AC4E20CD443F0017A803 /* RoomViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4920CD443F0017A803 /* RoomViewModel.cpp */; };
 		5259AC5120CD446F0017A803 /* RoomService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4F20CD446F0017A803 /* RoomService.cpp */; };
 		5259AC5220CD446F0017A803 /* RoomService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC4F20CD446F0017A803 /* RoomService.cpp */; };
+		5259AC6020CE9A650017A803 /* Stone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5920CE9A640017A803 /* Stone.cpp */; };
+		5259AC6120CE9A650017A803 /* Stone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5920CE9A640017A803 /* Stone.cpp */; };
+		5259AC6220CE9A650017A803 /* Door.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5E20CE9A650017A803 /* Door.cpp */; };
+		5259AC6320CE9A650017A803 /* Door.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5E20CE9A650017A803 /* Door.cpp */; };
+		5259AC6420CE9A650017A803 /* Tear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5F20CE9A650017A803 /* Tear.cpp */; };
+		5259AC6520CE9A650017A803 /* Tear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5F20CE9A650017A803 /* Tear.cpp */; };
 		5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
@@ -234,6 +240,12 @@
 		5259AC4A20CD443F0017A803 /* MiniMapViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniMapViewModel.h; sourceTree = "<group>"; };
 		5259AC4F20CD446F0017A803 /* RoomService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomService.cpp; sourceTree = "<group>"; };
 		5259AC5020CD446F0017A803 /* RoomService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomService.h; sourceTree = "<group>"; };
+		5259AC5920CE9A640017A803 /* Stone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stone.cpp; sourceTree = "<group>"; };
+		5259AC5B20CE9A650017A803 /* Stone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stone.h; sourceTree = "<group>"; };
+		5259AC5C20CE9A650017A803 /* Tear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tear.h; sourceTree = "<group>"; };
+		5259AC5D20CE9A650017A803 /* Door.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Door.h; sourceTree = "<group>"; };
+		5259AC5E20CE9A650017A803 /* Door.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Door.cpp; sourceTree = "<group>"; };
+		5259AC5F20CE9A650017A803 /* Tear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tear.cpp; sourceTree = "<group>"; };
 		5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoomSceneModel.cpp; sourceTree = "<group>"; };
 		5299141520A7E04900FBFBB4 /* RoomSceneModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RoomSceneModel.hpp; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -544,6 +556,12 @@
 				52D2D49920C6E1960000798E /* Moveable.h */,
 				52D2D49A20C6E1960000798E /* SimpleItem.cpp */,
 				52D2D49B20C6E1960000798E /* SimpleItem.h */,
+				5259AC5E20CE9A650017A803 /* Door.cpp */,
+				5259AC5D20CE9A650017A803 /* Door.h */,
+				5259AC5920CE9A640017A803 /* Stone.cpp */,
+				5259AC5B20CE9A650017A803 /* Stone.h */,
+				5259AC5F20CE9A650017A803 /* Tear.cpp */,
+				5259AC5C20CE9A650017A803 /* Tear.h */,
 			);
 			path = Character;
 			sourceTree = "<group>";
@@ -734,14 +752,17 @@
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				5259AC4D20CD443F0017A803 /* RoomViewModel.cpp in Sources */,
 				5210A1F820A533240081CC78 /* MainScene.cpp in Sources */,
+				5259AC6020CE9A650017A803 /* Stone.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				5210A1FE20A533240081CC78 /* MainSceneModel.cpp in Sources */,
 				5210A1FA20A533240081CC78 /* RoomScene.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				5259AC6220CE9A650017A803 /* Door.cpp in Sources */,
 				5210A1F620A533240081CC78 /* RoomSceneController.cpp in Sources */,
 				52D2D49E20C6E1960000798E /* Monster.cpp in Sources */,
 				52D2D4A020C6E1960000798E /* Moveable.cpp in Sources */,
 				52D2D49C20C6E1960000798E /* Issac.cpp in Sources */,
+				5259AC6420CE9A650017A803 /* Tear.cpp in Sources */,
 				52D2D4A720C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */,
 				5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
 				5259AC5120CD446F0017A803 /* RoomService.cpp in Sources */,
@@ -762,14 +783,17 @@
 				5210A1F720A533240081CC78 /* RoomSceneController.cpp in Sources */,
 				52D2D4A820C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */,
 				52D2D4A320C6E1960000798E /* SimpleItem.cpp in Sources */,
+				5259AC6520CE9A650017A803 /* Tear.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				52D2D4A120C6E1960000798E /* Moveable.cpp in Sources */,
+				5259AC6320CE9A650017A803 /* Door.cpp in Sources */,
 				5259AC4E20CD443F0017A803 /* RoomViewModel.cpp in Sources */,
 				5259AC4C20CD443F0017A803 /* MiniMapViewModel.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				5210A1F920A533240081CC78 /* MainScene.cpp in Sources */,
 				5210A1F520A533240081CC78 /* MainSceneController.cpp in Sources */,
 				5259AC5220CD446F0017A803 /* RoomService.cpp in Sources */,
+				5259AC6120CE9A650017A803 /* Stone.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
