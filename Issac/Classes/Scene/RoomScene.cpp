@@ -75,29 +75,6 @@ bool RoomScene::init(int roomID)
     controls->setPosition(221,143);
     addChild(controls,1);
     
-    auto door_mask = room_vm_.getDoorEnable();
-    auto door_style = room_vm_.getDoorStyle();
-
-	//门的生成
-	//门0,1,2,3是左，上，右，下4门
-	for (int i = 0; i < 4; i++) {
-		if (door_mask[i] > 0) {	//有门生成门（碰撞体积略小）
-			doors_.pushBack(Door::createDoor(i, door_style[i], size));
-			addChild(doors_.at(i), 1);
-		}
-		else {	//无门生成墙
-			stones_.pushBack(Stone::createStone(0, Size(64, 48)));
-			stones_.at(stones_.size() - 1)->setRotation(270 + i * 90);
-			switch (i) {
-			case(0): stones_.at(stones_.size() - 1)->setPosition(24, size.height / 2); break;
-			case(1): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, size.height-24); break;
-			case(2): stones_.at(stones_.size() - 1)->setPosition(size.width-24, size.height / 2); break;
-			case(3): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, 24); break;
-			}
-			addChild(stones_.at(stones_.size() - 1), 1);
-		}
-	}
-    
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
     
     //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
@@ -124,10 +101,55 @@ bool RoomScene::init(int roomID)
 	addChild(edgeSpace);
 	edgeSpace->setTag(0);
 	
+	//门的生成
+	//门0,1,2,3是左，上，右，下4门
+	auto door_mask = room_vm_.getDoorEnable();
+	auto door_style = room_vm_.getDoorStyle();
+	for (int i = 0; i < 4; i++) {
+		if (door_mask[i] > 0) {	//有门生成门（碰撞体积略小）
+			doors_.pushBack(Door::createDoor(i, door_style[i], size));
+			addChild(doors_.at(i), 1);
+		}
+		else {	//无门生成墙
+			stones_.pushBack(Stone::createStone(0, Size(64, 48)));
+			stones_.at(stones_.size() - 1)->setRotation(270 + i * 90);
+			switch (i) {
+			case(0): stones_.at(stones_.size() - 1)->setPosition(24, size.height / 2); break;
+			case(1): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, size.height - 24); break;
+			case(2): stones_.at(stones_.size() - 1)->setPosition(size.width - 24, size.height / 2); break;
+			case(3): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, 24); break;
+			}
+			addChild(stones_.at(stones_.size() - 1), 1);
+		}
+	}
+
 	//边界无形石头生成
-	//stones_.pushBack(Stone::createStone(0, Size(50, 120)));
-	//stones_.at(stones_.size() - 1)->setPosition(25, 60);
-	//addChild(stones_.at(stones_.size() - 1), 3);
+	//竖着的4块
+	stones_.pushBack(Stone::createStone(0, Size(48, size.height / 2-32)));
+	stones_.at(stones_.size() - 1)->setPosition(24, size.height / 4 - 16);
+	addChild(stones_.at(stones_.size() - 1), 1);
+	stones_.pushBack(Stone::createStone(0, Size(48, size.height / 2 - 32)));
+	stones_.at(stones_.size() - 1)->setPosition(24, size.height / 4*3 + 16);
+	addChild(stones_.at(stones_.size() - 1), 1);
+	stones_.pushBack(Stone::createStone(0, Size(48, size.height / 2 - 32)));
+	stones_.at(stones_.size() - 1)->setPosition(size.width-24, size.height / 4 - 16);
+	addChild(stones_.at(stones_.size() - 1), 1);
+	stones_.pushBack(Stone::createStone(0, Size(48, size.height / 2 - 32)));
+	stones_.at(stones_.size() - 1)->setPosition(size.width - 24, size.height / 4 * 3 + 16);
+	addChild(stones_.at(stones_.size() - 1), 1);
+	//横的4块
+	stones_.pushBack(Stone::createStone(0, Size(size.width / 2 - 80,48)));
+	stones_.at(stones_.size() - 1)->setPosition(8+size.width / 4, 24);
+	addChild(stones_.at(stones_.size() - 1), 1);
+	stones_.pushBack(Stone::createStone(0, Size(size.width / 2 - 80, 48)));
+	stones_.at(stones_.size() - 1)->setPosition(-8 + size.width / 4*3, 24);
+	addChild(stones_.at(stones_.size() - 1), 1);
+	stones_.pushBack(Stone::createStone(0, Size(size.width / 2 - 80, 48)));
+	stones_.at(stones_.size() - 1)->setPosition(8 + size.width / 4, size.height-24);
+	addChild(stones_.at(stones_.size() - 1), 1);
+	stones_.pushBack(Stone::createStone(0, Size(size.width / 2 - 80, 48)));
+	stones_.at(stones_.size() - 1)->setPosition(-8 + size.width / 4 * 3, size.height - 24);
+	addChild(stones_.at(stones_.size() - 1), 1);
 	//player生成
     player = Issac::createIssac();
 	player->createPhyBody();
@@ -141,9 +163,9 @@ bool RoomScene::init(int roomID)
 	}
 
 	//石头生成
-	//stones_.pushBack(Stone::createStone(0, Size(32, 200)));
-	//stones_.at(stones_.size() - 1)->setPosition(16, 100);
-	//addChild(stones_.at(stones_.size() - 1), 3);
+	stones_.pushBack(Stone::createStone(0, Size(32, 200)));
+	stones_.at(stones_.size() - 1)->setPosition(16, 100);
+	addChild(stones_.at(stones_.size() - 1), 3);
  
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
