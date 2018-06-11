@@ -1,8 +1,8 @@
-#include"Door.h"
+#include "Door.h"
 
-Door* Door::createDoor(int doorType, const string& doorStyle, const Size& winSize) 
+Door *Door::createDoor(int doorType, const string &doorStyle, const Size &winSize)
 {
-	Door *pRet = new(std::nothrow)  Door();
+	Door *pRet = new (std::nothrow) Door();
 	if (pRet && pRet->init(doorType, doorStyle, winSize))
 	{
 		pRet->autorelease();
@@ -16,55 +16,60 @@ Door* Door::createDoor(int doorType, const string& doorStyle, const Size& winSiz
 	}
 }
 
-bool Door::init(int doorType, const string& doorStyle, const Size& winSize) 
+bool Door::init(int doorType, const string &doorStyle, const Size &winSize)
 {
 	if (!Sprite::init())
 	{
 		return false;
 	}
-	auto phyBody = PhysicsBody::createBox(Size(64,40), PHYSICSBODY_MATERIAL_DEFAULT);
-	//¾²Ì¬  
+	auto phyBody = PhysicsBody::createBox(Size(64, 40), PHYSICSBODY_MATERIAL_DEFAULT);
+	//é™æ€
 	phyBody->setDynamic(false);
-	//ÉèÖÃÎïÌåµÄ»Ö¸´Á¦  
+	//è®¾ç½®ç‰©ä½“çš„æ¢å¤åŠ›
 	phyBody->getShape(0)->setRestitution(0.5f);
-	//ÉèÖÃÎïÌåµÄÄ¦²ÁÁ¦  
+	//è®¾ç½®ç‰©ä½“çš„æ‘©æ“¦åŠ›
 	phyBody->getShape(0)->setFriction(1.0f);
-	//Åö×²É¸Ñ¡:²»ºÍÊ¯Í·Åö×²£¬Ñ¡ÔñĞÔ¼àÌı:ºÍtear,IssacÅö×²¼àÌı
-	phyBody->setCategoryBitmask(0x10);    // 0001_0000
+	//ç¢°æ’ç­›é€‰:ä¸å’ŒçŸ³å¤´ç¢°æ’ï¼Œé€‰æ‹©æ€§ç›‘å¬:å’Œtear,Issacç¢°æ’ç›‘å¬
+	phyBody->setCategoryBitmask(0x10);	// 0001_0000
 	phyBody->setCollisionBitmask(0xEF);   // 1110_1111
-	phyBody->setContactTestBitmask(0x05);	//0000_0101
+	phyBody->setContactTestBitmask(0x05); //0000_0101
 	this->addComponent(phyBody);
 
 	Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(doorStyle);
-	Sprite * door_ = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
-	Sprite * door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
+	Sprite *door_ = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
+	Sprite *door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
 	this->addChild(door_);
 	this->addChild(door_center);
-	this->setRotation(270+doorType*90);
-	//ÉèÖÃÎ»ÖÃ
-	switch (doorType) {
-	case(0): {
+	this->setRotation(270 + doorType * 90);
+	//è®¾ç½®ä½ç½®
+	switch (doorType)
+	{
+	case (0):
+	{
 		this->setPosition(36, winSize.height / 2);
 		this->getPhysicsBody()->setPositionOffset(Vec2(-16, 0));
 		break;
 	}
-	case(1): {
+	case (1):
+	{
 		this->setPosition(winSize.width / 2, winSize.height - 36);
 		this->getPhysicsBody()->setPositionOffset(Vec2(0, 16));
 		break;
 	}
-	case(2): {
+	case (2):
+	{
 		this->setPosition(winSize.width - 36, winSize.height / 2);
-		this->getPhysicsBody()->setPositionOffset(Vec2(16,0));
+		this->getPhysicsBody()->setPositionOffset(Vec2(16, 0));
 		break;
 	}
-	case(3): {
+	case (3):
+	{
 		this->setPosition(winSize.width / 2, 36);
 		this->getPhysicsBody()->setPositionOffset(Vec2(0, -16));
 		break;
 	}
 	}
-	
-	this->setTag(0); //ÃÅtag=0
+
+	this->setTag(0); //é—¨tag=0
 	return true;
 }

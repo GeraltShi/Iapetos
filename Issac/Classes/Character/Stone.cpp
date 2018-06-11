@@ -1,8 +1,8 @@
-#include"Stone.h"
+#include "Stone.h"
 
-Stone* Stone::createStone(int type_,Size stoneSize_) 
+Stone *Stone::createStone(int type_, Size stoneSize_)
 {
-	Stone *pRet = new(std::nothrow)  Stone();
+	Stone *pRet = new (std::nothrow) Stone();
 	if (pRet && pRet->init(type_, stoneSize_))
 	{
 		pRet->autorelease();
@@ -16,37 +16,42 @@ Stone* Stone::createStone(int type_,Size stoneSize_)
 	}
 }
 
-bool Stone::init(int stoneType,Size stoneSize) 
+bool Stone::init(int stoneType, Size stoneSize)
 {
 	if (!Sprite::init())
 	{
 		return false;
 	}
 
-	Texture2D * texture_stone = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
-	Sprite * temp_stone;
-	//stoneType=0Í¸Ã÷±ß½ç£¬stoneType=1Ğ¡Ê¯Í·£¬stoneType=2´óÊ¯Í·
-	switch (stoneType) {
-	case(0):break;
-	case(1):temp_stone = Sprite::createWithTexture(texture_stone, Rect(0, 0, 32, 32));
-			break;
-	case(2):temp_stone = Sprite::createWithTexture(texture_stone, Rect(0, 96, 64, 64));
-			break;
+	Texture2D *texture_stone = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/rocks_basement.png");
+	Sprite *temp_stone;
+	//stoneType=0é€æ˜è¾¹ç•Œï¼ŒstoneType=1å°çŸ³å¤´ï¼ŒstoneType=2å¤§çŸ³å¤´
+	switch (stoneType)
+	{
+	case (0):
+		break;
+	case (1):
+		temp_stone = Sprite::createWithTexture(texture_stone, Rect(0, 0, 32, 32));
+		break;
+	case (2):
+		temp_stone = Sprite::createWithTexture(texture_stone, Rect(0, 96, 64, 64));
+		break;
 	}
-	if (stoneType>0) this->addChild(temp_stone);
+	if (stoneType > 0)
+		this->addChild(temp_stone);
 	auto phyBody = PhysicsBody::createBox(stoneSize, PHYSICSBODY_MATERIAL_DEFAULT);
-	//¾²Ì¬  
+	//é™æ€
 	phyBody->setDynamic(false);
-	//ÉèÖÃÎïÌåµÄ»Ö¸´Á¦  
+	//è®¾ç½®ç‰©ä½“çš„æ¢å¤åŠ›
 	phyBody->getShape(0)->setRestitution(0.0f);
-	//ÉèÖÃÎïÌåµÄÄ¦²ÁÁ¦  
+	//è®¾ç½®ç‰©ä½“çš„æ‘©æ“¦åŠ›
 	phyBody->getShape(0)->setFriction(1.0f);
-	//Åö×²É¸Ñ¡:²»ºÍÊ¯Í·Åö×²£¬Ñ¡ÔñĞÔ¼àÌı:ºÍtearÅö×²¼àÌı
-	phyBody->setCategoryBitmask(0x10);    // 0001_0000
+	//ç¢°æ’ç­›é€‰:ä¸å’ŒçŸ³å¤´ç¢°æ’ï¼Œé€‰æ‹©æ€§ç›‘å¬:å’Œtearç¢°æ’ç›‘å¬
+	phyBody->setCategoryBitmask(0x10);	// 0001_0000
 	phyBody->setCollisionBitmask(0xEF);   // 1110_1111
-	phyBody->setContactTestBitmask(0x04);	//0000_0100
-	//Ìí¼ÓÎïÀíÇûÌå
+	phyBody->setContactTestBitmask(0x04); //0000_0100
+	//æ·»åŠ ç‰©ç†èº¯ä½“
 	this->addComponent(phyBody);
-	this->setTag(0); //tag=0Ê¯Í·
+	this->setTag(0); //tag=0çŸ³å¤´
 	return true;
 }

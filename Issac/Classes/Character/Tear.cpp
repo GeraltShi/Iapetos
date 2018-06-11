@@ -1,6 +1,6 @@
-#include"Tear.h"
+#include "Tear.h"
 
-Tear* Tear::createTear()
+Tear *Tear::createTear()
 {
 	return create();
 }
@@ -8,46 +8,46 @@ Tear* Tear::createTear()
 void Tear::createPhyBody()
 {
 	auto phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
-	//ÊÇ·ñÉèÖÃÎïÌåÎª¾²Ì¬  
+	//æ˜¯å¦è®¾ç½®ç‰©ä½“ä¸ºé™æ€
 	phyBody->setDynamic(true);
-	//ÉèÖÃÎïÌåµÄ»Ö¸´Á¦  
+	//è®¾ç½®ç‰©ä½“çš„æ¢å¤åŠ›
 	phyBody->getShape(0)->setRestitution(1.0f);
-	//ÉèÖÃÎïÌåµÄÄ¦²ÁÁ¦  
+	//è®¾ç½®ç‰©ä½“çš„æ‘©æ“¦åŠ›
 	phyBody->getShape(0)->setFriction(0.0f);
-	//ÉèÖÃÎïÌåÃÜ¶È  
+	//è®¾ç½®ç‰©ä½“å¯†åº¦
 	phyBody->getShape(0)->setDensity(1.0f);
-	//ÉèÖÃÖÊÁ¿  
+	//è®¾ç½®è´¨é‡
 	phyBody->getShape(0)->setMass(bodyMass);
-	//ÉèÖÃÎïÌåÊÇ·ñÊÜÖØÁ¦ÏµÊýÓ°Ïì  
+	//è®¾ç½®ç‰©ä½“æ˜¯å¦å—é‡åŠ›ç³»æ•°å½±å“
 	phyBody->setGravityEnable(false);
-	//ËÙ¶È
+	//é€Ÿåº¦
 	phyBody->setVelocity(Vec2(0, 0));
-	//Åö×²É¸Ñ¡:ËùÓÐ¶¼Åö×²£¬Ñ¡ÔñÐÔ¼àÌý:È«²¿Åö×²¶¼»á¼àÌý
-	phyBody->setCategoryBitmask(0x04);    // 0000_0100
+	//ç¢°æ’žç­›é€‰:æ‰€æœ‰éƒ½ç¢°æ’žï¼Œé€‰æ‹©æ€§ç›‘å¬:å…¨éƒ¨ç¢°æ’žéƒ½ä¼šç›‘å¬
+	phyBody->setCategoryBitmask(0x04);	// 0000_0100
 	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
-	phyBody->setContactTestBitmask(0xFF);	//1111_1111
-	//Ìí¼ÓÎïÀíÇûÌå
+	phyBody->setContactTestBitmask(0xFF); //1111_1111
+	//æ·»åŠ ç‰©ç†èº¯ä½“
 	this->addComponent(phyBody);
 }
 
-bool Tear::init() {
+bool Tear::init()
+{
 	if (!Moveable::init())
 	{
 		return false;
 	}
-	//TearÅö×²´óÐ¡	
+	//Tearç¢°æ’žå¤§å°
 	radiusSize = 3;
-	//TearÖØÁ¿
+	//Tearé‡é‡
 	bodyMass = 10;
-	//TearÐÐ×ßËÙ¶È
+	//Tearè¡Œèµ°é€Ÿåº¦
 	moveSpeed = 120;
-	//Tear¹¥»÷1
+	//Tearæ”»å‡»1
 	attack = 1;
-	//Éú³ÉÎïÀíÉíÌå
+	//ç”Ÿæˆç‰©ç†èº«ä½“
 	this->createPhyBody();
 	//tag=3
 	this->setTag(3);
-
 
 	auto fcache = SpriteFrameCache::getInstance();
 	const auto frame0 = fcache->getSpriteFrameByName("t_frame0");
@@ -86,9 +86,9 @@ bool Tear::init() {
 	array.pushBack(frame15);
 
 	const auto animation = Animation::createWithSpriteFrames(array, 0.05f);
-	Action * poof_anim = Animate::create(animation);
+	Action *poof_anim = Animate::create(animation);
 
-	Texture2D * tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
+	Texture2D *tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
 	SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0, 32, 32, 32));
 	auto temp_tearSprite = Sprite::createWithSpriteFrame(tearFrame);
 	this->addChild(temp_tearSprite);
