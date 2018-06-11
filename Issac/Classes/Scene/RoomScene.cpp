@@ -150,25 +150,38 @@ bool RoomScene::init(int roomID)
 	stones_.pushBack(Stone::createStone(0, Size(size.width / 2 - 80, 48)));
 	stones_.at(stones_.size() - 1)->setPosition(-8 + size.width / 4 * 3, size.height - 24);
 	addChild(stones_.at(stones_.size() - 1), 1);
-	//player生成
-    player = Issac::createIssac();
-	player->createPhyBody();
-	addChild(player, 3);
-  
-	//monster生成
-	for (int i = 0; i < 2; i++) {
-		monsters_.pushBack((Monster*)Fatty::createFatty());
-		monsters_.at(i)->setPosition(Vec2(50, 50));
-		addChild(monsters_.at(i), 3, "fatty1");
+	
+	//遍历room的map，生成player，monster，stone
+	for (int i = 0; i < 13; i++) {
+		for (int j = 0; j < 7; j++) {
+			if (room_vm_.getRoomMap(i, j) == 3) { //3说明这个位置是player
+				//player生成
+				player = Issac::createIssac();
+				player->createPhyBody();
+				player->setPosition(48+i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2);
+				addChild(player, 3);
+			}
+			if (room_vm_.getRoomMap(i, j) == 4) { //4说明这个位置是Fatty
+				//Fatty生成
+				monsters_.pushBack((Monster*)Fatty::createFatty());
+				monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty1");
+			}
+			if (room_vm_.getRoomMap(i, j) == 1) {  
+				//小石头
+				stones_.pushBack(Stone::createStone(1, Size(26, 26)));
+				stones_.at(stones_.size() - 1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(stones_.at(stones_.size() - 1), 3);
+			}
+			if (room_vm_.getRoomMap(i, j) == 2 
+				&& i>=1 && j>=1 && room_vm_.getRoomMap(i-1, j-1) == 2) {
+				//大石头
+				stones_.pushBack(Stone::createStone(2, Size(52, 52)));
+				stones_.at(stones_.size() - 1)->setPosition(Vec2(48 + i*RoomUnitSize.width, 48 + j*RoomUnitSize.height));
+				addChild(stones_.at(stones_.size() - 1), 3);
+			}
+		}
 	}
-
-	//石头生成
-	stones_.pushBack(Stone::createStone(1, Size(32, 32)));
-	stones_.at(stones_.size() - 1)->setPosition(48+80, 48+80);
-	addChild(stones_.at(stones_.size() - 1), 3);
-	stones_.pushBack(Stone::createStone(2, Size(64, 64)));
-	stones_.at(stones_.size() - 1)->setPosition(size.width/2, size.height/2);
-	addChild(stones_.at(stones_.size() - 1), 3);
  
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
@@ -207,9 +220,6 @@ bool RoomScene::init(int roomID)
     //srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
     //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
-
-
-
     
     //TODO 3.物品生成       gfx\items
     
@@ -522,8 +532,6 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 		//怪物和眼泪碰撞
 		if (tagA == 2 && (tagB == 3 || tagB == 4)) {
 			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
-			//Issac进入短暂无敌状态
-			if (tagA==1) nodeA->setInvincibleTime(20);
 		}
 		//Issac和怪物眼泪碰撞
 		if (tagA == 1 && tagB == 3 && nodeA->getInvincibleTime() == 0) {
@@ -532,6 +540,12 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			if (tagA == 1) nodeA->setInvincibleTime(20);
 			//TO DO添加受伤动画？
 		}
+		//Issac和门的碰撞
+		if (tagA == 0 && tagB == 1 && monsters_.size() == 0) {
+			//出门了！
+			log("go out!");
+		}
+
 		//眼泪碰撞后消失
 		if (tagA == 3 || tagA==4) nodeA->setTearExistTime(0);
 		if (tagB == 3 || tagB==4) nodeB->setTearExistTime(0);

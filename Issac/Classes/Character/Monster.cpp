@@ -386,7 +386,7 @@ bool Fatty::init() {
 	}
 
 	//Fatty碰撞大小	
-	radiusSize = 15;
+	radiusSize = 12;
 	//Fatty重量
 	bodyMass = 500;
 	//Fatty行走速度

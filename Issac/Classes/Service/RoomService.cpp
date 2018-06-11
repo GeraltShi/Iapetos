@@ -88,7 +88,7 @@ int RoomService::get_init_room_id() const
  */
 RoomService::RoomService()
 {
-    auto room1 = RoomViewModel();
+	RoomViewModel room1 = RoomViewModel::createRoomViewModel(1);
     auto door = vector<int>();
     door.push_back(1);
     door.push_back(1);
@@ -103,6 +103,8 @@ RoomService::RoomService()
     door_style.emplace_back("res/gfx/grid/door_04_selfsacrificeroomdoor.png");
     room1.setDoorStyle(door_style);
 
+	//注意，Issac的位置要在这里添加（根据之前是从什么房间过来，分别可能在4个位置）
+	room1.setPlayerPos(7, 0);
 
     store_[1] = room1;
 

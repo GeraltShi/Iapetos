@@ -43,9 +43,9 @@ bool Stone::init(int stoneType, Size stoneSize)
 	//静态
 	phyBody->setDynamic(false);
 	//设置物体的恢复力
-	phyBody->getShape(0)->setRestitution(0.0f);
+	phyBody->getShape(0)->setRestitution(0.5f);
 	//设置物体的摩擦力
-	phyBody->getShape(0)->setFriction(1.0f);
+	phyBody->getShape(0)->setFriction(0.0f);
 	//碰撞筛选:不和石头碰撞，选择性监听:和tear碰撞监听
 	phyBody->setCategoryBitmask(0x10);	// 0001_0000
 	phyBody->setCollisionBitmask(0xEF);   // 1110_1111
