@@ -163,8 +163,11 @@ bool RoomScene::init(int roomID)
 	}
 
 	//石头生成
-	stones_.pushBack(Stone::createStone(0, Size(32, 200)));
-	stones_.at(stones_.size() - 1)->setPosition(16, 100);
+	stones_.pushBack(Stone::createStone(1, Size(32, 32)));
+	stones_.at(stones_.size() - 1)->setPosition(48+80, 48+80);
+	addChild(stones_.at(stones_.size() - 1), 3);
+	stones_.pushBack(Stone::createStone(2, Size(64, 64)));
+	stones_.at(stones_.size() - 1)->setPosition(size.width/2, size.height/2);
 	addChild(stones_.at(stones_.size() - 1), 3);
  
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
@@ -359,6 +362,7 @@ void RoomScene::update(float delta)
 		}
 		else {
 			//player血量为0，Issac死亡，添加动画和游戏结束界面？
+			log("DEAD");
 		}
 
         
@@ -405,8 +409,7 @@ void RoomScene::set_model(RoomSceneModel model)
 
 void RoomScene::fire(float dt){
 	//创建一个Tear
-	Tear* temp_tear = Tear::createTear();
-
+	tears_.pushBack(Tear::createTear());
 	//设定初始tear位置和速度
     const int advance = 15;
     int x_advance;
@@ -416,41 +419,35 @@ void RoomScene::fire(float dt){
         case 2:
             x_advance = 0;
             y_advance = advance+random(-10,10);
-			temp_tear->getPhysicsBody()->setVelocity(Vec2(0,tear_V));
+			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(0,tear_V));
             break;
         case 4:
             x_advance = -advance+random(-10,10);
             y_advance = 0;
-			temp_tear->getPhysicsBody()->setVelocity(Vec2(-tear_V, 0));
+			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(-tear_V, 0));
             break;
         case 6:
             x_advance = advance+random(-10,10);
             y_advance = 0;
-			temp_tear->getPhysicsBody()->setVelocity(Vec2(tear_V, 0));
+			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(tear_V, 0));
             break;
         case 8:
             x_advance = 0;
             y_advance = -advance+random(-10,10);
-			temp_tear->getPhysicsBody()->setVelocity(Vec2(0, -tear_V));
+			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(0, -tear_V));
             break;
         default:
             x_advance = 0;
             y_advance = 0;
     }
 	//初始位置
-    temp_tear->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
+	tears_.at(tears_.size() - 1)->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
 	//存在时间,攻击
-	temp_tear->setTearExistTime(player->getTearExistTime());
-	temp_tear->setAttack(player->getAttack());
-	tears_.pushBack((Tear*)temp_tear);
+	tears_.at(tears_.size() - 1)->setTearExistTime(player->getTearExistTime());
+	tears_.at(tears_.size() - 1)->setAttack(player->getAttack());
+	//是谁发射的
+	tears_.at(tears_.size() - 1)->setTag(4);
 	addChild(tears_.at(tears_.size() - 1),3);
-    //子弹执行完动作后进行函数回调，调用移除子弹函数
-    //if(model.tear_direction != 5){
-    //    //子弹开始跑动
-    //    this->addChild(tearSprite, 3);
-    //    Sequence* sequence = Sequence::create(tear_move, poof_anim, RemoveSelf::create(true),NULL);
-    //    tearSprite->runAction(sequence);
-    //}
 }
 
 void RoomScene::build_frame_cache() const
@@ -509,7 +506,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 		tagA = tagB;
 		tagB = temp_tag;
 	}
-	//tag=0 静止障碍物; tag=1:player; tag=2:monster; tag=3:tear;
+	//tag=0 静止障碍物; tag=1:player; tag=2:monster; tag=3:tearbyMonster; tag=4:tearbyIssac
 	if (nodeA && nodeB)
 	{
 		if (tagA==1 && tagB==2 && nodeA->getInvincibleTime()==0 )
@@ -521,15 +518,22 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			//TO DO添加受伤动画？
 			log("Issac Health:%lf",nodeA->getHealth());
 		}
-		if ((tagA == 1 || tagA == 2) && (tagB == 3)) {
+		//怪物和眼泪碰撞
+		if (tagA == 2 && (tagB == 3 || tagB == 4)) {
 			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
 			//Issac进入短暂无敌状态
 			if (tagA==1) nodeA->setInvincibleTime(20);
-			//TO DO添加受伤动画？
-			nodeB->setTearExistTime(0);
 		}
-		if (tagA == 3) nodeA->setTearExistTime(0);
-		if (tagB == 3) nodeB->setTearExistTime(0);
+		//Issac和怪物眼泪碰撞
+		if (tagA == 1 && tagB == 3 && nodeA->getInvincibleTime() == 0) {
+			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+			//Issac进入短暂无敌状态
+			if (tagA == 1) nodeA->setInvincibleTime(20);
+			//TO DO添加受伤动画？
+		}
+		//眼泪碰撞后消失
+		if (tagA == 3 || tagA==4) nodeA->setTearExistTime(0);
+		if (tagB == 3 || tagB==4) nodeB->setTearExistTime(0);
 	}
 
 	//bodies can collide
