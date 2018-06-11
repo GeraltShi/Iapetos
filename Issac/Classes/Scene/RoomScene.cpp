@@ -34,7 +34,7 @@ bool RoomScene::init(int roomID)
      * 5 MiniMap
      * 3 Issac, Monster,Rock
      * 2 Room shading
-     * 1 Controls, Door, Door Center
+     * 1 Controls, Door, Door Center,ivisiable bordor
      * 0 Room Background
      */
     //TODO 应该有更好的方法生成背景贴图，而不是暴力生成4个或多个碎片

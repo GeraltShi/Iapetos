@@ -103,6 +103,7 @@ RoomService::RoomService()
     door_style.emplace_back("res/gfx/grid/door_04_selfsacrificeroomdoor.png");
     room1.setDoorStyle(door_style);
 
+
     store_[1] = room1;
 
     for (int i = 1; i < 10; ++i)
