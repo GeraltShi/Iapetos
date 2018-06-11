@@ -342,19 +342,25 @@ void RoomScene::update(float delta)
 			}
         
 		//player移动	
-		if (player->getColClog() != ColClogTime) {
-			player->setColClog(player->getColClog() + 1);
-			if (player->getColClog() == ColClogTime) {
-				player->getPhysicsBody()->setVelocity(Vec2(0, 0));
-			}	
+		if (player->getHealth() > 0) {
+			if (player->getColClog() != ColClogTime) {
+				player->setColClog(player->getColClog() + 1);
+				if (player->getColClog() == ColClogTime) {
+					player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+				}
+			}
+			else {
+				player->move(model.walk_direction, model.tear_direction);
+			}
+			//player无敌时间的倒计时
+			if (player->getInvincibleTime() > 0) {
+				player->setInvincibleTime(player->getInvincibleTime() - 1);
+			}
 		}
 		else {
-			player->move(model.walk_direction, model.tear_direction);
+			//player血量为0，Issac死亡，添加动画和游戏结束界面？
 		}
-		//player无敌时间的倒计时
-		if (player->getInvincibleTime() > 0) {
-			player->setInvincibleTime(player->getInvincibleTime() - 1);
-		}
+
         
 		if(model.tear_direction == 5){
 			this->schedule(schedule_selector(RoomScene::fire), 0.4,65536,0.001);
