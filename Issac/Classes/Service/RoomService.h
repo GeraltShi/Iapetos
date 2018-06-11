@@ -13,6 +13,8 @@ struct Room
     int right_room_id;
     int up_room_id;
     int down_room_id;
+    bool visited;
+    int current_room_type;
 };
 
 
@@ -32,6 +34,10 @@ private:
     map<int, Room> room_map_;
 
     int init_room_id_;
+
+    string get_doorstyle_from_room_type(int room_type);
+    string get_ministyle_from_room_type(int room_type);
+    void build_door_from_room_map();
 };
 
 
