@@ -18,8 +18,11 @@ class RoomViewModel
 {
 public:
 	//roomType:0：初始房间
-	//roomType:1~14怪物房间，1代表全Fatty
+	//roomType:1~7怪物房间，1代表全Fatty
+    //roomType:8~14宝藏房间
 	//roomType:15~20代表Boss房
+        //15~17 Boss1
+        //18~20 Boss2
 	static RoomViewModel createRoomViewModel(int roomType);
 	void init(int roomType);
 

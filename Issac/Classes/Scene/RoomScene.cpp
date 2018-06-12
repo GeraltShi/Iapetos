@@ -42,7 +42,7 @@ bool RoomScene::init(int roomID)
     //创建房间
     const auto ground_s = room_vm_.getGroundStyle();
 
-    Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage(ground_s);
+    Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage(ground_s);//res/gfx/backdrop/01_basement.png
     Sprite * room_piece1 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece1->setAnchorPoint(Point(0,0));
     room_piece1->setPosition(0, 143);
@@ -72,10 +72,15 @@ bool RoomScene::init(int roomID)
     shading->setPosition(221,143);
     addChild(shading,2);
     
-    Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
-    Sprite * controls = Sprite::createWithTexture(texture_controls, Rect(0,0,325,85));
-    controls->setPosition(221,143);
-    addChild(controls,1);
+    //初始界面的提示贴图
+    if (RoomService::getInstance()->is_init_room())
+    {
+        Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
+        Sprite * controls = Sprite::createWithTexture(texture_controls, Rect(0, 0, 325, 85));
+        controls->setPosition(221, 143);
+        addChild(controls, 1);
+    }
+
     
     //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
     

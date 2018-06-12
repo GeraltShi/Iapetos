@@ -186,6 +186,11 @@ int RoomService::get_down_room_id()
     return r.down_room_id;
 }
 
+bool RoomService::is_init_room() const
+{
+    return current_room_id_ == init_room_id_;
+}
+
 
 /**
  * \brief 初始化所有房间信息
@@ -284,7 +289,7 @@ RoomService::RoomService()
     room__.right_room_id = 7;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 1;
+    room__.current_room_type = 8;
     room_map_[9] = room__;
 
     room__ = Room();
@@ -333,13 +338,21 @@ RoomService::RoomService()
 
 string RoomService::get_doorstyle_from_room_type(int room_type)
 {
-    if (room_type >= 0 && room_type < 15)//普通门
+    if (room_type >= 0 && room_type < 8)//普通门
     {
         return "res/gfx/grid/door_01_normaldoor.png";
     }
-    if (room_type >= 15 && room_type < 21)//Boss门
+    if (room_type >= 8 && room_type < 15)//宝藏门
     {
         return "res/gfx/grid/door_02_treasureroomdoor.png";
+    }
+    if (room_type >= 15 && room_type < 18)//Boss门
+    {
+        return "res/gfx/grid/door_09_bossambushroomdoor.png";
+    }
+    if (room_type >= 18 && room_type < 20)//Boss门
+    {
+        return "res/gfx/grid/door_10_bossroomdoor.png";
     }
 
     //其他门
@@ -376,15 +389,15 @@ void RoomService::build_vm_from_room_map()
 
         auto room_ = RoomViewModel::createRoomViewModel(room_type);
 
-        int doors[] = { room_m.left_room_id,room_m.up_room_id,room_m.right_room_id,room_m.down_room_id };
+        int doors_id[] = { room_m.left_room_id,room_m.up_room_id,room_m.right_room_id,room_m.down_room_id };
 
         auto door_ = vector<int>();
         auto door_style = vector<string>();
 
-        for (int door : doors)
+        for (int door_id : doors_id)
         {
-            door_.push_back(door);
-            door_style.emplace_back(get_doorstyle_from_room_type(door));
+            door_.push_back(door_id);
+            door_style.emplace_back(get_doorstyle_from_room_type(room_map_[door_id].current_room_type));
         }
         room_.setDoorEnable(door_);
         room_.setDoorStyle(door_style);
