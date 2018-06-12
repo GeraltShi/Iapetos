@@ -9,8 +9,7 @@ using namespace std;
 class MiniMapViewModel
 {
     CC_SYNTHESIZE(vector<vector<int>>, mini_mask_, MiniMask)
-
-    MiniMapViewModel();
+    CC_SYNTHESIZE(vector<vector<string>>, mini_style_, MiniStyle)
 };
 
 #endif
