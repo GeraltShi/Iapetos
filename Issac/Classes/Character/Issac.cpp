@@ -9,11 +9,6 @@ Issac *Issac::createIssac()
     return create();
 }
 
-Sprite *Issac::createSprite()
-{
-    return create();
-}
-
 bool Issac::init()
 {
     if (!Moveable::init())

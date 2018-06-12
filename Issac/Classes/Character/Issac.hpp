@@ -11,7 +11,6 @@ using namespace std;
 class Issac : public Moveable {
 public:
     static Issac *createIssac();
-    static Sprite *createSprite();
     bool init() override;
 
 	CREATE_FUNC(Issac)

@@ -5,11 +5,6 @@ using namespace cocos2d;
 
 # define ROOT2 1.41421356
 
-Sprite *Monster::createSprite()
-{
-	return create();
-}
-
 bool Monster::init()
 {
 	if (!Moveable::init())
@@ -18,6 +13,7 @@ bool Monster::init()
 	}
 
 	moving = false;
+	fireCoolTime = 3;
 	//tag=2是怪物
 	this->setTag(2);
 
@@ -41,43 +37,23 @@ bool Monster::init()
 	return true;
 }
 
-Tear* Monster::Fire(int fireDir)
+Tear* Monster::Fire(Vec2 targetPos)
 {
-	assert(fireDir == 2 || fireDir == 4 || fireDir == 6 || fireDir == 8);
 	//创建一个Tear
 	Tear* myTear = Tear::createTear();
 	//设定初始tear位置和速度
-	int offsetX, offsetY;
-	double tear_V = moveSpeed + tearSpeed;
-	switch (fireDir) {
-	case 2:
-		offsetX = 0;
-		offsetY = (radiusSize + 5);
-		myTear->getPhysicsBody()->setVelocity(Vec2(0, tear_V));
-		break;
-	case 4:
-		offsetX = -(radiusSize + 5);
-		offsetY = 0;
-		myTear->getPhysicsBody()->setVelocity(Vec2(-tear_V, 0));
-		break;
-	case 6:
-		offsetX = (radiusSize + 5);
-		offsetY = 0;
-		myTear->getPhysicsBody()->setVelocity(Vec2(tear_V, 0));
-		break;
-	case 8:
-		offsetX = 0;
-		offsetY = -(radiusSize + 5);
-		myTear->getPhysicsBody()->setVelocity(Vec2(0, -tear_V));
-		break;
-	}
+	double diffX = abs(targetPos.x - this->getPosition().x); 
+	double diffY = abs(targetPos.y - this->getPosition().y);
+	double dis = sqrt(diffX*diffX + diffY * diffY);
+	double tear_V = moveSpeed + tearSpeed;		
+	myTear->getPhysicsBody()->setVelocity(Vec2(tear_V*diffX/dis, tear_V*diffY/dis ));
 	//初始位置
-	myTear->setPosition(Vec2(getPosition().x + offsetX, getPosition().y + offsetY));
+	myTear->setPosition(Vec2(getPosition().x + MonTearOffset * diffX / dis, getPosition().y + MonTearOffset * diffY / dis));
 	//存在时间,攻击
 	myTear->setTearExistTime(tearExistTime);
 	myTear->setAttack(attack);
-	//是Issac发射的
-	myTear->setTag(4);
+	//是Monster发射的
+	myTear->setTag(3);
 	return myTear;
 }
 
@@ -425,16 +401,15 @@ bool Fatty::init() {
 		return false;
 	}
 
-	//Fatty碰撞大小	
-	radiusSize = 12;
-	//Fatty重量
-	bodyMass = 500;
-	//Fatty行走速度
-	moveSpeed = 80;
-	//Fatty血量5
-	health = 5;
-	//Fatty攻击1
-	attack = 1;
+	
+	radiusSize = 12;	//Fatty碰撞大小	
+	bodyMass = 500;		//Fatty重量
+	moveSpeed = 80;		//Fatty行走速度
+	health = 5;			//Fatty血量
+	attack = 1;			//Fatty攻击
+	tearSpeed = 60;		//Fatty泪速
+	tearExistTime = 80; //Fatty射程
+
 	this->createPhyBody();
 	return true;
 }
@@ -461,7 +436,7 @@ void Fatty::moveStrategy(const RoomViewModel& roomMap) {
 		int head=0;
 		GridPoint destination = CalGridPos(playerPos),startPos= CalGridPos(this->getPosition());
 		quary.push_back(startPos);
-		roomFlag[startPos.x][startPos.y] = GridPoint(-3, -3);
+		roomFlag[startPos.x][startPos.y] = GridPoint(99, 99);
 		while (head < quary.size()) {
 			for (int i = 0; i < 4; i++) {
 				GridPoint tempPos = GridPoint(quary[head].x + moveStep[i].x, quary[head].y + moveStep[i].y);	
@@ -477,9 +452,23 @@ void Fatty::moveStrategy(const RoomViewModel& roomMap) {
 			head++;
 		}
 	mark:
+		GridPoint des1 = destination;
 		while (!(roomFlag[destination.x][destination.y] == startPos)) {
 			destination = roomFlag[destination.x][destination.y];
 		}
 		this->move(ToPointDir(Vec2(RoomUnitSize.width*destination.x+61, RoomUnitSize.height*destination.y + 61)));
+	}
+}
+Tear* Fatty::fireStrategy()
+{
+	if (fireCoolTime > 0) {
+		fireCoolTime--; //冷却不开火
+		return nullptr;
+	}
+	else {
+		//冷却
+		fireCoolTime = 20;
+		//向人物方向发射子弹
+		return this->Fire(this->getParent()->getChildByTag(1)->getPosition());
 	}
 }
