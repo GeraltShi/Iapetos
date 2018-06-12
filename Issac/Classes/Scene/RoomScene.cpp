@@ -29,6 +29,7 @@ bool RoomScene::init(int roomID)
     const Size size = Director::getInstance()->getWinSize();
    // std::cout << size.width <<" "<< size.height << endl;
     /** zorder
+     * 9 DeadScreen
      * 8 HUD, PauseMenu
      * 7 PauseScreen
      * 6 Overlay
@@ -232,6 +233,7 @@ bool RoomScene::init(int roomID)
     //TODO 99. 联机模式，素材中有babyIssac
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
    
+    //暂停菜单
     //暂停界面
     Texture2D * pausescreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/pausescreen.png");
     Texture2D * pausescreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
@@ -246,6 +248,25 @@ bool RoomScene::init(int roomID)
     pausescreen->addChild(pausemenu,0,"pausemenu");
     addChild(pausescreen,7);
     pausescreen->setVisible(false);
+    
+    //结束菜单
+    Texture2D * deadportraitTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/death portraits.png");
+    Texture2D * deadoptionTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/backselectwidget.png");
+    Texture2D * deadscreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
+    deadscreen = Sprite::createWithTexture(deadscreenBgTexture, Rect(0,0,442,286));
+    Sprite * back = Sprite::createWithTexture(deadoptionTexture, Rect(0,128,96,128));
+    back->setPosition(0+50,0);
+    Sprite * restart = Sprite::createWithTexture(deadoptionTexture, Rect(96,128,112,128));
+    restart->setPosition(442-50,0+30);
+    Sprite * deadportrait = Sprite::createWithTexture(deadportraitTexture, Rect(192,0,224,256));
+    deadportrait->setPosition(221,143);
+    deadscreen->addChild(back,1,"back");
+    deadscreen->addChild(restart,1,"restart");
+    deadscreen->addChild(deadportrait,1,"deadportrait");
+    deadscreen->setOpacity(0x7f);
+    deadscreen->setPosition(221,143);
+    addChild(deadscreen,9);
+    deadscreen->setVisible(false);
     
     //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
     bomb = SimpleItem::createSimpleItem();
@@ -301,8 +322,7 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
-    if(!model.paused)
-    {
+    if(model.game_stat == 0){
 		//开始 
 		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!= nullptr) {
 			Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
@@ -376,6 +396,9 @@ void RoomScene::update(float delta)
 		else {
 			//player血量为0，Issac死亡，添加动画和游戏结束界面？
 			log("DEAD");
+            //TODO播放死亡动画
+            //设置 game status
+            model.game_stat = 2;
 		}
 
         
@@ -387,8 +410,7 @@ void RoomScene::update(float delta)
 		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
 		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
 	} 
-	else 
-    {		
+	else if(model.game_stat == 1){
 		//暂停 
 		Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         
@@ -413,6 +435,14 @@ void RoomScene::update(float delta)
             break;
         }
 	}
+    else{
+        if(model.dead_menu_generated_flag == 0) {
+            this->unschedule(schedule_selector(RoomScene::fire));
+            deadscreen->setVisible(true);
+            model.dead_menu_generated_flag = 1;
+        }
+    }
+	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
 
 void RoomScene::set_model(RoomSceneModel model)

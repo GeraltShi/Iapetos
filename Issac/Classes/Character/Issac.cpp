@@ -197,6 +197,8 @@ void Issac::build_animation_cache()
     hwalk_animation->setLoops(-1);
     hwalk_animation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(hwalk_animation, "hwalk_animation");
+    
+    
 }
 
 //TODO MoveTo 有bug，贴墙以后在墙附近怼墙 会卡住
