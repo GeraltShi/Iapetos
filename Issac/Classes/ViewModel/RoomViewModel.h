@@ -1,6 +1,11 @@
 #ifndef LEVEL_MODEL_H_
 #define LEVEL_MODEL_H_
 
+#define GRID_WIDTH 13
+#define GRID_HEIGHT 7
+#define GRID_WIDTH_HALF 6
+#define GRID_HEIGHT_HALF 3
+
 #include "cocos2d.h"
 #include "SimpleItemViewModel.h"
 
@@ -28,13 +33,13 @@ public:
     CC_SYNTHESIZE(string, ground_style, GroundStyle)
 	
 	int getRoomMap(int x, int y) {
-		assert(x >= 0 && x < 13);
-		assert(y >= 0 && y < 7);
+		assert(x >= 0 && x < GRID_WIDTH);
+		assert(y >= 0 && y < GRID_HEIGHT);
 		return room_map[x][y];
 	}
 	void setPlayerPos(int x, int y) {
-		assert(x >= 0 && x < 13);
-		assert(y >= 0 && y < 7);
+		assert(x >= 0 && x < GRID_WIDTH);
+		assert(y >= 0 && y < GRID_HEIGHT);
 		room_map[x][y] = 3;
 	}
 private:
@@ -48,7 +53,7 @@ private:
 	//0,0,0,0,0,0,0,0,0,0,0,0,0
 	//0,0,0,0,0,0,0,0,0,0,0,0,0
 	//0,0,0,0,0,0,0,0,0,0,0,0,0
-	int room_map[13][7];
+	int room_map[GRID_WIDTH][GRID_HEIGHT];
 };
 
 

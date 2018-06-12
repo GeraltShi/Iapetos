@@ -550,7 +550,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
                 {
                     log("left go out!"); 
                     const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_left_room_id());
-                    TransitionScene* tx = TransitionSlideInL::create(0.5, room);
+                    TransitionScene* tx = TransitionSlideInL::create(0.1, room);
 
                     Director::getInstance()->replaceScene(tx);
                     break;
@@ -559,7 +559,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
                 {
                     log("up go out!"); 
                     const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_up_room_id());
-                    TransitionScene* tx = TransitionSlideInT::create(0.5, room);
+                    TransitionScene* tx = TransitionSlideInT::create(0.1, room);
                     Director::getInstance()->replaceScene(tx);
                     break;
                 }
@@ -567,7 +567,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
                 {
                     log("right go out?!"); 
                     const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_right_room_id());
-                    TransitionScene* tx = TransitionSlideInR::create(0.5, room);
+                    TransitionScene* tx = TransitionSlideInR::create(0.1, room);
                     Director::getInstance()->replaceScene(tx);
                     break;
                 }
@@ -575,7 +575,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
                 {
                     log("down go out!"); 
                     const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_down_room_id());
-                    TransitionScene* tx = TransitionSlideInB::create(0.5, room);
+                    TransitionScene* tx = TransitionSlideInB::create(0.1, room);
                     Director::getInstance()->replaceScene(tx);
                     break;
                 }

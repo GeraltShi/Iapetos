@@ -39,11 +39,9 @@ RoomViewModel RoomService::enter_room(const int room_id)
     //访问enter函数一次，就表示这个房间已经进入过
     room_map_[room_id].visited = true;
     
-    const Size size = Director::getInstance()->getWinSize();
-
     if (room_id == 1 && current_room_id_ == 0)//第一个房间，Issac位置在中间
     {
-        room_view_model.setPlayerPos(6, 3);
+        room_view_model.setPlayerPos(GRID_WIDTH_HALF, GRID_HEIGHT_HALF);
         current_room_id_ = 1;
     }
     else
@@ -54,19 +52,19 @@ RoomViewModel RoomService::enter_room(const int room_id)
 
         if (r_map.left_room_id == prev_id)//从左门进入
         {
-            room_view_model.setPlayerPos(0, 3);
+            room_view_model.setPlayerPos(0, GRID_HEIGHT_HALF);
         }
         else if (r_map.up_room_id == prev_id)//从上门进入
         {
-            room_view_model.setPlayerPos(6, 6);
+            room_view_model.setPlayerPos(GRID_WIDTH_HALF, GRID_HEIGHT - 1);
         }
         else if (r_map.right_room_id == prev_id)//从右门进入
         {
-            room_view_model.setPlayerPos(12, 3);
+            room_view_model.setPlayerPos(GRID_WIDTH - 1, GRID_HEIGHT_HALF);
         }
         else if (r_map.down_room_id == prev_id)//从下门进入
         {
-            room_view_model.setPlayerPos(6 , 0);
+            room_view_model.setPlayerPos(GRID_WIDTH_HALF, 0);
         }
 
         current_room_id_ = room_id;
@@ -274,7 +272,7 @@ RoomService::RoomService()
     room__.left_room_id = 0;
     room__.up_room_id = 0;
     room__.right_room_id = 0;
-    room__.down_room_id = 6;
+    room__.down_room_id = 7;
     room__.visited = false;
     room__.current_room_type = 5;
     room_map_[8] = room__;
