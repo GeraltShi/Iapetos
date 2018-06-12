@@ -48,6 +48,7 @@ public:
     CC_SYNTHESIZE_RETAIN(Issac*, player, Player)
     CC_SYNTHESIZE_RETAIN(Sprite*, tearSprite, TearSprite)
     CC_SYNTHESIZE_RETAIN(Sprite*, pausescreen, Pausescreen)
+    CC_SYNTHESIZE_RETAIN(Sprite*, deadscreen, Deadscreen)
     CC_SYNTHESIZE_RETAIN(SimpleItem*, bomb, Bomb)
 	CC_SYNTHESIZE(int, roomID, RoomID)
 

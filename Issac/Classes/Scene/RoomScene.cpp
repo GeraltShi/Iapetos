@@ -2,6 +2,7 @@
 #include "AppDelegate.h"
 #include <iostream>
 #include "Service/RoomService.h"
+#include "Controller/RoomSceneController.h"
 
 USING_NS_CC;
 using namespace std;
@@ -19,7 +20,7 @@ bool RoomScene::init(int roomID)
     }
 
     //根据ViewMode渲染
-    room_vm_ = RoomService::getInstance()->get_room(roomID);
+    room_vm_ = RoomService::getInstance()->enter_room(roomID);
     mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
 
     //画物理引擎框
@@ -28,6 +29,7 @@ bool RoomScene::init(int roomID)
     const Size size = Director::getInstance()->getWinSize();
    // std::cout << size.width <<" "<< size.height << endl;
     /** zorder
+     * 9 DeadScreen
      * 8 HUD, PauseMenu
      * 7 PauseScreen
      * 6 Overlay
@@ -37,10 +39,11 @@ bool RoomScene::init(int roomID)
      * 1 Controls, Door, Door Center,ivisiable bordor
      * 0 Room Background
      */
-    //TODO 应该有更好的方法生成背景贴图，而不是暴力生成4个或多个碎片
-    //TODO 动态加载贴图？如Issac的buff皮肤（在别的贴图上）如何更新
-    Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/01_basement.png");
-    //TODO 更小的地图切片和随机性支持
+
+    //房间墙面贴图
+    const auto ground_s = room_vm_.getGroundStyle();
+
+    Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage(ground_s);//res/gfx/backdrop/01_basement.png
     Sprite * room_piece1 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece1->setAnchorPoint(Point(0,0));
     room_piece1->setPosition(0, 143);
@@ -65,29 +68,27 @@ bool RoomScene::init(int roomID)
     room_piece4->setPosition(221, 0);
     addChild(room_piece4,0);
     
+    //光线阴影贴图
     Texture2D *texture_shading = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/shading_utero.png");
     Sprite * shading = Sprite::createWithTexture(texture_shading,Rect(0,0,442,286));
     shading->setPosition(221,143);
     addChild(shading,2);
     
-    Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
-    Sprite * controls = Sprite::createWithTexture(texture_controls, Rect(0,0,325,85));
-    controls->setPosition(221,143);
-    addChild(controls,1);
-    
-    //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
-    
-    //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
+    //初始界面的提示贴图
+    if (RoomService::getInstance()->is_init_room())
+    {
+        Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
+        Sprite * controls = Sprite::createWithTexture(texture_controls, Rect(0, 0, 325, 85));
+        controls->setPosition(221, 143);
+        addChild(controls, 1);
+    }
+
     //光影遮罩，在整个Scene最顶部
     Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
     overlay->setPosition(221,143);
     addChild(overlay,6);
     
-    Texture2D *texture_rainbowpoop = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/grid_poop_rainbow.png");
-    Sprite * rainbowpoop = Sprite::createWithTexture(texture_rainbowpoop,Rect(0,0,32,32));// TODO 地面物品都有着损坏状态，不应该在这里生成
-    rainbowpoop->setPosition(300,150);// TODO 地面物品网格化，对齐
-    addChild(rainbowpoop,3);
     
     build_frame_cache();
 
@@ -120,6 +121,7 @@ bool RoomScene::init(int roomID)
 			case(1): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, size.height - 24); break;
 			case(2): stones_.at(stones_.size() - 1)->setPosition(size.width - 24, size.height / 2); break;
 			case(3): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, 24); break;
+            default: break;
 			}
 			addChild(stones_.at(stones_.size() - 1), 1);
 		}
@@ -219,8 +221,6 @@ bool RoomScene::init(int roomID)
     num0->setPosition(46,224);
     addChild(num0, 8);
     
-    //srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
-    //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     
     //TODO 3.物品生成       gfx\items
@@ -233,6 +233,8 @@ bool RoomScene::init(int roomID)
     //TODO 99. 联机模式，素材中有babyIssac
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
    
+    //暂停菜单
+    //暂停界面
     Texture2D * pausescreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/pausescreen.png");
     Texture2D * pausescreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
     pausescreen = Sprite::createWithTexture(pausescreenBgTexture, Rect(0,0,442,286));
@@ -247,6 +249,25 @@ bool RoomScene::init(int roomID)
     addChild(pausescreen,7);
     pausescreen->setVisible(false);
     
+    //结束菜单
+    Texture2D * deadportraitTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/death portraits.png");
+    Texture2D * deadoptionTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/backselectwidget.png");
+    Texture2D * deadscreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
+    deadscreen = Sprite::createWithTexture(deadscreenBgTexture, Rect(0,0,442,286));
+    Sprite * back = Sprite::createWithTexture(deadoptionTexture, Rect(0,128,96,128));
+    back->setPosition(0+50,0);
+    Sprite * restart = Sprite::createWithTexture(deadoptionTexture, Rect(96,128,112,128));
+    restart->setPosition(442-50,0+30);
+    Sprite * deadportrait = Sprite::createWithTexture(deadportraitTexture, Rect(192,0,224,256));
+    deadportrait->setPosition(221,143);
+    deadscreen->addChild(back,1,"back");
+    deadscreen->addChild(restart,1,"restart");
+    deadscreen->addChild(deadportrait,1,"deadportrait");
+    deadscreen->setOpacity(0x7f);
+    deadscreen->setPosition(221,143);
+    addChild(deadscreen,9);
+    deadscreen->setVisible(false);
+    
     //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
     bomb = SimpleItem::createSimpleItem();
     bomb->setVisible(false);
@@ -260,7 +281,6 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 {
     this->listener_ = listener;
 
-    //TODO 事件监听
     auto _touchListener = EventListenerTouchOneByOne::create();
 
     _touchListener->setSwallowTouches(true);
@@ -302,9 +322,9 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
-    if(!model.paused){
+    if(model.game_stat == 0){
 		//开始 
-		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!=NULL) {
+		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!= nullptr) {
 			Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
 		}
         if(pausescreen->isVisible()){
@@ -329,7 +349,7 @@ void RoomScene::update(float delta)
 			}
 			else {
 				(*it)->setTearExistTime((*it)->getTearExistTime() - 1);
-				it++;
+				++it;
 			}			
 		}
         
@@ -354,7 +374,7 @@ void RoomScene::update(float delta)
 				if ((*it)->getInvincibleTime() > 0) {
 					(*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
 				}
-				it++;
+				++it;
 			}
         
 		//player移动	
@@ -376,6 +396,9 @@ void RoomScene::update(float delta)
 		else {
 			//player血量为0，Issac死亡，添加动画和游戏结束界面？
 			log("DEAD");
+            //TODO播放死亡动画
+            //设置 game status
+            model.game_stat = 2;
 		}
 
         //添加player的射击监听
@@ -386,7 +409,7 @@ void RoomScene::update(float delta)
 		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
 		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
 	} 
-	else {		
+	else if(model.game_stat == 1){
 		//暂停 
 		Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         
@@ -411,6 +434,13 @@ void RoomScene::update(float delta)
             break;
         }
 	}
+    else{
+        if(model.dead_menu_generated_flag == 0) {
+            this->unschedule(schedule_selector(RoomScene::fire));
+            deadscreen->setVisible(true);
+            model.dead_menu_generated_flag = 1;
+        }
+    }
 	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
 
@@ -507,14 +537,44 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			//TO DO添加受伤动画？
 		}
 		//Issac和门的碰撞
-		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.size() == 0) {
+		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.empty()) {
 			//出门了！
 			switch (tagB)
 			{
-			case(5):log("left go out!"); break;
-			case(6):log("up go out!"); break;
-			case(7):log("right go out?!"); break;
-			case(8):log("down go out!"); break;
+            case(5):
+                {
+                    log("left go out!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_left_room_id());
+                    TransitionScene* tx = TransitionSlideInL::create(0.1, room);
+
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
+            case(6):
+                {
+                    log("up go out!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_up_room_id());
+                    TransitionScene* tx = TransitionSlideInT::create(0.1, room);
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
+            case(7):
+                {
+                    log("right go out?!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_right_room_id());
+                    TransitionScene* tx = TransitionSlideInR::create(0.1, room);
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
+            case(8):
+                {
+                    log("down go out!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_down_room_id());
+                    TransitionScene* tx = TransitionSlideInB::create(0.1, room);
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
+			default: break;
 			}
 			
 		}

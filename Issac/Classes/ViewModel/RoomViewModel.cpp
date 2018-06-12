@@ -9,19 +9,19 @@ RoomViewModel RoomViewModel::createRoomViewModel(int roomType)
 
 void RoomViewModel::init(int roomType)
 {
-	for (int i = 0; i < 13; i++)
-		for (int j = 0; j < 7; j++)
+	for (int i = 0; i < GRID_WIDTH; i++)
+		for (int j = 0; j < GRID_HEIGHT; j++)
 			room_map[i][j] = 0;
 
 	//棋盘中0表示空地，1表示小石头，2表示大石头，3表示玩家
 	//4~19表示怪物的各种类别,20~30item
 	//生成几种房间之一,放入石头
-	int barrierType = rand() % 3;
-	if (barrierType == 0)
+    const int barrierType = rand() % 3;
+	if (roomType == 0 || barrierType == 0)
 	{
 		//没有石头
 	}
-	if (barrierType == 1)
+	else if (barrierType == 1)
 	{
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -31,11 +31,11 @@ void RoomViewModel::init(int roomType)
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
 		for (int i = 2; i <= 10; i++)
-			room_map[i][3] = 1;
+			room_map[i][GRID_HEIGHT_HALF] = 1;
 		for (int i = 2; i <= 4; i++)
-			room_map[6][i] = 1;
+			room_map[GRID_WIDTH_HALF][i] = 1;
 	}
-	if (barrierType == 2)
+	else if (barrierType == 2)
 	{
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
 		//0,0,0,2,2,0,0,0,2,2,0,0,0
@@ -70,8 +70,8 @@ void RoomViewModel::init(int roomType)
 		int posX = rand() % 13, posY = rand() % 7;
 		while (room_map[posX][posY] != 0)
 		{
-			posX = rand() % 13;
-			posY = rand() % 7;
+			posX = rand() % GRID_WIDTH;
+			posY = rand() % GRID_HEIGHT;
 		}
 		room_map[posX][posY] = 4;
 	}

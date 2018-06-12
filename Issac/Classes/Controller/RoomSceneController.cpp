@@ -43,12 +43,12 @@ void RoomSceneController::on_mouse_down(Event * event)
 
 int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
 {
-    if(!scene_->model.paused){
+    if(scene_->model.game_stat == 0){
         switch (keyCode)
         {
             case EventKeyboard::KeyCode::KEY_ESCAPE:
                 scene_->stopAllActions();
-                scene_->model.paused = true;
+                scene_->model.game_stat = 1;//1为暂停
                 break;
             default: break;
         }
@@ -69,6 +69,21 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
         if(dirx == -1 && diry == 1){return 8;}
         if(dirx == 1 && diry == 1){return 9;}
     }
+    if(scene_->model.game_stat == 2){
+        switch (keyCode){
+            case EventKeyboard::KeyCode::KEY_SPACE:
+                scene_->model.game_stat = 0;
+                // TODO 因为已经死了所以还在这个死亡菜单界面，需要发射重设参数
+                break;
+            case EventKeyboard::KeyCode::KEY_ESCAPE:
+                scene_->stopAllActions();
+                scene_->model.game_stat = 0;
+                Director::getInstance()->popScene();
+                break;
+            default:
+                break;
+        }
+    }
     return 4;
 }
 
@@ -82,7 +97,7 @@ int RoomSceneController::check_head(){
 
 int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
     int shift = 0;
-    if(scene_->model.paused){
+    if(scene_->model.game_stat != 0){
         switch (keyCode) {
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
                 shift = -1;
@@ -93,7 +108,7 @@ int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
             case EventKeyboard::KeyCode::KEY_ENTER:
                 //TODO cursor = 0,跳转到option
                 if(scene_->model.paused_menu_cursor == 1){
-                    scene_->model.paused = false;
+                    scene_->model.game_stat = 0;
                 } else if (scene_->model.paused_menu_cursor == 2){
                     Director::getInstance()->popScene();
                 }
@@ -106,7 +121,7 @@ int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
 }
 
 void RoomSceneController::check_bomb(EventKeyboard::KeyCode keyCode){
-    if(!scene_->model.paused){
+    if(scene_->model.game_stat == 0){
         switch (keyCode) {
             case cocos2d::EventKeyboard::KeyCode::KEY_E:
                 scene_->model.bomb = true;
