@@ -57,7 +57,7 @@ MiniMapViewModel RoomService::get_mini_map(int room_id)
         for (size_t j = 0; j < 5; j++)
         {
             row.push_back(0);
-            row2.push_back("");
+            row2.emplace_back("");
         }
         masks.push_back(row);
         style_masks.push_back(row2);
@@ -129,6 +129,8 @@ int RoomService::get_init_room_id() const
  */
 RoomService::RoomService()
 {
+    init_room_id_ = 1;
+
     //初始房间
     auto room__ = Room();
     room__.current_room_id = 1;
@@ -136,7 +138,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 3;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 1;
     room_map_[1] = room__;
 
@@ -146,7 +148,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 1;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[2] = room__;
 
@@ -156,7 +158,7 @@ RoomService::RoomService()
     room__.up_room_id = 4;
     room__.right_room_id = 0;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[3] = room__;
 
@@ -166,7 +168,7 @@ RoomService::RoomService()
     room__.up_room_id = 5;
     room__.right_room_id = 0;
     room__.down_room_id = 3;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[4] = room__;
 
@@ -176,7 +178,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 10;
     room__.down_room_id = 4;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[5] = room__;
 
@@ -186,7 +188,7 @@ RoomService::RoomService()
     room__.up_room_id = 7;
     room__.right_room_id = 5;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[6] = room__;
 
@@ -196,7 +198,7 @@ RoomService::RoomService()
     room__.up_room_id = 8;
     room__.right_room_id = 0;
     room__.down_room_id = 6;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[7] = room__;
 
@@ -206,7 +208,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 0;
     room__.down_room_id = 6;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[8] = room__;
 
@@ -216,7 +218,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 7;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 4;
     room_map_[9] = room__;
 
@@ -226,7 +228,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 11;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[10] = room__;
 
@@ -236,7 +238,7 @@ RoomService::RoomService()
     room__.up_room_id = 12;
     room__.right_room_id = 13;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[11] = room__;
 
@@ -246,7 +248,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 0;
     room__.down_room_id = 11;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 2;
     room_map_[12] = room__;
 
@@ -256,7 +258,7 @@ RoomService::RoomService()
     room__.up_room_id = 0;
     room__.right_room_id = 0;
     room__.down_room_id = 0;
-    room__.visited = 0;
+    room__.visited = false;
     room__.current_room_type = 3;
     room_map_[13] = room__;
 }
@@ -284,7 +286,7 @@ void RoomService::build_door_from_room_map()
     for (auto it = room_map_.begin();it != room_map_.end();++it)
     {
         auto room_id = (*it).first;
-        auto room_m = (*it).second;
+        const auto room_m = (*it).second;
 
         int doors[] = { room_m.left_room_id,room_m.up_room_id,room_m.right_room_id,room_m.down_room_id };
 
@@ -292,10 +294,10 @@ void RoomService::build_door_from_room_map()
         auto door_ = vector<int>();
         auto door_style = vector<string>();
 
-        for (size_t i = 0; i < 4; i++)
+        for (int door : doors)
         {
-            door_.push_back(doors[i]);
-            door_style.emplace_back(get_doorstyle_from_room_type(doors[i]));
+            door_.push_back(door);
+            door_style.emplace_back(get_doorstyle_from_room_type(door));
         }
         room_.setDoorEnable(door_);
         room_.setDoorStyle(door_style);
