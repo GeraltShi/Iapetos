@@ -16,12 +16,12 @@ void RoomViewModel::init(int roomType)
 	//棋盘中0表示空地，1表示小石头，2表示大石头，3表示玩家
 	//4~19表示怪物的各种类别,20~30item
 	//生成几种房间之一,放入石头
-	int barrierType = rand() % 3;
-	if (barrierType == 0)
+    const int barrierType = rand() % 3;
+	if (roomType == 0 || barrierType == 0)
 	{
 		//没有石头
 	}
-	if (barrierType == 1)
+	else if (barrierType == 1)
 	{
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -35,7 +35,7 @@ void RoomViewModel::init(int roomType)
 		for (int i = 2; i <= 4; i++)
 			room_map[6][i] = 1;
 	}
-	if (barrierType == 2)
+	else if (barrierType == 2)
 	{
 		//0,0,0,0,0,0,0,0,0,0,0,0,0
 		//0,0,0,2,2,0,0,0,2,2,0,0,0

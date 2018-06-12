@@ -28,16 +28,52 @@ RoomService * RoomService::getInstance()
  * \param room_id 房间ID，必须要大于0
  * \return 渲染房间所需要的全部信息
  */
-RoomViewModel RoomService::get_room(const int room_id)
+RoomViewModel RoomService::enter_room(const int room_id)
 {
-    if (room_id > 0)
+    if (room_id <= 0)
     {
-        auto r = store_[room_id];
-        //访问get函数一次，就表示这个房间已经进入过
-        room_map_[room_id].visited = true;
-        return r;
+        throw runtime_error("Room Not Found");
     }
-    throw runtime_error("Room Not Found");
+
+    auto room_view_model = store_[room_id];
+    //访问enter函数一次，就表示这个房间已经进入过
+    room_map_[room_id].visited = true;
+    
+    const Size size = Director::getInstance()->getWinSize();
+
+    if (room_id == 1)//第一个房间，Issac位置在中间
+    {
+        room_view_model.setPlayerPos(6, 3);
+        current_room_id_ = 1;
+    }
+    else
+    {
+        const auto prev_id = current_room_id_;
+
+        const auto r_map = room_map_[room_id];
+
+        if (r_map.left_room_id == prev_id)//从左门进入
+        {
+            room_view_model.setPlayerPos(0, 3);
+        }
+        else if (r_map.up_room_id == prev_id)//从上门进入
+        {
+            room_view_model.setPlayerPos(6, 6);
+        }
+        else if (r_map.up_room_id == prev_id)//从右门进入
+        {
+            room_view_model.setPlayerPos(12, 3);
+        }
+        else if (r_map.up_room_id == prev_id)//从下门进入
+        {
+            room_view_model.setPlayerPos(6 , 0);
+        }
+
+        current_room_id_ = room_id;
+    }
+    
+    return room_view_model;
+
 }
 
 MiniMapViewModel RoomService::get_mini_map(int room_id)
@@ -123,6 +159,11 @@ int RoomService::get_init_room_id() const
     return init_room_id_;
 }
 
+int RoomService::get_current_room_id() const
+{
+    return current_room_id_;
+}
+
 
 /**
  * \brief 初始化所有房间信息
@@ -130,6 +171,7 @@ int RoomService::get_init_room_id() const
 RoomService::RoomService()
 {
     init_room_id_ = 1;
+    current_room_id_ = 0;
 
     //初始房间
     auto room__ = Room();
@@ -139,9 +181,10 @@ RoomService::RoomService()
     room__.right_room_id = 3;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 1;
+    room__.current_room_type = 0;
     room_map_[1] = room__;
 
+    //怪物房间
     room__ = Room();
     room__.current_room_id = 2;
     room__.left_room_id = 0;
@@ -169,7 +212,7 @@ RoomService::RoomService()
     room__.right_room_id = 0;
     room__.down_room_id = 3;
     room__.visited = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 1;
     room_map_[4] = room__;
 
     room__ = Room();
@@ -189,7 +232,7 @@ RoomService::RoomService()
     room__.right_room_id = 5;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 3;
     room_map_[6] = room__;
 
     room__ = Room();
@@ -209,7 +252,7 @@ RoomService::RoomService()
     room__.right_room_id = 0;
     room__.down_room_id = 6;
     room__.visited = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 5;
     room_map_[8] = room__;
 
     room__ = Room();
@@ -219,7 +262,7 @@ RoomService::RoomService()
     room__.right_room_id = 7;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 4;
+    room__.current_room_type = 1;
     room_map_[9] = room__;
 
     room__ = Room();
@@ -229,7 +272,7 @@ RoomService::RoomService()
     room__.right_room_id = 11;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 6;
     room_map_[10] = room__;
 
     room__ = Room();
@@ -239,7 +282,7 @@ RoomService::RoomService()
     room__.right_room_id = 13;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 7;
     room_map_[11] = room__;
 
     room__ = Room();
@@ -252,6 +295,7 @@ RoomService::RoomService()
     room__.current_room_type = 2;
     room_map_[12] = room__;
 
+    //Boss
     room__ = Room();
     room__.current_room_id = 13;
     room__.left_room_id = 11;
@@ -259,21 +303,25 @@ RoomService::RoomService()
     room__.right_room_id = 0;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 3;
+    room__.current_room_type = 15;
     room_map_[13] = room__;
+
+    build_vm_from_room_map();
 }
 
 string RoomService::get_doorstyle_from_room_type(int room_type)
 {
-    switch (room_type)
+    if (room_type >= 0 && room_type < 15)//普通门
     {
-        case 1: return "res/gfx/grid/door_01_normaldoor.png";
-        case 2: return "res/gfx/grid/door_01_normaldoor.png";
-        case 3: return "res/gfx/grid/door_02_treasureroomdoor.png";
-        case 4: return "res/gfx/grid/door_03_ambushroomdoor.png";
-        case 5: return "res/gfx/grid/door_04_selfsacrificeroomdoor.png";
-        default: return "";
+        return "res/gfx/grid/door_01_normaldoor.png";
     }
+    if (room_type >= 15 && room_type < 21)//Boss门
+    {
+        return "res/gfx/grid/door_02_treasureroomdoor.png";
+    }
+
+    //其他门
+    return "res/gfx/grid/door_04_selfsacrificeroomdoor.png";
 }
 
 string RoomService::get_ministyle_from_room_type(int room_type)
@@ -281,16 +329,19 @@ string RoomService::get_ministyle_from_room_type(int room_type)
     return "";
 }
 
-void RoomService::build_door_from_room_map()
+void RoomService::build_vm_from_room_map()
 {
     for (auto it = room_map_.begin();it != room_map_.end();++it)
     {
         auto room_id = (*it).first;
         const auto room_m = (*it).second;
 
+        const auto room_type = room_m.current_room_type;
+
+        auto room_ = RoomViewModel::createRoomViewModel(room_type);
+
         int doors[] = { room_m.left_room_id,room_m.up_room_id,room_m.right_room_id,room_m.down_room_id };
 
-        auto room_ = RoomViewModel();
         auto door_ = vector<int>();
         auto door_style = vector<string>();
 

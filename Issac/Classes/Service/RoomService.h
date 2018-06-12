@@ -22,9 +22,10 @@ class RoomService
 {
 public:
 	static RoomService* getInstance();
-	RoomViewModel get_room(int room_id);
+	RoomViewModel enter_room(int room_id);
     MiniMapViewModel get_mini_map(int room_id);
     int get_init_room_id() const;
+    int get_current_room_id() const;
 
 private:
     static RoomService *inst_;
@@ -34,10 +35,11 @@ private:
     map<int, Room> room_map_;
 
     int init_room_id_;
+    int current_room_id_;
 
-    string get_doorstyle_from_room_type(int room_type);
-    string get_ministyle_from_room_type(int room_type);
-    void build_door_from_room_map();
+    static string get_doorstyle_from_room_type(int room_type);
+    static string get_ministyle_from_room_type(int room_type);
+    void build_vm_from_room_map();
 };
 
 

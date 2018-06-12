@@ -19,7 +19,7 @@ bool RoomScene::init(int roomID)
     }
 
     //根据ViewMode渲染
-    room_vm_ = RoomService::getInstance()->get_room(roomID);
+    room_vm_ = RoomService::getInstance()->enter_room(roomID);
     mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
 
     //画物理引擎框
@@ -84,10 +84,6 @@ bool RoomScene::init(int roomID)
     overlay->setPosition(221,143);
     addChild(overlay,6);
     
-    Texture2D *texture_rainbowpoop = Director::getInstance()->getTextureCache()->addImage("res/gfx/grid/grid_poop_rainbow.png");
-    Sprite * rainbowpoop = Sprite::createWithTexture(texture_rainbowpoop,Rect(0,0,32,32));// TODO 地面物品都有着损坏状态，不应该在这里生成
-    rainbowpoop->setPosition(300,150);// TODO 地面物品网格化，对齐
-    addChild(rainbowpoop,3);
     
     build_frame_cache();
 
@@ -105,10 +101,12 @@ bool RoomScene::init(int roomID)
 	//门0,1,2,3是左，上，右，下4门
 	auto door_mask = room_vm_.getDoorEnable();
 	auto door_style = room_vm_.getDoorStyle();
+    int door_pointer = 0;
 	for (int i = 0; i < 4; i++) {
 		if (door_mask[i] > 0) {	//有门生成门（碰撞体积略小）
 			doors_.pushBack(Door::createDoor(i, door_style[i], size));
-			addChild(doors_.at(i), 1);
+			addChild(doors_.at(door_pointer), 1);
+            door_pointer++;
 		}
 		else {	//无门生成墙
 			stones_.pushBack(Stone::createStone(0, Size(64, 48)));
@@ -231,6 +229,7 @@ bool RoomScene::init(int roomID)
     //TODO 99. 联机模式，素材中有babyIssac
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
    
+    //暂停界面
     Texture2D * pausescreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/pausescreen.png");
     Texture2D * pausescreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
     pausescreen = Sprite::createWithTexture(pausescreenBgTexture, Rect(0,0,442,286));
