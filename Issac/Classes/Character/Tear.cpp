@@ -1,5 +1,8 @@
 #include "Tear.h"
 
+USING_NS_CC;
+using namespace std;
+
 Tear *Tear::createTear()
 {
 	return create();
@@ -85,12 +88,12 @@ bool Tear::init()
 	array.pushBack(frame14);
 	array.pushBack(frame15);
 
-	const auto animation = Animation::createWithSpriteFrames(array, 0.05f);
-	Action *poof_anim = Animate::create(animation);
+	poof_animation = Animation::createWithSpriteFrames(array, 0.05f);
+    AnimationCache::getInstance()->addAnimation(poof_animation, "poof_animation");
 
 	Texture2D *tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
 	SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0, 32, 32, 32));
-	auto temp_tearSprite = Sprite::createWithSpriteFrame(tearFrame);
+	auto temp_tearSprite = createWithSpriteFrame(tearFrame);
 	this->addChild(temp_tearSprite);
 	return true;
 }

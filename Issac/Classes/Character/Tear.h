@@ -14,6 +14,8 @@ class Tear : public Moveable
 	virtual bool init();
 	virtual void createPhyBody();
 	CREATE_FUNC(Tear)
+
+    CC_SYNTHESIZE_RETAIN(Animation *, poof_animation, PoofAnimation)
 };
 
 #endif

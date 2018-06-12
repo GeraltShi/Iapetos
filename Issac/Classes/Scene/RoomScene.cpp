@@ -344,7 +344,13 @@ void RoomScene::update(float delta)
 		//tear倒计时和消失
 		for (auto it = tears_.begin(); it!=tears_.end();) {
 			if ((*it)->getTearExistTime() == 0) {
-				(*it)->removeFromParent();
+				//(*it)->removeFromParent();
+                //TODO 动画
+                (*it)->getPhysicsBody()->removeFromWorld();
+                const auto poof_ani = AnimationCache::getInstance()->getAnimation("poof_animation");
+                const auto poof_anim = Animate::create(poof_ani);
+                const auto poof_animate = Sequence::create(poof_anim, RemoveSelf::create(true), NULL);
+                (*it)->runAction(poof_animate);
 				it=tears_.erase(it);
 			}
 			else {
@@ -358,6 +364,9 @@ void RoomScene::update(float delta)
 			if ((*it)->getHealth() <= 0) {
 			//血量<0死亡了
 				(*it)->removeFromParent();
+                //TODO 改为动画
+
+
 				it = monsters_.erase(it);
 			}
 			else {
