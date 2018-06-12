@@ -15,7 +15,6 @@ public:
 
 	CREATE_FUNC(Issac)
 
-
 	virtual void createPhyBody();
     void move(int walk_direction, int tear_direction);
 private:
