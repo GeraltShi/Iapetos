@@ -120,6 +120,7 @@ bool RoomScene::init(int roomID)
 			case(1): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, size.height - 24); break;
 			case(2): stones_.at(stones_.size() - 1)->setPosition(size.width - 24, size.height / 2); break;
 			case(3): stones_.at(stones_.size() - 1)->setPosition(size.width / 2, 24); break;
+            default: break;
 			}
 			addChild(stones_.at(stones_.size() - 1), 1);
 		}
@@ -300,7 +301,8 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
-    if(!model.paused){
+    if(!model.paused)
+    {
 		//开始 
 		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!= nullptr) {
 			Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
@@ -327,7 +329,7 @@ void RoomScene::update(float delta)
 			}
 			else {
 				(*it)->setTearExistTime((*it)->getTearExistTime() - 1);
-				it++;
+				++it;
 			}			
 		}
         
@@ -352,7 +354,7 @@ void RoomScene::update(float delta)
 				if ((*it)->getInvincibleTime() > 0) {
 					(*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
 				}
-				it++;
+				++it;
 			}
         
 		//player移动	
@@ -385,7 +387,8 @@ void RoomScene::update(float delta)
 		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
 		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
 	} 
-	else {		
+	else 
+    {		
 		//暂停 
 		Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         
@@ -410,7 +413,6 @@ void RoomScene::update(float delta)
             break;
         }
 	}
-	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
 
 void RoomScene::set_model(RoomSceneModel model)
@@ -579,6 +581,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
                     Director::getInstance()->replaceScene(tx);
                     break;
                 }
+			default: break;
 			}
 			
 		}
