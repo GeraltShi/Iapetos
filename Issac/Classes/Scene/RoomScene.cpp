@@ -378,11 +378,10 @@ void RoomScene::update(float delta)
 			log("DEAD");
 		}
 
-        
+        //添加player的射击监听
 		if(model.tear_direction == 5){
 			this->schedule(schedule_selector(RoomScene::fire), 0.4,65536,0.001);
 		}
-		//TODO Issac所有的状态更新：如碰撞掉血，被炸弹炸掉血，吃小邢邢回血，自身物品状态都由场景触发
 		//TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
 		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
 		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
@@ -421,45 +420,9 @@ void RoomScene::set_model(RoomSceneModel model)
 }
 
 void RoomScene::fire(float dt){
-	//创建一个Tear
-	tears_.pushBack(Tear::createTear());
-	//设定初始tear位置和速度
-    const int advance = 15;
-    int x_advance;
-    int y_advance;
-	double tear_V = player->getMoveSpeed() + player->getTearSpeed();
-    switch (model.tear_direction) {
-        case 2:
-            x_advance = 0;
-            y_advance = advance+random(-10,10);
-			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(0,tear_V));
-            break;
-        case 4:
-            x_advance = -advance+random(-10,10);
-            y_advance = 0;
-			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(-tear_V, 0));
-            break;
-        case 6:
-            x_advance = advance+random(-10,10);
-            y_advance = 0;
-			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(tear_V, 0));
-            break;
-        case 8:
-            x_advance = 0;
-            y_advance = -advance+random(-10,10);
-			tears_.at(tears_.size() - 1)->getPhysicsBody()->setVelocity(Vec2(0, -tear_V));
-            break;
-        default:
-            x_advance = 0;
-            y_advance = 0;
-    }
-	//初始位置
-	tears_.at(tears_.size() - 1)->setPosition(Vec2(player->getPosition().x+x_advance, player->getPosition().y+y_advance+5));
-	//存在时间,攻击
-	tears_.at(tears_.size() - 1)->setTearExistTime(player->getTearExistTime());
-	tears_.at(tears_.size() - 1)->setAttack(player->getAttack());
-	//是谁发射的
-	tears_.at(tears_.size() - 1)->setTag(4);
+
+	//Issac发射tear
+	tears_.pushBack(player->Fire(model.tear_direction));
 	addChild(tears_.at(tears_.size() - 1),3);
 }
 
