@@ -41,6 +41,46 @@ bool Monster::init()
 	return true;
 }
 
+Tear* Monster::Fire(int fireDir)
+{
+	assert(fireDir == 2 || fireDir == 4 || fireDir == 6 || fireDir == 8);
+	//创建一个Tear
+	Tear* myTear = Tear::createTear();
+	//设定初始tear位置和速度
+	int offsetX, offsetY;
+	double tear_V = moveSpeed + tearSpeed;
+	switch (fireDir) {
+	case 2:
+		offsetX = 0;
+		offsetY = (radiusSize + 5);
+		myTear->getPhysicsBody()->setVelocity(Vec2(0, tear_V));
+		break;
+	case 4:
+		offsetX = -(radiusSize + 5);
+		offsetY = 0;
+		myTear->getPhysicsBody()->setVelocity(Vec2(-tear_V, 0));
+		break;
+	case 6:
+		offsetX = (radiusSize + 5);
+		offsetY = 0;
+		myTear->getPhysicsBody()->setVelocity(Vec2(tear_V, 0));
+		break;
+	case 8:
+		offsetX = 0;
+		offsetY = -(radiusSize + 5);
+		myTear->getPhysicsBody()->setVelocity(Vec2(0, -tear_V));
+		break;
+	}
+	//初始位置
+	myTear->setPosition(Vec2(getPosition().x + offsetX, getPosition().y + offsetY));
+	//存在时间,攻击
+	myTear->setTearExistTime(tearExistTime);
+	myTear->setAttack(attack);
+	//是Issac发射的
+	myTear->setTag(4);
+	return myTear;
+}
+
 void Monster::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
 {
 	auto spriteCache = SpriteFrameCache::getInstance();

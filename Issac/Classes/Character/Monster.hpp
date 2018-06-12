@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Moveable.h"
+#include "Tear.h"
 
 USING_NS_CC;
 using namespace std;
@@ -19,6 +20,7 @@ public:
 	int ToPointDir(Vec2);
 	//怪物的移动策略，这是接口。子类每个怪物重写。
 	virtual void moveStrategy(int walk_direction) = 0;
+	Tear* Fire(int fireDir);
 protected:
 	void build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const;//必要时需要重载
 	static void build_animation_cache();
