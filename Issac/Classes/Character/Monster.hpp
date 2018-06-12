@@ -44,4 +44,15 @@ public:
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };
+
+class Gaper : public Monster {
+public:
+    static Gaper *createGaper();
+    virtual bool init();
+    CREATE_FUNC(Gaper)
+    void move(int walk_direction);
+    virtual void moveStrategy(int walk_direction);
+    void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_, Texture2D *dead_texture_) const;
+    static void build_animation_cache();
+};
 #endif /* Monster_hpp */

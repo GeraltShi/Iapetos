@@ -23,122 +23,6 @@ bool Monster::init()
 	return true;
 }
 
-void Fatty::move(int walk_direction)
-{
-	//移动
-	//移动速度不是之前的情况，说明发生碰撞
-	if (colClog == ColClogTime
-		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
-		colClog = 0;
-	}
-	else {
-		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
-	}
-
-	//移动的图形显示
-	//直接获取缓存，不要将SpriteFrame保存在类中
-	auto aniCache = AnimationCache::getInstance();
-
-	const auto vwalk_animation = aniCache->getAnimation("monster_vwalk_animation");
-	const auto hwalk_animation = aniCache->getAnimation("monster_hwalk_animation");
-	const auto head_animation = aniCache->getAnimation("head_animation");
-
-	Animate * vwalk_animate = Animate::create(vwalk_animation);
-	Animate * hwalk_animate = Animate::create(hwalk_animation);
-	Animate * head_animate = Animate::create(head_animation);
-
-	switch (walk_direction)
-	{
-		//123
-		//456
-		//789
-	case 4://左
-		if (prev_walk_orientation != 4) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->setScaleX(-1);//翻转
-			this->getChildByName("body")->runAction(hwalk_animate);
-			this->getChildByName("head")->runAction(head_animate);
-		}
-		prev_walk_orientation = 4;
-		break;
-
-	case 6://右
-		if (prev_walk_orientation != 6) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->setScaleX(1);//翻转
-			this->getChildByName("body")->runAction(hwalk_animate);
-			this->getChildByName("head")->runAction(head_animate);
-		}
-		prev_walk_orientation = 6;
-		break;
-
-	case 2://上
-		if (prev_walk_orientation != 2) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
-			this->getChildByName("head")->runAction(head_animate);
-		}
-		prev_walk_orientation = 2;
-		break;
-
-	case 8://下
-		if (prev_walk_orientation != 8) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->runAction(vwalk_animate);
-			this->getChildByName("head")->runAction(head_animate);
-		}
-		prev_walk_orientation = 8;
-		break;
-
-	case 1://左上
-		if (prev_walk_orientation != 1) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->runAction(vwalk_animate->reverse());
-			this->getChildByName("head")->runAction(head_animate);
-		}
-		prev_walk_orientation = 1;
-		break;
-
-	case 3://右上
-		if (prev_walk_orientation != 3) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->runAction(vwalk_animate->reverse());
-			this->getChildByName("head")->runAction(head_animate);
-		}
-		prev_walk_orientation = 3;
-		break;
-
-	case 7://左下
-		if (prev_walk_orientation != 7) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->runAction(vwalk_animate);
-			this->getChildByName("head")->runAction(head_animate);
-		}
-		prev_walk_orientation = 7;
-		break;
-
-	case 9://右下
-		if (prev_walk_orientation != 9) {
-			this->getChildByName("body")->stopAllActions();
-			this->getChildByName("body")->runAction(vwalk_animate);
-		}
-		prev_walk_orientation = 9;
-		break;
-
-	case 5://无，头要默认复位
-		this->getChildByName("body")->stopAllActions();
-		prev_walk_orientation = 5;
-		break;
-
-	default:
-		break;
-	}
-
-	if (colClog == 0) {
-		prev_walk_orientation = 5;
-	}
-}
-
 int Monster::ToPointDir(Vec2 PlayerPos)
 {
 	double diff_x = PlayerPos.x - getPositionX();
@@ -196,6 +80,122 @@ void Monster::createPhyBody()
 }
 
 //---------------------------------------------------------Fatty---------------------------------------------------------
+
+void Fatty::move(int walk_direction)
+{
+    //移动
+    //移动速度不是之前的情况，说明发生碰撞
+    if (colClog == ColClogTime
+        && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
+        colClog = 0;
+    }
+    else {
+        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+    }
+    
+    //移动的图形显示
+    //直接获取缓存，不要将SpriteFrame保存在类中
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto vwalk_animation = aniCache->getAnimation("monster_vwalk_animation");
+    const auto hwalk_animation = aniCache->getAnimation("monster_hwalk_animation");
+    const auto head_animation = aniCache->getAnimation("head_animation");
+    
+    Animate * vwalk_animate = Animate::create(vwalk_animation);
+    Animate * hwalk_animate = Animate::create(hwalk_animation);
+    Animate * head_animate = Animate::create(head_animation);
+    
+    switch (walk_direction)
+    {
+            //123
+            //456
+            //789
+        case 4://左
+            if (prev_walk_orientation != 4) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(-1);//翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 4;
+            break;
+            
+        case 6://右
+            if (prev_walk_orientation != 6) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(1);//翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 6;
+            break;
+            
+        case 2://上
+            if (prev_walk_orientation != 2) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 2;
+            break;
+            
+        case 8://下
+            if (prev_walk_orientation != 8) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 8;
+            break;
+            
+        case 1://左上
+            if (prev_walk_orientation != 1) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 1;
+            break;
+            
+        case 3://右上
+            if (prev_walk_orientation != 3) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 3;
+            break;
+            
+        case 7://左下
+            if (prev_walk_orientation != 7) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 7;
+            break;
+            
+        case 9://右下
+            if (prev_walk_orientation != 9) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
+            prev_walk_orientation = 9;
+            break;
+            
+        case 5://无，头要默认复位
+            this->getChildByName("body")->stopAllActions();
+            prev_walk_orientation = 5;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (colClog == 0) {
+        prev_walk_orientation = 5;
+    }
+}
 
 void Fatty::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
 {
@@ -543,3 +543,273 @@ bool Fly::init() {
 void Fly::moveStrategy(int walk_direction) {
     this->move(walk_direction);
 }
+
+//---------------------------------------------------------Gaper----------------------------------------------------------
+
+void Gaper::build_sprite_frame_cache(Texture2D *head_texture_, Texture2D * body_texture_, Texture2D *dead_texture_) const
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(head_texture_, Rect(0, 0, 32, 32)), "gaper_head_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(head_texture_, Rect(32, 0, 32, 32)), "gaper_head_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(head_texture_, Rect(0, 32, 32, 32)), "gaper_head_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(head_texture_, Rect(32, 32, 32, 32)), "gaper_head_frame3");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 0, 32, 32, 32)), "gaper_hwalk_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 1, 32, 32, 32)), "gaper_hwalk_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 2, 32, 32, 32)), "gaper_hwalk_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 3, 32, 32, 32)), "gaper_hwalk_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 0, 64, 32, 32)), "gaper_hwalk_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 1, 64, 32, 32)), "gaper_hwalk_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 2, 64, 32, 32)), "gaper_hwalk_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 3, 64, 32, 32)), "gaper_hwalk_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 0, 96, 32, 32)), "gaper_hwalk_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 1, 96, 32, 32)), "gaper_hwalk_frame9");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 2, 96, 32, 32)), "gaper_vwalk_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 3, 96, 32, 32)), "gaper_vwalk_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 0, 128, 32, 32)), "gaper_vwalk_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 1, 128, 32, 32)), "gaper_vwalk_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 2, 128, 32, 32)), "gaper_vwalk_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 3, 128, 32, 32)), "gaper_vwalk_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 0, 160, 32, 32)), "gaper_vwalk_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 1, 160, 32, 32)), "gaper_vwalk_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 2, 160, 32, 32)), "gaper_vwalk_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(body_texture_, Rect(32 * 3, 160, 32, 32)), "gaper_vwalk_frame9");
+    
+}
+
+void Gaper::build_animation_cache()
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto gaper_head_frame0 = spriteCache->getSpriteFrameByName("gaper_head_frame0");
+    const auto gaper_head_frame1 = spriteCache->getSpriteFrameByName("gaper_head_frame1");
+    const auto gaper_head_frame2 = spriteCache->getSpriteFrameByName("gaper_head_frame2");
+    const auto gaper_head_frame3 = spriteCache->getSpriteFrameByName("gaper_head_frame3");
+
+    Vector<SpriteFrame*> gaperheadFrames;
+    gaperheadFrames.pushBack(gaper_head_frame0);
+    gaperheadFrames.pushBack(gaper_head_frame1);
+    gaperheadFrames.pushBack(gaper_head_frame2);
+    gaperheadFrames.pushBack(gaper_head_frame3);
+    Animation * gaper_head_animation = Animation::createWithSpriteFrames(gaperheadFrames, 3.0f);
+    gaper_head_animation->setLoops(-1);
+    gaper_head_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(gaper_head_animation, "gaper_head_animation");
+    
+    const auto vwalk_frame0 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame0");
+    const auto vwalk_frame1 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame1");
+    const auto vwalk_frame2 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame2");
+    const auto vwalk_frame3 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame3");
+    const auto vwalk_frame4 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame4");
+    const auto vwalk_frame5 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame5");
+    const auto vwalk_frame6 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame6");
+    const auto vwalk_frame7 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame7");
+    const auto vwalk_frame8 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame8");
+    const auto vwalk_frame9 = spriteCache->getSpriteFrameByName("gaper_vwalk_frame9");
+    Vector<SpriteFrame*> vwalkFrames;
+    vwalkFrames.pushBack(vwalk_frame0);
+    vwalkFrames.pushBack(vwalk_frame1);
+    vwalkFrames.pushBack(vwalk_frame2);
+    vwalkFrames.pushBack(vwalk_frame3);
+    vwalkFrames.pushBack(vwalk_frame4);
+    vwalkFrames.pushBack(vwalk_frame5);
+    vwalkFrames.pushBack(vwalk_frame6);
+    vwalkFrames.pushBack(vwalk_frame7);
+    vwalkFrames.pushBack(vwalk_frame8);
+    vwalkFrames.pushBack(vwalk_frame9);
+    Animation * vwalk_animation = Animation::createWithSpriteFrames(vwalkFrames, 0.1f);
+    vwalk_animation->setLoops(-1);
+    vwalk_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(vwalk_animation, "gaper_vwalk_animation");
+    
+    
+    const auto hwalk_frame0 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame0");
+    const auto hwalk_frame1 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame1");
+    const auto hwalk_frame2 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame2");
+    const auto hwalk_frame3 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame3");
+    const auto hwalk_frame4 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame4");
+    const auto hwalk_frame5 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame5");
+    const auto hwalk_frame6 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame6");
+    const auto hwalk_frame7 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame7");
+    const auto hwalk_frame8 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame8");
+    const auto hwalk_frame9 = spriteCache->getSpriteFrameByName("gaper_hwalk_frame9");
+    Vector<SpriteFrame*> hwalkFrames;
+    hwalkFrames.pushBack(hwalk_frame0);
+    hwalkFrames.pushBack(hwalk_frame1);
+    hwalkFrames.pushBack(hwalk_frame2);
+    hwalkFrames.pushBack(hwalk_frame3);
+    hwalkFrames.pushBack(hwalk_frame4);
+    hwalkFrames.pushBack(hwalk_frame5);
+    hwalkFrames.pushBack(hwalk_frame6);
+    hwalkFrames.pushBack(hwalk_frame7);
+    hwalkFrames.pushBack(hwalk_frame8);
+    hwalkFrames.pushBack(hwalk_frame9);
+    Animation * hwalk_animation = Animation::createWithSpriteFrames(hwalkFrames, 0.1f);
+    hwalk_animation->setLoops(-1);
+    hwalk_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(hwalk_animation, "gaper_hwalk_animation");
+}
+
+Gaper *Gaper::createGaper()
+{
+    return create();
+}
+
+void Gaper::move(int walk_direction)
+{
+    //移动
+    //移动速度不是之前的情况，说明发生碰撞
+    if (colClog == ColClogTime
+        && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
+        colClog = 0;
+    }
+    else {
+        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+    }
+    
+    //移动的图形显示
+    //直接获取缓存，不要将SpriteFrame保存在类中
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto vwalk_animation = aniCache->getAnimation("gaper_vwalk_animation");
+    const auto hwalk_animation = aniCache->getAnimation("gaper_hwalk_animation");
+    const auto head_animation = aniCache->getAnimation("gaper_head_animation");
+    
+    Animate * vwalk_animate = Animate::create(vwalk_animation);
+    Animate * hwalk_animate = Animate::create(hwalk_animation);
+    Animate * head_animate = Animate::create(head_animation);
+    
+    switch (walk_direction)
+    {
+            //123
+            //456
+            //789
+        case 4://左
+            if (prev_walk_orientation != 4) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(-1);//翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 4;
+            break;
+            
+        case 6://右
+            if (prev_walk_orientation != 6) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(1);//翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 6;
+            break;
+            
+        case 2://上
+            if (prev_walk_orientation != 2) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());//向上走要倒放
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 2;
+            break;
+            
+        case 8://下
+            if (prev_walk_orientation != 8) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 8;
+            break;
+            
+        case 1://左上
+            if (prev_walk_orientation != 1) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 1;
+            break;
+            
+        case 3://右上
+            if (prev_walk_orientation != 3) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 3;
+            break;
+            
+        case 7://左下
+            if (prev_walk_orientation != 7) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 7;
+            break;
+            
+        case 9://右下
+            if (prev_walk_orientation != 9) {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
+            prev_walk_orientation = 9;
+            break;
+            
+        case 5://无，头要默认复位
+            this->getChildByName("body")->stopAllActions();
+            prev_walk_orientation = 5;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (colClog == 0) {
+        prev_walk_orientation = 5;
+    }
+}
+
+bool Gaper::init() {
+    if (!Monster::init())
+    {
+        return false;
+    }
+    //不要将Texture保存在类,用的时候直接从TextureCache中获取
+    const auto gaper_head_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/classic/monster_017_gaper.png");
+    const auto gaper_body_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/classic/monster_000_bodies01.png");
+    const auto monster_dead_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_002_bloodpoof.png");
+    SpriteFrame *headFrame = SpriteFrame::createWithTexture(gaper_head_texture_, Rect(0, 0, 32, 32));
+    Sprite * headSprite = createWithSpriteFrame(headFrame);
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(gaper_body_texture_, Rect(0, 0, 32, 32));
+    Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
+    
+    build_sprite_frame_cache(gaper_head_texture_, gaper_body_texture_, monster_dead_texture_);
+    build_animation_cache();
+    
+    this->addChild(headSprite, 1, "head");
+    this->addChild(bodySprite, 0, "body");
+    headSprite->setPosition(Vec2(0, 10));
+    this->setPosition(Vec2(221, 143));
+    
+    //Fatty碰撞大小
+    radiusSize = 12;
+    //Fatty重量
+    bodyMass = 500;
+    //Fatty行走速度
+    moveSpeed = 80;
+    //Fatty血量5
+    health = 5;
+    //Fatty攻击1
+    attack = 1;
+    this->createPhyBody();
+    return true;
+}
+
+void Gaper::moveStrategy(int walk_direction) {
+    this->move(walk_direction);
+}
+

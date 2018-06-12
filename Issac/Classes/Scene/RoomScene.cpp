@@ -171,9 +171,15 @@ bool RoomScene::init(int roomID)
 				monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
 				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty1");
 			}
-            if (room_vm_.getRoomMap(i, j) == 5) { //4说明这个位置是Fly
-                //Fatty生成
+            if (room_vm_.getRoomMap(i, j) == 5) { //5说明这个位置是Fly
+                //Fly生成
                 monsters_.pushBack((Monster*)Fly::createFly());
+                monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
+                addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+            }
+            if (room_vm_.getRoomMap(i, j) == 6) { //6说明这个位置是Gaper
+                //Gaper生成
+                monsters_.pushBack((Monster*)Gaper::createGaper());
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
             }
