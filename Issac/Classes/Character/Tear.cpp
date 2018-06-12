@@ -89,6 +89,7 @@ bool Tear::init()
 	array.pushBack(frame15);
 
 	poof_animation = Animation::createWithSpriteFrames(array, 0.05f);
+    poof_animation->setLoops(1);
     AnimationCache::getInstance()->addAnimation(poof_animation, "poof_animation");
 
 	Texture2D *tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");

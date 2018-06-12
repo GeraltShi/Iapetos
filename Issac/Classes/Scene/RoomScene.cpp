@@ -344,12 +344,18 @@ void RoomScene::update(float delta)
 		//tear倒计时和消失
 		for (auto it = tears_.begin(); it!=tears_.end();) {
 			if ((*it)->getTearExistTime() == 0) {
-				//(*it)->removeFromParent();
-                (*it)->getPhysicsBody()->removeFromWorld();
+                Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
+                SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
+                auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
+                temp_sprite->setPosition((*it)->getPosition());
+                addChild(temp_sprite,3);
+
+                (*it)->removeFromParent();
+
                 const auto poof_ani = AnimationCache::getInstance()->getAnimation("poof_animation");
                 const auto poof_anim = Animate::create(poof_ani);
                 const auto poof_animate = Sequence::create(poof_anim, RemoveSelf::create(true), NULL);
-                (*it)->runAction(poof_animate);
+                temp_sprite->runAction(poof_animate);
 				it=tears_.erase(it);
 			}
 			else {
@@ -362,12 +368,18 @@ void RoomScene::update(float delta)
 		for (auto it = monsters_.begin(); it != monsters_.end(); ) 
 			if ((*it)->getHealth() <= 0) {
 			//血量<0死亡了
-				//(*it)->removeFromParent();
-                (*it)->getPhysicsBody()->removeFromWorld();
+                Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
+                SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
+                auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
+                temp_sprite->setPosition((*it)->getPosition());
+                addChild(temp_sprite, 3);
+
+				(*it)->removeFromParent();
+
                 const auto dead_ani = AnimationCache::getInstance()->getAnimation("dead_animation");
                 const auto dead_anim = Animate::create(dead_ani);
                 const auto dead_animate = Sequence::create(dead_anim, RemoveSelf::create(true), NULL);
-                (*it)->runAction(dead_animate);
+                temp_sprite->runAction(dead_animate);
 				it = monsters_.erase(it);
 			}
 			else {

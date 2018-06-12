@@ -196,7 +196,7 @@ void Monster::build_animation_cache()
     deadFrames.pushBack(dead_frame8);
     deadFrames.pushBack(dead_frame9);
     Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames,0.1f);
-    dead_animation->setLoops(0);
+    dead_animation->setLoops(1);
     aniCache->addAnimation(dead_animation, "dead_animation");
 }
 
