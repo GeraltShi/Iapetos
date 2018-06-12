@@ -31,7 +31,7 @@ bool RoomScene::init(int roomID)
     /** zorder
      * 9 DeadScreen
      * 8 HUD, PauseMenu
-     * 7 PauseScreen
+     * 7 PauseScreen,OptionScreen
      * 6 Overlay
      * 5 MiniMap
      * 3 Issac, Monster,Rock
@@ -273,6 +273,33 @@ bool RoomScene::init(int roomID)
     addChild(pausescreen,7);
     pausescreen->setVisible(false);
     
+    //设置菜单
+    Texture2D * optionscreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/optionsmenudark.png");
+    Texture2D * optionscreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
+    optionscreen = Sprite::createWithTexture(optionscreenBgTexture, Rect(0,0,442,286));
+    Sprite * optioncursor = Sprite::createWithTexture(optionscreenTexture, Rect(234,24,16,24));
+    Sprite * optionmenu = Sprite::createWithTexture(optionscreenTexture, Rect(0,0,234,234));
+    Sprite * optionitem = Sprite::createWithTexture(optionscreenTexture, Rect(0,304,128,64));
+    Sprite * option_sfx_bar = Sprite::createWithTexture(optionscreenTexture, Rect(128,400,128,16));
+    Sprite * option_music_bar = Sprite::createWithTexture(optionscreenTexture, Rect(0,480,128,16));
+    Sprite * option_mp_opacity_bar = Sprite::createWithTexture(optionscreenTexture, Rect(128,400,128,16));
+    optionmenu->setPosition(221,143);
+    optionitem->setPosition(85,100);
+    optioncursor->setPosition(25,100);
+    optionscreen->setOpacity(0x7f);
+    option_sfx_bar->setPosition(145,124);
+    option_music_bar->setPosition(145,100);
+    option_mp_opacity_bar->setPosition(145,76);
+    optionmenu->addChild(optioncursor,1,"optioncursor");
+    optionmenu->addChild(optionitem,1);
+    optionmenu->addChild(option_sfx_bar,1,"option_sfx_bar");
+    optionmenu->addChild(option_music_bar,1,"option_music_bar");
+    optionmenu->addChild(option_mp_opacity_bar,1,"option_mp_opacity_bar");
+    optionscreen->setPosition(221,143);
+    optionscreen->addChild(optionmenu,0,"optionmenu");
+    addChild(optionscreen,7);
+    optionscreen->setVisible(false);
+    
     //结束菜单
     Texture2D * deadportraitTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/death portraits.png");
     Texture2D * deadoptionTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/backselectwidget.png");
@@ -473,6 +500,25 @@ void RoomScene::update(float delta)
             break;
         default:
             break;
+        }
+        if(model.option_display == 1){
+            optionscreen->setVisible(true);
+            switch (model.option_menu_cursor) {
+                case 0:
+                    optionscreen->getChildByName("optionmenu")->getChildByName("optioncursor")->runAction(MoveTo::create(0, Vec2(25, 124)));
+                    break;
+                case 1:
+                    optionscreen->getChildByName("optionmenu")->getChildByName("optioncursor")->runAction(MoveTo::create(0, Vec2(25, 100)));
+                    break;
+                case 2:
+                    optionscreen->getChildByName("optionmenu")->getChildByName("optioncursor")->runAction(MoveTo::create(0, Vec2(25, 76)));
+                    break;
+                default:
+                    break;
+            }
+            //TODO 根据 option 值更新 bar
+        } else {
+            optionscreen->setVisible(false);
         }
 	}
     else{

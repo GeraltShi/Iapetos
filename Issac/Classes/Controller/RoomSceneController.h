@@ -43,6 +43,7 @@ public:
     int check_key_inRoom(EventKeyboard::KeyCode keyCode) ;
     int check_head();
     int check_pause(EventKeyboard::KeyCode keyCode);
+    int check_option(EventKeyboard::KeyCode keyCode);
     void check_bomb(EventKeyboard::KeyCode keyCode);
     
 private:
