@@ -230,6 +230,14 @@ bool RoomScene::init(int roomID)
     Sprite * minimap = Sprite::createWithTexture(texture_minimap, Rect(0,0,56,48));
     minimap->setPosition(370,240);
     addChild(minimap, 5);
+    Sprite * current_room = Sprite::createWithTexture(texture_minimap, Rect(112,80,16,16));//当前房间
+    current_room->setPosition(0,8);
+    Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64,16,16,16));//非当前房间
+    available_room->setPosition(0,0);
+    Sprite * boss_room_icon = Sprite::createWithTexture(texture_minimap, Rect(32,80,16,16));//boss房间标志
+    Sprite * treasure_room_icon = Sprite::createWithTexture(texture_minimap, Rect(64,64,16,16));//buff房间标志
+    minimap->addChild(current_room, 1);
+    minimap->addChild(available_room,1);
     
     //TODO 数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
     Texture2D * texture_font = Director::getInstance()->getTextureCache()->addImage("res/font/pftempestasevencondensed_0.png");
