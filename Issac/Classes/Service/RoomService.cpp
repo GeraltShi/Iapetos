@@ -193,12 +193,14 @@ bool RoomService::is_init_room() const
 
 
 /**
- * \brief 初始化所有房间信息
+ * \brief 必须在使用Service前调用Init()方法
  */
-RoomService::RoomService()
+void RoomService::init()
 {
     init_room_id_ = 1;
     current_room_id_ = 0;
+    room_map_.clear();
+    store_.clear();
 
     //初始房间
     auto room__ = Room();
@@ -334,6 +336,18 @@ RoomService::RoomService()
     room_map_[13] = room__;
 
     build_vm_from_room_map();
+}
+
+
+/**
+ * \brief 初始化所有房间信息,创建Service后必须调用init()方法
+ */
+RoomService::RoomService()
+{
+    init_room_id_ = 1;
+    current_room_id_ = 0;
+
+    //init();
 }
 
 string RoomService::get_doorstyle_from_room_type(int room_type)

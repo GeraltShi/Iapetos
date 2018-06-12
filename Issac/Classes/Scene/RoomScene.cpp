@@ -39,7 +39,7 @@ bool RoomScene::init(int roomID)
      * 0 Room Background
      */
 
-    //创建房间
+    //房间墙面贴图
     const auto ground_s = room_vm_.getGroundStyle();
 
     Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage(ground_s);//res/gfx/backdrop/01_basement.png
@@ -67,6 +67,7 @@ bool RoomScene::init(int roomID)
     room_piece4->setPosition(221, 0);
     addChild(room_piece4,0);
     
+    //光线阴影贴图
     Texture2D *texture_shading = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/shading_utero.png");
     Sprite * shading = Sprite::createWithTexture(texture_shading,Rect(0,0,442,286));
     shading->setPosition(221,143);
@@ -81,10 +82,6 @@ bool RoomScene::init(int roomID)
         addChild(controls, 1);
     }
 
-    
-    //TODO 弹幕Tear的生成、生命周期、碰撞过程、管理（多Tear对象共存）
-    
-    //TODO 2.光影遮罩       gfx\overlays res\backdrop（光）
     //光影遮罩，在整个Scene最顶部
     Texture2D *texture_overlay = Director::getInstance()->getTextureCache()->addImage("res/gfx/overlays/basement/1x1_overlay_1.png");
     Sprite * overlay = Sprite::createWithTexture(texture_overlay,Rect(0,0,442,286));
@@ -222,8 +219,6 @@ bool RoomScene::init(int roomID)
     num0->setPosition(46,224);
     addChild(num0, 8);
     
-    //srand(static_cast<unsigned>(time(nullptr)));//初始化时种下种子，不能在update或fire方法里种，不然随机性消失
-    //TODO 加载所有界面元素
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
     
     //TODO 3.物品生成       gfx\items

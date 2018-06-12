@@ -31,6 +31,7 @@ public:
     int get_right_room_id();
     int get_down_room_id();
     bool is_init_room() const;
+    void init();
 
 private:
     static RoomService *inst_;
