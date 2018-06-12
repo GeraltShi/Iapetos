@@ -345,7 +345,6 @@ void RoomScene::update(float delta)
 		for (auto it = tears_.begin(); it!=tears_.end();) {
 			if ((*it)->getTearExistTime() == 0) {
 				//(*it)->removeFromParent();
-                //TODO 动画
                 (*it)->getPhysicsBody()->removeFromWorld();
                 const auto poof_ani = AnimationCache::getInstance()->getAnimation("poof_animation");
                 const auto poof_anim = Animate::create(poof_ani);
@@ -363,10 +362,12 @@ void RoomScene::update(float delta)
 		for (auto it = monsters_.begin(); it != monsters_.end(); ) 
 			if ((*it)->getHealth() <= 0) {
 			//血量<0死亡了
-				(*it)->removeFromParent();
-                //TODO 改为动画
-
-
+				//(*it)->removeFromParent();
+                (*it)->getPhysicsBody()->removeFromWorld();
+                const auto dead_ani = AnimationCache::getInstance()->getAnimation("dead_animation");
+                const auto dead_anim = Animate::create(dead_ani);
+                const auto dead_animate = Sequence::create(dead_anim, RemoveSelf::create(true), NULL);
+                (*it)->runAction(dead_animate);
 				it = monsters_.erase(it);
 			}
 			else {
