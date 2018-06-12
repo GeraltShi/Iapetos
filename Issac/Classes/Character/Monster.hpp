@@ -55,4 +55,15 @@ public:
     void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_, Texture2D *dead_texture_) const;
     static void build_animation_cache();
 };
+
+class Spider : public Monster {
+public:
+    static Spider *createSpider();
+    virtual bool init();
+    CREATE_FUNC(Spider)
+    void move(int walk_direction);
+    virtual void moveStrategy(int walk_direction);
+    void build_sprite_frame_cache(Texture2D *texture_) const;
+    static void build_animation_cache();
+};
 #endif /* Monster_hpp */

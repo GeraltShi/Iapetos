@@ -181,7 +181,13 @@ bool RoomScene::init(int roomID)
                 //Gaper生成
                 monsters_.pushBack((Monster*)Gaper::createGaper());
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
-                addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+                addChild(monsters_.at(monsters_.size() - 1), 3, "gaper1");
+            }
+            if (room_vm_.getRoomMap(i, j) == 7) { //7说明这个位置是Spider
+                //Spider生成
+                monsters_.pushBack((Monster*)Spider::createSpider());
+                monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
+                addChild(monsters_.at(monsters_.size() - 1), 3, "spider1");
             }
 			if (room_vm_.getRoomMap(i, j) == 1) {  
 				//小石头

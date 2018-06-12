@@ -813,3 +813,152 @@ void Gaper::moveStrategy(int walk_direction) {
     this->move(walk_direction);
 }
 
+//---------------------------------------------------------Spider---------------------------------------------------------
+
+void Spider::build_sprite_frame_cache(Texture2D *texture_) const
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 0, 32, 16)), "spider_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 0, 32, 16)), "spider_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 16, 32, 16)), "spider_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 16, 32, 16)), "spider_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32, 32, 16)), "spider_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32, 32, 16)), "spider_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 64, 32, 16)), "spider_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 64, 32, 16)), "spider_frame7");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 0, 64, 64)), "spider_dead_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 0, 64, 64)), "spider_dead_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 0, 64, 64)), "spider_dead_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 4, 0, 64, 64)), "spider_dead_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 64, 64, 64)), "spider_dead_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 64, 64, 64)), "spider_dead_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 64, 64, 64)), "spider_dead_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 4, 64, 64, 64)), "spider_dead_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 128, 64, 64)), "spider_dead_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 128, 64, 64)), "spider_dead_frame9");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 128, 64, 64)), "spider_dead_frame10");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 4, 128, 64, 64)), "spider_dead_frame11");
+}
+
+void Spider::build_animation_cache()
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto spider_frame0 = spriteCache->getSpriteFrameByName("spider_frame0");
+    const auto spider_frame1 = spriteCache->getSpriteFrameByName("spider_frame1");
+    const auto spider_frame2 = spriteCache->getSpriteFrameByName("spider_frame2");
+    const auto spider_frame3 = spriteCache->getSpriteFrameByName("spider_frame3");
+    const auto spider_frame4 = spriteCache->getSpriteFrameByName("spider_frame4");
+    const auto spider_frame5 = spriteCache->getSpriteFrameByName("spider_frame5");
+    const auto spider_frame6 = spriteCache->getSpriteFrameByName("spider_frame6");
+    const auto spider_frame7 = spriteCache->getSpriteFrameByName("spider_frame7");
+    Vector<SpriteFrame*> spiderFrames;
+    spiderFrames.pushBack(spider_frame0);
+    spiderFrames.pushBack(spider_frame1);
+    spiderFrames.pushBack(spider_frame2);
+    spiderFrames.pushBack(spider_frame3);
+    spiderFrames.pushBack(spider_frame4);
+    spiderFrames.pushBack(spider_frame5);
+    spiderFrames.pushBack(spider_frame6);
+    spiderFrames.pushBack(spider_frame7);
+    Animation * spider_animation = Animation::createWithSpriteFrames(spiderFrames, 0.4f);
+    spider_animation->setLoops(-1);
+    spider_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(spider_animation, "spider_animation");
+    
+    const auto dead_frame0 = spriteCache->getSpriteFrameByName("spider_dead_frame0");
+    const auto dead_frame1 = spriteCache->getSpriteFrameByName("spider_dead_frame1");
+    const auto dead_frame2 = spriteCache->getSpriteFrameByName("spider_dead_frame2");
+    const auto dead_frame3 = spriteCache->getSpriteFrameByName("spider_dead_frame3");
+    const auto dead_frame4 = spriteCache->getSpriteFrameByName("spider_dead_frame4");
+    const auto dead_frame5 = spriteCache->getSpriteFrameByName("spider_dead_frame5");
+    const auto dead_frame6 = spriteCache->getSpriteFrameByName("spider_dead_frame6");
+    const auto dead_frame7 = spriteCache->getSpriteFrameByName("spider_dead_frame7");
+    const auto dead_frame8 = spriteCache->getSpriteFrameByName("spider_dead_frame8");
+    const auto dead_frame9 = spriteCache->getSpriteFrameByName("spider_dead_frame9");
+    const auto dead_frame10 = spriteCache->getSpriteFrameByName("spider_dead_frame10");
+    const auto dead_frame11 = spriteCache->getSpriteFrameByName("spider_dead_frame11");
+    Vector<SpriteFrame*> deadFrames;
+    deadFrames.pushBack(dead_frame0);
+    deadFrames.pushBack(dead_frame1);
+    deadFrames.pushBack(dead_frame2);
+    deadFrames.pushBack(dead_frame3);
+    deadFrames.pushBack(dead_frame4);
+    deadFrames.pushBack(dead_frame5);
+    deadFrames.pushBack(dead_frame6);
+    deadFrames.pushBack(dead_frame7);
+    deadFrames.pushBack(dead_frame8);
+    deadFrames.pushBack(dead_frame9);
+    deadFrames.pushBack(dead_frame10);
+    deadFrames.pushBack(dead_frame11);
+    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames,0.1f);
+    dead_animation->setLoops(0);
+    aniCache->addAnimation(dead_animation, "spider_dead_animation");
+}
+
+Spider *Spider::createSpider()
+{
+    return create();
+}
+
+void Spider::move(int walk_direction)
+{
+    //移动
+    //移动速度不是之前的情况，说明发生碰撞
+    if (colClog == ColClogTime
+        && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
+        colClog = 0;
+    }
+    else {
+        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+    }
+    
+    //移动的图形显示
+    //直接获取缓存，不要将SpriteFrame保存在类中
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto spider_animation = aniCache->getAnimation("spider_animation");
+    
+    Animate * spider_animate = Animate::create(spider_animation);
+    
+    this->getChildByName("body")->runAction(spider_animate);
+    
+    if (colClog == 0) {
+        prev_walk_orientation = 5;
+    }
+}
+
+bool Spider::init() {
+    if (!Monster::init())
+    {
+        return false;
+    }
+    const auto spider_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/classic/monster_080_spider.png");
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(spider_texture_, Rect(0, 0, 32, 32));
+    Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
+    
+    build_sprite_frame_cache(spider_texture_);
+    build_animation_cache();
+    
+    this->addChild(bodySprite, 0, "body");
+    //this->setPosition(Vec2(221, 143));
+    //spider碰撞大小
+    radiusSize = 8;
+    //spider重量
+    bodyMass = 400;
+    //spider行走速度
+    moveSpeed = 50;
+    //spider血量5
+    health = 3;
+    //spider攻击1
+    attack = 1;
+    this->createPhyBody();
+    return true;
+}
+
+void Spider::moveStrategy(int walk_direction) {
+    this->move(walk_direction);
+}

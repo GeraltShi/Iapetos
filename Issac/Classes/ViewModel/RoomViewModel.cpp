@@ -86,5 +86,11 @@ void RoomViewModel::init(int roomType)
             posY = rand() % 7;
         }
         room_map[posX][posY] = 6;
+        while (room_map[posX][posY] != 0)
+        {
+            posX = rand() % 13;
+            posY = rand() % 7;
+        }
+        room_map[posX][posY] = 7;
 	}
 }
