@@ -459,16 +459,15 @@ void Fatty::moveStrategy(const RoomViewModel& roomMap) {
 		this->move(ToPointDir(Vec2(RoomUnitSize.width*destination.x+61, RoomUnitSize.height*destination.y + 61)));
 	}
 }
-Tear* Fatty::fireStrategy()
+void Fatty::fireStrategy(Vector<Tear*>& tears_)
 {
 	if (fireCoolTime > 0) {
 		fireCoolTime--; //冷却不开火
-		return nullptr;
 	}
 	else {
 		//冷却
 		fireCoolTime = 20;
 		//向人物方向发射子弹
-		return this->Fire(this->getParent()->getChildByTag(1)->getPosition());
+		tears_.pushBack(Fire(this->getParent()->getChildByTag(1)->getPosition()));
 	}
 }

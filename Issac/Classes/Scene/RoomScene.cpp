@@ -369,10 +369,10 @@ void RoomScene::update(float delta)
 				}
 				else {
 					(*it)->moveStrategy(room_vm_);
-					Tear* temp_tearM=(*it)->fireStrategy();
-					if (temp_tearM != nullptr) {
-						tears_.pushBack(temp_tearM);
-						addChild(tears_.at(tears_.size() - 1));
+					int nowtears_Size = tears_.size();
+					(*it)->fireStrategy(tears_);
+					for (int i = nowtears_Size; i < tears_.size(); i++) {
+						addChild(tears_.at(i));
 					}
 				}
 				//无敌时间的倒计时

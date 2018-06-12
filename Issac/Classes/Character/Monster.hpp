@@ -30,7 +30,7 @@ public:
 	//怪物的移动策略，这是接口。子类每个怪物重写。
 	virtual void moveStrategy(const RoomViewModel& roomMap) = 0;
 	//怪物的开火策略，这是接口。子类每个怪物重写。
-	virtual Tear* fireStrategy()=0;
+	virtual void fireStrategy(Vector<Tear*>& tears_)=0;
 
 	CC_SYNTHESIZE(int, fireCoolTime, FireCoolTime)
 protected:
@@ -44,7 +44,7 @@ public:
 	virtual bool init();
 	CREATE_FUNC(Fatty)
 	virtual void moveStrategy(const RoomViewModel& roomMap);
-	virtual Tear* fireStrategy();
+	virtual void fireStrategy(Vector<Tear*>& tears_);
 };
 
 #endif /* Monster_hpp */
