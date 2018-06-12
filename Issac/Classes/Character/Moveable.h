@@ -37,7 +37,7 @@ class Moveable : public Sprite
 	CC_SYNTHESIZE(int, tearExistTime, TearExistTime)
 
 	//初步设定Issac的血量为整数，单位为半颗血。Monster血量为实数，<0时死亡
-	CC_SYNTHESIZE(double, health, Health)
+	CC_SYNTHESIZE(int, health, Health)
 	//初步设定Issac的攻击为实数。Monster攻击为整数，普通怪1，精英怪2
 	CC_SYNTHESIZE(double, attack, Attack)
 	//ColClog用于碰撞阻塞

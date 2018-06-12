@@ -29,7 +29,7 @@ bool Issac::init()
 	tearSpeed = 50;
 	tearExistTime = 30;
 	//初始血量6个半心（3颗心）
-	health = 6;
+	health = 7;
 	//初始攻击
 	attack = 1.3;
 	this->setTag(1);

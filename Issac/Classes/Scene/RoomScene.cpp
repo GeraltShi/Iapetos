@@ -207,13 +207,11 @@ bool RoomScene::init(int roomID)
  
     //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
     //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
-    Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
-    Sprite * heart = Sprite::createWithTexture(texture_heart, Rect(0,0,16,16));
-    heart->setPosition(70,250);
-    addChild(heart, 8);
-    
-    //TODO 物品栏层应该独立于RoomScene，物品用状态reg统一管理
     Texture2D * texture_hud = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/hudpickups.png");
+    healthbar = Sprite::createWithTexture(texture_hud, Rect(0,0,1,1));//用 HUD 贴图的角落生成一个1x1透明贴图
+    healthbar->setPosition(70,250);
+    addChild(healthbar, 8);
+    
     Sprite * hud_coin = Sprite::createWithTexture(texture_hud, Rect(0,0,16,16));
     hud_coin->setPosition(30,224);
     Sprite * hud_bomb = Sprite::createWithTexture(texture_hud, Rect(0,16,16,16));
@@ -427,6 +425,22 @@ void RoomScene::update(float delta)
 		//TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
 		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
 		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
+        
+        //定义贴图偏移量
+        auto spriteCache = SpriteFrameCache::getInstance();
+        healthbar->removeAllChildren();
+        int heart_x = 0;
+        for(int i = 0; i< player->getHealth()/2; ++i){
+            Sprite * heart = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("fullheartcache"));
+            heart->setPosition(heart_x,0);
+            healthbar->addChild(heart, 1);
+            heart_x += 16;
+        }
+        if(player->getHealth()%2 != 0){
+            Sprite * hfheart = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("halfheartcache"));
+            hfheart->setPosition(heart_x,0);
+            healthbar->addChild(hfheart, 1);
+        }
 	} 
 	else if(model.game_stat == 1){
 		//暂停 
@@ -461,6 +475,10 @@ void RoomScene::update(float delta)
         }
     }
 	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
+}
+
+void RoomScene::updatehealth(float dt){
+    
 }
 
 void RoomScene::set_model(RoomSceneModel model)
@@ -549,7 +567,11 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(frame14, "t_frame14");
     fcache->addSpriteFrame(frame15, "t_frame15");
     
-    
+    Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
+    const auto fullheartcache = SpriteFrame::createWithTexture(texture_heart, Rect(0,0,16,16));
+    const auto halfheartcache = SpriteFrame::createWithTexture(texture_heart, Rect(16,0,16,16));
+    fcache->addSpriteFrame(fullheartcache, "fullheartcache");
+    fcache->addSpriteFrame(halfheartcache, "halfheartcache");
 }
 
 bool RoomScene::onContactBegin(PhysicsContact& contact)
@@ -578,7 +600,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			//Issac进入短暂无敌状态
 			nodeA->setInvincibleTime(20);
 			//TO DO添加受伤动画？
-			log("Issac Health:%lf",nodeA->getHealth());
+			log("Issac Health:%d",nodeA->getHealth());
 		}
 		//怪物和眼泪碰撞
 		if (tagA == 2 && (tagB == 3 || tagB == 4)) {
