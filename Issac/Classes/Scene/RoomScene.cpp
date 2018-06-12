@@ -108,7 +108,9 @@ bool RoomScene::init(int roomID)
 	for (int i = 0; i < 4; i++) {
 		if (door_mask[i] > 0) {	//有门生成门（碰撞体积略小）
 			doors_.pushBack(Door::createDoor(i, door_style[i], size));
-			addChild(doors_.at(i), 1);
+			//door tag:5,6,7,8是左、上、右、下4个门
+			doors_.at(doors_.size() - 1)->setTag(5 + i);
+			addChild(doors_.at(doors_.size() - 1), 1);
 		}
 		else {	//无门生成墙
 			stones_.pushBack(Stone::createStone(0, Size(64, 48)));
@@ -518,6 +520,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 		tagB = temp_tag;
 	}
 	//tag=0 静止障碍物; tag=1:player; tag=2:monster; tag=3:tearbyMonster; tag=4:tearbyIssac
+	//tag=5,6,7,8是左、上、右、下4个门
 	if (nodeA && nodeB)
 	{
 		if (tagA==1 && tagB==2 && nodeA->getInvincibleTime()==0 )
@@ -541,9 +544,16 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			//TO DO添加受伤动画？
 		}
 		//Issac和门的碰撞
-		if (tagA == 0 && tagB == 1 && monsters_.size() == 0) {
+		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.size() == 0) {
 			//出门了！
-			log("go out!");
+			switch (tagB)
+			{
+			case(5):log("left go out!"); break;
+			case(6):log("up go out!"); break;
+			case(7):log("right go out?!"); break;
+			case(8):log("down go out!"); break;
+			}
+			
 		}
 
 		//眼泪碰撞后消失
