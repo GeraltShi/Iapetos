@@ -1,10 +1,13 @@
 #ifndef LEVEL_MODEL_H_
 #define LEVEL_MODEL_H_
 
+#ifndef _GRID_DATA_
+#define _GRID_DATA_
 #define GRID_WIDTH 13
 #define GRID_HEIGHT 7
 #define GRID_WIDTH_HALF 6
 #define GRID_HEIGHT_HALF 3
+#endif
 
 #include "cocos2d.h"
 #include "SimpleItemViewModel.h"
@@ -35,7 +38,7 @@ public:
 	//地面是一张贴图，"ground_style_1"
     CC_SYNTHESIZE(string, ground_style, GroundStyle)
 	
-	int getRoomMap(int x, int y) {
+	int getRoomMap(int x, int y) const{
 		assert(x >= 0 && x < GRID_WIDTH);
 		assert(y >= 0 && y < GRID_HEIGHT);
 		return room_map[x][y];
@@ -58,7 +61,18 @@ private:
 	//0,0,0,0,0,0,0,0,0,0,0,0,0
 	int room_map[GRID_WIDTH][GRID_HEIGHT];
 };
-
+class GridPoint {
+public:
+	int x, y;
+	GridPoint() :x(-1), y(-1) {};
+	GridPoint(int _x, int _y) :x(_x), y(_y) {}
+	bool inRoom() {
+		return (x >= 0 && x < GRID_WIDTH)&&(y >= 0 && y < GRID_HEIGHT);
+	}
+	bool operator ==(const GridPoint& x1) const {
+		return (x == x1.x && y == x1.y);
+	}
+};
 
 #endif
 

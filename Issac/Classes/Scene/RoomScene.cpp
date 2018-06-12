@@ -368,7 +368,7 @@ void RoomScene::update(float delta)
 					}
 				}
 				else {
-					(*it)->moveStrategy((*it)->ToPointDir(player->getPosition()));
+					(*it)->moveStrategy(room_vm_);
 				}
 				//无敌时间的倒计时
 				if ((*it)->getInvincibleTime() > 0) {
