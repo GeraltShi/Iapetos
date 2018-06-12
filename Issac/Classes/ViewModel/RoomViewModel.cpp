@@ -63,7 +63,7 @@ void RoomViewModel::init(int roomType)
 	}
 
 	//根据roomType放入怪物
-	//Fatty:4
+    //Fatty:4, Fly:5
 	if (roomType == 1)
 	{
 		int Fatty_num = rand() % 4 + 2;
@@ -74,5 +74,11 @@ void RoomViewModel::init(int roomType)
 			posY = rand() % 7;
 		}
 		room_map[posX][posY] = 4;
+        while (room_map[posX][posY] != 0)
+        {
+            posX = rand() % 13;
+            posY = rand() % 7;
+        }
+        room_map[posX][posY] = 5;
 	}
 }

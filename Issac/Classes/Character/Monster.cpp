@@ -20,188 +20,10 @@ bool Monster::init()
 	moving = false;
 	//tag=2是怪物
 	this->setTag(2);
-
-	//不要将Texture保存在类,用的时候直接从TextureCache中获取
-	const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
-    const auto monster_dead_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_002_bloodpoof.png");
-	SpriteFrame *headFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(0, 0, 32, 32));
-	Sprite * headSprite = createWithSpriteFrame(headFrame);
-	SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(192, 224, 64, 64));
-	Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
-
-	build_sprite_frame_cache(monster_texture_, monster_dead_texture_);
-	build_animation_cache();
-
-	this->addChild(headSprite, 1, "head");
-	this->addChild(bodySprite, 0, "body");
-	headSprite->setPosition(Vec2(0, 10));
-	this->setPosition(Vec2(221, 143));
-
-
 	return true;
 }
 
-void Monster::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
-{
-	auto spriteCache = SpriteFrameCache::getInstance();
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32)), "head_frame0");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32, 0, 32, 32)), "head_frame1");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "head_frame2");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(96, 0, 32, 32)), "head_frame3");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(128, 0, 32, 32)), "head_frame4");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(160, 0, 32, 32)), "head_frame5");
-
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 32, 64, 64)), "monster_hwalk_frame0");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 32, 64, 64)), "monster_hwalk_frame1");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 32, 64, 64)), "monster_hwalk_frame2");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 32, 64, 64)), "monster_hwalk_frame3");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 4, 32, 64, 64)), "monster_hwalk_frame4");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 5, 32, 64, 64)), "monster_hwalk_frame5");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 6, 32, 64, 64)), "monster_hwalk_frame6");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 7, 32, 64, 64)), "monster_hwalk_frame7");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 32, 64, 64)), "monster_hwalk_frame8");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 96, 64, 64)), "monster_hwalk_frame9");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 96, 64, 64)), "monster_hwalk_frame10");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 96, 64, 64)), "monster_hwalk_frame11");
-
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 160, 64, 64)), "monster_vwalk_frame0");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 160, 64, 64)), "monster_vwalk_frame1");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 160, 64, 64)), "monster_vwalk_frame2");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 160, 64, 64)), "monster_vwalk_frame3");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 4, 160, 64, 64)), "monster_vwalk_frame4");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 5, 160, 64, 64)), "monster_vwalk_frame5");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 6, 160, 64, 64)), "monster_vwalk_frame6");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 7, 160, 64, 64)), "monster_vwalk_frame7");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 160, 64, 64)), "monster_vwalk_frame8");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 224, 64, 64)), "monster_vwalk_frame9");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 224, 64, 64)), "monster_vwalk_frame10");
-	spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 224, 64, 64)), "monster_vwalk_frame11");
-    
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 0,64,64)), "dead_frame0");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 0,64,64)), "dead_frame1");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 0,64,64)), "dead_frame2");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 0,64,64)), "dead_frame3");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 1,64,64)), "dead_frame4");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 1,64,64)), "dead_frame5");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 1,64,64)), "dead_frame6");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 1,64,64)), "dead_frame7");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 2,64,64)), "dead_frame8");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 2,64,64)), "dead_frame9");
-    
-}
-
-void Monster::build_animation_cache()
-{
-	auto spriteCache = SpriteFrameCache::getInstance();
-	auto aniCache = AnimationCache::getInstance();
-
-	const auto head_frame0 = spriteCache->getSpriteFrameByName("head_frame0");
-	const auto head_frame1 = spriteCache->getSpriteFrameByName("head_frame1");
-	const auto head_frame2 = spriteCache->getSpriteFrameByName("head_frame2");
-	const auto head_frame3 = spriteCache->getSpriteFrameByName("head_frame3");
-	const auto head_frame4 = spriteCache->getSpriteFrameByName("head_frame4");
-	const auto head_frame5 = spriteCache->getSpriteFrameByName("head_frame5");
-	Vector<SpriteFrame*> headFrames;
-	headFrames.pushBack(head_frame0);
-	headFrames.pushBack(head_frame1);
-	headFrames.pushBack(head_frame2);
-	headFrames.pushBack(head_frame3);
-	headFrames.pushBack(head_frame4);
-	headFrames.pushBack(head_frame5);
-	Animation * head_animation = Animation::createWithSpriteFrames(headFrames, 0.1f);
-	head_animation->setLoops(-1);
-	head_animation->setRestoreOriginalFrame(true);
-	aniCache->addAnimation(head_animation, "head_animation");
-
-	const auto vwalk_frame0 = spriteCache->getSpriteFrameByName("monster_vwalk_frame0");
-	const auto vwalk_frame1 = spriteCache->getSpriteFrameByName("monster_vwalk_frame1");
-	const auto vwalk_frame2 = spriteCache->getSpriteFrameByName("monster_vwalk_frame2");
-	const auto vwalk_frame3 = spriteCache->getSpriteFrameByName("monster_vwalk_frame3");
-	const auto vwalk_frame4 = spriteCache->getSpriteFrameByName("monster_vwalk_frame4");
-	const auto vwalk_frame5 = spriteCache->getSpriteFrameByName("monster_vwalk_frame5");
-	const auto vwalk_frame6 = spriteCache->getSpriteFrameByName("monster_vwalk_frame6");
-	const auto vwalk_frame7 = spriteCache->getSpriteFrameByName("monster_vwalk_frame7");
-	const auto vwalk_frame8 = spriteCache->getSpriteFrameByName("monster_vwalk_frame8");
-	const auto vwalk_frame9 = spriteCache->getSpriteFrameByName("monster_vwalk_frame9");
-	const auto vwalk_frame10 = spriteCache->getSpriteFrameByName("monster_vwalk_frame10");
-	const auto vwalk_frame11 = spriteCache->getSpriteFrameByName("monster_vwalk_frame11");
-	Vector<SpriteFrame*> vwalkFrames;
-	vwalkFrames.pushBack(vwalk_frame0);
-	vwalkFrames.pushBack(vwalk_frame1);
-	vwalkFrames.pushBack(vwalk_frame2);
-	vwalkFrames.pushBack(vwalk_frame3);
-	vwalkFrames.pushBack(vwalk_frame4);
-	vwalkFrames.pushBack(vwalk_frame5);
-	vwalkFrames.pushBack(vwalk_frame6);
-	vwalkFrames.pushBack(vwalk_frame7);
-	vwalkFrames.pushBack(vwalk_frame8);
-	vwalkFrames.pushBack(vwalk_frame9);
-	vwalkFrames.pushBack(vwalk_frame10);
-	vwalkFrames.pushBack(vwalk_frame11);
-	Animation * vwalk_animation = Animation::createWithSpriteFrames(vwalkFrames, 0.1f);
-	vwalk_animation->setLoops(-1);
-	vwalk_animation->setRestoreOriginalFrame(true);
-	aniCache->addAnimation(vwalk_animation, "monster_vwalk_animation");
-
-
-	const auto hwalk_frame0 = spriteCache->getSpriteFrameByName("monster_hwalk_frame0");
-	const auto hwalk_frame1 = spriteCache->getSpriteFrameByName("monster_hwalk_frame1");
-	const auto hwalk_frame2 = spriteCache->getSpriteFrameByName("monster_hwalk_frame2");
-	const auto hwalk_frame3 = spriteCache->getSpriteFrameByName("monster_hwalk_frame3");
-	const auto hwalk_frame4 = spriteCache->getSpriteFrameByName("monster_hwalk_frame4");
-	const auto hwalk_frame5 = spriteCache->getSpriteFrameByName("monster_hwalk_frame5");
-	const auto hwalk_frame6 = spriteCache->getSpriteFrameByName("monster_hwalk_frame6");
-	const auto hwalk_frame7 = spriteCache->getSpriteFrameByName("monster_hwalk_frame7");
-	const auto hwalk_frame8 = spriteCache->getSpriteFrameByName("monster_hwalk_frame8");
-	const auto hwalk_frame9 = spriteCache->getSpriteFrameByName("monster_hwalk_frame9");
-	const auto hwalk_frame10 = spriteCache->getSpriteFrameByName("monster_hwalk_frame10");
-	const auto hwalk_frame11 = spriteCache->getSpriteFrameByName("monster_hwalk_frame11");
-	Vector<SpriteFrame*> hwalkFrames;
-	hwalkFrames.pushBack(hwalk_frame0);
-	hwalkFrames.pushBack(hwalk_frame1);
-	hwalkFrames.pushBack(hwalk_frame2);
-	hwalkFrames.pushBack(hwalk_frame3);
-	hwalkFrames.pushBack(hwalk_frame4);
-	hwalkFrames.pushBack(hwalk_frame5);
-	hwalkFrames.pushBack(hwalk_frame6);
-	hwalkFrames.pushBack(hwalk_frame7);
-	hwalkFrames.pushBack(hwalk_frame8);
-	hwalkFrames.pushBack(hwalk_frame9);
-	hwalkFrames.pushBack(hwalk_frame10);
-	hwalkFrames.pushBack(hwalk_frame11);
-	Animation * hwalk_animation = Animation::createWithSpriteFrames(hwalkFrames, 0.1f);
-	hwalk_animation->setLoops(-1);
-	hwalk_animation->setRestoreOriginalFrame(true);
-	aniCache->addAnimation(hwalk_animation, "monster_hwalk_animation");
-    
-    const auto dead_frame0 = spriteCache->getSpriteFrameByName("dead_frame0");
-    const auto dead_frame1 = spriteCache->getSpriteFrameByName("dead_frame1");
-    const auto dead_frame2 = spriteCache->getSpriteFrameByName("dead_frame2");
-    const auto dead_frame3 = spriteCache->getSpriteFrameByName("dead_frame3");
-    const auto dead_frame4 = spriteCache->getSpriteFrameByName("dead_frame4");
-    const auto dead_frame5 = spriteCache->getSpriteFrameByName("dead_frame5");
-    const auto dead_frame6 = spriteCache->getSpriteFrameByName("dead_frame6");
-    const auto dead_frame7 = spriteCache->getSpriteFrameByName("dead_frame7");
-    const auto dead_frame8 = spriteCache->getSpriteFrameByName("dead_frame8");
-    const auto dead_frame9 = spriteCache->getSpriteFrameByName("dead_frame9");
-    Vector<SpriteFrame*> deadFrames;
-    deadFrames.pushBack(dead_frame0);
-    deadFrames.pushBack(dead_frame1);
-    deadFrames.pushBack(dead_frame2);
-    deadFrames.pushBack(dead_frame3);
-    deadFrames.pushBack(dead_frame4);
-    deadFrames.pushBack(dead_frame5);
-    deadFrames.pushBack(dead_frame6);
-    deadFrames.pushBack(dead_frame7);
-    deadFrames.pushBack(dead_frame8);
-    deadFrames.pushBack(dead_frame9);
-    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames,0.1f);
-    dead_animation->setLoops(0);
-    aniCache->addAnimation(dead_animation, "dead_animation");
-}
-
-
-void Monster::move(int walk_direction)
+void Fatty::move(int walk_direction)
 {
 	//移动
 	//移动速度不是之前的情况，说明发生碰撞
@@ -373,6 +195,166 @@ void Monster::createPhyBody()
 	this->addComponent(phyBody);
 }
 
+//---------------------------------------------------------Fatty---------------------------------------------------------
+
+void Fatty::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0, 0, 32, 32)), "head_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32, 0, 32, 32)), "head_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64, 0, 32, 32)), "head_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(96, 0, 32, 32)), "head_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(128, 0, 32, 32)), "head_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(160, 0, 32, 32)), "head_frame5");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 32, 64, 64)), "monster_hwalk_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 32, 64, 64)), "monster_hwalk_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 32, 64, 64)), "monster_hwalk_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 32, 64, 64)), "monster_hwalk_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 4, 32, 64, 64)), "monster_hwalk_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 5, 32, 64, 64)), "monster_hwalk_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 6, 32, 64, 64)), "monster_hwalk_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 7, 32, 64, 64)), "monster_hwalk_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 32, 64, 64)), "monster_hwalk_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 96, 64, 64)), "monster_hwalk_frame9");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 96, 64, 64)), "monster_hwalk_frame10");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 96, 64, 64)), "monster_hwalk_frame11");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 160, 64, 64)), "monster_vwalk_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 160, 64, 64)), "monster_vwalk_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 160, 64, 64)), "monster_vwalk_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 160, 64, 64)), "monster_vwalk_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 4, 160, 64, 64)), "monster_vwalk_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 5, 160, 64, 64)), "monster_vwalk_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 6, 160, 64, 64)), "monster_vwalk_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 7, 160, 64, 64)), "monster_vwalk_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 160, 64, 64)), "monster_vwalk_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 224, 64, 64)), "monster_vwalk_frame9");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 224, 64, 64)), "monster_vwalk_frame10");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 224, 64, 64)), "monster_vwalk_frame11");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 0,64,64)), "dead_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 0,64,64)), "dead_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 0,64,64)), "dead_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 0,64,64)), "dead_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 1,64,64)), "dead_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 1,64,64)), "dead_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 1,64,64)), "dead_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 1,64,64)), "dead_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 2,64,64)), "dead_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 2,64,64)), "dead_frame9");
+    
+}
+
+void Fatty::build_animation_cache()
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto head_frame0 = spriteCache->getSpriteFrameByName("head_frame0");
+    const auto head_frame1 = spriteCache->getSpriteFrameByName("head_frame1");
+    const auto head_frame2 = spriteCache->getSpriteFrameByName("head_frame2");
+    const auto head_frame3 = spriteCache->getSpriteFrameByName("head_frame3");
+    const auto head_frame4 = spriteCache->getSpriteFrameByName("head_frame4");
+    const auto head_frame5 = spriteCache->getSpriteFrameByName("head_frame5");
+    Vector<SpriteFrame*> headFrames;
+    headFrames.pushBack(head_frame0);
+    headFrames.pushBack(head_frame1);
+    headFrames.pushBack(head_frame2);
+    headFrames.pushBack(head_frame3);
+    headFrames.pushBack(head_frame4);
+    headFrames.pushBack(head_frame5);
+    Animation * head_animation = Animation::createWithSpriteFrames(headFrames, 0.1f);
+    head_animation->setLoops(-1);
+    head_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(head_animation, "head_animation");
+    
+    const auto vwalk_frame0 = spriteCache->getSpriteFrameByName("monster_vwalk_frame0");
+    const auto vwalk_frame1 = spriteCache->getSpriteFrameByName("monster_vwalk_frame1");
+    const auto vwalk_frame2 = spriteCache->getSpriteFrameByName("monster_vwalk_frame2");
+    const auto vwalk_frame3 = spriteCache->getSpriteFrameByName("monster_vwalk_frame3");
+    const auto vwalk_frame4 = spriteCache->getSpriteFrameByName("monster_vwalk_frame4");
+    const auto vwalk_frame5 = spriteCache->getSpriteFrameByName("monster_vwalk_frame5");
+    const auto vwalk_frame6 = spriteCache->getSpriteFrameByName("monster_vwalk_frame6");
+    const auto vwalk_frame7 = spriteCache->getSpriteFrameByName("monster_vwalk_frame7");
+    const auto vwalk_frame8 = spriteCache->getSpriteFrameByName("monster_vwalk_frame8");
+    const auto vwalk_frame9 = spriteCache->getSpriteFrameByName("monster_vwalk_frame9");
+    const auto vwalk_frame10 = spriteCache->getSpriteFrameByName("monster_vwalk_frame10");
+    const auto vwalk_frame11 = spriteCache->getSpriteFrameByName("monster_vwalk_frame11");
+    Vector<SpriteFrame*> vwalkFrames;
+    vwalkFrames.pushBack(vwalk_frame0);
+    vwalkFrames.pushBack(vwalk_frame1);
+    vwalkFrames.pushBack(vwalk_frame2);
+    vwalkFrames.pushBack(vwalk_frame3);
+    vwalkFrames.pushBack(vwalk_frame4);
+    vwalkFrames.pushBack(vwalk_frame5);
+    vwalkFrames.pushBack(vwalk_frame6);
+    vwalkFrames.pushBack(vwalk_frame7);
+    vwalkFrames.pushBack(vwalk_frame8);
+    vwalkFrames.pushBack(vwalk_frame9);
+    vwalkFrames.pushBack(vwalk_frame10);
+    vwalkFrames.pushBack(vwalk_frame11);
+    Animation * vwalk_animation = Animation::createWithSpriteFrames(vwalkFrames, 0.1f);
+    vwalk_animation->setLoops(-1);
+    vwalk_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(vwalk_animation, "monster_vwalk_animation");
+    
+    
+    const auto hwalk_frame0 = spriteCache->getSpriteFrameByName("monster_hwalk_frame0");
+    const auto hwalk_frame1 = spriteCache->getSpriteFrameByName("monster_hwalk_frame1");
+    const auto hwalk_frame2 = spriteCache->getSpriteFrameByName("monster_hwalk_frame2");
+    const auto hwalk_frame3 = spriteCache->getSpriteFrameByName("monster_hwalk_frame3");
+    const auto hwalk_frame4 = spriteCache->getSpriteFrameByName("monster_hwalk_frame4");
+    const auto hwalk_frame5 = spriteCache->getSpriteFrameByName("monster_hwalk_frame5");
+    const auto hwalk_frame6 = spriteCache->getSpriteFrameByName("monster_hwalk_frame6");
+    const auto hwalk_frame7 = spriteCache->getSpriteFrameByName("monster_hwalk_frame7");
+    const auto hwalk_frame8 = spriteCache->getSpriteFrameByName("monster_hwalk_frame8");
+    const auto hwalk_frame9 = spriteCache->getSpriteFrameByName("monster_hwalk_frame9");
+    const auto hwalk_frame10 = spriteCache->getSpriteFrameByName("monster_hwalk_frame10");
+    const auto hwalk_frame11 = spriteCache->getSpriteFrameByName("monster_hwalk_frame11");
+    Vector<SpriteFrame*> hwalkFrames;
+    hwalkFrames.pushBack(hwalk_frame0);
+    hwalkFrames.pushBack(hwalk_frame1);
+    hwalkFrames.pushBack(hwalk_frame2);
+    hwalkFrames.pushBack(hwalk_frame3);
+    hwalkFrames.pushBack(hwalk_frame4);
+    hwalkFrames.pushBack(hwalk_frame5);
+    hwalkFrames.pushBack(hwalk_frame6);
+    hwalkFrames.pushBack(hwalk_frame7);
+    hwalkFrames.pushBack(hwalk_frame8);
+    hwalkFrames.pushBack(hwalk_frame9);
+    hwalkFrames.pushBack(hwalk_frame10);
+    hwalkFrames.pushBack(hwalk_frame11);
+    Animation * hwalk_animation = Animation::createWithSpriteFrames(hwalkFrames, 0.1f);
+    hwalk_animation->setLoops(-1);
+    hwalk_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(hwalk_animation, "monster_hwalk_animation");
+    
+    const auto dead_frame0 = spriteCache->getSpriteFrameByName("dead_frame0");
+    const auto dead_frame1 = spriteCache->getSpriteFrameByName("dead_frame1");
+    const auto dead_frame2 = spriteCache->getSpriteFrameByName("dead_frame2");
+    const auto dead_frame3 = spriteCache->getSpriteFrameByName("dead_frame3");
+    const auto dead_frame4 = spriteCache->getSpriteFrameByName("dead_frame4");
+    const auto dead_frame5 = spriteCache->getSpriteFrameByName("dead_frame5");
+    const auto dead_frame6 = spriteCache->getSpriteFrameByName("dead_frame6");
+    const auto dead_frame7 = spriteCache->getSpriteFrameByName("dead_frame7");
+    const auto dead_frame8 = spriteCache->getSpriteFrameByName("dead_frame8");
+    const auto dead_frame9 = spriteCache->getSpriteFrameByName("dead_frame9");
+    Vector<SpriteFrame*> deadFrames;
+    deadFrames.pushBack(dead_frame0);
+    deadFrames.pushBack(dead_frame1);
+    deadFrames.pushBack(dead_frame2);
+    deadFrames.pushBack(dead_frame3);
+    deadFrames.pushBack(dead_frame4);
+    deadFrames.pushBack(dead_frame5);
+    deadFrames.pushBack(dead_frame6);
+    deadFrames.pushBack(dead_frame7);
+    deadFrames.pushBack(dead_frame8);
+    deadFrames.pushBack(dead_frame9);
+    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames,0.1f);
+    dead_animation->setLoops(0);
+    aniCache->addAnimation(dead_animation, "dead_animation");
+}
 
 Fatty *Fatty::createFatty()
 {
@@ -384,7 +366,22 @@ bool Fatty::init() {
 	{
 		return false;
 	}
-
+    //不要将Texture保存在类,用的时候直接从TextureCache中获取
+    const auto monster_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
+    const auto monster_dead_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_002_bloodpoof.png");
+    SpriteFrame *headFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(0, 0, 32, 32));
+    Sprite * headSprite = createWithSpriteFrame(headFrame);
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(monster_texture_, Rect(192, 224, 64, 64));
+    Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
+    
+    build_sprite_frame_cache(monster_texture_, monster_dead_texture_);
+    build_animation_cache();
+    
+    this->addChild(headSprite, 1, "head");
+    this->addChild(bodySprite, 0, "body");
+    headSprite->setPosition(Vec2(0, 10));
+    this->setPosition(Vec2(221, 143));
+    
 	//Fatty碰撞大小	
 	radiusSize = 12;
 	//Fatty重量
@@ -401,4 +398,148 @@ bool Fatty::init() {
 
 void Fatty::moveStrategy(int walk_direction) {
 	this->move(walk_direction);
+}
+
+//----------------------------------------------------------Fly----------------------------------------------------------
+
+void Fly::build_sprite_frame_cache(Texture2D *texture_) const
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32, 32, 32)), "fly_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32, 32, 32)), "fly_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 2, 32, 32, 32)), "fly_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 3, 32, 32, 32)), "fly_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 4, 32, 32, 32)), "fly_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 5, 32, 32, 32)), "fly_frame5");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 64, 64, 64)), "fly_dead_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 64, 64, 64)), "fly_dead_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 64, 64, 64)), "fly_dead_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 64, 64, 64)), "fly_dead_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 128, 64, 64)), "fly_dead_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 128, 64, 64)), "fly_dead_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 128, 64, 64)), "fly_dead_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 128, 64, 64)), "fly_dead_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 0, 192, 64, 64)), "fly_dead_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 192, 64, 64)), "fly_dead_frame9");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 192, 64, 64)), "fly_dead_frame10");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 192, 64, 64)), "fly_dead_frame11");
+}
+
+void Fly::build_animation_cache()
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto fly_frame0 = spriteCache->getSpriteFrameByName("fly_frame0");
+    const auto fly_frame1 = spriteCache->getSpriteFrameByName("fly_frame1");
+    const auto fly_frame2 = spriteCache->getSpriteFrameByName("fly_frame2");
+    const auto fly_frame3 = spriteCache->getSpriteFrameByName("fly_frame3");
+    const auto fly_frame4 = spriteCache->getSpriteFrameByName("fly_frame4");
+    const auto fly_frame5 = spriteCache->getSpriteFrameByName("fly_frame5");
+    Vector<SpriteFrame*> flyFrames;
+    flyFrames.pushBack(fly_frame0);
+    flyFrames.pushBack(fly_frame1);
+    flyFrames.pushBack(fly_frame2);
+    flyFrames.pushBack(fly_frame3);
+    flyFrames.pushBack(fly_frame4);
+    flyFrames.pushBack(fly_frame5);
+    Animation * fly_animation = Animation::createWithSpriteFrames(flyFrames, 0.1f);
+    fly_animation->setLoops(-1);
+    fly_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(fly_animation, "fly_animation");
+    
+    const auto dead_frame0 = spriteCache->getSpriteFrameByName("fly_dead_frame0");
+    const auto dead_frame1 = spriteCache->getSpriteFrameByName("fly_dead_frame1");
+    const auto dead_frame2 = spriteCache->getSpriteFrameByName("fly_dead_frame2");
+    const auto dead_frame3 = spriteCache->getSpriteFrameByName("fly_dead_frame3");
+    const auto dead_frame4 = spriteCache->getSpriteFrameByName("fly_dead_frame4");
+    const auto dead_frame5 = spriteCache->getSpriteFrameByName("fly_dead_frame5");
+    const auto dead_frame6 = spriteCache->getSpriteFrameByName("fly_dead_frame6");
+    const auto dead_frame7 = spriteCache->getSpriteFrameByName("fly_dead_frame7");
+    const auto dead_frame8 = spriteCache->getSpriteFrameByName("fly_dead_frame8");
+    const auto dead_frame9 = spriteCache->getSpriteFrameByName("fly_dead_frame9");
+    const auto dead_frame10 = spriteCache->getSpriteFrameByName("fly_dead_frame10");
+    const auto dead_frame11 = spriteCache->getSpriteFrameByName("fly_dead_frame11");
+    Vector<SpriteFrame*> deadFrames;
+    deadFrames.pushBack(dead_frame0);
+    deadFrames.pushBack(dead_frame1);
+    deadFrames.pushBack(dead_frame2);
+    deadFrames.pushBack(dead_frame3);
+    deadFrames.pushBack(dead_frame4);
+    deadFrames.pushBack(dead_frame5);
+    deadFrames.pushBack(dead_frame6);
+    deadFrames.pushBack(dead_frame7);
+    deadFrames.pushBack(dead_frame8);
+    deadFrames.pushBack(dead_frame9);
+    deadFrames.pushBack(dead_frame10);
+    deadFrames.pushBack(dead_frame11);
+    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames,0.1f);
+    dead_animation->setLoops(0);
+    aniCache->addAnimation(dead_animation, "fly_dead_animation");
+}
+
+Fly *Fly::createFly()
+{
+    return create();
+}
+
+void Fly::move(int walk_direction)
+{
+    //移动
+    //移动速度不是之前的情况，说明发生碰撞
+    if (colClog == ColClogTime
+        && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
+        colClog = 0;
+    }
+    else {
+        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+    }
+    
+    //移动的图形显示
+    //直接获取缓存，不要将SpriteFrame保存在类中
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto fly_animation = aniCache->getAnimation("fly_animation");
+    
+    Animate * fly_animate = Animate::create(fly_animation);
+    
+    this->getChildByName("body")->runAction(fly_animate);
+    
+    if (colClog == 0) {
+        prev_walk_orientation = 5;
+    }
+}
+
+bool Fly::init() {
+    if (!Monster::init())
+    {
+        return false;
+    }
+    const auto fly_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/classic/monster_010_fly.png");
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(fly_texture_, Rect(0, 0, 32, 32));
+    Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
+    
+    build_sprite_frame_cache(fly_texture_);
+    build_animation_cache();
+    
+    this->addChild(bodySprite, 0, "body");
+    //this->setPosition(Vec2(221, 143));
+    //Fly碰撞大小
+    radiusSize = 8;
+    //Fly重量
+    bodyMass = 400;
+    //Fly行走速度
+    moveSpeed = 50;
+    //Fly血量5
+    health = 3;
+    //Fly攻击1
+    attack = 1;
+    this->createPhyBody();
+    return true;
+}
+
+void Fly::moveStrategy(int walk_direction) {
+    this->move(walk_direction);
 }
