@@ -26,6 +26,10 @@ public:
     MiniMapViewModel get_mini_map(int room_id);
     int get_init_room_id() const;
     int get_current_room_id() const;
+    int get_left_room_id();
+    int get_up_room_id();
+    int get_right_room_id();
+    int get_down_room_id();
 
 private:
     static RoomService *inst_;
@@ -39,6 +43,7 @@ private:
 
     static string get_doorstyle_from_room_type(int room_type);
     static string get_ministyle_from_room_type(int room_type);
+    static string get_groundstyle_from_room_type(int room_type);
     void build_vm_from_room_map();
 };
 

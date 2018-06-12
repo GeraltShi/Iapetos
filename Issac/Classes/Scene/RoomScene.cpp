@@ -2,6 +2,7 @@
 #include "AppDelegate.h"
 #include <iostream>
 #include "Service/RoomService.h"
+#include "Controller/RoomSceneController.h"
 
 USING_NS_CC;
 using namespace std;
@@ -37,10 +38,11 @@ bool RoomScene::init(int roomID)
      * 1 Controls, Door, Door Center,ivisiable bordor
      * 0 Room Background
      */
-    //TODO 应该有更好的方法生成背景贴图，而不是暴力生成4个或多个碎片
-    //TODO 动态加载贴图？如Issac的buff皮肤（在别的贴图上）如何更新
-    Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/01_basement.png");
-    //TODO 更小的地图切片和随机性支持
+
+    //创建房间
+    const auto ground_s = room_vm_.getGroundStyle();
+
+    Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage(ground_s);
     Sprite * room_piece1 = Sprite::createWithTexture(texture_room,Rect(0,0,221,143));
     room_piece1->setAnchorPoint(Point(0,0));
     room_piece1->setPosition(0, 143);
@@ -257,7 +259,6 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 {
     this->listener_ = listener;
 
-    //TODO 事件监听
     auto _touchListener = EventListenerTouchOneByOne::create();
 
     _touchListener->setSwallowTouches(true);
@@ -301,7 +302,7 @@ void RoomScene::update(float delta)
 {
     if(!model.paused){
 		//开始 
-		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!=NULL) {
+		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!= nullptr) {
 			Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
 		}
         if(pausescreen->isVisible()){
@@ -541,14 +542,43 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			//TO DO添加受伤动画？
 		}
 		//Issac和门的碰撞
-		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.size() == 0) {
+		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.empty()) {
 			//出门了！
 			switch (tagB)
 			{
-			case(5):log("left go out!"); break;
-			case(6):log("up go out!"); break;
-			case(7):log("right go out?!"); break;
-			case(8):log("down go out!"); break;
+            case(5):
+                {
+                    log("left go out!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_left_room_id());
+                    TransitionScene* tx = TransitionSlideInL::create(0.5, room);
+
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
+            case(6):
+                {
+                    log("up go out!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_up_room_id());
+                    TransitionScene* tx = TransitionSlideInT::create(0.5, room);
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
+            case(7):
+                {
+                    log("right go out?!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_right_room_id());
+                    TransitionScene* tx = TransitionSlideInR::create(0.5, room);
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
+            case(8):
+                {
+                    log("down go out!"); 
+                    const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_down_room_id());
+                    TransitionScene* tx = TransitionSlideInB::create(0.5, room);
+                    Director::getInstance()->replaceScene(tx);
+                    break;
+                }
 			}
 			
 		}

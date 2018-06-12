@@ -41,7 +41,7 @@ RoomViewModel RoomService::enter_room(const int room_id)
     
     const Size size = Director::getInstance()->getWinSize();
 
-    if (room_id == 1)//第一个房间，Issac位置在中间
+    if (room_id == 1 && current_room_id_ == 0)//第一个房间，Issac位置在中间
     {
         room_view_model.setPlayerPos(6, 3);
         current_room_id_ = 1;
@@ -60,11 +60,11 @@ RoomViewModel RoomService::enter_room(const int room_id)
         {
             room_view_model.setPlayerPos(6, 6);
         }
-        else if (r_map.up_room_id == prev_id)//从右门进入
+        else if (r_map.right_room_id == prev_id)//从右门进入
         {
             room_view_model.setPlayerPos(12, 3);
         }
-        else if (r_map.up_room_id == prev_id)//从下门进入
+        else if (r_map.down_room_id == prev_id)//从下门进入
         {
             room_view_model.setPlayerPos(6 , 0);
         }
@@ -162,6 +162,30 @@ int RoomService::get_init_room_id() const
 int RoomService::get_current_room_id() const
 {
     return current_room_id_;
+}
+
+int RoomService::get_left_room_id()
+{
+    const auto r = room_map_[current_room_id_];
+    return r.left_room_id;
+}
+
+int RoomService::get_up_room_id()
+{
+    const auto r = room_map_[current_room_id_];
+    return r.up_room_id;
+}
+
+int RoomService::get_right_room_id()
+{
+    const auto r = room_map_[current_room_id_];
+    return r.right_room_id;
+}
+
+int RoomService::get_down_room_id()
+{
+    const auto r = room_map_[current_room_id_];
+    return r.down_room_id;
 }
 
 
@@ -329,6 +353,20 @@ string RoomService::get_ministyle_from_room_type(int room_type)
     return "";
 }
 
+string RoomService::get_groundstyle_from_room_type(int room_type)
+{
+    const int m = room_type % 5;
+    switch (m)
+    {
+    case 0:return "res/gfx/backdrop/01_basement.png";
+    case 1:return "res/gfx/backdrop/02_cellar.png";
+    case 2:return "res/gfx/backdrop/03_caves.png";
+    case 3:return "res/gfx/backdrop/04_catacombs.png";
+    case 4:return "res/gfx/backdrop/05_depths.png";
+    default: return "res/gfx/backdrop/01_basement.png";;
+    }
+}
+
 void RoomService::build_vm_from_room_map()
 {
     for (auto it = room_map_.begin();it != room_map_.end();++it)
@@ -352,6 +390,7 @@ void RoomService::build_vm_from_room_map()
         }
         room_.setDoorEnable(door_);
         room_.setDoorStyle(door_style);
+        room_.setGroundStyle(get_groundstyle_from_room_type(room_type));
 
         store_[room_id] = room_;
     }
