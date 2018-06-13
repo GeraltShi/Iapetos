@@ -459,15 +459,35 @@ void Fatty::moveStrategy(const RoomViewModel& roomMap) {
 		this->move(ToPointDir(Vec2(RoomUnitSize.width*destination.x+61, RoomUnitSize.height*destination.y + 61)));
 	}
 }
+
+
+//void Fatty::fireStrategy(Vector<Tear*>& tears_)
+//{
+//	//向player位置射击的开火策略
+//	if (fireCoolTime > 0) {
+//		fireCoolTime--; //冷却不开火
+//	}
+//	else {
+//		//冷却
+//		fireCoolTime = 20;
+//		//向人物方向发射子弹
+//		tears_.pushBack(Fire(this->getParent()->getChildByTag(1)->getPosition()));
+//	}
+//}
+
 void Fatty::fireStrategy(Vector<Tear*>& tears_)
 {
+	//向4个方向（上下左右）射击的开火策略
 	if (fireCoolTime > 0) {
 		fireCoolTime--; //冷却不开火
 	}
 	else {
 		//冷却
 		fireCoolTime = 20;
-		//向人物方向发射子弹
-		tears_.pushBack(Fire(this->getParent()->getChildByTag(1)->getPosition()));
+		//向4个方向（上下左右）射击的开火策略
+		tears_.pushBack(Fire(Vec2(this->getPosition().x-10, this->getPosition().y) ));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y-10)));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y+10)));
 	}
 }
