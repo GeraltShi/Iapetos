@@ -739,15 +739,17 @@ void Fly::move(int walk_direction)
         this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
     }
 
-    //移动的图形显示
-    //直接获取缓存，不要将SpriteFrame保存在类中
-    auto aniCache = AnimationCache::getInstance();
+    if (!moving)
+    {
+        //移动的图形显示
+        //直接获取缓存，不要将SpriteFrame保存在类中
+        auto aniCache = AnimationCache::getInstance();
+        const auto fly_animation = aniCache->getAnimation("fly_animation");
+        Animate *fly_animate = Animate::create(fly_animation);
+        this->getChildByName("body")->runAction(fly_animate);
 
-    const auto fly_animation = aniCache->getAnimation("fly_animation");
-
-    Animate *fly_animate = Animate::create(fly_animation);
-
-    this->getChildByName("body")->runAction(fly_animate);
+        moving = true;
+    }
 
     if (colClog == 0)
     {
@@ -1159,7 +1161,7 @@ void Spider::build_animation_cache()
     spiderFrames.pushBack(spider_frame5);
     spiderFrames.pushBack(spider_frame6);
     spiderFrames.pushBack(spider_frame7);
-    Animation *spider_animation = Animation::createWithSpriteFrames(spiderFrames, 0.4f);
+    Animation *spider_animation = Animation::createWithSpriteFrames(spiderFrames, 0.1f);
     spider_animation->setLoops(-1);
     spider_animation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(spider_animation, "spider_animation");
@@ -1212,15 +1214,16 @@ void Spider::move(int walk_direction)
         this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
     }
 
-    //移动的图形显示
-    //直接获取缓存，不要将SpriteFrame保存在类中
-    auto aniCache = AnimationCache::getInstance();
-
-    const auto spider_animation = aniCache->getAnimation("spider_animation");
-
-    Animate *spider_animate = Animate::create(spider_animation);
-
-    this->getChildByName("body")->runAction(spider_animate);
+    if (!moving)
+    {
+        //移动的图形显示
+        //直接获取缓存，不要将SpriteFrame保存在类中
+        auto aniCache = AnimationCache::getInstance();
+        const auto spider_animation = aniCache->getAnimation("spider_animation");
+        Animate *spider_animate = Animate::create(spider_animation);
+        this->getChildByName("body")->runAction(spider_animate);
+        moving = true;
+    }
 
     if (colClog == 0)
     {
