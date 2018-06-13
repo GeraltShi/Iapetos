@@ -414,11 +414,11 @@ bool Fatty::init() {
 	return true;
 }
 
-//猴子移动
-void Fatty::moveStrategy(const RoomViewModel& roomMap) {
-	colClog = 5;
-	this->move(rand() % 9 + 1);
-}
+////猴子移动
+//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
+//	colClog = 5;
+//	this->move(rand() % 9 + 1);
+//}
 
 ////傻子移动
 //void Fatty::moveStrategy(const RoomViewModel& roomMap) {
@@ -442,43 +442,43 @@ void Fatty::moveStrategy(const RoomViewModel& roomMap) {
 //	}
 //}
 
-////脑子移动
-//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
-//	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
-//	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height*1.2) {
-//		//足够近，直接冲过去
-//		this->move(ToPointDir(playerPos));
-//	}
-//	else {
-//		//BFS找到最短路径
-//		GridPoint roomFlag[GRID_WIDTH][GRID_HEIGHT];
-//		vector<GridPoint> quary;
-//		int head=0;
-//		GridPoint destination = CalGridPos(playerPos),startPos= CalGridPos(this->getPosition());
-//		quary.push_back(startPos);
-//		roomFlag[startPos.x][startPos.y] = GridPoint(99, 99);
-//		while (head < quary.size()) {
-//			for (int i = 0; i < 4; i++) {
-//				GridPoint tempPos = GridPoint(quary[head].x + moveStep[i].x, quary[head].y + moveStep[i].y);	
-//				if (tempPos.inRoom() && roomFlag[tempPos.x][tempPos.y].x == -1
-//					&& roomMap.getRoomMap(tempPos.x, tempPos.y) != 1
-//					&& roomMap.getRoomMap(tempPos.x, tempPos.y) != 2) {
-//					roomFlag[tempPos.x][tempPos.y] = quary[head];
-//					quary.push_back(tempPos);
-//					if (tempPos == destination)
-//						goto mark;
-//				}
-//			}
-//			head++;
-//		}
-//	mark:
-//		GridPoint des1 = destination;
-//		while (!(roomFlag[destination.x][destination.y] == startPos)) {
-//			destination = roomFlag[destination.x][destination.y];
-//		}
-//		this->move(ToPointDir(Vec2(RoomUnitSize.width*destination.x+61, RoomUnitSize.height*destination.y + 61)));
-//	}
-//}
+//脑子移动
+void Fatty::moveStrategy(const RoomViewModel& roomMap) {
+	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height*1.2) {
+		//足够近，直接冲过去
+		this->move(ToPointDir(playerPos));
+	}
+	else {
+		//BFS找到最短路径
+		GridPoint roomFlag[GRID_WIDTH][GRID_HEIGHT];
+		vector<GridPoint> quary;
+		int head=0;
+		GridPoint destination = CalGridPos(playerPos),startPos= CalGridPos(this->getPosition());
+		quary.push_back(startPos);
+		roomFlag[startPos.x][startPos.y] = GridPoint(99, 99);
+		while (head < quary.size()) {
+			for (int i = 0; i < 4; i++) {
+				GridPoint tempPos = GridPoint(quary[head].x + moveStep[i].x, quary[head].y + moveStep[i].y);	
+				if (tempPos.inRoom() && roomFlag[tempPos.x][tempPos.y].x == -1
+					&& roomMap.getRoomMap(tempPos.x, tempPos.y) != 1
+					&& roomMap.getRoomMap(tempPos.x, tempPos.y) != 2) {
+					roomFlag[tempPos.x][tempPos.y] = quary[head];
+					quary.push_back(tempPos);
+					if (tempPos == destination)
+						goto mark;
+				}
+			}
+			head++;
+		}
+	mark:
+		GridPoint des1 = destination;
+		while (!(roomFlag[destination.x][destination.y] == startPos)) {
+			destination = roomFlag[destination.x][destination.y];
+		}
+		this->move(ToPointDir(Vec2(RoomUnitSize.width*destination.x+61, RoomUnitSize.height*destination.y + 61)));
+	}
+}
 
 
 //void Fatty::fireStrategy(Vector<Tear*>& tears_)
