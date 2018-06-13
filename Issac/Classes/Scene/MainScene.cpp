@@ -1,5 +1,7 @@
 #include "MainScene.h"
 #include <iostream>
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 USING_NS_CC;
 using namespace std;
 
@@ -92,9 +94,6 @@ bool MainScene::init()
     selector->setAnchorPoint(Point(0,0));
     selector->setPosition(selector_init_x_,selector_init_y_);
     gamemenubg->addChild(selector,1);
-//    auto l = Label::createWithTTF("开场界面","fonts/simhei.ttf",30);
-//    l->setPosition(640, 500);
-//    addChild(l,1);
     
     scheduleUpdate();
 

@@ -3,7 +3,8 @@
 #include "RoomSceneController.h"
 #include "Service/RoomService.h"
 #include "Service/PlayerService.h"
-
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 USING_NS_CC;
 using namespace std;
@@ -26,6 +27,9 @@ bool MainSceneController::init()
     //addChild(l);
 
     scene_ = MainScene::create();
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic("res/music/title screen.wav");
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/title screen.wav",true);
+    SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.2);
     scene_->set_event_listener(this);
     addChild(scene_);
 
@@ -67,6 +71,8 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode) const
                     const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_init_room_id());
                     TransitionScene* tx = TransitionFade::create(0.7, room);
                     Director::getInstance()->pushScene(tx);
+                    SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+                    SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/diptera sonata(basement).wav",true);
                 }
                 break;
             case EventKeyboard::KeyCode::KEY_ESCAPE:

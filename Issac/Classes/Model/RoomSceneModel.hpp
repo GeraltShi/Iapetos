@@ -25,9 +25,9 @@ public:
     
     int option_menu_cursor = 0;
     int option_display = 0;
-    int sfx_volume = 0;
-    int music_volume = 0;// 0-10
-    int map_opacity = 0;// 0-10
+    int sfx_volume = 5;
+    int music_volume = 3;// 0-10
+    int map_opacity = 5;// 0-10
     
     int dead_menu_generated_flag = 0;
     

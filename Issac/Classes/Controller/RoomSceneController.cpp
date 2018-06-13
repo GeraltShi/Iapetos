@@ -2,6 +2,8 @@
 #include "Scene/RoomScene.h"
 #include <iostream>
 #include "Service/RoomService.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 USING_NS_CC;
 using namespace std;
@@ -79,6 +81,9 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
                 scene_->stopAllActions();
                 scene_->model.game_stat = 0;
                 Director::getInstance()->popScene();
+                SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+                SimpleAudioEngine::getInstance()->stopAllEffects();
+                SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/title screen.wav",true);
                 break;
             default:
                 break;
@@ -114,6 +119,8 @@ int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
                     scene_->model.game_stat = 0;
                 } else if (scene_->model.paused_menu_cursor == 2){
                     Director::getInstance()->popScene();
+                    SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+                    SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/title screen.wav",true);
                 }
                 break;
             default:

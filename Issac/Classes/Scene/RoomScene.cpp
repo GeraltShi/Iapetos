@@ -4,6 +4,8 @@
 #include "Service/RoomService.h"
 #include "Controller/RoomSceneController.h"
 #include "Service/PlayerService.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 USING_NS_CC;
 using namespace std;
@@ -19,7 +21,7 @@ bool RoomScene::init(int roomID)
     {
         return false;
     }
-
+    
     //根据ViewMode渲染
     room_vm_ = RoomService::getInstance()->enter_room(roomID);
     mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
@@ -35,6 +37,7 @@ bool RoomScene::init(int roomID)
      * 7 PauseScreen,OptionScreen
      * 6 Overlay
      * 5 MiniMap
+     * 4 Tear
      * 3 Issac, Monster,Rock
      * 2 Room shading
      * 1 Controls, Door, Door Center,ivisiable bordor
@@ -361,6 +364,9 @@ bool RoomScene::init(int roomID)
     bomb->setVisible(false);
     addChild(bomb,3);
     
+    
+    SimpleAudioEngine::getInstance()->setEffectsVolume((float)model.sfx_volume/25.0);
+    SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)model.music_volume/25.0);
     scheduleUpdate();
     return true;
 }
@@ -411,7 +417,7 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 void RoomScene::update(float delta)
 {
     if (model.game_stat == 0) {
-        //开始 
+        //开始
         if (Director::getInstance()->getRunningScene()->getPhysicsWorld() != nullptr) {
             Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
         }
@@ -437,13 +443,14 @@ void RoomScene::update(float delta)
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition((*it)->getPosition());
                 addChild(temp_sprite, 3);
-
+                SimpleAudioEngine::getInstance()->playEffect("res/sfx/splatter 0.wav",false);
                 (*it)->removeFromParent();
-
+                //
                 const auto poof_ani = AnimationCache::getInstance()->getAnimation("poof_animation");
                 const auto poof_anim = Animate::create(poof_ani);
                 const auto poof_animate = Sequence::create(poof_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(poof_animate);
+                //SimpleAudioEngine::end();
                 it = tears_.erase(it);
             }
             else {
@@ -549,7 +556,6 @@ void RoomScene::update(float delta)
 	else if(model.game_stat == 1){
 		//暂停 
 		Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
-        
 		if (model.paused_menu_generated_flag == 0) {
             this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
             pausescreen->setVisible(true);
@@ -585,7 +591,9 @@ void RoomScene::update(float delta)
                 default:
                     break;
             }
-            //TODO 根据 option 值更新 bar
+            //根据 option 值更新 bar
+            SimpleAudioEngine::getInstance()->setEffectsVolume((float)model.sfx_volume/25.0);
+            SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)model.music_volume/25.0);
             string sfx_volume_string = "sfx" + to_string(model.sfx_volume);
             optionscreen->getChildByName("optionmenu")->removeChildByName("option_sfx_bar");
             Sprite * option_sfx_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(sfx_volume_string));
@@ -608,11 +616,17 @@ void RoomScene::update(float delta)
         }
 	}
     else{
+        Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         if(model.dead_menu_generated_flag == 0) {
             this->unschedule(schedule_selector(RoomScene::fire));
             deadscreen->setVisible(true);
             model.dead_menu_generated_flag = 1;
+            SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+            SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav",false);
+            SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/you died.wav",true);
         }
+        this->stopAllActions();
+        
     }
 	//   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
@@ -629,8 +643,10 @@ void RoomScene::set_model(RoomSceneModel model)
 void RoomScene::fire(float dt){
 
 	//Issac发射tear
+    SimpleAudioEngine::getInstance()->playEffect("res/sfx/tear fire 4.wav",false);
+//    SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav",false);//注意：这句话有鬼畜效果
 	tears_.pushBack(player->Fire(model.tear_direction));
-	addChild(tears_.at(tears_.size() - 1),3);
+	addChild(tears_.at(tears_.size() - 1),4);
 }
 
 void RoomScene::build_frame_cache() const

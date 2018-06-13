@@ -99,6 +99,10 @@
 		5259AC6320CE9A650017A803 /* Door.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5E20CE9A650017A803 /* Door.cpp */; };
 		5259AC6420CE9A650017A803 /* Tear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5F20CE9A650017A803 /* Tear.cpp */; };
 		5259AC6520CE9A650017A803 /* Tear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC5F20CE9A650017A803 /* Tear.cpp */; };
+		5259AC7920D151E60017A803 /* PlayerService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7620D151E50017A803 /* PlayerService.cpp */; };
+		5259AC7A20D151E60017A803 /* PlayerService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7620D151E50017A803 /* PlayerService.cpp */; };
+		5259AC7D20D151F90017A803 /* PlayerViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */; };
+		5259AC7E20D151F90017A803 /* PlayerViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */; };
 		5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
@@ -246,6 +250,10 @@
 		5259AC5D20CE9A650017A803 /* Door.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Door.h; sourceTree = "<group>"; };
 		5259AC5E20CE9A650017A803 /* Door.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Door.cpp; sourceTree = "<group>"; };
 		5259AC5F20CE9A650017A803 /* Tear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tear.cpp; sourceTree = "<group>"; };
+		5259AC7620D151E50017A803 /* PlayerService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerService.cpp; sourceTree = "<group>"; };
+		5259AC7820D151E60017A803 /* PlayerService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerService.h; sourceTree = "<group>"; };
+		5259AC7B20D151F90017A803 /* PlayerViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewModel.h; sourceTree = "<group>"; };
+		5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerViewModel.cpp; sourceTree = "<group>"; };
 		5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoomSceneModel.cpp; sourceTree = "<group>"; };
 		5299141520A7E04900FBFBB4 /* RoomSceneModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RoomSceneModel.hpp; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -512,8 +520,10 @@
 			children = (
 				5210A1EB20A533240081CC78 /* LevelService.cpp */,
 				5210A1EC20A533240081CC78 /* LevelService.h */,
-				5259AC4F20CD446F0017A803 /* RoomService.cpp */,
 				5259AC5020CD446F0017A803 /* RoomService.h */,
+				5259AC7620D151E50017A803 /* PlayerService.cpp */,
+				5259AC4F20CD446F0017A803 /* RoomService.cpp */,
+				5259AC7820D151E60017A803 /* PlayerService.h */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -575,6 +585,8 @@
 				5259AC4820CD443F0017A803 /* RoomViewModel.h */,
 				52D2D4A520C6E1AA0000798E /* SimpleItemViewModel.cpp */,
 				52D2D4A620C6E1AA0000798E /* SimpleItemViewModel.h */,
+				5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */,
+				5259AC7B20D151F90017A803 /* PlayerViewModel.h */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -752,6 +764,7 @@
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				5259AC4D20CD443F0017A803 /* RoomViewModel.cpp in Sources */,
 				5210A1F820A533240081CC78 /* MainScene.cpp in Sources */,
+				5259AC7920D151E60017A803 /* PlayerService.cpp in Sources */,
 				5259AC6020CE9A650017A803 /* Stone.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				5210A1FE20A533240081CC78 /* MainSceneModel.cpp in Sources */,
@@ -765,6 +778,7 @@
 				5259AC6420CE9A650017A803 /* Tear.cpp in Sources */,
 				52D2D4A720C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */,
 				5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
+				5259AC7D20D151F90017A803 /* PlayerViewModel.cpp in Sources */,
 				5259AC5120CD446F0017A803 /* RoomService.cpp in Sources */,
 				5210A1FC20A533240081CC78 /* LevelService.cpp in Sources */,
 			);
@@ -776,6 +790,7 @@
 			files = (
 				52D2D49F20C6E1960000798E /* Monster.cpp in Sources */,
 				5210A1FB20A533240081CC78 /* RoomScene.cpp in Sources */,
+				5259AC7A20D151E60017A803 /* PlayerService.cpp in Sources */,
 				5210A1FD20A533240081CC78 /* LevelService.cpp in Sources */,
 				5210A1FF20A533240081CC78 /* MainSceneModel.cpp in Sources */,
 				52D2D49D20C6E1960000798E /* Issac.cpp in Sources */,
@@ -786,6 +801,7 @@
 				5259AC6520CE9A650017A803 /* Tear.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				52D2D4A120C6E1960000798E /* Moveable.cpp in Sources */,
+				5259AC7E20D151F90017A803 /* PlayerViewModel.cpp in Sources */,
 				5259AC6320CE9A650017A803 /* Door.cpp in Sources */,
 				5259AC4E20CD443F0017A803 /* RoomViewModel.cpp in Sources */,
 				5259AC4C20CD443F0017A803 /* MiniMapViewModel.cpp in Sources */,

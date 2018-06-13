@@ -1,5 +1,7 @@
 #include "Issac.hpp"
 #include "cocos2d.h"
+#include "SimpleAudioEngine.h"
+using namespace CocosDenshion;
 
 using namespace cocos2d;
 
@@ -105,7 +107,7 @@ void Issac::build_animation_cache()
     Vector<SpriteFrame*> leftshakeFrames;
     leftshakeFrames.pushBack(lefthead);
     leftshakeFrames.pushBack(leftshake);
-    Animation * leftshakeAnimation = Animation::createWithSpriteFrames(leftshakeFrames, 0.3f);
+    Animation * leftshakeAnimation = Animation::createWithSpriteFrames(leftshakeFrames, 0.2f);
     leftshakeAnimation->setLoops(-1);
     leftshakeAnimation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(leftshakeAnimation, "leftshakeAnimation");
@@ -115,7 +117,7 @@ void Issac::build_animation_cache()
     Vector<SpriteFrame*> rightshakeFrames;
     rightshakeFrames.pushBack(righthead);
     rightshakeFrames.pushBack(rightshake);
-    Animation * rightshakeAnimation = Animation::createWithSpriteFrames(rightshakeFrames, 0.3f);
+    Animation * rightshakeAnimation = Animation::createWithSpriteFrames(rightshakeFrames, 0.2f);
     rightshakeAnimation->setLoops(-1);
     rightshakeAnimation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(rightshakeAnimation, "rightshakeAnimation");
@@ -125,7 +127,7 @@ void Issac::build_animation_cache()
     Vector<SpriteFrame*> downshakeFrames;
     downshakeFrames.pushBack(downhead);
     downshakeFrames.pushBack(downshake);
-    Animation * downshakeAnimation = Animation::createWithSpriteFrames(downshakeFrames, 0.3f);
+    Animation * downshakeAnimation = Animation::createWithSpriteFrames(downshakeFrames, 0.2f);
     downshakeAnimation->setLoops(-1);
     downshakeAnimation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(downshakeAnimation, "downshakeAnimation");
@@ -135,7 +137,7 @@ void Issac::build_animation_cache()
     Vector<SpriteFrame*> upshakeFrames;
     upshakeFrames.pushBack(uphead);
     upshakeFrames.pushBack(upshake);
-    Animation * upshakeAnimation = Animation::createWithSpriteFrames(upshakeFrames, 0.3f);
+    Animation * upshakeAnimation = Animation::createWithSpriteFrames(upshakeFrames, 0.2f);
     upshakeAnimation->setLoops(-1);
     upshakeAnimation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(upshakeAnimation, "upshakeAnimation");
