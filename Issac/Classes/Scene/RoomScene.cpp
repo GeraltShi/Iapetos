@@ -361,20 +361,23 @@ void RoomScene::update(float delta)
 				it = monsters_.erase(it);
 			}
 			else {
-				if ((*it)->getColClog() != ColClogTime) {
-					(*it)->setColClog((*it)->getColClog() + 1);
-					if ((*it)->getColClog() == ColClogTime) {
+				//移动
+				if ((*it)->getColClog() != 0 ) {
+					(*it)->setColClog((*it)->getColClog() - 1);
+					if ((*it)->getColClog() == 0) {
 						(*it)->getPhysicsBody()->setVelocity(Vec2(0, 0));
 					}
 				}
 				else {
 					(*it)->moveStrategy(room_vm_);
-					int nowtears_Size = tears_.size();
-					(*it)->fireStrategy(tears_);
-					for (int i = nowtears_Size; i < tears_.size(); i++) {
-						addChild(tears_.at(i));
-					}
 				}
+				//开火
+				int nowtears_Size = tears_.size();
+				(*it)->fireStrategy(tears_);
+				for (int i = nowtears_Size; i < tears_.size(); i++) {
+					addChild(tears_.at(i));
+				}
+				
 				//无敌时间的倒计时
 				if ((*it)->getInvincibleTime() > 0) {
 					(*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
@@ -384,9 +387,9 @@ void RoomScene::update(float delta)
         
 		//player移动	
 		if (player->getHealth() > 0) {
-			if (player->getColClog() != ColClogTime) {
-				player->setColClog(player->getColClog() + 1);
-				if (player->getColClog() == ColClogTime) {
+			if (player->getColClog() != 0) {
+				player->setColClog(player->getColClog() - 1);
+				if (player->getColClog() == 0) {
 					player->getPhysicsBody()->setVelocity(Vec2(0, 0));
 				}
 			}

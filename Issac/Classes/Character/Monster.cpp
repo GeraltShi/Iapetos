@@ -221,9 +221,9 @@ void Monster::move(int walk_direction)
 {
 	//移动
 	//移动速度不是之前的情况，说明发生碰撞
-	if (colClog == ColClogTime
+	if (colClog == 0
 		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
-		colClog = 0;
+		colClog = ColClogTime;
 	}
 	else {
 		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
@@ -328,7 +328,7 @@ void Monster::move(int walk_direction)
 		break;
 	}
 
-	if (colClog == 0) {
+	if (colClog == ColClogTime) {
 		prev_walk_orientation = 5;
 	}
 }
@@ -421,6 +421,20 @@ bool Fatty::init() {
 //	this->move(walk_direction);
 //}
 
+////疯子移动
+//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
+//	if (rand() % 2 == 0) {
+//		//冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
+//		Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+//		int walk_direction = ToPointDir(playerPos);
+//		colClog = 40;
+//		this->move(walk_direction);
+//	}
+//	else {
+//		//暂停不动
+//		this->getPhysicsBody()->setVelocity(Vec2(0, 0));
+//	}
+//}
 
 //脑子移动
 void Fatty::moveStrategy(const RoomViewModel& roomMap) {

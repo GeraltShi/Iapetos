@@ -13,7 +13,7 @@ bool Moveable::init()
 
 	prev_walk_orientation = 5;
 	prev_head_orientation = 5;
-	colClog = ColClogTime;
+	colClog = 0;
 	invincibleTime = 0;
 
 	return true;

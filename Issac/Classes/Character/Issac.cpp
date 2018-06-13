@@ -201,9 +201,9 @@ void Issac::move(int walk_direction, int tear_direction)
 {
 	//移动
 	//移动速度不是之前的情况，说明发生碰撞
-	if (colClog == ColClogTime
+	if (colClog == 0
 		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
-		colClog = 0;
+		colClog = ColClogTime;
 	}
 	else {
 		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
@@ -382,7 +382,7 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
     }
 
-	if (colClog == 0) {
+	if (colClog == ColClogTime) {
 		prev_walk_orientation = 5;
 	}
 }
