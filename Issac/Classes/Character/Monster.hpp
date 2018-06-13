@@ -50,6 +50,8 @@ class Fatty : public Monster
     CREATE_FUNC(Fatty)
     void move(int walk_direction);
     virtual void moveStrategy(int walk_direction);
+    virtual void moveStrategy(const RoomViewModel &roomMap);
+    virtual void fireStrategy(Vector<Tear *> &tears_);
     void build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const;
     static void build_animation_cache();
 };
@@ -62,6 +64,8 @@ class Fly : public Monster
     CREATE_FUNC(Fly)
     void move(int walk_direction);
     virtual void moveStrategy(int walk_direction);
+    virtual void moveStrategy(const RoomViewModel &roomMap);
+    virtual void fireStrategy(Vector<Tear *> &tears_);
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };
@@ -74,6 +78,8 @@ class Gaper : public Monster
     CREATE_FUNC(Gaper)
     void move(int walk_direction);
     virtual void moveStrategy(int walk_direction);
+    virtual void moveStrategy(const RoomViewModel &roomMap);
+    virtual void fireStrategy(Vector<Tear *> &tears_);
     void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_, Texture2D *dead_texture_) const;
     static void build_animation_cache();
 };
@@ -86,6 +92,8 @@ class Spider : public Monster
     CREATE_FUNC(Spider)
     void move(int walk_direction);
     virtual void moveStrategy(int walk_direction);
+    virtual void moveStrategy(const RoomViewModel &roomMap);
+    virtual void fireStrategy(Vector<Tear *> &tears_);
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };

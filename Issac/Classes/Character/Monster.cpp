@@ -522,6 +522,10 @@ void Fatty::move(int walk_direction)
     }
 }
 
+void Fatty::moveStrategy(int walk_direction)
+{
+}
+
 void Fatty::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
 {
     auto spriteCache = SpriteFrameCache::getInstance();
@@ -675,7 +679,7 @@ void Fatty::build_animation_cache()
     deadFrames.pushBack(dead_frame8);
     deadFrames.pushBack(dead_frame9);
     Animation *dead_animation = Animation::createWithSpriteFrames(deadFrames, 0.1f);
-    dead_animation->setLoops(0);
+    dead_animation->setLoops(1);
     aniCache->addAnimation(dead_animation, "dead_animation");
 }
 
@@ -980,6 +984,16 @@ void Fly::moveStrategy(int walk_direction)
     this->move(walk_direction);
 }
 
+void Fly::moveStrategy(const RoomViewModel & roomMap)
+{
+    Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+    this->move(this->ToPointDir(playerPos));
+}
+
+void Fly::fireStrategy(Vector<Tear*>& tears_)
+{
+}
+
 //---------------------------------------------------------Gaper----------------------------------------------------------
 
 void Gaper::build_sprite_frame_cache(Texture2D *head_texture_, Texture2D *body_texture_, Texture2D *dead_texture_) const
@@ -1259,6 +1273,16 @@ void Gaper::moveStrategy(int walk_direction)
     this->move(walk_direction);
 }
 
+void Gaper::moveStrategy(const RoomViewModel & roomMap)
+{
+    Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+    this->move(this->ToPointDir(playerPos));
+}
+
+void Gaper::fireStrategy(Vector<Tear*>& tears_)
+{
+}
+
 //---------------------------------------------------------Spider---------------------------------------------------------
 
 void Spider::build_sprite_frame_cache(Texture2D *texture_) const
@@ -1411,4 +1435,14 @@ bool Spider::init()
 void Spider::moveStrategy(int walk_direction)
 {
     this->move(walk_direction);
+}
+
+void Spider::moveStrategy(const RoomViewModel & roomMap)
+{
+    Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+    this->move(this->ToPointDir(playerPos));
+}
+
+void Spider::fireStrategy(Vector<Tear*>& tears_)
+{
 }
