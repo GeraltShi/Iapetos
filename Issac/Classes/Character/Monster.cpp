@@ -1272,3 +1272,118 @@ void Spider::moveStrategy(const RoomViewModel & roomMap)
 		this->getPhysicsBody()->setVelocity(Vec2(0, 0));
 	}
 }
+//---------------------------------------------------------FlyDaddy---------------------------------------------------------
+
+string FlyDaddy::getDeadAnimation()
+{
+    return "monster_dead_animation";
+}
+
+void FlyDaddy::build_sprite_frame_cache(Texture2D *texture_) const
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0,0,80,64)),"flydaddy_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(80,0,80,64)),"flydaddy_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0,64,80,64)),"flydaddy_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(80,64,80,64)),"flydaddy_frame3");
+
+}
+
+void FlyDaddy::build_animation_cache()
+{
+    auto spriteCache = SpriteFrameCache::getInstance();
+    auto aniCache = AnimationCache::getInstance();
+    //注意 flydaddy 不是一直有动画，只有在发射 baby 苍蝇的时候才会产生动画
+    const auto flydaddy_frame0 = spriteCache->getSpriteFrameByName("flydaddy_frame0");
+    const auto flydaddy_frame1 = spriteCache->getSpriteFrameByName("flydaddy_frame1");
+    const auto flydaddy_frame2 = spriteCache->getSpriteFrameByName("flydaddy_frame2");
+    const auto flydaddy_frame3 = spriteCache->getSpriteFrameByName("flydaddy_frame3");
+    Vector<SpriteFrame *> flydaddyFrames;
+    flydaddyFrames.pushBack(flydaddy_frame0);
+    flydaddyFrames.pushBack(flydaddy_frame1);
+    flydaddyFrames.pushBack(flydaddy_frame2);
+    flydaddyFrames.pushBack(flydaddy_frame3);
+    Animation *flydaddy_animation = Animation::createWithSpriteFrames(flydaddyFrames, 0.4f);
+    flydaddy_animation->setLoops(-1);
+    flydaddy_animation->setRestoreOriginalFrame(true);
+    aniCache->addAnimation(flydaddy_animation, "flydaddy_animation");
+}
+
+FlyDaddy *FlyDaddy::createFlyDaddy()
+{
+    return create();
+}
+
+void FlyDaddy::move(int walk_direction)
+{
+    //移动
+    //移动速度不是之前的情况，说明发生碰撞
+    if (colClog == ColClogTime && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
+    {
+        colClog = 0;
+    }
+    else
+    {
+        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+    }
+    
+    if (!moving)
+    {
+        //移动的图形显示
+        //直接获取缓存，不要将SpriteFrame保存在类中
+        auto aniCache = AnimationCache::getInstance();
+        const auto flydaddy_animation = aniCache->getAnimation("flydaddy_animation");
+        Animate *flydaddy_animate = Animate::create(flydaddy_animation);
+        this->getChildByName("body")->runAction(flydaddy_animate);
+        moving = true;
+    }
+    
+    if (colClog == 0)
+    {
+        prev_walk_orientation = 5;
+    }
+}
+
+bool FlyDaddy::init()
+{
+    if (!Monster::init())
+    {
+        return false;
+    }
+    const auto flydaddy_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/bosses/classic/boss_007_dukeofflies.png");
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(flydaddy_texture, Rect(0, 0, 80, 64));
+    Sprite *bodySprite = createWithSpriteFrame(bodyFrame);
+    
+    build_sprite_frame_cache(flydaddy_texture);
+    build_animation_cache();
+    
+    this->addChild(bodySprite, 0, "body");
+    
+    radiusSize = 15;    //Spider碰撞大小
+    bodyMass = 100;     //Spider重量
+    moveSpeed = 30;     //Spider行走速度
+    health = 300;         //Spider血量
+    attack = 2;         //Spider攻击
+    tearSpeed = 60;     //Spider泪速
+    tearExistTime = 0; //Spider射程
+    this->createPhyBody();
+    return true;
+}
+
+void FlyDaddy::moveStrategy(const RoomViewModel & roomMap)
+{
+    if (rand() % 2 == 0) {
+        //冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
+        Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+        int walk_direction = ToPointDir(playerPos);
+        colClog = 40;
+        this->move(walk_direction);
+    }
+    else {
+        //暂停不动
+        this->getPhysicsBody()->setVelocity(Vec2(0, 0));
+    }
+}
+
+

@@ -118,5 +118,6 @@ void RoomViewModel::init(int roomType)
 			}
 			room_map[posX][posY] = 7;
 		}
+        room_map[6][3] = 8;
 	}
 }

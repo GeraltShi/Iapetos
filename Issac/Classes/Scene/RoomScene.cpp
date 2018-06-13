@@ -35,10 +35,10 @@ bool RoomScene::init(int roomID)
      * 9 DeadScreen
      * 8 HUD, PauseMenu
      * 7 PauseScreen,OptionScreen
-     * 6 Overlay
+     * 6 Overlay, BossHealthBar
      * 5 MiniMap
      * 4 Tear
-     * 3 Issac, Monster,Rock
+     * 3 Issac, Monster, Rock, Pickup
      * 2 Room shading
      * 1 Controls, Door, Door Center,ivisiable bordor
      * 0 Room Background
@@ -192,6 +192,12 @@ bool RoomScene::init(int roomID)
                 monsters_.pushBack((Monster*)Spider::createSpider());
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(monsters_.at(monsters_.size() - 1), 3, "spider1");
+            }
+            if (room_vm_.getRoomMap(i, j) == 8) { //7说明这个位置是FlyDaddy
+                //FlyDaddy生成
+                monsters_.pushBack((Monster*)FlyDaddy::createFlyDaddy());
+                monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
+                addChild(monsters_.at(monsters_.size() - 1), 3, "FlyDaddy1");
             }
 			if (room_vm_.getRoomMap(i, j) == 1) {  
 				//小石头
@@ -364,9 +370,36 @@ bool RoomScene::init(int roomID)
     bomb->setVisible(false);
     addChild(bomb,3);
     
-    
     SimpleAudioEngine::getInstance()->setEffectsVolume((float)model.sfx_volume/25.0);
     SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)model.music_volume/25.0);
+    
+    Texture2D * pickup_heart_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_001_heart.png");
+    Sprite * pickup_heart_plusfull = Sprite::createWithTexture(pickup_heart_texture, Rect(0,0,32,32));
+    Sprite * pickup_heart_plushalf = Sprite::createWithTexture(pickup_heart_texture, Rect(32,0,32,32));
+    Sprite * pickup_heart_maxplusfull = Sprite::createWithTexture(pickup_heart_texture, Rect(0,32,32,32));
+    Sprite * pickup_heart_maxplushalf = Sprite::createWithTexture(pickup_heart_texture, Rect(32,32,32,32));
+    pickup_heart_plusfull -> setPosition(221,143);
+    pickup_heart_plushalf -> setPosition(241,143);
+    pickup_heart_maxplusfull -> setPosition(261,143);
+    pickup_heart_maxplushalf -> setPosition(281,143);
+    this->addChild(pickup_heart_plusfull,3);
+    this->addChild(pickup_heart_plushalf,3);
+    this->addChild(pickup_heart_maxplusfull,3);
+    this->addChild(pickup_heart_maxplushalf,3);
+    Texture2D * pickup_speedup_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_012_magicmushroom.png");
+    Sprite * pickup_speedup = Sprite::createWithTexture(pickup_speedup_texture, Rect(0,0,32,32));
+    pickup_speedup-> setPosition(301,143);
+    this->addChild(pickup_speedup,3);
+    
+    //Boss血条贴图，zorder 为7，两张以一定比例横向拼接，注意 boss 死亡后销毁血条
+    Texture2D * bosshealthbar = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
+    Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar, Rect(0,0,150,32));
+    Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar, Rect(0,32,150,32));
+    bosshealthbarfull -> setPosition(221,223);
+    bosshealthbarempty -> setPosition(221,183);
+    this->addChild(bosshealthbarfull,7);
+    this->addChild(bosshealthbarempty,7);
+    
     scheduleUpdate();
     return true;
 }
