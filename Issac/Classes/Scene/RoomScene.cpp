@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Service/RoomService.h"
 #include "Controller/RoomSceneController.h"
+#include "Service/PlayerService.h"
 
 USING_NS_CC;
 using namespace std;
@@ -409,33 +410,33 @@ void RoomScene::set_event_listener(IRoomSceneListener * listener)
 
 void RoomScene::update(float delta)
 {
-    if(model.game_stat == 0){
-		//开始 
-		if (Director::getInstance()->getRunningScene()->getPhysicsWorld()!= nullptr) {
-			Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
-		}
-        if(pausescreen->isVisible()){
+    if (model.game_stat == 0) {
+        //开始 
+        if (Director::getInstance()->getRunningScene()->getPhysicsWorld() != nullptr) {
+            Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(1.0);
+        }
+        if (pausescreen->isVisible()) {
             pausescreen->setVisible(false);
-            auto pausescreenmovein = MoveTo::create(0.2,Vec2(-250, 143));
+            auto pausescreenmovein = MoveTo::create(0.2, Vec2(-250, 143));
             pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
             model.paused_menu_generated_flag = 0;
         }
-        if(model.bomb){
-            cout << "bomb placed"<<endl;
+        if (model.bomb) {
+            cout << "bomb placed" << endl;
             //TODO 炸弹爆炸动画，爆炸范围判定，销毁
-            bomb->setPosition(player->getPositionX(),player->getPositionY());
+            bomb->setPosition(player->getPositionX(), player->getPositionY());
             bomb->setVisible(true);
             model.bomb = false;
         }
-		
-		//tear倒计时和消失
-		for (auto it = tears_.begin(); it!=tears_.end();) {
-			if ((*it)->getTearExistTime() == 0) {
+
+        //tear倒计时和消失
+        for (auto it = tears_.begin(); it != tears_.end();) {
+            if ((*it)->getTearExistTime() == 0) {
                 Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
                 SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition((*it)->getPosition());
-                addChild(temp_sprite,3);
+                addChild(temp_sprite, 3);
 
                 (*it)->removeFromParent();
 
@@ -443,105 +444,108 @@ void RoomScene::update(float delta)
                 const auto poof_anim = Animate::create(poof_ani);
                 const auto poof_animate = Sequence::create(poof_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(poof_animate);
-				it=tears_.erase(it);
-			}
-			else {
-				(*it)->setTearExistTime((*it)->getTearExistTime() - 1);
-				++it;
-			}			
-		}
-        
-		//monster移动和死亡
-		for (auto it = monsters_.begin(); it != monsters_.end(); ) 
-			if ((*it)->getHealth() <= 0) {
-			//血量<0死亡了
+                it = tears_.erase(it);
+            }
+            else {
+                (*it)->setTearExistTime((*it)->getTearExistTime() - 1);
+                ++it;
+            }
+        }
+
+        //monster移动和死亡
+        for (auto it = monsters_.begin(); it != monsters_.end(); )
+        {
+            if ((*it)->getHealth() <= 0) {
+                //血量<0死亡了
                 Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
                 SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition((*it)->getPosition());
                 addChild(temp_sprite, 3);
 
-				(*it)->removeFromParent();
+                (*it)->removeFromParent();
 
                 const auto dead_ani = AnimationCache::getInstance()->getAnimation("dead_animation");
                 const auto dead_anim = Animate::create(dead_ani);
                 const auto dead_animate = Sequence::create(dead_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(dead_animate);
-				it = monsters_.erase(it);
-			}
-			else {
-				//移动
-				if ((*it)->getColClog() != 0 ) {
-					(*it)->setColClog((*it)->getColClog() - 1);
-					if ((*it)->getColClog() == 0) {
-						(*it)->getPhysicsBody()->setVelocity(Vec2(0, 0));
-					}
-				}
-				else {
-					(*it)->moveStrategy(room_vm_);
-				}
-				//开火
-				int nowtears_Size = tears_.size();
-				(*it)->fireStrategy(tears_);
-				for (int i = nowtears_Size; i < tears_.size(); i++) {
-					addChild(tears_.at(i));
-				}
-				
-				//无敌时间的倒计时
-				if ((*it)->getInvincibleTime() > 0) {
-					(*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
-				}
-				++it;
-			}
-        
-		//player移动	
-		if (player->getHealth() > 0) {
-			if (player->getColClog() != 0) {
-				player->setColClog(player->getColClog() - 1);
-				if (player->getColClog() == 0) {
-					player->getPhysicsBody()->setVelocity(Vec2(0, 0));
-				}
-			}
-			else {
-				player->move(model.walk_direction, model.tear_direction);
-			}
-			//player无敌时间的倒计时
-			if (player->getInvincibleTime() > 0) {
-				player->setInvincibleTime(player->getInvincibleTime() - 1);
-			}
-		}
-		else {
-			//player血量为0，Issac死亡，添加动画和游戏结束界面？
-			log("DEAD");
+                it = monsters_.erase(it);
+            }
+            else {
+                //移动
+                if ((*it)->getColClog() != 0) {
+                    (*it)->setColClog((*it)->getColClog() - 1);
+                    if ((*it)->getColClog() == 0) {
+                        (*it)->getPhysicsBody()->setVelocity(Vec2(0, 0));
+                    }
+                }
+                else {
+                    (*it)->moveStrategy(room_vm_);
+                }
+                //开火
+                int nowtears_Size = tears_.size();
+                (*it)->fireStrategy(tears_);
+                for (int i = nowtears_Size; i < tears_.size(); i++) {
+                    addChild(tears_.at(i));
+                }
+
+                //无敌时间的倒计时
+                if ((*it)->getInvincibleTime() > 0) {
+                    (*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
+                }
+                ++it;
+            }
+        }
+
+        //player移动	
+        const auto he = PlayerService::getInstance()->getHealth();
+
+        if (he > 0) {
+            if (player->getColClog() != 0) {
+                player->setColClog(player->getColClog() - 1);
+                if (player->getColClog() == 0) {
+                    player->getPhysicsBody()->setVelocity(Vec2(0, 0));
+                }
+            }
+            else {
+                player->move(model.walk_direction, model.tear_direction);
+            }
+            //player无敌时间的倒计时
+            if (player->getInvincibleTime() > 0) {
+                player->setInvincibleTime(player->getInvincibleTime() - 1);
+            }
+        }
+        else {
+            //player血量为0，Issac死亡，添加动画和游戏结束界面？
+            log("DEAD");
             //TODO播放死亡动画
             //设置 game status
             model.game_stat = 2;
-		}
+        }
 
         //添加player的射击监听
-		if(model.tear_direction == 5){
-			this->schedule(schedule_selector(RoomScene::fire), 0.4,65536,0.001);
-		}
-		//TODO 碰撞方向判定，闪动效果（提醒玩家螳臂当车了）
-		//TODO 碰撞效果，Issac固定掉半格血，怪物可能自爆，也可能还活着
-		//std::cout << "Walking d: "<<model.walk_direction<<" Tear d: " << model.tear_direction << " PrevHead d: "<< player->getPrevHeadOrientation()<<endl;
-        
-        //定义贴图偏移量
+        if (model.tear_direction == 5) {
+            this->schedule(schedule_selector(RoomScene::fire), 0.4, 65536, 0.001);
+        }
+
+        //玩家血量显示
         auto spriteCache = SpriteFrameCache::getInstance();
+        //每次刷新
         healthbar->removeAllChildren();
+
         int heart_x = 0;
-        for(int i = 0; i< player->getHealth()/2; ++i){
+        for (int i = 0; i< he / 2; ++i) {
             Sprite * heart = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("fullheartcache"));
-            heart->setPosition(heart_x,0);
+            heart->setPosition(heart_x, 0);
             healthbar->addChild(heart, 1);
             heart_x += 16;
         }
-        if(player->getHealth()%2 != 0){
+        if (he % 2 != 0) {
             Sprite * hfheart = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("halfheartcache"));
-            hfheart->setPosition(heart_x,0);
+            hfheart->setPosition(heart_x, 0);
             healthbar->addChild(hfheart, 1);
         }
-	} 
+    }
 	else if(model.game_stat == 1){
 		//暂停 
 		Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
@@ -676,26 +680,29 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 	//tag=5,6,7,8是左、上、右、下4个门
 	if (nodeA && nodeB)
 	{
-		if (tagA==1 && tagB==2 && nodeA->getInvincibleTime()==0 )
-		{
-			//Issac被monster碰到，受伤
-			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
-			//Issac进入短暂无敌状态
-			nodeA->setInvincibleTime(20);
-			//TO DO添加受伤动画？
-			log("Issac Health:%d",nodeA->getHealth());
-		}
-		//怪物和眼泪碰撞
-		if (tagA == 2 && (tagB == 3 || tagB == 4)) {
-			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
-		}
-		//Issac和怪物眼泪碰撞
-		if (tagA == 1 && tagB == 3 && nodeA->getInvincibleTime() == 0) {
-			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
-			//Issac进入短暂无敌状态
-			if (tagA == 1) nodeA->setInvincibleTime(20);
-			//TO DO添加受伤动画？
-		}
+        if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
+        {
+            //Issac被monster碰到，受伤
+            nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+            //Service更新血量
+            PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
+            //Issac进入短暂无敌状态
+            nodeA->setInvincibleTime(20);
+            //TODO 添加受伤动画？
+            log("Issac Health:%d", nodeA->getHealth());
+        }
+        //怪物和眼泪碰撞
+        if (tagA == 2 && (tagB == 3 || tagB == 4)) {
+            nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+        }
+        //Issac和怪物眼泪碰撞
+        if (tagA == 1 && tagB == 3 && nodeA->getInvincibleTime() == 0) {
+            nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+            PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
+            //Issac进入短暂无敌状态
+            if (tagA == 1) nodeA->setInvincibleTime(20);
+            //TO DO添加受伤动画？
+        }
 		//Issac和门的碰撞
 		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.empty()) {
 			//出门了！

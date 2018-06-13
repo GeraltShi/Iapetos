@@ -93,6 +93,12 @@
     <ClCompile Include="..\Classes\Character\Door.cpp">
       <Filter>src\Character</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Service\PlayerService.cpp">
+      <Filter>src\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ViewModel\PlayerViewModel.cpp">
+      <Filter>src\ViewModel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -160,6 +166,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Character\Door.h">
       <Filter>src\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Service\PlayerService.h">
+      <Filter>src\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ViewModel\PlayerViewModel.h">
+      <Filter>src\ViewModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

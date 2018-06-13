@@ -2,6 +2,7 @@
 #include "Scene/MainScene.h"
 #include "RoomSceneController.h"
 #include "Service/RoomService.h"
+#include "Service/PlayerService.h"
 
 
 USING_NS_CC;
@@ -62,6 +63,7 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode) const
                 shift = 0;
                 if(scene_->model.menun == 0){
                     RoomService::getInstance()->init();
+                    PlayerService::getInstance()->init();
                     const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_init_room_id());
                     TransitionScene* tx = TransitionFade::create(0.7, room);
                     Director::getInstance()->pushScene(tx);

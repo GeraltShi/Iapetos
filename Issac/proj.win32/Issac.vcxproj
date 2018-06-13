@@ -164,7 +164,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Service\LevelService.cpp" />
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp" />
     <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp" />
+    <ClCompile Include="..\Classes\Service\PlayerService.cpp" />
     <ClCompile Include="..\Classes\ViewModel\MiniMapViewModel.cpp" />
+    <ClCompile Include="..\Classes\ViewModel\PlayerViewModel.cpp" />
     <ClCompile Include="..\Classes\ViewModel\RoomViewModel.cpp" />
     <ClCompile Include="..\Classes\ViewModel\SimpleItemViewModel.cpp" />
     <ClCompile Include="main.cpp" />
@@ -188,7 +190,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Service\LevelService.h" />
     <ClInclude Include="..\Classes\Model\MainSceneModel.h" />
     <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp" />
+    <ClInclude Include="..\Classes\Service\PlayerService.h" />
     <ClInclude Include="..\Classes\ViewModel\MiniMapViewModel.h" />
+    <ClInclude Include="..\Classes\ViewModel\PlayerViewModel.h" />
     <ClInclude Include="..\Classes\ViewModel\RoomViewModel.h" />
     <ClInclude Include="..\Classes\ViewModel\SimpleItemViewModel.h" />
     <ClInclude Include="main.h" />
