@@ -465,7 +465,7 @@ void RoomScene::update(float delta)
 
                 (*it)->removeFromParent();
 
-                const auto dead_ani = AnimationCache::getInstance()->getAnimation("dead_animation");
+                const auto dead_ani = AnimationCache::getInstance()->getAnimation((*it)->getDeadAnimation());
                 const auto dead_anim = Animate::create(dead_ani);
                 const auto dead_animate = Sequence::create(dead_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(dead_animate);

@@ -35,10 +35,12 @@ class Monster : public Moveable
     virtual void fireStrategy(Vector<Tear *> &tears_) = 0;
 	//怪物的生孩子策略，这是借口。子类每个怪物重写。
 	virtual void giveBirth(Vector<Monster *> &monsters_) = 0;
+    //怪物的死亡动画，每个子类可以重载
+    virtual string getDeadAnimation();
 
     CC_SYNTHESIZE(int, fireCoolTime, FireCoolTime)
   protected:
-    void build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const; //必要时需要重载
+    void build_sprite_frame_cache(Texture2D *dead_texture_) const;
     static void build_animation_cache();
 };
 
@@ -52,7 +54,7 @@ public:
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
-    void build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const;
+    void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };
 
@@ -66,6 +68,7 @@ class Fly : public Monster
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
+    string getDeadAnimation() override;
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };
@@ -80,7 +83,7 @@ class Gaper : public Monster
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
-    void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_, Texture2D *dead_texture_) const;
+    void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_) const;
     static void build_animation_cache();
 };
 
@@ -94,6 +97,7 @@ class Spider : public Monster
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
+    string getDeadAnimation() override;
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };
