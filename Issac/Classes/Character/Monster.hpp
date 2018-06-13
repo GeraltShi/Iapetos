@@ -28,7 +28,7 @@ class Monster : public Moveable
     {
         return sqrt((x1.x - x2.x) * (x1.x - x2.x) + (x1.y - x2.y) * (x1.y - x2.y));
     }
-
+	virtual void move(int walk_direction)=0;
     //怪物的移动策略，这是接口。子类每个怪物重写。
     virtual void moveStrategy(const RoomViewModel &roomMap) = 0; 
     //怪物的开火策略，这是接口。子类每个怪物重写。
@@ -50,7 +50,7 @@ public:
     static Fatty *createFatty();
     virtual bool init();
     CREATE_FUNC(Fatty)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
@@ -64,7 +64,7 @@ class Fly : public Monster
     static Fly *createFly();
     virtual bool init();
     CREATE_FUNC(Fly)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
@@ -79,7 +79,7 @@ class Gaper : public Monster
     static Gaper *createGaper();
     virtual bool init();
     CREATE_FUNC(Gaper)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
@@ -93,7 +93,7 @@ class Spider : public Monster
     static Spider *createSpider();
     virtual bool init();
     CREATE_FUNC(Spider)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}

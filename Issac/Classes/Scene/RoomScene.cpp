@@ -476,7 +476,7 @@ void RoomScene::update(float delta)
                 if ((*it)->getColClog() != 0) {
                     (*it)->setColClog((*it)->getColClog() - 1);
                     if ((*it)->getColClog() == 0) {
-                        (*it)->getPhysicsBody()->setVelocity(Vec2(0, 0));
+                        (*it)->move(5);
                     }
                 }
                 else {
