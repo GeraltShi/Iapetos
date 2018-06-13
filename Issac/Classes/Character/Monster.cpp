@@ -196,131 +196,131 @@ void Monster::build_animation_cache()
     aniCache->addAnimation(dead_animation, "dead_animation");
 }
 
-void Monster::move(int walk_direction)
-{
-    //移动
-    //移动速度不是之前的情况，说明发生碰撞
-    if (colClog == 0 && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
-    {
-        colClog = ColClogTime;
-    }
-    else
-    {
-        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
-    }
-
-    //移动的图形显示
-    //直接获取缓存，不要将SpriteFrame保存在类中
-    auto aniCache = AnimationCache::getInstance();
-
-    const auto vwalk_animation = aniCache->getAnimation("monster_vwalk_animation");
-    const auto hwalk_animation = aniCache->getAnimation("monster_hwalk_animation");
-    const auto head_animation = aniCache->getAnimation("head_animation");
-
-    Animate *vwalk_animate = Animate::create(vwalk_animation);
-    Animate *hwalk_animate = Animate::create(hwalk_animation);
-    Animate *head_animate = Animate::create(head_animation);
-
-    switch (walk_direction)
-    {
-        //123
-        //456
-        //789
-    case 4: //左
-        if (prev_walk_orientation != 4)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->setScaleX(-1); //翻转
-            this->getChildByName("body")->runAction(hwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 4;
-        break;
-
-    case 6: //右
-        if (prev_walk_orientation != 6)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->setScaleX(1); //翻转
-            this->getChildByName("body")->runAction(hwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 6;
-        break;
-
-    case 2: //上
-        if (prev_walk_orientation != 2)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse()); //向上走要倒放
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 2;
-        break;
-
-    case 8: //下
-        if (prev_walk_orientation != 8)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 8;
-        break;
-
-    case 1: //左上
-        if (prev_walk_orientation != 1)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse());
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 1;
-        break;
-
-    case 3: //右上
-        if (prev_walk_orientation != 3)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse());
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 3;
-        break;
-
-    case 7: //左下
-        if (prev_walk_orientation != 7)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 7;
-        break;
-
-    case 9: //右下
-        if (prev_walk_orientation != 9)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-        }
-        prev_walk_orientation = 9;
-        break;
-
-    case 5: //无，头要默认复位
-        this->getChildByName("body")->stopAllActions();
-        prev_walk_orientation = 5;
-        break;
-
-    default:
-        break;
-    }
-
-    if (colClog == ColClogTime)
-    {
-        prev_walk_orientation = 5;
-    }
-}
+//void Monster::move(int walk_direction)
+//{
+//    //移动
+//    //移动速度不是之前的情况，说明发生碰撞
+//    if (colClog == 0 && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
+//    {
+//        colClog = ColClogTime;
+//    }
+//    else
+//    {
+//        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
+//    }
+//
+//    //移动的图形显示
+//    //直接获取缓存，不要将SpriteFrame保存在类中
+//    auto aniCache = AnimationCache::getInstance();
+//
+//    const auto vwalk_animation = aniCache->getAnimation("monster_vwalk_animation");
+//    const auto hwalk_animation = aniCache->getAnimation("monster_hwalk_animation");
+//    const auto head_animation = aniCache->getAnimation("head_animation");
+//
+//    Animate *vwalk_animate = Animate::create(vwalk_animation);
+//    Animate *hwalk_animate = Animate::create(hwalk_animation);
+//    Animate *head_animate = Animate::create(head_animation);
+//
+//    switch (walk_direction)
+//    {
+//        //123
+//        //456
+//        //789
+//    case 4: //左
+//        if (prev_walk_orientation != 4)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->setScaleX(-1); //翻转
+//            this->getChildByName("body")->runAction(hwalk_animate);
+//            this->getChildByName("head")->runAction(head_animate);
+//        }
+//        prev_walk_orientation = 4;
+//        break;
+//
+//    case 6: //右
+//        if (prev_walk_orientation != 6)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->setScaleX(1); //翻转
+//            this->getChildByName("body")->runAction(hwalk_animate);
+//            this->getChildByName("head")->runAction(head_animate);
+//        }
+//        prev_walk_orientation = 6;
+//        break;
+//
+//    case 2: //上
+//        if (prev_walk_orientation != 2)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->runAction(vwalk_animate->reverse()); //向上走要倒放
+//            this->getChildByName("head")->runAction(head_animate);
+//        }
+//        prev_walk_orientation = 2;
+//        break;
+//
+//    case 8: //下
+//        if (prev_walk_orientation != 8)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->runAction(vwalk_animate);
+//            this->getChildByName("head")->runAction(head_animate);
+//        }
+//        prev_walk_orientation = 8;
+//        break;
+//
+//    case 1: //左上
+//        if (prev_walk_orientation != 1)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->runAction(vwalk_animate->reverse());
+//            this->getChildByName("head")->runAction(head_animate);
+//        }
+//        prev_walk_orientation = 1;
+//        break;
+//
+//    case 3: //右上
+//        if (prev_walk_orientation != 3)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->runAction(vwalk_animate->reverse());
+//            this->getChildByName("head")->runAction(head_animate);
+//        }
+//        prev_walk_orientation = 3;
+//        break;
+//
+//    case 7: //左下
+//        if (prev_walk_orientation != 7)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->runAction(vwalk_animate);
+//            this->getChildByName("head")->runAction(head_animate);
+//        }
+//        prev_walk_orientation = 7;
+//        break;
+//
+//    case 9: //右下
+//        if (prev_walk_orientation != 9)
+//        {
+//            this->getChildByName("body")->stopAllActions();
+//            this->getChildByName("body")->runAction(vwalk_animate);
+//        }
+//        prev_walk_orientation = 9;
+//        break;
+//
+//    case 5: //无，头要默认复位
+//        this->getChildByName("body")->stopAllActions();
+//        prev_walk_orientation = 5;
+//        break;
+//
+//    default:
+//        break;
+//    }
+//
+//    if (colClog == ColClogTime)
+//    {
+//        prev_walk_orientation = 5;
+//    }
+//}
 
 int Monster::ToPointDir(Vec2 PlayerPos)
 {
@@ -520,10 +520,6 @@ void Fatty::move(int walk_direction)
     {
         prev_walk_orientation = 5;
     }
-}
-
-void Fatty::moveStrategy(int walk_direction)
-{
 }
 
 void Fatty::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
@@ -733,37 +729,9 @@ bool Fatty::init()
     return true;
 }
 
-////猴子移动
-//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
-//	colClog = 5;
-//	this->move(rand() % 9 + 1);
-//}
-
-////傻子移动
-//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
-//	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
-//	int walk_direction = ToPointDir(playerPos);
-//	this->move(walk_direction);
-//}
-
-////疯子移动
-//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
-//	if (rand() % 2 == 0) {
-//		//冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
-//		Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
-//		int walk_direction = ToPointDir(playerPos);
-//		colClog = 40;
-//		this->move(walk_direction);
-//	}
-//	else {
-//		//暂停不动
-//		this->getPhysicsBody()->setVelocity(Vec2(0, 0));
-//	}
-//}
-
-//脑子移动
 void Fatty::moveStrategy(const RoomViewModel &roomMap)
 {
+	//追踪人的移动策略
     Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
     if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 1.2)
     {
@@ -804,38 +772,6 @@ void Fatty::moveStrategy(const RoomViewModel &roomMap)
     }
 }
 
-//void Fatty::fireStrategy(Vector<Tear*>& tears_)
-//{
-//	//向player位置射击的开火策略
-//	if (fireCoolTime > 0) {
-//		fireCoolTime--; //冷却不开火
-//	}
-//	else {
-//		//冷却
-//		fireCoolTime = 20;
-//		//向人物方向发射子弹
-//		tears_.pushBack(Fire(this->getParent()->getChildByTag(1)->getPosition()));
-//	}
-//}
-
-void Fatty::fireStrategy(Vector<Tear *> &tears_)
-{
-    //向4个方向（上下左右）射击的开火策略
-    if (fireCoolTime > 0)
-    {
-        fireCoolTime--; //冷却不开火
-    }
-    else
-    {
-        //冷却
-        fireCoolTime = 20;
-        //向4个方向（上下左右）射击的开火策略
-        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y - 10)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y + 10)));
-    }
-}
 //----------------------------------------------------------Fly----------------------------------------------------------
 
 void Fly::build_sprite_frame_cache(Texture2D *texture_) const
@@ -964,34 +900,25 @@ bool Fly::init()
     build_animation_cache();
 
     this->addChild(bodySprite, 0, "body");
-    //this->setPosition(Vec2(221, 143));
-    //Fly碰撞大小
-    radiusSize = 8;
-    //Fly重量
-    bodyMass = 400;
-    //Fly行走速度
-    moveSpeed = 50;
-    //Fly血量5
-    health = 3;
-    //Fly攻击1
-    attack = 1;
-    this->createPhyBody();
-    return true;
-}
+	radiusSize = 6;    //Fly碰撞大小
+	bodyMass = 5;     //Fly重量
+	moveSpeed = 50;     //Fly行走速度
+	health = 3;         //Fly血量
+	attack = 1;         //Fly攻击
+	tearSpeed = 60;     //Fly泪速
+	tearExistTime = 0; //Fly射程
 
-void Fly::moveStrategy(int walk_direction)
-{
-    this->move(walk_direction);
+    this->createPhyBody();
+	this->getPhysicsBody()->setCategoryBitmask(0x04);	// 0000_0100(04)
+	this->getPhysicsBody()->setCollisionBitmask(0xDF);	// 1101_1111(DF)
+	this->getPhysicsBody()->setContactTestBitmask(0x09);//0000_1001(09)
+    return true;
 }
 
 void Fly::moveStrategy(const RoomViewModel & roomMap)
 {
     Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
     this->move(this->ToPointDir(playerPos));
-}
-
-void Fly::fireStrategy(Vector<Tear*>& tears_)
-{
 }
 
 //---------------------------------------------------------Gaper----------------------------------------------------------
@@ -1254,33 +1181,58 @@ bool Gaper::init()
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
 
-    //Fatty碰撞大小
-    radiusSize = 12;
-    //Fatty重量
-    bodyMass = 500;
-    //Fatty行走速度
-    moveSpeed = 80;
-    //Fatty血量5
-    health = 5;
-    //Fatty攻击1
-    attack = 1;
+	radiusSize = 12;    //Gaper碰撞大小
+	bodyMass = 100;     //Gaper重量
+	moveSpeed = 80;     //Gaper行走速度
+	health = 5;         //Gaper血量
+	attack = 1;         //Gaper攻击
+	tearSpeed = 60;     //Gaper泪速
+	tearExistTime = 80; //Fly射程
     this->createPhyBody();
     return true;
 }
 
-void Gaper::moveStrategy(int walk_direction)
-{
-    this->move(walk_direction);
-}
-
 void Gaper::moveStrategy(const RoomViewModel & roomMap)
 {
-    Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
-    this->move(this->ToPointDir(playerPos));
-}
-
-void Gaper::fireStrategy(Vector<Tear*>& tears_)
-{
+	//追踪人的移动策略
+	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 1.2)
+	{
+	    //足够近，直接冲过去
+	    this->move(ToPointDir(playerPos));
+	}
+	else
+	{
+	    //BFS找到最短路径
+	    GridPoint roomFlag[GRID_WIDTH][GRID_HEIGHT];
+	    vector<GridPoint> quary;
+	    int head = 0;
+	    GridPoint destination = CalGridPos(playerPos), startPos = CalGridPos(this->getPosition());
+	    quary.push_back(startPos);
+	    roomFlag[startPos.x][startPos.y] = GridPoint(99, 99);
+	    while (head < quary.size())
+	    {
+	        for (int i = 0; i < 4; i++)
+	        {
+	            GridPoint tempPos = GridPoint(quary[head].x + moveStep[i].x, quary[head].y + moveStep[i].y);
+	            if (tempPos.inRoom() && roomFlag[tempPos.x][tempPos.y].x == -1 && roomMap.getRoomMap(tempPos.x, tempPos.y) != 1 && roomMap.getRoomMap(tempPos.x, tempPos.y) != 2)
+	            {
+	                roomFlag[tempPos.x][tempPos.y] = quary[head];
+	                quary.push_back(tempPos);
+	                if (tempPos == destination)
+	                    goto mark;
+	            }
+	        }
+	        head++;
+	    }
+	mark:
+	    GridPoint des1 = destination;
+	    while (!(roomFlag[destination.x][destination.y] == startPos))
+	    {
+	        destination = roomFlag[destination.x][destination.y];
+	    }
+	    this->move(ToPointDir(Vec2(RoomUnitSize.width * destination.x + 61, RoomUnitSize.height * destination.y + 61)));
+	}
 }
 
 //---------------------------------------------------------Spider---------------------------------------------------------
@@ -1417,32 +1369,30 @@ bool Spider::init()
     build_animation_cache();
 
     this->addChild(bodySprite, 0, "body");
-    //this->setPosition(Vec2(221, 143));
-    //spider碰撞大小
-    radiusSize = 8;
-    //spider重量
-    bodyMass = 400;
-    //spider行走速度
-    moveSpeed = 50;
-    //spider血量5
-    health = 3;
-    //spider攻击1
-    attack = 1;
+
+	radiusSize = 6;    //Spider碰撞大小
+	bodyMass = 5;     //Spider重量
+	moveSpeed = 100;     //Spider行走速度
+	health = 3;         //Spider血量
+	attack = 1;         //Spider攻击
+	tearSpeed = 60;     //Spider泪速
+	tearExistTime = 0; //Spider射程
     this->createPhyBody();
     return true;
 }
 
-void Spider::moveStrategy(int walk_direction)
-{
-    this->move(walk_direction);
-}
 
 void Spider::moveStrategy(const RoomViewModel & roomMap)
 {
-    Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
-    this->move(this->ToPointDir(playerPos));
-}
-
-void Spider::fireStrategy(Vector<Tear*>& tears_)
-{
+	if (rand() % 2 == 0) {
+		//冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
+		Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+		int walk_direction = ToPointDir(playerPos);
+		colClog = 40;
+		this->move(walk_direction);
+	}
+	else {
+		//暂停不动
+		this->getPhysicsBody()->setVelocity(Vec2(0, 0));
+	}
 }
