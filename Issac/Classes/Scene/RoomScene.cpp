@@ -317,21 +317,21 @@ bool RoomScene::init(int roomID)
     Sprite * optioncursor = Sprite::createWithTexture(optionscreenTexture, Rect(234,24,16,24));
     Sprite * optionmenu = Sprite::createWithTexture(optionscreenTexture, Rect(0,0,234,234));
     Sprite * optionitem = Sprite::createWithTexture(optionscreenTexture, Rect(0,304,128,64));
-    Sprite * option_sfx_bar = Sprite::createWithTexture(optionscreenTexture, Rect(128,400,128,16));
-    Sprite * option_music_bar = Sprite::createWithTexture(optionscreenTexture, Rect(0,480,128,16));
-    Sprite * option_mp_opacity_bar = Sprite::createWithTexture(optionscreenTexture, Rect(128,400,128,16));
+    Sprite * option_sfx_bar = Sprite::createWithTexture(optionscreenTexture, Rect(192,400,64,16));
+    Sprite * option_music_bar = Sprite::createWithTexture(optionscreenTexture, Rect(64,480,64,16));
+    Sprite * option_mp_opacity_bar = Sprite::createWithTexture(optionscreenTexture, Rect(192,400,64,16));
     optionmenu->setPosition(221,143);
     optionitem->setPosition(85,100);
     optioncursor->setPosition(25,100);
     optionscreen->setOpacity(0x7f);
-    option_sfx_bar->setPosition(145,124);
-    option_music_bar->setPosition(145,100);
-    option_mp_opacity_bar->setPosition(145,76);
+    option_sfx_bar->setPosition(175,124);
+    option_music_bar->setPosition(175,100);
+    option_mp_opacity_bar->setPosition(175,76);
     optionmenu->addChild(optioncursor,1,"optioncursor");
     optionmenu->addChild(optionitem,1);
     optionmenu->addChild(option_sfx_bar,1,"option_sfx_bar");
     optionmenu->addChild(option_music_bar,1,"option_music_bar");
-    optionmenu->addChild(option_mp_opacity_bar,1,"option_mp_opacity_bar");
+    optionmenu->addChild(option_mp_opacity_bar,1,"option_mapopacity_bar");
     optionscreen->setPosition(221,143);
     optionscreen->addChild(optionmenu,0,"optionmenu");
     addChild(optionscreen,7);
@@ -586,6 +586,23 @@ void RoomScene::update(float delta)
                     break;
             }
             //TODO 根据 option 值更新 bar
+            string sfx_volume_string = "sfx" + to_string(model.sfx_volume);
+            optionscreen->getChildByName("optionmenu")->removeChildByName("option_sfx_bar");
+            Sprite * option_sfx_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(sfx_volume_string));
+            option_sfx_bar->setPosition(175,124);
+            optionscreen->getChildByName("optionmenu")->addChild(option_sfx_bar,1,"option_sfx_bar");
+            
+            string music_volume_string = "music" + to_string(model.music_volume);
+            optionscreen->getChildByName("optionmenu")->removeChildByName("option_music_bar");
+            Sprite * option_music_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(music_volume_string));
+            option_music_bar->setPosition(175,100);
+            optionscreen->getChildByName("optionmenu")->addChild(option_music_bar,1,"option_music_bar");
+            
+            string mapopacity_string = "mapopacity" + to_string(model.map_opacity);
+            optionscreen->getChildByName("optionmenu")->removeChildByName("option_mapopacity_bar");
+            Sprite * option_mapopacity_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(mapopacity_string));
+            option_mapopacity_bar->setPosition(175,76);
+            optionscreen->getChildByName("optionmenu")->addChild(option_mapopacity_bar,1,"option_mapopacity_bar");
         } else {
             optionscreen->setVisible(false);
         }
@@ -659,6 +676,76 @@ void RoomScene::build_frame_cache() const
     const auto halfheartcache = SpriteFrame::createWithTexture(texture_heart, Rect(16,0,16,16));
     fcache->addSpriteFrame(fullheartcache, "fullheartcache");
     fcache->addSpriteFrame(halfheartcache, "halfheartcache");
+    
+    Texture2D * optionscreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/optionsmenudark.png");
+    const auto sfx0 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,400,64,16));
+    const auto sfx1 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,384,64,16));
+    const auto sfx2 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,368,64,16));
+    const auto sfx3 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,352,64,16));
+    const auto sfx4 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,336,64,16));
+    const auto sfx5 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,320,64,16));
+    const auto sfx6 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,304,64,16));
+    const auto sfx7 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,288,64,16));
+    const auto sfx8 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,272,64,16));
+    const auto sfx9 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,256,64,16));
+    const auto sfx10 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,240,64,16));
+    fcache->addSpriteFrame(sfx0, "sfx0");
+    fcache->addSpriteFrame(sfx1, "sfx1");
+    fcache->addSpriteFrame(sfx2, "sfx2");
+    fcache->addSpriteFrame(sfx3, "sfx3");
+    fcache->addSpriteFrame(sfx4, "sfx4");
+    fcache->addSpriteFrame(sfx5, "sfx5");
+    fcache->addSpriteFrame(sfx6, "sfx6");
+    fcache->addSpriteFrame(sfx7, "sfx7");
+    fcache->addSpriteFrame(sfx8, "sfx8");
+    fcache->addSpriteFrame(sfx9, "sfx9");
+    fcache->addSpriteFrame(sfx10, "sfx10");
+    
+    const auto music0 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,400,64,16));
+    const auto music1 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,384,64,16));
+    const auto music2 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,368,64,16));
+    const auto music3 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,352,64,16));
+    const auto music4 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,336,64,16));
+    const auto music5 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,320,64,16));
+    const auto music6 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,304,64,16));
+    const auto music7 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,288,64,16));
+    const auto music8 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,272,64,16));
+    const auto music9 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,256,64,16));
+    const auto music10 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,240,64,16));
+    fcache->addSpriteFrame(music0, "music0");
+    fcache->addSpriteFrame(music1, "music1");
+    fcache->addSpriteFrame(music2, "music2");
+    fcache->addSpriteFrame(music3, "music3");
+    fcache->addSpriteFrame(music4, "music4");
+    fcache->addSpriteFrame(music5, "music5");
+    fcache->addSpriteFrame(music6, "music6");
+    fcache->addSpriteFrame(music7, "music7");
+    fcache->addSpriteFrame(music8, "music8");
+    fcache->addSpriteFrame(music9, "music9");
+    fcache->addSpriteFrame(music10, "music10");
+    
+    const auto mapopacity0 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,400,64,16));
+    const auto mapopacity1 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,384,64,16));
+    const auto mapopacity2 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,368,64,16));
+    const auto mapopacity3 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,352,64,16));
+    const auto mapopacity4 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,336,64,16));
+    const auto mapopacity5 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,320,64,16));
+    const auto mapopacity6 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,304,64,16));
+    const auto mapopacity7 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,288,64,16));
+    const auto mapopacity8 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,272,64,16));
+    const auto mapopacity9 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,256,64,16));
+    const auto mapopacity10 = SpriteFrame::createWithTexture(optionscreenTexture, Rect(192,240,64,16));
+    fcache->addSpriteFrame(mapopacity0, "mapopacity0");
+    fcache->addSpriteFrame(mapopacity1, "mapopacity1");
+    fcache->addSpriteFrame(mapopacity2, "mapopacity2");
+    fcache->addSpriteFrame(mapopacity3, "mapopacity3");
+    fcache->addSpriteFrame(mapopacity4, "mapopacity4");
+    fcache->addSpriteFrame(mapopacity5, "mapopacity5");
+    fcache->addSpriteFrame(mapopacity6, "mapopacity6");
+    fcache->addSpriteFrame(mapopacity7, "mapopacity7");
+    fcache->addSpriteFrame(mapopacity8, "mapopacity8");
+    fcache->addSpriteFrame(mapopacity9, "mapopacity9");
+    fcache->addSpriteFrame(mapopacity10, "mapopacity10");
 }
 
 bool RoomScene::onContactBegin(PhysicsContact& contact)

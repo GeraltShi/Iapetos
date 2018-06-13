@@ -16,7 +16,7 @@ public:
         paused_menu_cursor = (paused_menu_cursor+wd+3)%3;
     }
     void shift_optionmenu(int wd){
-        option_menu_cursor = (paused_menu_cursor+wd+3)%3;
+        option_menu_cursor = (option_menu_cursor+wd+3)%3;
     }
     bool bomb = false;
     int game_stat = 0;// 游戏状态控制，0为运行，1为暂停，2为结束
