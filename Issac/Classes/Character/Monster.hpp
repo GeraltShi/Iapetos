@@ -44,7 +44,7 @@ class Monster : public Moveable
 
 class Fatty : public Monster
 {
-  public:
+public:
     static Fatty *createFatty();
     virtual bool init();
     CREATE_FUNC(Fatty)

@@ -386,10 +386,10 @@ void Monster::createPhyBody()
     phyBody->setGravityEnable(false);
     //速度
     phyBody->setVelocity(Vec2(0, 0));
-    //碰撞筛选:所有都碰撞，选择性监听:和tear，issac，monster碰撞监听，石头不监听
+    //碰撞\监听筛选
     phyBody->setCategoryBitmask(0x02);    // 0000_0010
     phyBody->setCollisionBitmask(0xFF);   // 1111_1111
-    phyBody->setContactTestBitmask(0x07); //0000_0111
+    phyBody->setContactTestBitmask(0x09); //0000_1001(09)
     //添加物理躯体
     this->addComponent(phyBody);
 }

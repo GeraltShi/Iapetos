@@ -46,10 +46,20 @@ bool Stone::init(int stoneType, Size stoneSize)
 	phyBody->getShape(0)->setRestitution(0.5f);
 	//设置物体的摩擦力
 	phyBody->getShape(0)->setFriction(0.0f);
-	//碰撞筛选:不和石头碰撞，选择性监听:和tear碰撞监听
-	phyBody->setCategoryBitmask(0x10);	// 0001_0000
-	phyBody->setCollisionBitmask(0xEF);   // 1110_1111
-	phyBody->setContactTestBitmask(0x04); //0000_0100
+	//碰撞、监听筛选
+	if (stoneType > 0) {
+		//普通石头
+		phyBody->setCategoryBitmask(0x20);	// 0010_0000(20)
+		phyBody->setCollisionBitmask(0x8B);   // 1000_1011(8B)
+		phyBody->setContactTestBitmask(0x08); //0000_1000(08)
+	}
+	else {
+		//无形边界石头
+		phyBody->setCategoryBitmask(0x10);	  //0001_0000(10)
+		phyBody->setCollisionBitmask(0x8F);   //1000_1111(8F)
+		phyBody->setContactTestBitmask(0x08); //0000_1000(08)
+	}
+
 	//添加物理躯体
 	this->addComponent(phyBody);
 	this->setTag(0); //tag=0石头
