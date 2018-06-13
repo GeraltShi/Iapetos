@@ -730,9 +730,9 @@ void Fly::move(int walk_direction)
 {
     //移动
     //移动速度不是之前的情况，说明发生碰撞
-    if (colClog == ColClogTime && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
+    if (colClog == 0 && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
     {
-        colClog = 0;
+        colClog = ColClogTime;
     }
     else
     {
@@ -751,7 +751,7 @@ void Fly::move(int walk_direction)
         moving = true;
     }
 
-    if (colClog == 0)
+    if (colClog == ColClogTime)
     {
         prev_walk_orientation = 5;
     }

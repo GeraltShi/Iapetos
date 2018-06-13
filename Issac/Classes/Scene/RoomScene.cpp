@@ -488,12 +488,7 @@ void RoomScene::update(float delta)
                 for (int i = nowtears_Size; i < tears_.size(); i++) {
                     addChild(tears_.at(i));
                 }
-
-                //无敌时间的倒计时
-                if ((*it)->getInvincibleTime() > 0) {
-                    (*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
-                }
-                ++it;
+				it++;
             }
         }
 
