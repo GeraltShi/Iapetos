@@ -61,36 +61,62 @@ void RoomViewModel::init(int roomType)
 		room_map[8][5] = 2;
 		room_map[9][5] = 2;
 	}
-
+	//roomType:0：初始房间
+	//roomType:1~7怪物房间
+	//1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider
+	//roomType:8~14宝藏房间
+	//roomType:15~20代表Boss房
+	//15~17 Boss1
+	//18~20 Boss2
 	//根据roomType放入怪物
-    //Fatty:4, Fly:5. Gaper:6
-	if (roomType == 1)
+    //怪物标号：4:Fatty, 5:Fly, 6:Gaper, 7:Spider
+	if (roomType == 1)  //1:全Fatty
 	{
 		int Fatty_num = rand() % 4 + 2;
-		int posX = rand() % 13, posY = rand() % 7;
-		while (room_map[posX][posY] != 0)
-		{
-			posX = rand() % GRID_WIDTH;
-			posY = rand() % GRID_HEIGHT;
+		for (int i = 0; i < Fatty_num; i++) {
+			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+			while (room_map[posX][posY] != 0)
+			{
+				posX = rand() % GRID_WIDTH;
+				posY = rand() % GRID_HEIGHT;
+			}
+			room_map[posX][posY] = 4;
 		}
-		room_map[posX][posY] = 4;
-        while (room_map[posX][posY] != 0)
-        {
-            posX = rand() % 13;
-            posY = rand() % 7;
-        }
-        room_map[posX][posY] = 5;
-        while (room_map[posX][posY] != 0)
-        {
-            posX = rand() % 13;
-            posY = rand() % 7;
-        }
-        room_map[posX][posY] = 6;
-        while (room_map[posX][posY] != 0)
-        {
-            posX = rand() % 13;
-            posY = rand() % 7;
-        }
-        room_map[posX][posY] = 7;
+	}
+	if (roomType == 2) {  //2:全Fly
+		int Fly_num = rand() % 4 + 2;
+		for (int i = 0; i < Fly_num; i++) {
+			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+			while (room_map[posX][posY] != 0)
+			{
+				posX = rand() % GRID_WIDTH;
+				posY = rand() % GRID_HEIGHT;
+			}
+			room_map[posX][posY] = 5;
+		}
+	}
+	if (roomType == 3) {  //3:全Gaper
+		int Gaper_num = rand() % 4 + 2;
+		for (int i = 0; i < Gaper_num; i++) {
+			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+			while (room_map[posX][posY] != 0)
+			{
+				posX = rand() % GRID_WIDTH;
+				posY = rand() % GRID_HEIGHT;
+			}
+			room_map[posX][posY] = 6;
+		}
+	}
+	if (roomType == 4) {  //4::全Spider
+		int Spider_num = rand() % 4 + 2;
+		for (int i = 0; i < Spider_num; i++) {
+			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+			while (room_map[posX][posY] != 0)
+			{
+				posX = rand() % GRID_WIDTH;
+				posY = rand() % GRID_HEIGHT;
+			}
+			room_map[posX][posY] = 7;
+		}
 	}
 }

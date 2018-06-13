@@ -18,7 +18,6 @@ class Monster : public Moveable
     virtual bool init();
     virtual void createPhyBody();
 
-    void move(int walk_direction);
     Tear *Fire(Vec2 targetPos);
     int ToPointDir(Vec2);
     GridPoint CalGridPos(Vec2 truePos)
@@ -31,10 +30,11 @@ class Monster : public Moveable
     }
 
     //怪物的移动策略，这是接口。子类每个怪物重写。
-    virtual void moveStrategy(int walk_direction) = 0;           //低级寻路
-    virtual void moveStrategy(const RoomViewModel &roomMap) = 0; //高级寻路
+    virtual void moveStrategy(const RoomViewModel &roomMap) = 0; 
     //怪物的开火策略，这是接口。子类每个怪物重写。
     virtual void fireStrategy(Vector<Tear *> &tears_) = 0;
+	//怪物的生孩子策略，这是借口。子类每个怪物重写。
+	virtual void giveBirth(Vector<Monster *> &monsters_) = 0;
 
     CC_SYNTHESIZE(int, fireCoolTime, FireCoolTime)
   protected:
@@ -44,14 +44,14 @@ class Monster : public Moveable
 
 class Fatty : public Monster
 {
-  public:
+public:
     static Fatty *createFatty();
     virtual bool init();
     CREATE_FUNC(Fatty)
     void move(int walk_direction);
-    virtual void moveStrategy(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
-    virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void fireStrategy(Vector<Tear *> &tears_) {}
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
     void build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const;
     static void build_animation_cache();
 };
@@ -63,9 +63,9 @@ class Fly : public Monster
     virtual bool init();
     CREATE_FUNC(Fly)
     void move(int walk_direction);
-    virtual void moveStrategy(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
-    virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void fireStrategy(Vector<Tear *> &tears_) {}
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };
@@ -77,9 +77,9 @@ class Gaper : public Monster
     virtual bool init();
     CREATE_FUNC(Gaper)
     void move(int walk_direction);
-    virtual void moveStrategy(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
-    virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void fireStrategy(Vector<Tear *> &tears_) {}
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
     void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_, Texture2D *dead_texture_) const;
     static void build_animation_cache();
 };
@@ -91,9 +91,9 @@ class Spider : public Monster
     virtual bool init();
     CREATE_FUNC(Spider)
     void move(int walk_direction);
-    virtual void moveStrategy(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
-    virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void fireStrategy(Vector<Tear *> &tears_) {}
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };

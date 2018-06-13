@@ -21,7 +21,8 @@ class RoomViewModel
 {
 public:
 	//roomType:0：初始房间
-	//roomType:1~7怪物房间，1代表全Fatty
+	//roomType:1~7怪物房间
+	//1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider
     //roomType:8~14宝藏房间
 	//roomType:15~20代表Boss房
         //15~17 Boss1

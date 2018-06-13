@@ -25,8 +25,8 @@ void Tear::createPhyBody()
 	phyBody->setGravityEnable(false);
 	//速度
 	phyBody->setVelocity(Vec2(0, 0));
-	//碰撞筛选:所有都碰撞，选择性监听:全部碰撞都会监听
-	phyBody->setCategoryBitmask(0x04);	// 0000_0100
+	//碰撞、监听筛选
+	phyBody->setCategoryBitmask(0x08);	// 0000_1000
 	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
 	phyBody->setContactTestBitmask(0xFF); //1111_1111
 	//添加物理躯体
