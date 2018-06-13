@@ -507,8 +507,14 @@ void RoomScene::update(float delta)
             }
             //player无敌时间的倒计时
             if (player->getInvincibleTime() > 0) {
+				player->getPhysicsBody()->setCollisionBitmask(0xF9); //1111_1001(F9)
+				player->getPhysicsBody()->setContactTestBitmask(0xC0); //1100_0000(C0)
                 player->setInvincibleTime(player->getInvincibleTime() - 1);
             }
+			else {
+				player->getPhysicsBody()->setCollisionBitmask(0xFF); //1111_1111(FF)
+				player->getPhysicsBody()->setContactTestBitmask(0xCE); //1100_1110(CE)
+			}
         }
         else {
             //player血量为0，Issac死亡，添加动画和游戏结束界面？
@@ -762,8 +768,9 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 	//tag=5,6,7,8是左、上、右、下4个门
 	if (nodeA && nodeB)
 	{
-        if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
-        {
+        //if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
+		if (tagA == 1 && tagB == 2)
+		{
             //Issac被monster碰到，受伤
             nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
             //Service更新血量
