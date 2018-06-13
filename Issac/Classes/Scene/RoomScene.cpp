@@ -494,7 +494,8 @@ void RoomScene::update(float delta)
 
         //player移动	
         const auto he = PlayerService::getInstance()->getHealth();
-
+		//测试是否能够解决体位问题
+		player->setRotation(0);
         if (he > 0) {
             if (player->getColClog() != 0) {
                 player->setColClog(player->getColClog() - 1);
