@@ -44,7 +44,6 @@ private:
     int current_room_id_;
 
     static string get_doorstyle_from_room_type(int room_type);
-    static string get_ministyle_from_room_type(int room_type);
     static string get_groundstyle_from_room_type(int room_type);
     void build_vm_from_room_map();
 };

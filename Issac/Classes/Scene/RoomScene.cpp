@@ -225,19 +225,55 @@ bool RoomScene::init(int roomID)
     addChild(hud_goldkey, 8);
     addChild(hud_silverkey, 8);
     
-    //TODO 小地图应加载到缓存，并设置透明度，独立于RoomScene，元素都在texture_minimap中
+    //小地图生成
+    //mini_map_vm_
     Texture2D * texture_minimap = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/minimap1.png");
-    Sprite * minimap = Sprite::createWithTexture(texture_minimap, Rect(0,0,56,48));
-    minimap->setPosition(370,240);
+    Sprite * minimap = Sprite::createWithTexture(texture_minimap, Rect(0, 0, 56, 48));
+    minimap->setPosition(370, 240);
     addChild(minimap, 5);
-    Sprite * current_room = Sprite::createWithTexture(texture_minimap, Rect(112,80,16,16));//当前房间
-    current_room->setPosition(0,8);
-    Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64,16,16,16));//非当前房间
-    available_room->setPosition(0,0);
-    Sprite * boss_room_icon = Sprite::createWithTexture(texture_minimap, Rect(32,80,16,16));//boss房间标志
-    Sprite * treasure_room_icon = Sprite::createWithTexture(texture_minimap, Rect(64,64,16,16));//buff房间标志
-    minimap->addChild(current_room, 1);
-    minimap->addChild(available_room,1);
+
+    const auto msks = mini_map_vm_.getMiniMask();
+
+    for (int i = 0; i < 5; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+        {
+            const auto msk = msks[i][j];
+
+            if (msk == -2)//中间位置
+            {
+                Sprite * current_room = Sprite::createWithTexture(texture_minimap, Rect(112, 80, 16, 16));//当前房间
+                current_room->setPosition(28, 24);
+                minimap->addChild(current_room, 1);
+            }
+            else if (msk >= 0 && msk <8)//普通房间
+            {
+                Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16));//非当前房间
+                available_room->setPosition(12+j*8, 40-i*8);
+                minimap->addChild(available_room, 1);
+
+            }
+            else if (msk >= 8 && msk < 15)//宝藏房间
+            {
+                Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16));//非当前房间
+                available_room->setPosition(12 + j * 8, 40 - i * 8);
+                minimap->addChild(available_room, 1);
+                Sprite * treasure_room_icon = Sprite::createWithTexture(texture_minimap, Rect(64, 64, 16, 16));//buff房间标志
+                treasure_room_icon->setPosition(12 + j * 8, 40 - i * 8);
+                minimap->addChild(treasure_room_icon, 1);
+
+            }
+            else if (msk >= 15 && msk < 20)//Boss房间
+            {
+                Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16));//非当前房间
+                available_room->setPosition(12 + j * 8, 40 - i * 8);
+                minimap->addChild(available_room, 1);
+                Sprite * boss_room_icon = Sprite::createWithTexture(texture_minimap, Rect(32, 80, 16, 16));//boss房间标志
+                boss_room_icon->setPosition(12 + j * 8, 40 - i * 8);
+                minimap->addChild(boss_room_icon, 1);
+            }
+        }
+    }
     
     //TODO 数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
     Texture2D * texture_font = Director::getInstance()->getTextureCache()->addImage("res/font/pftempestasevencondensed_0.png");

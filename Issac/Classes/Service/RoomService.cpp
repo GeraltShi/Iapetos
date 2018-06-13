@@ -81,71 +81,177 @@ MiniMapViewModel RoomService::get_mini_map(int room_id)
         throw runtime_error("Room Not Found");
     }
 
+    //初始化5×5的小地图
     vector<vector<int>> masks;
-    vector<vector<string>> style_masks;
     for (size_t i = 0; i < 5; i++)
     {
         vector<int> row;
-        vector<string> row2;
 
         for (size_t j = 0; j < 5; j++)
         {
-            row.push_back(0);
-            row2.emplace_back("");
+            row.push_back(-1);
         }
         masks.push_back(row);
-        style_masks.push_back(row2);
     }
 
-    //5*5
-    //00200
-    //00200
-    //02120
-    //00000
-    //00000
+    //-1表示空
+    //其余数字和room_type定义一致
+    //-1 -1 -1 -1 -1
+    //-1 -1 -1 -1 -1
+    //-1  2 -2  2 -1
+    //-1 -1 -1 -1 -1
+    //-1 -1 -1 -1 -1
+    //中间的房间永远是“亮”记为-2
 
-    //0:没有房间
-    //1:初始房间
-    //2:普通房间
-    //3:特殊房间1
-    //4:特殊房间2
-    //5:特殊房间3
-
+    //获取当前房间的四周
     const auto m = room_map_[room_id];
     const auto l = m.left_room_id;
     const auto r = m.right_room_id;
     const auto u = m.up_room_id;
     const auto d = m.down_room_id;
+
+    masks[2][2] = -2;
   
     if (l>0)//左边有房间
     {
         const auto ll = room_map_[l];
         const auto l_type = ll.current_room_type;
         masks[2][1] = l_type;
-        style_masks[2][1] = get_ministyle_from_room_type(l_type);
+
+        //两层遍历
+        if (ll.left_room_id > 0)//左边有房间
+        {
+            const auto ll_l = room_map_[ll.left_room_id];
+            if (ll_l.visited)
+            {
+                masks[2][0] = ll_l.current_room_type;
+            }
+        }
+
+        if (ll.up_room_id > 0)//上边有房间
+        {
+            const auto ll_l = room_map_[ll.up_room_id];
+            if (ll_l.visited)
+            {
+                masks[1][1] = ll_l.current_room_type;
+            }
+        }
+
+        if (ll.down_room_id > 0)//下边有房间
+        {
+            const auto ll_l = room_map_[ll.down_room_id];
+            if (ll_l.visited)
+            {
+                masks[3][1] = ll_l.current_room_type;
+            }
+        }
     }
 
+    if (u>0)//上边有房间
+    {
+        const auto ll = room_map_[u];
+        const auto l_type = ll.current_room_type;
+        masks[1][2] = l_type;
 
+        //两层遍历
+        if (ll.left_room_id > 0)//左边有房间
+        {
+            const auto ll_l = room_map_[ll.left_room_id];
+            if (ll_l.visited)
+            {
+                masks[1][1] = ll_l.current_room_type;
+            }
+        }
 
-    vector<int> row1;
-    vector<int> row2;
-    vector<int> row3;
+        if (ll.up_room_id > 0)//上边有房间
+        {
+            const auto ll_l = room_map_[ll.up_room_id];
+            if (ll_l.visited)
+            {
+                masks[0][2] = ll_l.current_room_type;
+            }
+        }
 
-    row1.push_back(0);
-    row1.push_back(u == 0 ? 0 : 1);
-    row1.push_back(0);
+        if (ll.right_room_id > 0)//右边有房间
+        {
+            const auto ll_l = room_map_[ll.right_room_id];
+            if (ll_l.visited)
+            {
+                masks[1][3] = ll_l.current_room_type;
+            }
+        }
+    }
 
-    row2.push_back(l == 0 ? 0 : 1);
-    row2.push_back(1);//current
-    row2.push_back(r == 0 ? 0 : 1);
+    if (r>0)//右边有房间
+    {
+        const auto ll = room_map_[r];
+        const auto l_type = ll.current_room_type;
+        masks[2][3] = l_type;
 
-    row3.push_back(0);
-    row3.push_back(d == 0 ? 0 : 1);
-    row3.push_back(0);
+        //两层遍历
+        if (ll.right_room_id > 0)//右边有房间
+        {
+            const auto ll_l = room_map_[ll.right_room_id];
+            if (ll_l.visited)
+            {
+                masks[2][4] = ll_l.current_room_type;
+            }
+        }
 
-    masks.push_back(row1);
-    masks.push_back(row2);
-    masks.push_back(row3);
+        if (ll.up_room_id > 0)//上边有房间
+        {
+            const auto ll_l = room_map_[ll.up_room_id];
+            if (ll_l.visited)
+            {
+                masks[1][3] = ll_l.current_room_type;
+            }
+        }
+
+        if (ll.down_room_id > 0)//下边有房间
+        {
+            const auto ll_l = room_map_[ll.down_room_id];
+            if (ll_l.visited)
+            {
+                masks[3][3] = ll_l.current_room_type;
+            }
+        }
+    }
+
+    if (d>0)//下边有房间
+    {
+        const auto ll = room_map_[d];
+        const auto l_type = ll.current_room_type;
+        masks[3][2] = l_type;
+
+        //两层遍历
+        if (ll.left_room_id > 0)//左边有房间
+        {
+            const auto ll_l = room_map_[ll.left_room_id];
+            if (ll_l.visited)
+            {
+                masks[3][1] = ll_l.current_room_type;
+            }
+        }
+
+        if (ll.right_room_id > 0)//右边有房间
+        {
+            const auto ll_l = room_map_[ll.right_room_id];
+            if (ll_l.visited)
+            {
+                masks[3][3] = ll_l.current_room_type;
+            }
+        }
+
+        if (ll.down_room_id > 0)//下边有房间
+        {
+            const auto ll_l = room_map_[ll.down_room_id];
+            if (ll_l.visited)
+            {
+                masks[4][2] = ll_l.current_room_type;
+            }
+        }
+    }
+
 
     auto mini = MiniMapViewModel();
     mini.setMiniMask(masks);
@@ -373,10 +479,6 @@ string RoomService::get_doorstyle_from_room_type(int room_type)
     return "res/gfx/grid/door_04_selfsacrificeroomdoor.png";
 }
 
-string RoomService::get_ministyle_from_room_type(int room_type)
-{
-    return "";
-}
 
 string RoomService::get_groundstyle_from_room_type(int room_type)
 {
