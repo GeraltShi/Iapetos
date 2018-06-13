@@ -97,7 +97,7 @@ int RoomSceneController::check_head(){
 
 int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
     int shift = 0;
-    if(scene_->model.game_stat != 0){
+    if(scene_->model.game_stat == 1){
         switch (keyCode) {
             case EventKeyboard::KeyCode::KEY_UP_ARROW:
                 shift = -1;
@@ -106,13 +106,67 @@ int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
                 shift = 1;
                 break;
             case EventKeyboard::KeyCode::KEY_ENTER:
-                //TODO cursor = 0,跳转到option
-                if(scene_->model.paused_menu_cursor == 1){
+                //cursor = 0,跳转到option
+                if(scene_->model.paused_menu_cursor == 0){
+                    scene_->model.option_display = 1;
+                }
+                else if(scene_->model.paused_menu_cursor == 1){
                     scene_->model.game_stat = 0;
                 } else if (scene_->model.paused_menu_cursor == 2){
                     Director::getInstance()->popScene();
                 }
                 break;
+            default:
+                break;
+        }
+    }
+    return shift;
+}
+
+int RoomSceneController::check_option(EventKeyboard::KeyCode keyCode){
+    int shift = 0;
+    if(scene_->model.game_stat == 1 && scene_->model.option_display == 1){
+        switch (keyCode) {
+            case EventKeyboard::KeyCode::KEY_UP_ARROW:
+                shift = -1;
+                break;
+            case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+                shift = 1;
+                break;
+            case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+                if(scene_->model.option_menu_cursor == 0){
+                    if(scene_->model.sfx_volume != 0){
+                        scene_->model.sfx_volume -=1;
+                    }
+                } else if(scene_->model.option_menu_cursor == 1){
+                    if(scene_->model.music_volume != 0){
+                        scene_->model.music_volume -=1;
+                    }
+                } else if(scene_->model.option_menu_cursor == 2){
+                    if(scene_->model.map_opacity != 0){
+                        scene_->model.map_opacity -=1;
+                    }
+                }
+                break;
+            case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+                if(scene_->model.option_menu_cursor == 0){
+                    if(scene_->model.sfx_volume != 10){
+                        scene_->model.sfx_volume +=1;
+                    }
+                } else if(scene_->model.option_menu_cursor == 1){
+                    if(scene_->model.music_volume != 10){
+                        scene_->model.music_volume +=1;
+                    }
+                } else if(scene_->model.option_menu_cursor == 2){
+                    if(scene_->model.map_opacity != 10){
+                        scene_->model.map_opacity +=1;
+                    }
+                }
+                break;
+            case EventKeyboard::KeyCode::KEY_ESCAPE:
+                if(scene_->model.option_display == 1){
+                    scene_->model.option_display = 0;
+                }
             default:
                 break;
         }
@@ -139,6 +193,7 @@ void RoomSceneController::on_key_pressed(EventKeyboard::KeyCode keyCode, Event* 
     scene_->model.walk_direction = check_key_inRoom(keyCode);
     scene_->model.tear_direction = check_head();
     scene_->model.shift_pausemenu(check_pause(keyCode));
+    scene_->model.shift_optionmenu(check_option(keyCode));
     check_bomb(keyCode);
 }
 
