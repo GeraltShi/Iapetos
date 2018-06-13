@@ -5,11 +5,6 @@ using namespace cocos2d;
 
 # define ROOT2 1.41421356
 
-Sprite *Monster::createSprite()
-{
-	return create();
-}
-
 bool Monster::init()
 {
 	if (!Moveable::init())
@@ -18,6 +13,7 @@ bool Monster::init()
 	}
 
 	moving = false;
+	fireCoolTime = 3;
 	//tag=2是怪物
 	this->setTag(2);
 
@@ -39,6 +35,26 @@ bool Monster::init()
 
 
 	return true;
+}
+
+Tear* Monster::Fire(Vec2 targetPos)
+{
+	//创建一个Tear
+	Tear* myTear = Tear::createTear();
+	//设定初始tear位置和速度
+	double diffX = abs(targetPos.x - this->getPosition().x); 
+	double diffY = abs(targetPos.y - this->getPosition().y);
+	double dis = sqrt(diffX*diffX + diffY * diffY);
+	double tear_V = moveSpeed + tearSpeed;		
+	myTear->getPhysicsBody()->setVelocity(Vec2(tear_V*diffX/dis, tear_V*diffY/dis ));
+	//初始位置
+	myTear->setPosition(Vec2(getPosition().x + MonTearOffset * diffX / dis, getPosition().y + MonTearOffset * diffY / dis));
+	//存在时间,攻击
+	myTear->setTearExistTime(tearExistTime);
+	myTear->setAttack(attack);
+	//是Monster发射的
+	myTear->setTag(3);
+	return myTear;
 }
 
 void Monster::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
@@ -205,9 +221,9 @@ void Monster::move(int walk_direction)
 {
 	//移动
 	//移动速度不是之前的情况，说明发生碰撞
-	if (colClog == ColClogTime
+	if (colClog == 0
 		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
-		colClog = 0;
+		colClog = ColClogTime;
 	}
 	else {
 		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
@@ -312,7 +328,7 @@ void Monster::move(int walk_direction)
 		break;
 	}
 
-	if (colClog == 0) {
+	if (colClog == ColClogTime) {
 		prev_walk_orientation = 5;
 	}
 }
@@ -385,20 +401,113 @@ bool Fatty::init() {
 		return false;
 	}
 
-	//Fatty碰撞大小	
-	radiusSize = 12;
-	//Fatty重量
-	bodyMass = 500;
-	//Fatty行走速度
-	moveSpeed = 80;
-	//Fatty血量5
-	health = 5;
-	//Fatty攻击1
-	attack = 1;
+	
+	radiusSize = 12;	//Fatty碰撞大小	
+	bodyMass = 500;		//Fatty重量
+	moveSpeed = 80;		//Fatty行走速度
+	health = 5;			//Fatty血量
+	attack = 1;			//Fatty攻击
+	tearSpeed = 60;		//Fatty泪速
+	tearExistTime = 80; //Fatty射程
+
 	this->createPhyBody();
 	return true;
 }
 
-void Fatty::moveStrategy(int walk_direction) {
-	this->move(walk_direction);
+////猴子移动
+//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
+//	colClog = 5;
+//	this->move(rand() % 9 + 1);
+//}
+
+////傻子移动
+//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
+//	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+//	int walk_direction = ToPointDir(playerPos);
+//	this->move(walk_direction);
+//}
+
+////疯子移动
+//void Fatty::moveStrategy(const RoomViewModel& roomMap) {
+//	if (rand() % 2 == 0) {
+//		//冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
+//		Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+//		int walk_direction = ToPointDir(playerPos);
+//		colClog = 40;
+//		this->move(walk_direction);
+//	}
+//	else {
+//		//暂停不动
+//		this->getPhysicsBody()->setVelocity(Vec2(0, 0));
+//	}
+//}
+
+//脑子移动
+void Fatty::moveStrategy(const RoomViewModel& roomMap) {
+	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height*1.2) {
+		//足够近，直接冲过去
+		this->move(ToPointDir(playerPos));
+	}
+	else {
+		//BFS找到最短路径
+		GridPoint roomFlag[GRID_WIDTH][GRID_HEIGHT];
+		vector<GridPoint> quary;
+		int head=0;
+		GridPoint destination = CalGridPos(playerPos),startPos= CalGridPos(this->getPosition());
+		quary.push_back(startPos);
+		roomFlag[startPos.x][startPos.y] = GridPoint(99, 99);
+		while (head < quary.size()) {
+			for (int i = 0; i < 4; i++) {
+				GridPoint tempPos = GridPoint(quary[head].x + moveStep[i].x, quary[head].y + moveStep[i].y);	
+				if (tempPos.inRoom() && roomFlag[tempPos.x][tempPos.y].x == -1
+					&& roomMap.getRoomMap(tempPos.x, tempPos.y) != 1
+					&& roomMap.getRoomMap(tempPos.x, tempPos.y) != 2) {
+					roomFlag[tempPos.x][tempPos.y] = quary[head];
+					quary.push_back(tempPos);
+					if (tempPos == destination)
+						goto mark;
+				}
+			}
+			head++;
+		}
+	mark:
+		GridPoint des1 = destination;
+		while (!(roomFlag[destination.x][destination.y] == startPos)) {
+			destination = roomFlag[destination.x][destination.y];
+		}
+		this->move(ToPointDir(Vec2(RoomUnitSize.width*destination.x+61, RoomUnitSize.height*destination.y + 61)));
+	}
+}
+
+
+//void Fatty::fireStrategy(Vector<Tear*>& tears_)
+//{
+//	//向player位置射击的开火策略
+//	if (fireCoolTime > 0) {
+//		fireCoolTime--; //冷却不开火
+//	}
+//	else {
+//		//冷却
+//		fireCoolTime = 20;
+//		//向人物方向发射子弹
+//		tears_.pushBack(Fire(this->getParent()->getChildByTag(1)->getPosition()));
+//	}
+//}
+
+void Fatty::fireStrategy(Vector<Tear*>& tears_)
+{
+	//向4个方向（上下左右）射击的开火策略
+	if (fireCoolTime > 0) {
+		fireCoolTime--; //冷却不开火
+	}
+	else {
+		//冷却
+		fireCoolTime = 20;
+		//向4个方向（上下左右）射击的开火策略
+		tears_.pushBack(Fire(Vec2(this->getPosition().x-10, this->getPosition().y) ));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y-10)));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y+10)));
+	}
 }

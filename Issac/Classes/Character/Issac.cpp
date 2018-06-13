@@ -9,11 +9,6 @@ Issac *Issac::createIssac()
     return create();
 }
 
-Sprite *Issac::createSprite()
-{
-    return create();
-}
-
 bool Issac::init()
 {
     if (!Moveable::init())
@@ -206,9 +201,9 @@ void Issac::move(int walk_direction, int tear_direction)
 {
 	//移动
 	//移动速度不是之前的情况，说明发生碰撞
-	if (colClog == ColClogTime
+	if (colClog == 0
 		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation)) {
-		colClog = 0;
+		colClog = ColClogTime;
 	}
 	else {
 		this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
@@ -387,7 +382,7 @@ void Issac::move(int walk_direction, int tear_direction)
             break;
     }
 
-	if (colClog == 0) {
+	if (colClog == ColClogTime) {
 		prev_walk_orientation = 5;
 	}
 }
@@ -415,4 +410,44 @@ void Issac::createPhyBody()
 	phyBody->setContactTestBitmask(0x26);	//0010_0110
 	//添加物理躯体
 	this->addComponent(phyBody);
+}
+
+Tear* Issac::Fire(int fireDir)
+{
+	assert(fireDir == 2 || fireDir == 4 || fireDir == 6 || fireDir == 8);
+	//创建一个Tear
+	Tear* myTear=Tear::createTear();
+	//设定初始tear位置和速度
+	int offsetX, offsetY;
+	double tear_V = moveSpeed + tearSpeed;
+	switch (fireDir) {
+	case 2:
+		offsetX = 0;
+		offsetY = (radiusSize+5);
+		myTear->getPhysicsBody()->setVelocity(Vec2(0, tear_V));
+		break;
+	case 4:
+		offsetX = -(radiusSize + 5);
+		offsetY = 0;
+		myTear->getPhysicsBody()->setVelocity(Vec2(-tear_V, 0));
+		break;
+	case 6:
+		offsetX = (radiusSize + 5);
+		offsetY = 0;
+		myTear->getPhysicsBody()->setVelocity(Vec2(tear_V, 0));
+		break;
+	case 8:
+		offsetX = 0;
+		offsetY = -(radiusSize + 5);
+		myTear->getPhysicsBody()->setVelocity(Vec2(0, -tear_V));
+		break;
+	}
+	//初始位置
+	myTear->setPosition(Vec2(getPosition().x + offsetX, getPosition().y + offsetY));
+	//存在时间,攻击
+	myTear->setTearExistTime(tearExistTime);
+	myTear->setAttack(attack);
+	//是Issac发射的
+	myTear->setTag(4);
+	return myTear;
 }
