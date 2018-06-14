@@ -34,8 +34,8 @@ Tear *Monster::Fire(Vec2 targetPos)
     double diffX = abs(targetPos.x - this->getPosition().x);
     double diffY = abs(targetPos.y - this->getPosition().y);
     double dis = sqrt(diffX * diffX + diffY * diffY);
-    double tear_V = moveSpeed + tearSpeed;
-    myTear->getPhysicsBody()->setVelocity(Vec2(tear_V * diffX / dis, tear_V * diffY / dis));
+    //double tear_V = moveSpeed + tearSpeed;
+    //myTear->getPhysicsBody()->setVelocity(Vec2(tear_V * diffX / dis, tear_V * diffY / dis));
     //初始位置
     myTear->setPosition(Vec2(getPosition().x + MonTearOffset * diffX / dis, getPosition().y + MonTearOffset * diffY / dis));
     //存在时间,攻击
@@ -438,7 +438,7 @@ bool Fatty::init()
     health = 5;         //Fatty血量
     attack = 1;         //Fatty攻击
     tearSpeed = 60;     //Fatty泪速
-    tearExistTime = 80; //Fatty射程
+	tearExistTime = 0;	//Fatty射程
 
     //不要将Texture保存在类,用的时候直接从TextureCache中获取
     const auto fatty_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/rebirth/monster_207_fatty.png");
@@ -455,16 +455,6 @@ bool Fatty::init()
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
 
-    //Fatty碰撞大小
-    //radiusSize = 12;
-    //Fatty重量
-    //bodyMass = 500;
-    //Fatty行走速度
-    //moveSpeed = 80;
-    //Fatty血量5
-    //health = 5;
-    //Fatty攻击1
-    //attack = 1;
     this->createPhyBody();
     return true;
 }
@@ -509,6 +499,33 @@ void Fatty::moveStrategy(const RoomViewModel &roomMap)
             destination = roomFlag[destination.x][destination.y];
         }
         this->move(ToPointDir(Vec2(RoomUnitSize.width * destination.x + 61, RoomUnitSize.height * destination.y + 61)));
+    }
+}
+
+//---------------------------------------------------------FattyFire----------------------------------------------------------
+void FattyFire::moveStrategy(const RoomViewModel& roomMap) {
+	//随机移动
+	colClog = 5;
+	this->move(rand() % 9 + 1);
+}
+
+//十字开火
+void FattyFire::fireStrategy(Vector<Tear *> &tears_)
+{
+    //向4个方向（上下左右）射击的开火策略
+    if (fireCoolTime > 0)
+    {
+        fireCoolTime--; //冷却不开火
+    }
+    else
+    {
+        //冷却
+        fireCoolTime = fireSpeed;
+        //向4个方向（上下左右）射击的开火策略
+        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y)));
+        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
+        tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y - 10)));
+        tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y + 10)));
     }
 }
 
@@ -667,6 +684,22 @@ void Fly::moveStrategy(const RoomViewModel & roomMap)
 {
     Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
     this->move(this->ToPointDir(playerPos));
+}
+
+//--------------------------------------------------------FlyFire----------------------------------------------------------
+
+void FlyFire::fireStrategy(Vector<Tear*>& tears_)
+{
+	//向player位置射击的开火策略
+	if (fireCoolTime > 0) {
+		fireCoolTime--; //冷却不开火
+	}
+	else {
+		//冷却
+		fireCoolTime = fireSpeed;
+		//向人物方向发射子弹
+		tears_.pushBack(Fire(this->getParent()->getChildByTag(1)->getPosition()));
+	}
 }
 
 //---------------------------------------------------------Gaper----------------------------------------------------------
@@ -981,6 +1014,25 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 	    }
 	    this->move(ToPointDir(Vec2(RoomUnitSize.width * destination.x + 61, RoomUnitSize.height * destination.y + 61)));
 	}
+}
+
+//------------------------------------------------------GaperFire----------------------------------------------------------
+void GaperFire::fireStrategy(Vector<Tear *> &tears_)
+{
+	//X字开火
+    if (fireCoolTime > 0)
+    {
+        fireCoolTime--; //冷却不开火
+    }
+    else
+    {
+        fireCoolTime = fireSpeed; //冷却
+		//开火
+        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y-10)));
+        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y+10)));
+        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
+        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y + 10)));
+    }
 }
 
 //---------------------------------------------------------Spider---------------------------------------------------------

@@ -190,6 +190,24 @@ bool RoomScene::init(int roomID)
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(monsters_.at(monsters_.size() - 1), 3, "spider1");
             }
+			if (room_vm_.getRoomMap(i, j) == 8) { //8说明这个位置是FattyFire
+												  //FattyFire生成
+				monsters_.pushBack((Monster*)FattyFire::createFattyFire());
+				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty1");
+			}
+			if (room_vm_.getRoomMap(i, j) == 9) { //9说明这个位置是FlyFire
+												  //FlyFire生成
+				monsters_.pushBack((Monster*)FlyFire::createFlyFire());
+				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+			}
+			if (room_vm_.getRoomMap(i, j) == 10) { //10说明这个位置是GaperFire
+												  //GaperFire生成
+				monsters_.pushBack((Monster*)GaperFire::createGaperFire());
+				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+			}
 			if (room_vm_.getRoomMap(i, j) == 1) {  
 				//小石头
 				stones_.pushBack(Stone::createStone(1, Size(26, 26)));
@@ -767,6 +785,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 	}
 	//tag=0 静止障碍物; tag=1:player; tag=2:monster; tag=3:tearbyMonster; tag=4:tearbyIssac
 	//tag=5,6,7,8是左、上、右、下4个门
+	//tag=9物品collectable
 	if (nodeA && nodeB)
 	{
         //if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)

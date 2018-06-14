@@ -58,6 +58,28 @@ public:
     static void build_animation_cache();
 };
 
+class FattyFire : public Fatty
+{
+public:
+	static FattyFire *createFattyFire() {
+		return create();
+	}
+	virtual bool init() {
+		if (!(Fatty::init())) {
+			return false;
+		}
+		fireSpeed = 20;		//射速
+		tearSpeed = 20;		//弹速
+		tearExistTime = 30; //射程
+		return true;
+	}
+	CREATE_FUNC(FattyFire)
+	virtual void move(int walk_direction) { Fatty::move(walk_direction); }
+	virtual void moveStrategy(const RoomViewModel &roomMap);
+	virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
+};
+
 class Fly : public Monster
 {
   public:
@@ -73,6 +95,28 @@ class Fly : public Monster
     static void build_animation_cache();
 };
 
+class FlyFire : public Fly
+{
+public:
+	static FlyFire *createFlyFire() {
+		return create();
+	}
+	virtual bool init() { 
+		if (!(Fly::init())) {
+			return false;
+		};
+		fireSpeed = 50;		//射速
+		tearSpeed = 40;		//弹速
+		tearExistTime = 200; //射程
+		return true;
+	}
+	CREATE_FUNC(FlyFire)
+	virtual void move(int walk_direction) { Fly::move(walk_direction); }
+	virtual void moveStrategy(const RoomViewModel &roomMap) { Fly::moveStrategy(roomMap); }
+	virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
+};
+
 class Gaper : public Monster
 {
   public:
@@ -85,6 +129,28 @@ class Gaper : public Monster
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
     void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_) const;
     static void build_animation_cache();
+};
+
+class GaperFire : public Gaper
+{
+public:
+	static GaperFire *createGaperFire() {
+		return create();
+	}
+	virtual bool init() { 
+		if (!Gaper::init()) {
+			return false;
+		}
+		fireSpeed = 40;		//射速
+		tearSpeed = 20;		//弹速
+		tearExistTime = 50; //射程
+		return true;
+	}
+	CREATE_FUNC(GaperFire)
+	virtual void move(int walk_direction) { Gaper::move(walk_direction); }
+	virtual void moveStrategy(const RoomViewModel &roomMap) { Gaper::moveStrategy(roomMap); }
+	virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
 };
 
 class Spider : public Monster
