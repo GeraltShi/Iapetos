@@ -15,6 +15,7 @@ struct Room
     int down_room_id;
     bool visited;
     int current_room_type;
+	int current_barrier_type;
 };
 
 

@@ -388,16 +388,14 @@ bool RoomScene::init(int roomID)
     Texture2D * pickup_heart_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_001_heart.png");
     Sprite * pickup_heart_plusfull = Sprite::createWithTexture(pickup_heart_texture, Rect(0,0,32,32));
     Sprite * pickup_heart_plushalf = Sprite::createWithTexture(pickup_heart_texture, Rect(32,0,32,32));
-    Sprite * pickup_heart_maxplusfull = Sprite::createWithTexture(pickup_heart_texture, Rect(0,32,32,32));
-    Sprite * pickup_heart_maxplushalf = Sprite::createWithTexture(pickup_heart_texture, Rect(32,32,32,32));
     pickup_heart_plusfull -> setPosition(221,143);
     pickup_heart_plushalf -> setPosition(241,143);
-    pickup_heart_maxplusfull -> setPosition(261,143);
-    pickup_heart_maxplushalf -> setPosition(281,143);
+  //  pickup_heart_maxplusfull -> setPosition(261,143);
+    //pickup_heart_maxplushalf -> setPosition(281,143);
     this->addChild(pickup_heart_plusfull,3);
     this->addChild(pickup_heart_plushalf,3);
-    this->addChild(pickup_heart_maxplusfull,3);
-    this->addChild(pickup_heart_maxplushalf,3);
+   // this->addChild(pickup_heart_maxplusfull,3);
+   // this->addChild(pickup_heart_maxplushalf,3);
     Texture2D * pickup_speedup_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_012_magicmushroom.png");
     Sprite * pickup_speedup = Sprite::createWithTexture(pickup_speedup_texture, Rect(0,0,32,32));
     pickup_speedup-> setPosition(301,143);
@@ -894,8 +892,20 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
                     break;
                 }
 			default: break;
-			}
-			
+			}	
+		}
+		//Issac和物品Collectable碰撞,Issac拾取
+		if (tagA == 1 && tagB == 9) {
+			nodeA->setHealth(nodeA->getHealth() + nodeB->getHealth());
+			nodeA->setAttack(nodeA->getAttack() + nodeB->getAttack());
+			nodeA->setTearSpeed(nodeA->getTearSpeed() + nodeB->getTearSpeed());
+			nodeA->setTearExistTime(nodeA->getTearExistTime() + nodeB->getTearExistTime());
+			nodeA->setMoveSpeed(nodeA->getMoveSpeed() + nodeB->getMoveSpeed());
+			nodeA->setRadiusSize(nodeA->getRadiusSize() + nodeB->getRadiusSize());
+			nodeA->setEnFly(nodeB->getEnFly());
+			nodeA->setEnBounce(nodeB->getEnBounce());
+			if (nodeB->getEnHalfTearDis())
+				nodeA->setTearExistTime(nodeA->getTearExistTime() / 2);
 		}
 
 		//眼泪碰撞后消失

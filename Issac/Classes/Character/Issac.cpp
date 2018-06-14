@@ -23,12 +23,14 @@ bool Issac::init()
 	radiusSize = 10;
 	bodyMass = 50;
 	moving = false;
-	tearSpeed = 50;
+	tearSpeed = 100;
 	tearExistTime = 30;
 	//初始血量6个半心（3颗心）
 	health = 7;
 	//初始攻击
 	attack = 1.3;
+	enFly = false;
+	enBounce = false;
 	this->setTag(1);
 
 

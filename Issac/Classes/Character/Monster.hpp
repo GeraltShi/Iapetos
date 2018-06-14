@@ -106,7 +106,7 @@ public:
 			return false;
 		};
 		fireSpeed = 50;		//射速
-		tearSpeed = 40;		//弹速
+		tearSpeed = 70;		//弹速
 		tearExistTime = 200; //射程
 		return true;
 	}
@@ -141,8 +141,8 @@ public:
 		if (!Gaper::init()) {
 			return false;
 		}
-		fireSpeed = 40;		//射速
-		tearSpeed = 20;		//弹速
+		fireSpeed = 50;		//射速
+		tearSpeed = 120;	//弹速
 		tearExistTime = 50; //射程
 		return true;
 	}
@@ -176,10 +176,11 @@ public:
     CREATE_FUNC(FlyDaddy)
     void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
-    virtual void fireStrategy(Vector<Tear *> &tears_) {}
-    virtual void giveBirth(Vector<Monster *> &monsters_) {}
+	virtual void fireStrategy(Vector<Tear *> &tears_) {};
+	virtual void giveBirth(Vector<Monster *> &monsters_) {};
     string getDeadAnimation() override;
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
 };
+
 #endif /* Monster_hpp */
