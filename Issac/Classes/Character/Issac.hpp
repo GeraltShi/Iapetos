@@ -18,6 +18,8 @@ public:
 	virtual void createPhyBody();
 	Tear* Fire(int fireDir);
     void move(int walk_direction, int tear_direction);
+    void hurt();
+    void dead();
 private:
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();

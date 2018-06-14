@@ -572,8 +572,9 @@ void RoomScene::update(float delta)
         else {
             //player血量为0，Issac死亡，添加动画和游戏结束界面？
             log("DEAD");
-            //TODO播放死亡动画
+            //TODO播放死亡动画，放完再将 model 设为结束
             //设置 game status
+            player->dead();
             model.game_stat = 2;
         }
 
@@ -883,9 +884,9 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
             PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             nodeA->setInvincibleTime(20);
-            //TODO 添加受伤动画？
+            //受伤动画
             log("Issac Health:%d", nodeA->getHealth());
-            player->runAction(Blink::create(0.5, 4));
+            player->hurt();
         }
         //怪物和眼泪碰撞
         if (tagA == 2 && (tagB == 3 || tagB == 4)) {
@@ -897,8 +898,8 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
             PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             if (tagA == 1) nodeA->setInvincibleTime(20);
-            //TO DO添加受伤动画？
-            player->runAction(Blink::create(0.5, 4));
+            //添加受伤动画
+            player->hurt();
         }
 		//Issac和门的碰撞
 		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.empty()) {

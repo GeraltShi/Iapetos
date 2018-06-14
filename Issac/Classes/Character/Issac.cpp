@@ -39,11 +39,8 @@ bool Issac::init()
     Sprite * headSprite = createWithSpriteFrame(headFrame);
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
     Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
-    SpriteFrame *hurtFrame = SpriteFrame::createWithTexture(texture_, Rect(128,192,64,64));
-    Sprite * hurt = createWithSpriteFrame(hurtFrame);
-    hurt->setVisible(false);
     Sprite * shadow = createWithTexture(shadow_);
-    shadow->setOpacity(0x44);//更改shadow透明度
+    shadow->setOpacity(0x44);//设置shadow透明度
     shadow->setScale(0.15, 0.15);
     shadow->setPosition(0,-8);
     const auto light_gradient_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/light_gradient.png");
@@ -54,14 +51,12 @@ bool Issac::init()
     this->addChild(shadow, -1);
     this->addChild(headSprite, 1, "head");
     this->addChild(bodySprite, 0, "body");
-    this->addChild(hurt,2,"hurt");
     this->addChild(light_gradient,2);
-    light_gradient->setOpacity(0x99);//更改light gradient透明度
+    light_gradient->setOpacity(0x99);//设置light gradient透明度
     BlendFunc blend = {GL_SRC_ALPHA,GL_ONE};
     light_gradient->setBlendFunc(blend);
     headSprite->setPosition(Vec2(0, 10));
-    this->setPosition(Vec2(221, 143));
-    
+//    this->setPosition(Vec2(221, 143));
     
     return true;
 }
@@ -98,6 +93,18 @@ void Issac::build_sprite_frame_cache(Texture2D *texture_) const
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32, 0, 32, 32)), "downshake");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(96, 0, 32, 32)), "rightshake");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(160, 0, 32, 32)), "upshake");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(128,192,64,64)), "issac_hurt");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0,128,64,64)), "issac_dead0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(192,128,64,64)), "issac_dead1");
+    
+    Texture2D * ghost_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/ghost.png");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(ghost_texture, Rect(0,0,32,32)), "issac_ghost0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(ghost_texture, Rect(32,0,32,32)), "issac_ghost1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(ghost_texture, Rect(64,0,32,32)), "issac_ghost2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(ghost_texture, Rect(96,0,32,32)), "issac_ghost3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(ghost_texture, Rect(128,0,32,32)), "issac_ghost4");
 }
 
 void Issac::build_animation_cache()
@@ -199,7 +206,33 @@ void Issac::build_animation_cache()
     hwalk_animation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(hwalk_animation, "hwalk_animation");
     
+    const auto issac_hurt = spriteCache->getSpriteFrameByName("issac_hurt");
+    Vector<SpriteFrame*> hurtFrames;
+    hurtFrames.pushBack(issac_hurt);
+    Animation * hurt_animation = Animation::createWithSpriteFrames(hurtFrames, 0.1f);
+    aniCache->addAnimation(hurt_animation, "hurt_animation");
     
+    const auto issac_dead0 = spriteCache->getSpriteFrameByName("issac_dead0");
+    const auto issac_dead1 = spriteCache->getSpriteFrameByName("issac_dead1");
+    Vector<SpriteFrame*> deadFrames;
+    deadFrames.pushBack(issac_dead0);
+    deadFrames.pushBack(issac_dead1);
+    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames, 0.1f);
+    aniCache->addAnimation(dead_animation, "dead_animation");
+    
+    const auto issac_ghost0 = spriteCache->getSpriteFrameByName("issac_ghost0");
+    const auto issac_ghost1 = spriteCache->getSpriteFrameByName("issac_ghost1");
+    const auto issac_ghost2 = spriteCache->getSpriteFrameByName("issac_ghost2");
+    const auto issac_ghost3 = spriteCache->getSpriteFrameByName("issac_ghost3");
+    const auto issac_ghost4 = spriteCache->getSpriteFrameByName("issac_ghost4");
+    Vector<SpriteFrame*> ghostFrames;
+    ghostFrames.pushBack(issac_ghost0);
+    ghostFrames.pushBack(issac_ghost1);
+    ghostFrames.pushBack(issac_ghost2);
+    ghostFrames.pushBack(issac_ghost3);
+    ghostFrames.pushBack(issac_ghost4);
+    Animation * ghost_animation = Animation::createWithSpriteFrames(ghostFrames, 0.1f);
+    aniCache->addAnimation(ghost_animation, "ghost_animation");
 }
 
 //TODO MoveTo 有bug，贴墙以后在墙附近怼墙 会卡住
@@ -456,4 +489,20 @@ Tear* Issac::Fire(int fireDir)
 	//是Issac发射的
 	myTear->setTag(4);
 	return myTear;
+}
+
+void Issac::hurt(){
+    auto aniCache = AnimationCache::getInstance();
+    const auto hurt_animation = aniCache->getAnimation("hurt_animation");
+    Animate * hurtAnimate = Animate::create(hurt_animation);
+    
+    this->runAction(Spawn::create(Blink::create(0.5, 4),NULL));
+}
+
+void Issac::dead(){
+    auto aniCache = AnimationCache::getInstance();
+    const auto dead_animation = aniCache->getAnimation("dead_animation");
+    Animate * deadAnimate = Animate::create(dead_animation);
+    
+    this->runAction(deadAnimate);
 }
