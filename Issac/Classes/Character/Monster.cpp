@@ -31,7 +31,6 @@ Tear *Monster::Fire(Vec2 targetPos)
     //创建一个Tear
     Tear *myTear = Tear::createTear();
     //设定初始tear位置和速度
-	Vec2 asd = this->getPosition();
     double diffX = abs(targetPos.x - this->getPosition().x);
     double diffY = abs(targetPos.y - this->getPosition().y);
     double dis = sqrt(diffX * diffX + diffY * diffY);
@@ -1033,7 +1032,6 @@ void GaperFire::fireStrategy(Vector<Tear *> &tears_)
     {
         fireCoolTime = fireSpeed; //冷却
 		//开火
-		Vec2 xxx = this->getPosition();
         tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y-10)));
         tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y+10)));
         tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
