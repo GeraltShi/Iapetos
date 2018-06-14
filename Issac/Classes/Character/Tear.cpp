@@ -156,7 +156,7 @@ bool MonsterTear::init()
     //生成物理身体
     this->createPhyBody();
     //tag=3
-    this->setTag(4);
+    this->setTag(3);
     
     auto fcache = SpriteFrameCache::getInstance();
     const auto mtframe0 = fcache->getSpriteFrameByName("mt_frame0");
