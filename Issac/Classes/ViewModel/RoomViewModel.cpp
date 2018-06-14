@@ -1,14 +1,17 @@
 #include "RoomViewModel.h"
 
-RoomViewModel RoomViewModel::createRoomViewModel(int roomType)
+RoomViewModel RoomViewModel::createRoomViewModel(int roomType, bool visited)
 {
 	RoomViewModel room1;
-	room1.init(roomType);
+	room1.init(roomType,visited);
 	return room1;
 }
 
-void RoomViewModel::init(int roomType)
+void RoomViewModel::init(int roomType, bool visited)
 {
+    this->visited = visited;
+    this->room_type = roomType;
+
 	for (int i = 0; i < GRID_WIDTH; i++)
 		for (int j = 0; j < GRID_HEIGHT; j++)
 			room_map[i][j] = 0;
@@ -72,122 +75,130 @@ void RoomViewModel::init(int roomType)
 	//根据roomType放入怪物
     //怪物标号：4:Fatty, 5:Fly, 6:Gaper, 7:Spider
 	//怪物标号：8:FattyFire, 9:FlyFire, 10:GaperFire
-	if (roomType == 1)  //1:全Fatty
-	{
-		int Fatty_num = rand() % 4 + 2;
-		for (int i = 0; i < Fatty_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 4;
-		}
-	}
-	if (roomType == 2) {  //2:全Fly
-		int Fly_num = rand() % 4 + 2;
-		for (int i = 0; i < Fly_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 5;
-		}
-	}
-	if (roomType == 3) {  //3:全Gaper
-		int Gaper_num = rand() % 4 + 2;
-		for (int i = 0; i < Gaper_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 6;
-		}
-	}
-	if (roomType == 4) {  //4::全Spider
-		int Spider_num = rand() % 2 + 5;
-		for (int i = 0; i < Spider_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 7;
-		}
-        room_map[6][3] = 8;
-	}
-	if (roomType == 5)  //5:Spider+FattyFire
-	{
-		int Spider_num = rand() % 3 + 2;
-		for (int i = 0; i < Spider_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 7;
-		}
-		int FattyFire_num = rand() % 2 + 1;
-		for (int i = 0; i < FattyFire_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 8;
-		}
-	}
-	if (roomType == 6) { //6:Fly+FlyFire
-		int Fly_num = rand() % 2 + 3;
-		for (int i = 0; i < Fly_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 5;
-		}
-		int FlyFire_num = rand() % 2 + 3;
-		for (int i = 0; i < FlyFire_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 9;
-		}
-	}
-	if (roomType == 7) {	//7:Fly+GaperFire
-		int Fly_num = rand() % 2 + 2;
-		for (int i = 0; i < Fly_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 5;
-		}
-		int GaperFire_num = rand() % 2 + 3;
-		for (int i = 0; i < GaperFire_num; i++) {
-			int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
-			while (room_map[posX][posY] != 0)
-			{
-				posX = rand() % GRID_WIDTH;
-				posY = rand() % GRID_HEIGHT;
-			}
-			room_map[posX][posY] = 10;
-		}
-	}
+    if (!visited)
+    {
+        if (roomType == 1)  //1:全Fatty
+        {
+            const int Fatty_num = rand() % 4 + 2;
+            for (int i = 0; i < Fatty_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 4;
+            }
+        }
+        if (roomType == 2) {  //2:全Fly
+            const int Fly_num = rand() % 4 + 2;
+            for (int i = 0; i < Fly_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 5;
+            }
+        }
+        if (roomType == 3) {  //3:全Gaper
+            const int Gaper_num = rand() % 4 + 2;
+            for (int i = 0; i < Gaper_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 6;
+            }
+        }
+        if (roomType == 4) {  //4::全Spider
+            const int Spider_num = rand() % 2 + 5;
+            for (int i = 0; i < Spider_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 7;
+            }
+            room_map[6][3] = 8;
+        }
+        if (roomType == 5)  //5:Spider+FattyFire
+        {
+            const int Spider_num = rand() % 3 + 2;
+            for (int i = 0; i < Spider_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 7;
+            }
+            const int FattyFire_num = rand() % 2 + 1;
+            for (int i = 0; i < FattyFire_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 8;
+            }
+        }
+        if (roomType == 6) { //6:Fly+FlyFire
+            const int Fly_num = rand() % 2 + 3;
+            for (int i = 0; i < Fly_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 5;
+            }
+            const int FlyFire_num = rand() % 2 + 3;
+            for (int i = 0; i < FlyFire_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 9;
+            }
+        }
+        if (roomType == 7) {	//7:Fly+GaperFire
+            const int Fly_num = rand() % 2 + 2;
+            for (int i = 0; i < Fly_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 5;
+            }
+            const int GaperFire_num = rand() % 2 + 3;
+            for (int i = 0; i < GaperFire_num; i++) {
+                int posX = rand() % GRID_WIDTH, posY = rand() % GRID_HEIGHT;
+                while (room_map[posX][posY] != 0)
+                {
+                    posX = rand() % GRID_WIDTH;
+                    posY = rand() % GRID_HEIGHT;
+                }
+                room_map[posX][posY] = 10;
+            }
+        }
+    }
 
+}
+
+bool RoomViewModel::is_boss_room() const
+{
+    return room_type >= 15 && room_type <= 20;
 }

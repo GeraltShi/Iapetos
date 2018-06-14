@@ -28,8 +28,9 @@ public:
 	//roomType:15~20代表Boss房
         //15~17 Boss1
         //18~20 Boss2
-	static RoomViewModel createRoomViewModel(int roomType);
-	void init(int roomType);
+	static RoomViewModel createRoomViewModel(int roomType, bool visited);
+	void init(int roomType, bool visited);
+    bool is_boss_room() const;
 
 	//1,2,3,4四个门（左、上、右、下）的位置是否有门
     CC_SYNTHESIZE(vector<int>, door_enable, DoorEnable)
@@ -39,6 +40,10 @@ public:
     CC_SYNTHESIZE(string, overlay_style, OverlayStyle)
 	//地面是一张贴图，"ground_style_1"
     CC_SYNTHESIZE(string, ground_style, GroundStyle)
+
+    CC_SYNTHESIZE(bool, visited, Visited)
+    CC_SYNTHESIZE(int, room_type, RoomType)
+    
 	
 	int getRoomMap(int x, int y) const{
 		assert(x >= 0 && x < GRID_WIDTH);
@@ -50,6 +55,8 @@ public:
 		assert(y >= 0 && y < GRID_HEIGHT);
 		room_map[x][y] = 3;
 	}
+
+
 private:
 	//棋盘13*7(442-96=346 * 286-96=190)，每个格子大小为RoomUnitSize
 	//棋盘中0表示空地，1表示小石头，2表示大石头，3表示玩家

@@ -68,6 +68,7 @@ RoomViewModel RoomService::enter_room(const int room_id)
         }
 
         current_room_id_ = room_id;
+        build_vm_from_room(r_map);
     }
     
     return room_view_model;
@@ -444,6 +445,37 @@ void RoomService::init()
     build_vm_from_room_map();
 }
 
+void RoomService::save_room_scene_state(RoomSceneModel room)
+{
+    saved_room_ = room;
+}
+
+RoomSceneModel RoomService::get_prev_room_scene() const
+{
+    return saved_room_;
+}
+
+void RoomService::increase_mini_opacity()
+{
+    if (mini_opacity != 10)
+    {
+        mini_opacity++;
+    }
+}
+
+void RoomService::decrease_mini_opacity()
+{
+    if (mini_opacity != 0)
+    {
+        mini_opacity--;
+    }
+}
+
+char RoomService::get_real_mini_opacity() const
+{
+    return mini_opacity * 25 + 5;
+}
+
 
 /**
  * \brief 初始化所有房间信息,创建Service后必须调用init()方法
@@ -453,6 +485,11 @@ RoomService::RoomService()
     init_room_id_ = 1;
     current_room_id_ = 0;
 
+    music_volume = 3;//0~10
+    sfx_volume = 5;//0~10
+    mini_opacity = 10;//0~10
+
+    win_ = false;
     //init();
 }
 
@@ -498,29 +535,33 @@ void RoomService::build_vm_from_room_map()
 {
     for (auto it = room_map_.begin();it != room_map_.end();++it)
     {
-        auto room_id = (*it).first;
         const auto room_m = (*it).second;
-
-        const auto room_type = room_m.current_room_type;
-
-        auto room_ = RoomViewModel::createRoomViewModel(room_type);
-
-        int doors_id[] = { room_m.left_room_id,room_m.up_room_id,room_m.right_room_id,room_m.down_room_id };
-
-        auto door_ = vector<int>();
-        auto door_style = vector<string>();
-
-        for (int door_id : doors_id)
-        {
-            door_.push_back(door_id);
-            door_style.emplace_back(get_doorstyle_from_room_type(room_map_[door_id].current_room_type));
-        }
-        room_.setDoorEnable(door_);
-        room_.setDoorStyle(door_style);
-        room_.setGroundStyle(get_groundstyle_from_room_type(room_type));
-
-        store_[room_id] = room_;
+        build_vm_from_room(room_m);
     }
+}
+
+void RoomService::build_vm_from_room(Room room_m)
+{
+    const auto room_id = room_m.current_room_id;
+    const auto room_type = room_m.current_room_type;
+
+    auto room_ = RoomViewModel::createRoomViewModel(room_type, room_m.visited);
+
+    int doors_id[] = { room_m.left_room_id,room_m.up_room_id,room_m.right_room_id,room_m.down_room_id };
+
+    auto door_ = vector<int>();
+    auto door_style = vector<string>();
+
+    for (int door_id : doors_id)
+    {
+        door_.push_back(door_id);
+        door_style.emplace_back(get_doorstyle_from_room_type(room_map_[door_id].current_room_type));
+    }
+    room_.setDoorEnable(door_);
+    room_.setDoorStyle(door_style);
+    room_.setGroundStyle(get_groundstyle_from_room_type(room_type));
+
+    store_[room_id] = room_;
 }
 
 RoomService* RoomService::inst_ = nullptr;

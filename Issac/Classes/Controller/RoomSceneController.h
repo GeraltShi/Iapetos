@@ -4,7 +4,6 @@
 #include "cocos2d.h"
 #include "Scene/RoomScene.h"
 #include <map>
-#include "Service/LevelService.h"
 /**
  * \brief RoomScene逻辑控制部分
  */
@@ -50,8 +49,6 @@ private:
     map<EventKeyboard::KeyCode,int> key_map_;
 
     int count = 0;
-    LevelService level_service_;
-
 };
 
 #endif // __ROOM_SCENE_CONTROLLER_H__
