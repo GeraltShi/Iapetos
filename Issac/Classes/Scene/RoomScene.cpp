@@ -193,12 +193,24 @@ bool RoomScene::init(int roomID)
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(monsters_.at(monsters_.size() - 1), 3, "spider1");
             }
-            if (room_vm_.getRoomMap(i, j) == 8) { //7说明这个位置是FlyDaddy
-                //FlyDaddy生成
-                monsters_.pushBack((Monster*)FlyDaddy::createFlyDaddy());
-                monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
-                addChild(monsters_.at(monsters_.size() - 1), 3, "FlyDaddy1");
-            }
+			if (room_vm_.getRoomMap(i, j) == 8) { //8说明这个位置是FattyFire
+												  //FattyFire生成
+				monsters_.pushBack((Monster*)FattyFire::createFattyFire());
+				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty1");
+			}
+			if (room_vm_.getRoomMap(i, j) == 9) { //9说明这个位置是FlyFire
+												  //FlyFire生成
+				monsters_.pushBack((Monster*)FlyFire::createFlyFire());
+				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+			}
+			if (room_vm_.getRoomMap(i, j) == 10) { //10说明这个位置是GaperFire
+												  //GaperFire生成
+				monsters_.pushBack((Monster*)GaperFire::createGaperFire());
+				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+			}
 			if (room_vm_.getRoomMap(i, j) == 1) {  
 				//小石头
 				stones_.pushBack(Stone::createStone(1, Size(26, 26)));
@@ -516,7 +528,7 @@ void RoomScene::update(float delta)
                 if ((*it)->getColClog() != 0) {
                     (*it)->setColClog((*it)->getColClog() - 1);
                     if ((*it)->getColClog() == 0) {
-                        (*it)->getPhysicsBody()->setVelocity(Vec2(0, 0));
+                        (*it)->move(5);
                     }
                 }
                 else {
@@ -528,18 +540,14 @@ void RoomScene::update(float delta)
                 for (int i = nowtears_Size; i < tears_.size(); i++) {
                     addChild(tears_.at(i));
                 }
-
-                //无敌时间的倒计时
-                if ((*it)->getInvincibleTime() > 0) {
-                    (*it)->setInvincibleTime((*it)->getInvincibleTime() - 1);
-                }
-                ++it;
+				it++;
             }
         }
 
         //player移动	
         const auto he = PlayerService::getInstance()->getHealth();
-
+		//测试是否能够解决体位问题
+		player->setRotation(0);
         if (he > 0) {
             if (player->getColClog() != 0) {
                 player->setColClog(player->getColClog() - 1);
@@ -552,8 +560,14 @@ void RoomScene::update(float delta)
             }
             //player无敌时间的倒计时
             if (player->getInvincibleTime() > 0) {
+				player->getPhysicsBody()->setCollisionBitmask(0xF9); //1111_1001(F9)
+				player->getPhysicsBody()->setContactTestBitmask(0xC0); //1100_0000(C0)
                 player->setInvincibleTime(player->getInvincibleTime() - 1);
             }
+			else {
+				player->getPhysicsBody()->setCollisionBitmask(0xFF); //1111_1111(FF)
+				player->getPhysicsBody()->setContactTestBitmask(0xCE); //1100_1110(CE)
+			}
         }
         else {
             //player血量为0，Issac死亡，添加动画和游戏结束界面？
@@ -814,10 +828,12 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 	}
 	//tag=0 静止障碍物; tag=1:player; tag=2:monster; tag=3:tearbyMonster; tag=4:tearbyIssac
 	//tag=5,6,7,8是左、上、右、下4个门
+	//tag=9物品collectable
 	if (nodeA && nodeB)
 	{
-        if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
-        {
+        //if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
+		if (tagA == 1 && tagB == 2)
+		{
             //Issac被monster碰到，受伤
             nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
             //Service更新血量

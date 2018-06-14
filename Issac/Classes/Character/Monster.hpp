@@ -28,7 +28,7 @@ class Monster : public Moveable
     {
         return sqrt((x1.x - x2.x) * (x1.x - x2.x) + (x1.y - x2.y) * (x1.y - x2.y));
     }
-
+	virtual void move(int walk_direction)=0;
     //怪物的移动策略，这是接口。子类每个怪物重写。
     virtual void moveStrategy(const RoomViewModel &roomMap) = 0; 
     //怪物的开火策略，这是接口。子类每个怪物重写。
@@ -50,12 +50,34 @@ public:
     static Fatty *createFatty();
     virtual bool init();
     CREATE_FUNC(Fatty)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
+};
+
+class FattyFire : public Fatty
+{
+public:
+	static FattyFire *createFattyFire() {
+		return create();
+	}
+	virtual bool init() {
+		if (!(Fatty::init())) {
+			return false;
+		}
+		fireSpeed = 20;		//射速
+		tearSpeed = 20;		//弹速
+		tearExistTime = 30; //射程
+		return true;
+	}
+	CREATE_FUNC(FattyFire)
+	virtual void move(int walk_direction) { Fatty::move(walk_direction); }
+	virtual void moveStrategy(const RoomViewModel &roomMap);
+	virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
 };
 
 class Fly : public Monster
@@ -64,7 +86,7 @@ class Fly : public Monster
     static Fly *createFly();
     virtual bool init();
     CREATE_FUNC(Fly)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
@@ -73,18 +95,62 @@ class Fly : public Monster
     static void build_animation_cache();
 };
 
+class FlyFire : public Fly
+{
+public:
+	static FlyFire *createFlyFire() {
+		return create();
+	}
+	virtual bool init() { 
+		if (!(Fly::init())) {
+			return false;
+		};
+		fireSpeed = 50;		//射速
+		tearSpeed = 40;		//弹速
+		tearExistTime = 200; //射程
+		return true;
+	}
+	CREATE_FUNC(FlyFire)
+	virtual void move(int walk_direction) { Fly::move(walk_direction); }
+	virtual void moveStrategy(const RoomViewModel &roomMap) { Fly::moveStrategy(roomMap); }
+	virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
+};
+
 class Gaper : public Monster
 {
   public:
     static Gaper *createGaper();
     virtual bool init();
     CREATE_FUNC(Gaper)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
     void build_sprite_frame_cache(Texture2D *headtexture_, Texture2D *bodytexture_) const;
     static void build_animation_cache();
+};
+
+class GaperFire : public Gaper
+{
+public:
+	static GaperFire *createGaperFire() {
+		return create();
+	}
+	virtual bool init() { 
+		if (!Gaper::init()) {
+			return false;
+		}
+		fireSpeed = 40;		//射速
+		tearSpeed = 20;		//弹速
+		tearExistTime = 50; //射程
+		return true;
+	}
+	CREATE_FUNC(GaperFire)
+	virtual void move(int walk_direction) { Gaper::move(walk_direction); }
+	virtual void moveStrategy(const RoomViewModel &roomMap) { Gaper::moveStrategy(roomMap); }
+	virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void giveBirth(Vector<Monster *> &monsters_) {}
 };
 
 class Spider : public Monster
@@ -93,7 +159,7 @@ class Spider : public Monster
     static Spider *createSpider();
     virtual bool init();
     CREATE_FUNC(Spider)
-    void move(int walk_direction);
+	virtual void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
 	virtual void fireStrategy(Vector<Tear *> &tears_) {}
 	virtual void giveBirth(Vector<Monster *> &monsters_) {}
