@@ -656,8 +656,8 @@ void RoomScene::update(float delta)
                     break;
             }
             //根据 option 值更新 bar
-            SimpleAudioEngine::getInstance()->setEffectsVolume((float)RoomService::getInstance()->getSFXVolume() /25.0);
-            SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)RoomService::getInstance()->getMusicVolume() /25.0);
+            SimpleAudioEngine::getInstance()->setEffectsVolume(RoomService::getInstance()->get_real_sfx_volume());
+            SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(RoomService::getInstance()->get_real_music_volume());
             const string sfx_volume_string = "sfx" + to_string(RoomService::getInstance()->getSFXVolume());
             optionscreen->getChildByName("optionmenu")->removeChildByName("option_sfx_bar");
             Sprite * option_sfx_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(sfx_volume_string));

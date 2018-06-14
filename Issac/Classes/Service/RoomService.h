@@ -43,12 +43,17 @@ public:
     void increase_mini_opacity();
     void decrease_mini_opacity();
     char get_real_mini_opacity() const;
+    //0.0~1.0
+    float get_real_sfx_volume() const;
+    //0.0~1.0
+    float get_real_music_volume() const;
 
     CC_SYNTHESIZE(int, music_volume, MusicVolume)
     CC_SYNTHESIZE(int, sfx_volume, SFXVolume)
         //0 ~ 10  --> 0 ~ 255
     CC_SYNTHESIZE(int, mini_opacity, MiniOpacity)
     CC_SYNTHESIZE(bool, win_, Win)
+    CC_SYNTHESIZE(int, play_bg_music_id, PlayBgMusicId)
 
 private:
     static RoomService *inst_;

@@ -476,6 +476,16 @@ char RoomService::get_real_mini_opacity() const
     return mini_opacity * 25 + 5;
 }
 
+float RoomService::get_real_sfx_volume() const
+{
+    return static_cast<float>(sfx_volume) / 25.0;
+}
+
+float RoomService::get_real_music_volume() const
+{
+    return static_cast<float>(music_volume) / 25.0;
+}
+
 
 /**
  * \brief 初始化所有房间信息,创建Service后必须调用init()方法
