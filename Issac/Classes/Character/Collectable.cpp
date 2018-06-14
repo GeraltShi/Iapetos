@@ -31,7 +31,7 @@ bool Collectable::init(int collectableType)
 	addattack = 0;
 	enFly = false;
 
-	Sprite* temp_collectableType;
+	Sprite *temp_collectableType;
 	switch (collectableType)
 	{
 	case (0):
@@ -43,19 +43,19 @@ bool Collectable::init(int collectableType)
 	}
 	this->addChild(temp_collectableType);
 	auto phyBody = PhysicsBody::createCircle(12, PHYSICSBODY_MATERIAL_DEFAULT);
-	//¾²Ì¬
+	//é™æ€
 	phyBody->setDynamic(false);
-	//ÉèÖÃÎïÌåµÄ»Ö¸´Á¦
+	//è®¾ç½®ç‰©ä½“çš„æ¢å¤åŠ›
 	phyBody->getShape(0)->setRestitution(0.0f);
-	//ÉèÖÃÎïÌåµÄÄ¦²ÁÁ¦
+	//è®¾ç½®ç‰©ä½“çš„æ‘©æ“¦åŠ›
 	phyBody->getShape(0)->setFriction(0.0f);
-	//Åö×²¡¢¼àÌıÉ¸Ñ¡
+	//ç¢°æ’ã€ç›‘å¬ç­›é€‰
 	phyBody->setCategoryBitmask(0x80);	// 1000_0000(80)
 	phyBody->setCollisionBitmask(0xFF);   // 1111_1111(FF)
 	phyBody->setContactTestBitmask(0x09); //0000_1001(09)
-	//Ìí¼ÓÎïÀíÇûÌå
+	//æ·»åŠ ç‰©ç†èº¯ä½“
 	this->addComponent(phyBody);
 
-	this->setTag(9); 
+	this->setTag(9);
 	return true;
 }

@@ -99,7 +99,7 @@
     <ClCompile Include="..\Classes\ViewModel\PlayerViewModel.cpp">
       <Filter>src\ViewModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\character\Collectable.cpp">
+    <ClCompile Include="..\Classes\Character\Collectable.cpp">
       <Filter>src\Character</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,7 +176,7 @@
     <ClInclude Include="..\Classes\ViewModel\PlayerViewModel.h">
       <Filter>src\ViewModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\character\Collectable.h">
+    <ClInclude Include="..\Classes\Character\Collectable.h">
       <Filter>src\Character</Filter>
     </ClInclude>
   </ItemGroup>

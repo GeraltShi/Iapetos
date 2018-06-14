@@ -5,8 +5,9 @@
 USING_NS_CC;
 using namespace std;
 
-class Collectable :public Sprite{
-public:
+class Collectable : public Sprite
+{
+  public:
 	static Collectable *createCollectable(int collectableType);
 	bool init(int collectableType);
 	CC_SYNTHESIZE(double, addmoveSpeed, addMoveSpeed)
@@ -19,4 +20,3 @@ public:
 };
 
 #endif // !_COLLECTABLE_H_
-
