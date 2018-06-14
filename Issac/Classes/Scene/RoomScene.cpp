@@ -491,7 +491,7 @@ void RoomScene::update(float delta)
                 SimpleAudioEngine::getInstance()->playEffect("res/sfx/splatter 0.wav",false);
                 (*it)->removeFromParent();
                 //
-                const auto poof_ani = AnimationCache::getInstance()->getAnimation("poof_animation");
+                const auto poof_ani = AnimationCache::getInstance()->getAnimation((*it)->getPoofAnimation());
                 const auto poof_anim = Animate::create(poof_ani);
                 const auto poof_animate = Sequence::create(poof_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(poof_animate);
@@ -733,6 +733,41 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(frame13, "t_frame13");
     fcache->addSpriteFrame(frame14, "t_frame14");
     fcache->addSpriteFrame(frame15, "t_frame15");
+    
+    Texture2D * mtpoofTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_003_bloodtear.png");
+    const auto mtframe0 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 0, 64, 64));
+    const auto mtframe1 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 0, 64, 64));
+    const auto mtframe2 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 0, 64, 64));
+    const auto mtframe3 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 0, 64, 64));
+    const auto mtframe4 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 64, 64, 64));
+    const auto mtframe5 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 64, 64, 64));
+    const auto mtframe6 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 64, 64, 64));
+    const auto mtframe7 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 64, 64, 64));
+    const auto mtframe8 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 128, 64, 64));
+    const auto mtframe9 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 128, 64, 64));
+    const auto mtframe10 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 128, 64, 64));
+    const auto mtframe11 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 128, 64, 64));
+    const auto mtframe12 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 192, 64, 64));
+    const auto mtframe13 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 192, 64, 64));
+    const auto mtframe14 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 192, 64, 64));
+    const auto mtframe15 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 192, 64, 64));
+    
+    fcache->addSpriteFrame(mtframe0, "mt_frame0");
+    fcache->addSpriteFrame(mtframe1, "mt_frame1");
+    fcache->addSpriteFrame(mtframe2, "mt_frame2");
+    fcache->addSpriteFrame(mtframe3, "mt_frame3");
+    fcache->addSpriteFrame(mtframe4, "mt_frame4");
+    fcache->addSpriteFrame(mtframe5, "mt_frame5");
+    fcache->addSpriteFrame(mtframe6, "mt_frame6");
+    fcache->addSpriteFrame(mtframe7, "mt_frame7");
+    fcache->addSpriteFrame(mtframe8, "mt_frame8");
+    fcache->addSpriteFrame(mtframe9, "mt_frame9");
+    fcache->addSpriteFrame(mtframe10, "mt_frame10");
+    fcache->addSpriteFrame(mtframe11, "mt_frame11");
+    fcache->addSpriteFrame(mtframe12, "mt_frame12");
+    fcache->addSpriteFrame(mtframe13, "mt_frame13");
+    fcache->addSpriteFrame(mtframe14, "mt_frame14");
+    fcache->addSpriteFrame(mtframe15, "mt_frame15");
     
     Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
     const auto fullheartcache = SpriteFrame::createWithTexture(texture_heart, Rect(0,0,16,16));

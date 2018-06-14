@@ -33,6 +33,11 @@ void Tear::createPhyBody()
 	this->addComponent(phyBody);
 }
 
+string Tear::getPoofAnimation()
+{
+    return "poof_animation";
+}
+
 bool Tear::init()
 {
 	if (!Moveable::init())
@@ -97,4 +102,105 @@ bool Tear::init()
 	auto temp_tearSprite = createWithSpriteFrame(tearFrame);
 	this->addChild(temp_tearSprite);
 	return true;
+}
+
+MonsterTear *MonsterTear::createMonsterTear()
+{
+    return create();
+}
+
+void MonsterTear::createPhyBody()
+{
+    auto phyBody = PhysicsBody::createCircle(radiusSize, PHYSICSBODY_MATERIAL_DEFAULT);
+    //是否设置物体为静态
+    phyBody->setDynamic(true);
+    //设置物体的恢复力
+    phyBody->getShape(0)->setRestitution(1.0f);
+    //设置物体的摩擦力
+    phyBody->getShape(0)->setFriction(0.0f);
+    //设置物体密度
+    phyBody->getShape(0)->setDensity(1.0f);
+    //设置质量
+    phyBody->getShape(0)->setMass(bodyMass);
+    //设置物体是否受重力系数影响
+    phyBody->setGravityEnable(false);
+    //速度
+    phyBody->setVelocity(Vec2(0, 0));
+    //碰撞、监听筛选
+    phyBody->setCategoryBitmask(0x08);    // 0000_1000
+    phyBody->setCollisionBitmask(0xFF);   // 1111_1111
+    phyBody->setContactTestBitmask(0xFF); //1111_1111
+    //添加物理躯体
+    this->addComponent(phyBody);
+}
+
+string MonsterTear::getPoofAnimation()
+{
+    return "mt_poof_animation";
+}
+
+bool MonsterTear::init()
+{
+    if (!Moveable::init())
+    {
+        return false;
+    }
+    //Tear碰撞大小
+    radiusSize = 3;
+    //Tear重量
+    bodyMass = 10;
+    //Tear行走速度
+    moveSpeed = 120;
+    //Tear攻击1
+    attack = 1;
+    //生成物理身体
+    this->createPhyBody();
+    //tag=3
+    this->setTag(4);
+    
+    auto fcache = SpriteFrameCache::getInstance();
+    const auto mtframe0 = fcache->getSpriteFrameByName("mt_frame0");
+    const auto mtframe1 = fcache->getSpriteFrameByName("mt_frame1");
+    const auto mtframe2 = fcache->getSpriteFrameByName("mt_frame2");
+    const auto mtframe3 = fcache->getSpriteFrameByName("mt_frame3");
+    const auto mtframe4 = fcache->getSpriteFrameByName("mt_frame4");
+    const auto mtframe5 = fcache->getSpriteFrameByName("mt_frame5");
+    const auto mtframe6 = fcache->getSpriteFrameByName("mt_frame6");
+    const auto mtframe7 = fcache->getSpriteFrameByName("mt_frame7");
+    const auto mtframe8 = fcache->getSpriteFrameByName("mt_frame8");
+    const auto mtframe9 = fcache->getSpriteFrameByName("mt_frame9");
+    const auto mtframe10 = fcache->getSpriteFrameByName("mt_frame10");
+    const auto mtframe11 = fcache->getSpriteFrameByName("mt_frame11");
+    const auto mtframe12 = fcache->getSpriteFrameByName("mt_frame12");
+    const auto mtframe13 = fcache->getSpriteFrameByName("mt_frame13");
+    const auto mtframe14 = fcache->getSpriteFrameByName("mt_frame14");
+    const auto mtframe15 = fcache->getSpriteFrameByName("mt_frame15");
+    
+    Vector<SpriteFrame *> mtarray;
+    mtarray.pushBack(mtframe0);
+    mtarray.pushBack(mtframe1);
+    mtarray.pushBack(mtframe2);
+    mtarray.pushBack(mtframe3);
+    mtarray.pushBack(mtframe4);
+    mtarray.pushBack(mtframe5);
+    mtarray.pushBack(mtframe6);
+    mtarray.pushBack(mtframe7);
+    mtarray.pushBack(mtframe8);
+    mtarray.pushBack(mtframe9);
+    mtarray.pushBack(mtframe10);
+    mtarray.pushBack(mtframe11);
+    mtarray.pushBack(mtframe12);
+    mtarray.pushBack(mtframe13);
+    mtarray.pushBack(mtframe14);
+    mtarray.pushBack(mtframe15);
+    
+    mt_poof_animation = Animation::createWithSpriteFrames(mtarray, 0.05f);
+    mt_poof_animation->setLoops(1);
+    AnimationCache::getInstance()->addAnimation(mt_poof_animation, "mt_poof_animation");
+    
+    Texture2D *mtearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/enemybullets.png");
+    SpriteFrame *mtearFrame = SpriteFrame::createWithTexture(mtearTexture, Rect(0, 32, 32, 32));
+    auto mtemp_tearSprite = createWithSpriteFrame(mtearFrame);
+    this->addChild(mtemp_tearSprite);
+    return true;
 }

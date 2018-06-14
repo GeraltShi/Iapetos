@@ -29,7 +29,7 @@ bool Monster::init()
 Tear *Monster::Fire(Vec2 targetPos)
 {
     //创建一个Tear
-    Tear *myTear = Tear::createTear();
+    MonsterTear *myTear = MonsterTear::createMonsterTear();
     //设定初始tear位置和速度
     double diffX = abs(targetPos.x - this->getPosition().x);
     double diffY = abs(targetPos.y - this->getPosition().y);
