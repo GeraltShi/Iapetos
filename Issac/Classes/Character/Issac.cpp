@@ -39,6 +39,9 @@ bool Issac::init()
     Sprite * headSprite = createWithSpriteFrame(headFrame);
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
     Sprite * bodySprite = createWithSpriteFrame(bodyFrame);
+    SpriteFrame *hurtFrame = SpriteFrame::createWithTexture(texture_, Rect(128,192,64,64));
+    Sprite * hurt = createWithSpriteFrame(hurtFrame);
+    hurt->setVisible(false);
     Sprite * shadow = createWithTexture(shadow_);
     shadow->setOpacity(0x44);//更改shadow透明度
     shadow->setScale(0.15, 0.15);
@@ -51,6 +54,7 @@ bool Issac::init()
     this->addChild(shadow, -1);
     this->addChild(headSprite, 1, "head");
     this->addChild(bodySprite, 0, "body");
+    this->addChild(hurt,2,"hurt");
     this->addChild(light_gradient,2);
     light_gradient->setOpacity(0x99);//更改light gradient透明度
     BlendFunc blend = {GL_SRC_ALPHA,GL_ONE};
@@ -58,7 +62,7 @@ bool Issac::init()
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
     
-
+    
     return true;
 }
 

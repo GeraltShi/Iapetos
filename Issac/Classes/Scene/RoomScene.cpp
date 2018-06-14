@@ -885,6 +885,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
             nodeA->setInvincibleTime(20);
             //TODO 添加受伤动画？
             log("Issac Health:%d", nodeA->getHealth());
+            player->runAction(Blink::create(0.5, 4));
         }
         //怪物和眼泪碰撞
         if (tagA == 2 && (tagB == 3 || tagB == 4)) {
@@ -897,6 +898,7 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
             //Issac进入短暂无敌状态
             if (tagA == 1) nodeA->setInvincibleTime(20);
             //TO DO添加受伤动画？
+            player->runAction(Blink::create(0.5, 4));
         }
 		//Issac和门的碰撞
 		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.empty()) {
