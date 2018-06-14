@@ -599,6 +599,14 @@ void RoomScene::update(float delta)
             hfheart->setPosition(heart_x, 0);
             healthbar->addChild(hfheart, 1);
         }
+        
+        if(monsters_.size() == 0 && !door_removed && doors_.size()!= 0){
+            for(int i = 0; i < doors_.size(); i++){
+                doors_.at(i)->getChildByName("door_piece_left")->runAction(Sequence::create(FadeOut::create(0.5),NULL));
+                doors_.at(i)->getChildByName("door_piece_right")->runAction(Sequence::create(FadeOut::create(0.5),NULL));
+            }
+            door_removed = true;
+        }
     }
 	else if(model.game_stat == 1){
 		//暂停 

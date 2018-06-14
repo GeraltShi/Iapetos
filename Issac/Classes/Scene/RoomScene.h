@@ -62,7 +62,7 @@ public:
     void updatehealth(float dt);
     void monster_move(float dt);
 	bool onContactBegin(PhysicsContact& contact);
-
+    bool door_removed = false;
 private:
     IRoomSceneListener * listener_ = nullptr;
     void build_frame_cache() const;
@@ -75,6 +75,7 @@ private:
 
     MiniMapViewModel mini_map_vm_;
     RoomViewModel room_vm_;
+    
 };
 
 #endif // __ROOM_SCENE_H__

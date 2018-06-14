@@ -38,8 +38,12 @@ bool Door::init(int doorType, const string &doorStyle, const Size &winSize)
 	Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(doorStyle);
 	Sprite *door_ = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
 	Sprite *door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
-	this->addChild(door_);
-	this->addChild(door_center);
+    Sprite * door_piece_left = Sprite::createWithTexture(texture_door, Rect(0, 48, 64, 48));
+    Sprite * door_piece_right = Sprite::createWithTexture(texture_door, Rect(64, 48, 64, 48));
+	this->addChild(door_,0);
+	this->addChild(door_center,0);
+    this->addChild(door_piece_left,1,"door_piece_left");
+    this->addChild(door_piece_right,1,"door_piece_right");
 	this->setRotation(270 + doorType * 90);
 	//设置位置
 	switch (doorType)

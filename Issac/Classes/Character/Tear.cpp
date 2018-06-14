@@ -98,7 +98,7 @@ bool Tear::init()
     AnimationCache::getInstance()->addAnimation(poof_animation, "poof_animation");
 
 	Texture2D *tearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
-	SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(0, 32, 32, 32));
+	SpriteFrame *tearFrame = SpriteFrame::createWithTexture(tearTexture, Rect(160, 0, 32, 32));
 	auto temp_tearSprite = createWithSpriteFrame(tearFrame);
 	this->addChild(temp_tearSprite);
 	return true;
@@ -199,7 +199,7 @@ bool MonsterTear::init()
     AnimationCache::getInstance()->addAnimation(mt_poof_animation, "mt_poof_animation");
     
     Texture2D *mtearTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/enemybullets.png");
-    SpriteFrame *mtearFrame = SpriteFrame::createWithTexture(mtearTexture, Rect(0, 32, 32, 32));
+    SpriteFrame *mtearFrame = SpriteFrame::createWithTexture(mtearTexture, Rect(160, 0, 32, 32));
     auto mtemp_tearSprite = createWithSpriteFrame(mtearFrame);
     this->addChild(mtemp_tearSprite);
     return true;
