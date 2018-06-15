@@ -16,6 +16,8 @@ bool Monster::init()
     fireCoolTime = 3;
 	colClog = 30;
 
+    delay_count_ = 40;
+
     //tag=2是怪物
     this->setTag(2);
 
@@ -198,100 +200,107 @@ void Fatty::move(int walk_direction)
     Animate *hwalk_animate = Animate::create(hwalk_animation);
     Animate *head_animate = Animate::create(head_animation);
 
-    switch (walk_direction)
+    delay_count_--;
+
+    if (delay_count_ <= 0)
     {
-        //123
-        //456
-        //789
-    case 4: //左
-        if (prev_walk_orientation != 4)
+        delay_count_ = 40;
+        switch (walk_direction)
         {
+            //123
+            //456
+            //789
+        case 4: //左
+            if (prev_walk_orientation != 4)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(-1); //翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 4;
+            break;
+
+        case 6: //右
+            if (prev_walk_orientation != 6)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(1); //翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 6;
+            break;
+
+        case 2: //上
+            if (prev_walk_orientation != 2)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse()); //向上走要倒放
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 2;
+            break;
+
+        case 8: //下
+            if (prev_walk_orientation != 8)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 8;
+            break;
+
+        case 1: //左上
+            if (prev_walk_orientation != 1)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 1;
+            break;
+
+        case 3: //右上
+            if (prev_walk_orientation != 3)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 3;
+            break;
+
+        case 7: //左下
+            if (prev_walk_orientation != 7)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 7;
+            break;
+
+        case 9: //右下
+            if (prev_walk_orientation != 9)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
+            prev_walk_orientation = 9;
+            break;
+
+        case 5: //无，头要默认复位
             this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->setScaleX(-1); //翻转
-            this->getChildByName("body")->runAction(hwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
+            prev_walk_orientation = 5;
+            break;
+
+        default:
+            break;
         }
-        prev_walk_orientation = 4;
-        break;
-
-    case 6: //右
-        if (prev_walk_orientation != 6)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->setScaleX(1); //翻转
-            this->getChildByName("body")->runAction(hwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 6;
-        break;
-
-    case 2: //上
-        if (prev_walk_orientation != 2)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse()); //向上走要倒放
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 2;
-        break;
-
-    case 8: //下
-        if (prev_walk_orientation != 8)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 8;
-        break;
-
-    case 1: //左上
-        if (prev_walk_orientation != 1)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse());
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 1;
-        break;
-
-    case 3: //右上
-        if (prev_walk_orientation != 3)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse());
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 3;
-        break;
-
-    case 7: //左下
-        if (prev_walk_orientation != 7)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 7;
-        break;
-
-    case 9: //右下
-        if (prev_walk_orientation != 9)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-        }
-        prev_walk_orientation = 9;
-        break;
-
-    case 5: //无，头要默认复位
-        this->getChildByName("body")->stopAllActions();
-        prev_walk_orientation = 5;
-        break;
-
-    default:
-        break;
     }
+    
 
     //if (colClog == 0)
     //{
@@ -839,99 +848,106 @@ void Gaper::move(int walk_direction)
     Animate *hwalk_animate = Animate::create(hwalk_animation);
     Animate *head_animate = Animate::create(head_animation);
 
-    switch (walk_direction)
+    delay_count_--;
+
+    if (delay_count_ <= 0)
     {
-        //123
-        //456
-        //789
-    case 4: //左
-        if (prev_walk_orientation != 4)
+        delay_count_ = 40;
+
+        switch (walk_direction)
         {
+            //123
+            //456
+            //789
+        case 4: //左
+            if (prev_walk_orientation != 4)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(-1); //翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 4;
+            break;
+
+        case 6: //右
+            if (prev_walk_orientation != 6)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->setScaleX(1); //翻转
+                this->getChildByName("body")->runAction(hwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 6;
+            break;
+
+        case 2: //上
+            if (prev_walk_orientation != 2)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse()); //向上走要倒放
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 2;
+            break;
+
+        case 8: //下
+            if (prev_walk_orientation != 8)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 8;
+            break;
+
+        case 1: //左上
+            if (prev_walk_orientation != 1)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 1;
+            break;
+
+        case 3: //右上
+            if (prev_walk_orientation != 3)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate->reverse());
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 3;
+            break;
+
+        case 7: //左下
+            if (prev_walk_orientation != 7)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+                this->getChildByName("head")->runAction(head_animate);
+            }
+            prev_walk_orientation = 7;
+            break;
+
+        case 9: //右下
+            if (prev_walk_orientation != 9)
+            {
+                this->getChildByName("body")->stopAllActions();
+                this->getChildByName("body")->runAction(vwalk_animate);
+            }
+            prev_walk_orientation = 9;
+            break;
+
+        case 5: //无，头要默认复位
             this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->setScaleX(-1); //翻转
-            this->getChildByName("body")->runAction(hwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
+            prev_walk_orientation = 5;
+            break;
+
+        default:
+            break;
         }
-        prev_walk_orientation = 4;
-        break;
-
-    case 6: //右
-        if (prev_walk_orientation != 6)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->setScaleX(1); //翻转
-            this->getChildByName("body")->runAction(hwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 6;
-        break;
-
-    case 2: //上
-        if (prev_walk_orientation != 2)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse()); //向上走要倒放
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 2;
-        break;
-
-    case 8: //下
-        if (prev_walk_orientation != 8)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 8;
-        break;
-
-    case 1: //左上
-        if (prev_walk_orientation != 1)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse());
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 1;
-        break;
-
-    case 3: //右上
-        if (prev_walk_orientation != 3)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate->reverse());
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 3;
-        break;
-
-    case 7: //左下
-        if (prev_walk_orientation != 7)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-            this->getChildByName("head")->runAction(head_animate);
-        }
-        prev_walk_orientation = 7;
-        break;
-
-    case 9: //右下
-        if (prev_walk_orientation != 9)
-        {
-            this->getChildByName("body")->stopAllActions();
-            this->getChildByName("body")->runAction(vwalk_animate);
-        }
-        prev_walk_orientation = 9;
-        break;
-
-    case 5: //无，头要默认复位
-        this->getChildByName("body")->stopAllActions();
-        prev_walk_orientation = 5;
-        break;
-
-    default:
-        break;
     }
 
     //if (colClog == 0)

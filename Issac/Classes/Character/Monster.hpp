@@ -42,6 +42,7 @@ class Monster : public Moveable
   protected:
     void build_sprite_frame_cache(Texture2D *dead_texture_) const;
     static void build_animation_cache();
+    int delay_count_;
 };
 
 class Fatty : public Monster
