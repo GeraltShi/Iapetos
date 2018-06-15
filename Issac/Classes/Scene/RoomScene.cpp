@@ -418,22 +418,19 @@ bool RoomScene::init(int roomID)
     //if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
     //{
 
-        
-
-        Texture2D * bosshealthbar = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
-        Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar, Rect(0, 0, 120, 32));
-        Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar, Rect(120, 32, 30, 32));
-
-        Slider *slider = Slider::create();
-        auto f1 = SpriteFrame::createWithTexture(bosshealthbar, Rect(120, 32, 30, 32));
-
-
-        bosshealthbarfull->setPosition(206, 223);
-        bosshealthbarempty->setPosition(281, 223);
-
-        this->addChild(bosshealthbarempty, 7);
-        this->addChild(bosshealthbarfull, 7);
-
+    Texture2D * bosshealthbar_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
+    Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar_texture, Rect(0, 0, 150, 32));
+    Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar_texture, Rect(0, 32, 150, 32));
+    ProgressTimer * bosshealthbar = ProgressTimer::create(bosshealthbarfull);
+    bosshealthbar->setType(ProgressTimer::Type::BAR);
+    bosshealthbar->setBarChangeRate(Vec2(1, 0));
+    bosshealthbar->setMidpoint(Vec2(0, 0));
+    bosshealthbar->setPercentage(70);
+    bosshealthbar->setPosition(221, 120);
+    bosshealthbarempty->setPosition(75, 16);
+    bosshealthbar->addChild(bosshealthbarempty, -1);//添加 empty 贴图为背景
+    
+    this->addChild(bosshealthbar, 8,"bosshealthbar");//getname 调用 bosshealthbar，再 setPercentage 就可以改血量
     //}
     
     scheduleUpdate();
