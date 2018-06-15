@@ -1308,6 +1308,7 @@ bool FlyDaddy::init()
     bodyMass = 300;     //FlyDaddy重量
     moveSpeed = 200;     //FlyDaddy行走速度
     health = 150;         //FlyDaddy血量
+    max_health_ = 150;
     attack = 1;         //FlyDaddy攻击
     tearSpeed = 60;     //FlyDaddy泪速
     tearExistTime = 50; //FlyDaddy射程
