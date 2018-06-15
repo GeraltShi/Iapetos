@@ -36,10 +36,10 @@ bool Door::init(int doorType, const string &doorStyle, const Size &winSize)
 	this->addComponent(phyBody);
 
 	Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(doorStyle);
-	Sprite *door_ = Sprite::createWithTexture(texture_door, Rect(0, 0, 64, 48));
-	Sprite *door_center = Sprite::createWithTexture(texture_door, Rect(64, 0, 64, 48));
-    Sprite * door_piece_left = Sprite::createWithTexture(texture_door, Rect(0, 48, 64, 48));
-    Sprite * door_piece_right = Sprite::createWithTexture(texture_door, Rect(64, 48, 64, 48));
+	Sprite *door_ = createWithTexture(texture_door, Rect(0, 0, 64, 48));
+	Sprite *door_center = createWithTexture(texture_door, Rect(64, 0, 64, 48));
+    Sprite * door_piece_left = createWithTexture(texture_door, Rect(0, 48, 64, 48));
+    Sprite * door_piece_right = createWithTexture(texture_door, Rect(64, 48, 64, 48));
 	this->addChild(door_,0);
 	this->addChild(door_center,0);
     this->addChild(door_piece_left,1,"door_piece_left");

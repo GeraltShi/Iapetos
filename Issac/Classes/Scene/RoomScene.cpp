@@ -176,43 +176,43 @@ bool RoomScene::init(int roomID)
 			}
 			if (room_vm_.getRoomMap(i, j) == 4) { //4说明这个位置是Fatty
 				//Fatty生成
-				monsters_.pushBack((Monster*)Fatty::createFatty());
+				monsters_.pushBack(dynamic_cast<Monster*>(Fatty::createFatty()));
 				monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
 				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty1");
 			}
             if (room_vm_.getRoomMap(i, j) == 5) { //5说明这个位置是Fly
                 //Fly生成
-                monsters_.pushBack((Monster*)Fly::createFly());
+                monsters_.pushBack(dynamic_cast<Monster*>(Fly::createFly()));
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
             }
             if (room_vm_.getRoomMap(i, j) == 6) { //6说明这个位置是Gaper
                 //Gaper生成
-                monsters_.pushBack((Monster*)Gaper::createGaper());
+                monsters_.pushBack(dynamic_cast<Monster*>(Gaper::createGaper()));
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(monsters_.at(monsters_.size() - 1), 3, "gaper1");
             }
             if (room_vm_.getRoomMap(i, j) == 7) { //7说明这个位置是Spider
                 //Spider生成
-                monsters_.pushBack((Monster*)Spider::createSpider());
+                monsters_.pushBack(dynamic_cast<Monster*>(Spider::createSpider()));
                 monsters_.at(monsters_.size()-1)->setPosition(Vec2(48 + i*RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j*RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(monsters_.at(monsters_.size() - 1), 3, "spider1");
             }
 			if (room_vm_.getRoomMap(i, j) == 8) { //8说明这个位置是FattyFire
 												  //FattyFire生成
-				monsters_.pushBack((Monster*)FattyFire::createFattyFire());
+				monsters_.pushBack(dynamic_cast<Monster*>(FattyFire::createFattyFire()));
 				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
 				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty1");
 			}
 			if (room_vm_.getRoomMap(i, j) == 9) { //9说明这个位置是FlyFire
 												  //FlyFire生成
-				monsters_.pushBack((Monster*)FlyFire::createFlyFire());
+				monsters_.pushBack(dynamic_cast<Monster*>(FlyFire::createFlyFire()));
 				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
 				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
 			}
 			if (room_vm_.getRoomMap(i, j) == 10) { //10说明这个位置是GaperFire
 												  //GaperFire生成
-				monsters_.pushBack((Monster*)GaperFire::createGaperFire());
+				monsters_.pushBack(dynamic_cast<Monster*>(GaperFire::createGaperFire()));
 				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
 				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
 			}
@@ -309,7 +309,7 @@ bool RoomScene::init(int roomID)
         }
     }
     
-    //TODO 数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
+    //数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
     Texture2D * texture_font = Director::getInstance()->getTextureCache()->addImage("res/font/pftempestasevencondensed_0.png");
     Sprite * num0 = Sprite::createWithTexture(texture_font, Rect(18*14,21*3,18,21));
     num0->setPosition(46,224);
@@ -626,13 +626,28 @@ void RoomScene::update(float delta)
             healthbar->addChild(hfheart, 1);
         }
         
-        if(monsters_.size() == 0 && !door_removed && doors_.size()!= 0){
-            for(int i = 0; i < doors_.size(); i++){
-                doors_.at(i)->getChildByName("door_piece_left")->runAction(Sequence::create(FadeOut::create(0.5),NULL));
-                doors_.at(i)->getChildByName("door_piece_right")->runAction(Sequence::create(FadeOut::create(0.5),NULL));
+        //开门动画
+        if (room_vm_.getVisited() && !door_removed && !doors_.empty())//已经访问过的房间的门应该是打开的
+        {
+            for (auto door : doors_)
+            {
+                door->getChildByName("door_piece_left")->runAction(Sequence::create(FadeOut::create(0), NULL));
+                door->getChildByName("door_piece_right")->runAction(Sequence::create(FadeOut::create(0), NULL));
             }
             door_removed = true;
         }
+        else
+        {
+            if (monsters_.empty() && !door_removed && !doors_.empty()) {
+                for (auto door : doors_)
+                {
+                    door->getChildByName("door_piece_left")->runAction(Sequence::create(FadeOut::create(0.5), NULL));
+                    door->getChildByName("door_piece_right")->runAction(Sequence::create(FadeOut::create(0.5), NULL));
+                }
+                door_removed = true;
+            }
+        }
+
     }
 	else if(model.game_stat == 1){
 		//暂停 

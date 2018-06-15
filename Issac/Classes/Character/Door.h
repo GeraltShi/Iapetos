@@ -13,4 +13,4 @@ class Door : public Sprite
 	bool init(int doorType, const string &doorStyle, const Size &winSize);
 };
 
-#endif // !_STONE_H_
+#endif // _DOOR_H_
