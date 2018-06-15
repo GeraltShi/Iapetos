@@ -7,6 +7,7 @@
 class PlayerService
 {
     CC_SYNTHESIZE(int, max_health, MaxHealth)
+    CC_SYNTHESIZE(double, defaultAttack_, DefaultAttack)
 
 public:
     static PlayerService *getInstance();
@@ -15,6 +16,10 @@ public:
     void setHealth(int health);
     void decreaseHealth(int dHealth);
     void increaseHealth(int dHealth);
+    double getAttack() const;
+    void setAttack(double attack);
+    void decreaseAttack(double dAttack);
+    void increaseAttack(double dAttack);
 
 private:
     PlayerService();

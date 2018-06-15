@@ -19,6 +19,7 @@ void PlayerService::init()
     model_ = PlayerViewModel();
 
     model_.setHealth(max_health);
+    model_.setAttack(defaultAttack_);
 }
 
 int PlayerService::getHealth() const
@@ -41,9 +42,30 @@ void PlayerService::increaseHealth(int dHealth)
     model_.setHealth(model_.getHealth() + dHealth);
 }
 
+double PlayerService::getAttack() const
+{
+    return model_.getAttack();
+}
+
+void PlayerService::setAttack(double attack)
+{
+    model_.setAttack(attack);
+}
+
+void PlayerService::decreaseAttack(double dAttack)
+{
+    model_.setAttack(model_.getAttack() - dAttack);
+}
+
+void PlayerService::increaseAttack(double dAttack)
+{
+    model_.setAttack(model_.getAttack() + dAttack);
+}
+
 PlayerService::PlayerService()
 {
     max_health = 7;//初始血量6个半心（3颗心）
+    defaultAttack_ = 1.3;
 }
 
 
