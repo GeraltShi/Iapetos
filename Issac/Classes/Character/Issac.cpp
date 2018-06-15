@@ -1,6 +1,7 @@
 #include "Issac.hpp"
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
+#include "Service/PlayerService.h"
 using namespace CocosDenshion;
 
 using namespace cocos2d;
@@ -511,21 +512,31 @@ void Issac::dead(){
 }
 
 double Issac::getMoveSpeed(){
-    return moveSpeed;
+    return PlayerService::getInstance()->getMoveSpeed();
 }
 
 double Issac::getAttack(){
-    return attack;
+    return PlayerService::getInstance()->getAttack();
 }
 
 double Issac::getTearSpeed(){
-    return tearSpeed;
+    return PlayerService::getInstance()->getTearSpeed();
 }
 
 double Issac::getShootInterval(){
-    return shootInterval;
+    return PlayerService::getInstance()->getShootInterval();
+}
+
+void Issac::setHealth(int health)
+{
+    PlayerService::getInstance()->setHealth(health);
+}
+
+void Issac::setAttack(double attack)
+{
+    PlayerService::getInstance()->setAttack(attack);
 }
 
 int Issac::getTearExistingTime(){
-    return tearExistTime;
+    return PlayerService::getInstance()->getTearExistingTime();
 }

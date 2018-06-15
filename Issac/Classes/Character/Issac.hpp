@@ -25,6 +25,10 @@ public:
     double getAttack();//攻击力
     int getTearExistingTime();//射程
     double getShootInterval();//射击间隔
+
+    void setHealth(int health) override;
+    void setAttack(double attack) override;
+
 private:
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();

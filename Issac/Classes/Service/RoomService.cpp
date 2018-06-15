@@ -336,7 +336,7 @@ void RoomService::init()
     room__.right_room_id = 0;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 6;
+    room__.current_room_type = 14;
     room__.current_barrier_type = 1;
     room_map_[3] = room__;
 
