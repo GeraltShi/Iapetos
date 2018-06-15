@@ -5,9 +5,11 @@
 #include "Controller/RoomSceneController.h"
 #include "Service/PlayerService.h"
 #include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
+#include "ui/CocosGUI.h"
 
+using namespace CocosDenshion;
 USING_NS_CC;
+using namespace ui;
 using namespace std;
 
 Scene * RoomScene::createScene(int roomID)
@@ -416,9 +418,17 @@ bool RoomScene::init(int roomID)
 
     //if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
     //{
+
+        
+
         Texture2D * bosshealthbar = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
         Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar, Rect(0, 0, 120, 32));
         Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar, Rect(120, 32, 30, 32));
+
+        Slider *slider = Slider::create();
+        auto f1 = SpriteFrame::createWithTexture(bosshealthbar, Rect(120, 32, 30, 32));
+
+
         bosshealthbarfull->setPosition(206, 223);
         bosshealthbarempty->setPosition(281, 223);
 
