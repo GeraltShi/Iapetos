@@ -37,6 +37,7 @@ class Moveable : public Sprite
 	CC_SYNTHESIZE(double, tearSpeed, TearSpeed)
 	CC_SYNTHESIZE(int, tearExistTime, TearExistTime)
 	CC_SYNTHESIZE(int, fireSpeed, FireSpeed)
+    CC_SYNTHESIZE(double, shootInterval, ShootInterval)
 
 	CC_SYNTHESIZE(bool, enFly, EnFly)
 	CC_SYNTHESIZE(bool, enBounce, EnBounce)

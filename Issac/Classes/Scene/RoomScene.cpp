@@ -341,7 +341,36 @@ bool RoomScene::init(int roomID)
     pausescreen->addChild(pausemenu,0,"pausemenu");
     addChild(pausescreen,7);
     pausescreen->setVisible(false);
+    //加入0状态条防止 child not found
+    const string movespeedstat = "statA0";
+    pausescreen->getChildByName("pausemenu")->removeChildByName("movespeed_bar");
+    Sprite * movespeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(movespeedstat));
+    movespeed_bar->setPosition(98,147);
+    pausescreen->getChildByName("pausemenu")->addChild(movespeed_bar,1,"movespeed_bar");
     
+    const string tearexistingtimestat = "statB0";
+    pausescreen->getChildByName("pausemenu")->removeChildByName("tearexistingtime_bar");
+    Sprite * tearexistingtime_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearexistingtimestat));
+    tearexistingtime_bar->setPosition(157,147);
+    pausescreen->getChildByName("pausemenu")->addChild(tearexistingtime_bar,1,"tearexistingtime_bar");
+    
+    const string tearspeedstat = "statB0";
+    pausescreen->getChildByName("pausemenu")->removeChildByName("tearspeed_bar");
+    Sprite * tearspeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearspeedstat));
+    tearspeed_bar->setPosition(98,130);
+    pausescreen->getChildByName("pausemenu")->addChild(tearspeed_bar,1,"tearspeed_bar");
+    
+    const string shootintervalstat = "statA0";
+    pausescreen->getChildByName("pausemenu")->removeChildByName("shootinterval_bar");
+    Sprite * shootinterval_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(shootintervalstat));
+    shootinterval_bar->setPosition(157,130);
+    pausescreen->getChildByName("pausemenu")->addChild(shootinterval_bar,1,"shootinterval_bar");
+    
+    const string attackstat = "statA0";
+    pausescreen->getChildByName("pausemenu")->removeChildByName("attack_bar");
+    Sprite * attack_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(attackstat));
+    attack_bar->setPosition(98,113);
+    pausescreen->getChildByName("pausemenu")->addChild(attack_bar,1,"attack_bar");
     
     //设置菜单
     Texture2D * optionscreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/optionsmenudark.png");
@@ -430,7 +459,7 @@ bool RoomScene::init(int roomID)
     bosshealthbarempty->setPosition(75, 16);
     bosshealthbar->addChild(bosshealthbarempty, -1);//添加 empty 贴图为背景
     
-    this->addChild(bosshealthbar, 8,"bosshealthbar");//getname 调用 bosshealthbar，再 setPercentage 就可以改血量
+    this->addChild(bosshealthbar, 6,"bosshealthbar");//getname 调用 bosshealthbar，再 setPercentage 就可以改血量
     //}
     
     scheduleUpdate();
@@ -598,12 +627,22 @@ void RoomScene::update(float delta)
             //TODO播放死亡动画，放完再将 model 设为结束
             //设置 game status
             player->dead();
+            const auto texture_ghost = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/ghost.png");
+            Sprite * ghost_sprite = Sprite::createWithTexture(texture_ghost, Rect(0, 0, 32, 32));
+            auto aniCache = AnimationCache::getInstance();
+            const auto ghost_animation = aniCache->getAnimation("ghost_animation");
+            Animate * ghostAnimate = Animate::create(ghost_animation);
+            ghost_sprite->setPosition(player->getPosition());
+            this->addChild(ghost_sprite,3);
+            ActionInterval *MoveBy = MoveBy::create(2, Vec2(200, 300));
+            ghost_sprite->runAction(Spawn::create(ghostAnimate,MoveBy,NULL));
+            
             model.game_stat = 2;
         }
 
         //添加player的射击监听
         if (model.tear_direction == 5) {
-            this->schedule(schedule_selector(RoomScene::fire), 0.4, 65536, 0.001);
+            this->schedule(schedule_selector(RoomScene::fire), player->getShootInterval(), 65536, 0.001);
         }
 
         //玩家血量显示
@@ -643,6 +682,35 @@ void RoomScene::update(float delta)
             model.paused_menu_generated_flag = 1;
         }
         //更新 issac 状态属性
+        const string movespeedstat = "statA" + to_string((int)(player->getMoveSpeed()/50));
+        pausescreen->getChildByName("pausemenu")->removeChildByName("movespeed_bar");
+        Sprite * movespeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(movespeedstat));
+        movespeed_bar->setPosition(98,147);
+        pausescreen->getChildByName("pausemenu")->addChild(movespeed_bar,1,"movespeed_bar");
+        
+        const string tearexistingtimestat = "statB" + to_string(player->getTearExistingTime()/10);
+        pausescreen->getChildByName("pausemenu")->removeChildByName("tearexistingtime_bar");
+        Sprite * tearexistingtime_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearexistingtimestat));
+        tearexistingtime_bar->setPosition(157,147);
+        pausescreen->getChildByName("pausemenu")->addChild(tearexistingtime_bar,1,"tearexistingtime_bar");
+        
+        const string tearspeedstat = "statB" + to_string((int)(player->getTearSpeed()/33));
+        pausescreen->getChildByName("pausemenu")->removeChildByName("tearspeed_bar");
+        Sprite * tearspeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearspeedstat));
+        tearspeed_bar->setPosition(98,130);
+        pausescreen->getChildByName("pausemenu")->addChild(tearspeed_bar,1,"tearspeed_bar");
+        
+        const string shootintervalstat = "statA" + to_string((int)(player->getShootInterval()*5));
+        pausescreen->getChildByName("pausemenu")->removeChildByName("shootinterval_bar");
+        Sprite * shootinterval_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(shootintervalstat));
+        shootinterval_bar->setPosition(157,130);
+        pausescreen->getChildByName("pausemenu")->addChild(shootinterval_bar,1,"shootinterval_bar");
+        
+        const string attackstat = "statA" + to_string((int)player->getAttack());
+        pausescreen->getChildByName("pausemenu")->removeChildByName("attack_bar");
+        Sprite * attack_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(attackstat));
+        attack_bar->setPosition(98,113);
+        pausescreen->getChildByName("pausemenu")->addChild(attack_bar,1,"attack_bar");
         
         //更新选项光标
         switch (model.paused_menu_cursor) {
@@ -704,6 +772,7 @@ void RoomScene::update(float delta)
             }
         } else {
             optionscreen->setVisible(false);
+            
         }
 	}
     else{
@@ -908,14 +977,14 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(statA6, "statA6");
     fcache->addSpriteFrame(statA7, "statA7");
     //statB 是往左斜的
-    const auto statB0 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,80,32,16));
-    const auto statB1 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,80,32,16));
-    const auto statB2 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,80,32,16));
-    const auto statB3 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,80,32,16));
-    const auto statB4 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,64,32,16));
-    const auto statB5 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,64,32,16));
-    const auto statB6 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,64,32,16));
-    const auto statB7 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,64,32,16));
+    const auto statB0 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,64,32,16));
+    const auto statB1 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,64,32,16));
+    const auto statB2 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,64,32,16));
+    const auto statB3 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,64,32,16));
+    const auto statB4 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,48,32,16));
+    const auto statB5 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,48,32,16));
+    const auto statB6 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,48,32,16));
+    const auto statB7 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,48,32,16));
     fcache->addSpriteFrame(statB0, "statB0");
     fcache->addSpriteFrame(statB1, "statB1");
     fcache->addSpriteFrame(statB2, "statB2");

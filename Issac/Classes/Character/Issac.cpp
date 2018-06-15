@@ -31,6 +31,7 @@ bool Issac::init()
 	attack = 1.3;
 	enFly = false;
 	enBounce = false;
+    shootInterval = 0.4;
 	this->setTag(1);
 
 
@@ -497,7 +498,7 @@ void Issac::hurt(){
     auto aniCache = AnimationCache::getInstance();
     const auto hurt_animation = aniCache->getAnimation("hurt_animation");
     Animate * hurtAnimate = Animate::create(hurt_animation);
-    
+//    this->getChildByName("head")->runAction(hurtAnimate);
     this->runAction(Spawn::create(Blink::create(0.5, 4),NULL));
 }
 
@@ -507,4 +508,24 @@ void Issac::dead(){
     Animate * deadAnimate = Animate::create(dead_animation);
     
     this->runAction(deadAnimate);
+}
+
+double Issac::getMoveSpeed(){
+    return moveSpeed;
+}
+
+double Issac::getAttack(){
+    return attack;
+}
+
+double Issac::getTearSpeed(){
+    return tearSpeed;
+}
+
+double Issac::getShootInterval(){
+    return shootInterval;
+}
+
+int Issac::getTearExistingTime(){
+    return tearExistTime;
 }
