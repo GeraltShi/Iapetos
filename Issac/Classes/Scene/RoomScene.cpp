@@ -510,7 +510,7 @@ void RoomScene::update(float delta)
                 SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition((*it)->getPosition());
-                addChild(temp_sprite, 3);
+                addChild(temp_sprite);
                 SimpleAudioEngine::getInstance()->playEffect("res/sfx/splatter 0.wav",false);
                 (*it)->removeFromParent();
                 //
@@ -536,7 +536,7 @@ void RoomScene::update(float delta)
                 SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition((*it)->getPosition());
-                addChild(temp_sprite, 3);
+                addChild(temp_sprite, 4);
 
                 (*it)->removeFromParent();
 
@@ -751,7 +751,7 @@ void RoomScene::fire(float dt){
     SimpleAudioEngine::getInstance()->playEffect("res/sfx/tear fire 4.wav",false);
 //    SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav",false);//注意：这句话有鬼畜效果
 	tears_.pushBack(player->Fire(model.tear_direction));
-	addChild(tears_.at(tears_.size() - 1),4);
+	addChild(tears_.at(tears_.size() - 1));
 }
 
 void RoomScene::build_frame_cache() const
