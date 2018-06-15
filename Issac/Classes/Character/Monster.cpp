@@ -3,7 +3,7 @@
 
 using namespace cocos2d;
 
-#define ROOT2 1.41421356
+
 
 bool Monster::init()
 {
@@ -30,13 +30,15 @@ Tear *Monster::Fire(Vec2 targetPos)
 {
     //创建一个Tear
     Tear *myTear = Tear::createTear();
+	Vec2 myasd = this->getPosition();
+	
     //设定初始tear位置和速度
-    double diffX = abs(targetPos.x - this->getPosition().x);
-    double diffY = abs(targetPos.y - this->getPosition().y);
+    double diffX = targetPos.x - this->getPosition().x;
+    double diffY = targetPos.y - this->getPosition().y;
     double dis = sqrt(diffX * diffX + diffY * diffY);
     double tear_V = moveSpeed + tearSpeed;
     myTear->getPhysicsBody()->setVelocity(Vec2(tear_V * diffX / dis, tear_V * diffY / dis));
-    //初始位置
+	//初始位置
     myTear->setPosition(Vec2(getPosition().x + MonTearOffset * diffX / dis, getPosition().y + MonTearOffset * diffY / dis));
     //存在时间,攻击
     myTear->setTearExistTime(tearExistTime);
@@ -962,7 +964,7 @@ bool Gaper::init()
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
 
-	radiusSize = 12;    //Gaper碰撞大小
+	radiusSize = 9;    //Gaper碰撞大小
 	bodyMass = 100;     //Gaper重量
 	moveSpeed = 30;     //Gaper行走速度
 	health = 5;         //Gaper血量
@@ -980,6 +982,9 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 4) {
 		//足够近 冲刺
 		moveSpeed = 100;
+	}
+	else {
+		moveSpeed = 30;
 	}
 	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 1.2)
 	{
@@ -1032,10 +1037,13 @@ void GaperFire::fireStrategy(Vector<Tear *> &tears_)
     {
         fireCoolTime = fireSpeed; //冷却
 		//开火
-        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y-10)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y+10)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y + 10)));
+		double fireOffsetX=this->getPhysicsBody()->getVelocity().x /moveSpeed;
+		double fireOffsetY=this->getPhysicsBody()->getVelocity().y /moveSpeed;
+
+		tears_.pushBack(Fire(Vec2(this->getPosition().x - 10 , this->getPosition().y-10 )));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10 , this->getPosition().y+10 )));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10 , this->getPosition().y - 10 )));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x - 10 , this->getPosition().y + 10 )));
     }
 }
 

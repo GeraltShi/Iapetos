@@ -12,7 +12,7 @@ using namespace std;
 #endif
 #ifndef _abs_
 #define _abs_
-#define abs(x) ((x) < 0 ? (-x) : x)
+#define abs(x)  ( (x)>0?(x):-(x) ) 
 #endif
 #ifndef _ColClogTime_
 #define ColClogTime 3

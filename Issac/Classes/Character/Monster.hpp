@@ -10,6 +10,7 @@ USING_NS_CC;
 using namespace std;
 
 #define MonTearOffset 15
+#define ROOT2 1.41421356
 const GridPoint moveStep[8] = {GridPoint(1, 0), GridPoint(-1, 0), GridPoint(0, 1), GridPoint(0, -1), GridPoint(1, 1), GridPoint(-1, -1), GridPoint(-1, 1), GridPoint(1, -1)};
 
 class Monster : public Moveable
