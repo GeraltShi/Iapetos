@@ -9,7 +9,8 @@
 USING_NS_CC;
 using namespace std;
 
-#define MonTearOffset 15
+#define MonTearOffset 5
+#define ROOT2 1.41421356
 const GridPoint moveStep[8] = {GridPoint(1, 0), GridPoint(-1, 0), GridPoint(0, 1), GridPoint(0, -1), GridPoint(1, 1), GridPoint(-1, -1), GridPoint(-1, 1), GridPoint(1, -1)};
 
 class Monster : public Moveable
@@ -177,8 +178,8 @@ public:
     CREATE_FUNC(FlyDaddy)
     void move(int walk_direction);
     virtual void moveStrategy(const RoomViewModel &roomMap);
-	virtual void fireStrategy(Vector<Tear *> &tears_) {};
-	virtual void giveBirth(Vector<Monster *> &monsters_) {};
+	virtual void fireStrategy(Vector<Tear *> &tears_);
+	virtual void giveBirth(Vector<Monster *> &monsters_) ;
     string getDeadAnimation() override;
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();

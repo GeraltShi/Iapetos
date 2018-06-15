@@ -3,7 +3,7 @@
 
 using namespace cocos2d;
 
-#define ROOT2 1.41421356
+
 
 bool Monster::init()
 {
@@ -31,21 +31,23 @@ bool Monster::init()
 Tear *Monster::Fire(Vec2 targetPos)
 {
     //创建一个Tear
-    MonsterTear *myTear = MonsterTear::createMonsterTear();
+	MonsterTear *myTear = MonsterTear::createMonsterTear();
+	Vec2 myasd = this->getPosition();
+	
     //设定初始tear位置和速度
-    double diffX = abs(targetPos.x - this->getPosition().x);
-    double diffY = abs(targetPos.y - this->getPosition().y);
+    double diffX = targetPos.x - this->getPosition().x;
+    double diffY = targetPos.y - this->getPosition().y;
     double dis = sqrt(diffX * diffX + diffY * diffY);
     double tear_V = moveSpeed + tearSpeed;
     myTear->getPhysicsBody()->setVelocity(Vec2(tear_V * diffX / dis, tear_V * diffY / dis));
-    //初始位置
-    myTear->setPosition(Vec2(getPosition().x + MonTearOffset * diffX / dis, getPosition().y + MonTearOffset * diffY / dis));
+	//初始位置
+    myTear->setPosition(Vec2(getPosition().x + (radiusSize +MonTearOffset) * diffX / dis, getPosition().y + (radiusSize + MonTearOffset) * diffY / dis));
     //存在时间,攻击
     myTear->setTearExistTime(tearExistTime);
     myTear->setAttack(attack);
     //是Monster发射的
     myTear->setTag(3);
-    return myTear;
+    return (Tear*)myTear;
 }
 
 string Monster::getDeadAnimation()
@@ -165,9 +167,9 @@ void Monster::createPhyBody()
     //速度
     phyBody->setVelocity(Vec2(0, 0));
     //碰撞\监听筛选
-    phyBody->setCategoryBitmask(0x02);    // 0000_0010
-    phyBody->setCollisionBitmask(0xFF);   // 1111_1111
-    phyBody->setContactTestBitmask(0x09); //0000_1001(09)
+    phyBody->setCategoryBitmask(0x002);    // 0000_0000_0010(002)
+    phyBody->setCollisionBitmask(0x1FF);   // 0001_1111_1111(1FF)
+    phyBody->setContactTestBitmask(0x109); //0001_0000_1001(109)
     //添加物理躯体
     this->addComponent(phyBody);
 }
@@ -442,7 +444,7 @@ bool Fatty::init()
     }
 
     radiusSize = 12;    //Fatty碰撞大小
-    bodyMass = 500;     //Fatty重量
+    bodyMass = 150;     //Fatty重量
     moveSpeed = 80;     //Fatty行走速度
     health = 5;         //Fatty血量
     attack = 1;         //Fatty攻击
@@ -683,9 +685,9 @@ bool Fly::init()
 	tearExistTime = 0; //Fly射程
 
     this->createPhyBody();
-	this->getPhysicsBody()->setCategoryBitmask(0x04);	// 0000_0100(04)
-	this->getPhysicsBody()->setCollisionBitmask(0xDF);	// 1101_1111(DF)
-	this->getPhysicsBody()->setContactTestBitmask(0x09);//0000_1001(09)
+	this->getPhysicsBody()->setCategoryBitmask(0x004);	// 0000_0000_0100(004)
+	this->getPhysicsBody()->setCollisionBitmask(0x1DF);	// 0001_1101_1111(1DF)
+	this->getPhysicsBody()->setContactTestBitmask(0x109);//0001_0000_1001(109)
     return true;
 }
 
@@ -978,7 +980,7 @@ bool Gaper::init()
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
 
-	radiusSize = 12;    //Gaper碰撞大小
+	radiusSize = 9;    //Gaper碰撞大小
 	bodyMass = 100;     //Gaper重量
 	moveSpeed = 30;     //Gaper行走速度
 	health = 5;         //Gaper血量
@@ -996,6 +998,9 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 4) {
 		//足够近 冲刺
 		moveSpeed = 100;
+	}
+	else {
+		moveSpeed = 30;
 	}
 	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 1.2)
 	{
@@ -1048,10 +1053,10 @@ void GaperFire::fireStrategy(Vector<Tear *> &tears_)
     {
         fireCoolTime = fireSpeed; //冷却
 		//开火
-        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y-10)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y+10)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
-        tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y + 10)));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x - 10 , this->getPosition().y-10 )));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10 , this->getPosition().y+10 )));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10 , this->getPosition().y - 10 )));
+		tears_.pushBack(Fire(Vec2(this->getPosition().x - 10 , this->getPosition().y + 10 )));
     }
 }
 
@@ -1269,14 +1274,7 @@ void FlyDaddy::move(int walk_direction)
 {
     //移动
     //移动速度不是之前的情况，说明发生碰撞
-    if (colClog == ColClogTime && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
-    {
-        colClog = 0;
-    }
-    else
-    {
-        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
-    }
+    this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
     
     if (!moving)
     {
@@ -1289,10 +1287,6 @@ void FlyDaddy::move(int walk_direction)
         moving = true;
     }
     
-    if (colClog == 0)
-    {
-        prev_walk_orientation = 5;
-    }
 }
 
 bool FlyDaddy::init()
@@ -1310,30 +1304,90 @@ bool FlyDaddy::init()
     
     this->addChild(bodySprite, 0, "body");
     
-    radiusSize = 15;    //Spider碰撞大小
-    bodyMass = 100;     //Spider重量
-    moveSpeed = 30;     //Spider行走速度
-    health = 300;         //Spider血量
-    attack = 2;         //Spider攻击
-    tearSpeed = 60;     //Spider泪速
-    tearExistTime = 0; //Spider射程
+    radiusSize = 20;    //FlyDaddy碰撞大小
+    bodyMass = 300;     //FlyDaddy重量
+    moveSpeed = 200;     //FlyDaddy行走速度
+    health = 150;         //FlyDaddy血量
+    attack = 1;         //FlyDaddy攻击
+    tearSpeed = 60;     //FlyDaddy泪速
+    tearExistTime = 50; //FlyDaddy射程
     this->createPhyBody();
+	this->getPhysicsBody()->setCategoryBitmask(0x004);	// 0000_0000_0100(004)
+	this->getPhysicsBody()->setCollisionBitmask(0x1DF);	// 0001_1101_1111(1DF)
+	this->getPhysicsBody()->setContactTestBitmask(0x109);//0001_0000_1001(109)
     return true;
 }
 
 void FlyDaddy::moveStrategy(const RoomViewModel & roomMap)
 {
-    if (rand() % 2 == 0) {
-        //冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
-        Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
-        int walk_direction = ToPointDir(playerPos);
-        colClog = 40;
-        this->move(walk_direction);
-    }
-    else {
-        //暂停不动
-        this->getPhysicsBody()->setVelocity(Vec2(0, 0));
-    }
+	if (fireCoolTime == 0) {
+		if (rand() % 5 == 0) {
+			//冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
+			moveSpeed = 200;
+			Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+			int walk_direction = ToPointDir(playerPos);
+			this->move(walk_direction);
+			colClog = 300;
+		}
+	}
+	else if (moveSpeed==200 || rand() % 8 == 0){
+		moveSpeed = 30;
+		this->move(rand() % 9);
+	}
+}
+
+void FlyDaddy::fireStrategy(Vector<Tear *> &tears_) 
+{
+	if (fireCoolTime == 0) {
+		if (rand() % 3 == 0) {
+			//开火
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y + 10)));
+			fireCoolTime = 120;
+		}
+	}
+	else {
+		if (fireCoolTime == 100 || fireCoolTime == 80) {
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y + 10)));
+		}
+	}
+}
+
+void FlyDaddy::giveBirth(Vector<Monster *> &monsters_)
+{
+	if (fireCoolTime == 0) {
+		fireCoolTime = 120;
+		if (rand() % 2 == 0) {
+			//3个Fly
+			monsters_.pushBack(Fly::createFly());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x + radiusSize + 5, this->getPosition().y));
+			monsters_.pushBack(Fly::createFly());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x - radiusSize - 5, this->getPosition().y));	
+			monsters_.pushBack(Fly::createFly());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x, this->getPosition().y + radiusSize + 5));
+		}
+		else {
+			//1个FlyFire
+			monsters_.pushBack(FlyFire::createFlyFire());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x + radiusSize + 5, this->getPosition().y + radiusSize + 5));
+		}
+	}
+	else {
+		fireCoolTime--;
+	}
 }
 
 

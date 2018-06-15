@@ -1,4 +1,5 @@
 #include "RoomService.h"
+#include "RoomService.h"
 #include "cocos2d.h"
 #include <string>
 #include <vector>
@@ -324,7 +325,7 @@ void RoomService::init()
     room__.right_room_id = 1;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 7;
+    room__.current_room_type = 15;
     room__.current_barrier_type = 0;
     room_map_[2] = room__;
 
@@ -335,8 +336,8 @@ void RoomService::init()
     room__.right_room_id = 0;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 2;
-    room__.current_barrier_type = 0;
+    room__.current_room_type = 6;
+    room__.current_barrier_type = 1;
     room_map_[3] = room__;
 
     room__ = Room();
