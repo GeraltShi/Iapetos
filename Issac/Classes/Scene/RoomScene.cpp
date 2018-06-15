@@ -5,9 +5,11 @@
 #include "Controller/RoomSceneController.h"
 #include "Service/PlayerService.h"
 #include "SimpleAudioEngine.h"
-using namespace CocosDenshion;
+#include "ui/CocosGUI.h"
 
+using namespace CocosDenshion;
 USING_NS_CC;
+using namespace ui;
 using namespace std;
 
 Scene * RoomScene::createScene(int roomID)
@@ -29,8 +31,11 @@ bool RoomScene::init(int roomID)
     //画物理引擎框
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
+    //设置恢复Model
+    //model = RoomService::getInstance()->get_prev_room_scene();
+
     const Size size = Director::getInstance()->getWinSize();
-   // std::cout << size.width <<" "<< size.height << endl;
+
     /** zorder
      * 9 DeadScreen
      * 8 HUD, PauseMenu
@@ -227,8 +232,7 @@ bool RoomScene::init(int roomID)
 		}
 	}
  
-    //TODO 4.小地图和生命值，物品栏在z最大处（最顶层），（且随窗口大小自适应，如来不及就做成固定大小）
-    //TODO 状态栏层应该独立于RoomScene，生命值和图案用状态reg统一管理
+
     Texture2D * texture_hud = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/hudpickups.png");
     healthbar = Sprite::createWithTexture(texture_hud, Rect(0,0,1,1));//用 HUD 贴图的角落生成一个1x1透明贴图
     healthbar->setPosition(70,250);
@@ -252,7 +256,9 @@ bool RoomScene::init(int roomID)
     Texture2D * texture_minimap = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/minimap1.png");
     Sprite * minimap = Sprite::createWithTexture(texture_minimap, Rect(0, 0, 56, 48));
     minimap->setPosition(370, 240);
-    addChild(minimap, 5);
+    const auto opa = RoomService::getInstance()->get_real_mini_opacity();
+    minimap->setOpacity(opa);
+    addChild(minimap, 5,"mini_map");
 
     const auto msks = mini_map_vm_.getMiniMask();
 
@@ -266,12 +272,14 @@ bool RoomScene::init(int roomID)
             {
                 Sprite * current_room = Sprite::createWithTexture(texture_minimap, Rect(112, 80, 16, 16));//当前房间
                 current_room->setPosition(28, 24);
+                current_room->setOpacity(opa);
                 minimap->addChild(current_room, 1);
             }
             else if (msk >= 0 && msk <8)//普通房间
             {
                 Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16));//非当前房间
                 available_room->setPosition(12+j*8, 40-i*8);
+                available_room->setOpacity(opa);
                 minimap->addChild(available_room, 1);
 
             }
@@ -279,9 +287,11 @@ bool RoomScene::init(int roomID)
             {
                 Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16));//非当前房间
                 available_room->setPosition(12 + j * 8, 40 - i * 8);
+                available_room->setOpacity(opa);
                 minimap->addChild(available_room, 1);
                 Sprite * treasure_room_icon = Sprite::createWithTexture(texture_minimap, Rect(64, 64, 16, 16));//buff房间标志
                 treasure_room_icon->setPosition(12 + j * 8, 40 - i * 8);
+                treasure_room_icon->setOpacity(opa);
                 minimap->addChild(treasure_room_icon, 1);
 
             }
@@ -289,9 +299,11 @@ bool RoomScene::init(int roomID)
             {
                 Sprite * available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16));//非当前房间
                 available_room->setPosition(12 + j * 8, 40 - i * 8);
+                available_room->setOpacity(opa);
                 minimap->addChild(available_room, 1);
                 Sprite * boss_room_icon = Sprite::createWithTexture(texture_minimap, Rect(32, 80, 16, 16));//boss房间标志
                 boss_room_icon->setPosition(12 + j * 8, 40 - i * 8);
+                boss_room_icon->setOpacity(opa);
                 minimap->addChild(boss_room_icon, 1);
             }
         }
@@ -316,7 +328,6 @@ bool RoomScene::init(int roomID)
     //TODO 100. (Issac有宠物，它会自己攻击)   gfx\familiar
    
     //暂停菜单
-    //暂停界面
     Texture2D * pausescreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/pausescreen.png");
     Texture2D * pausescreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
     pausescreen = Sprite::createWithTexture(pausescreenBgTexture, Rect(0,0,442,286));
@@ -382,8 +393,8 @@ bool RoomScene::init(int roomID)
     bomb->setVisible(false);
     addChild(bomb,3);
     
-    SimpleAudioEngine::getInstance()->setEffectsVolume((float)model.sfx_volume/25.0);
-    SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)model.music_volume/25.0);
+    SimpleAudioEngine::getInstance()->setEffectsVolume((float)RoomService::getInstance()->getSFXVolume()/25.0);
+    SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)RoomService::getInstance()->getMusicVolume() /25.0);
     
     Texture2D * pickup_heart_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_001_heart.png");
     Sprite * pickup_heart_plusfull = Sprite::createWithTexture(pickup_heart_texture, Rect(0,0,32,32));
@@ -402,13 +413,27 @@ bool RoomScene::init(int roomID)
     this->addChild(pickup_speedup,3);
     
     //Boss血条贴图，zorder 为7，两张以一定比例横向拼接，注意 boss 死亡后销毁血条
-    Texture2D * bosshealthbar = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
-    Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar, Rect(0,0,150,32));
-    Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar, Rect(0,32,150,32));
-    bosshealthbarfull -> setPosition(221,223);
-    bosshealthbarempty -> setPosition(221,183);
-    this->addChild(bosshealthbarfull,7);
-    this->addChild(bosshealthbarempty,7);
+
+    //if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
+    //{
+
+        
+
+        Texture2D * bosshealthbar = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
+        Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar, Rect(0, 0, 120, 32));
+        Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar, Rect(120, 32, 30, 32));
+
+        Slider *slider = Slider::create();
+        auto f1 = SpriteFrame::createWithTexture(bosshealthbar, Rect(120, 32, 30, 32));
+
+
+        bosshealthbarfull->setPosition(206, 223);
+        bosshealthbarempty->setPosition(281, 223);
+
+        this->addChild(bosshealthbarempty, 7);
+        this->addChild(bosshealthbarfull, 7);
+
+    //}
     
     scheduleUpdate();
     return true;
@@ -489,7 +514,7 @@ void RoomScene::update(float delta)
                 SimpleAudioEngine::getInstance()->playEffect("res/sfx/splatter 0.wav",false);
                 (*it)->removeFromParent();
                 //
-                const auto poof_ani = AnimationCache::getInstance()->getAnimation("poof_animation");
+                const auto poof_ani = AnimationCache::getInstance()->getAnimation((*it)->getPoofAnimation());
                 const auto poof_anim = Animate::create(poof_ani);
                 const auto poof_animate = Sequence::create(poof_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(poof_animate);
@@ -553,7 +578,8 @@ void RoomScene::update(float delta)
                     player->getPhysicsBody()->setVelocity(Vec2(0, 0));
                 }
             }
-            else {
+            else 
+            {
                 player->move(model.walk_direction, model.tear_direction);
             }
             //player无敌时间的倒计时
@@ -562,7 +588,8 @@ void RoomScene::update(float delta)
 				player->getPhysicsBody()->setContactTestBitmask(0xC0); //1100_0000(C0)
                 player->setInvincibleTime(player->getInvincibleTime() - 1);
             }
-			else {
+			else 
+            {
 				player->getPhysicsBody()->setCollisionBitmask(0xFF); //1111_1111(FF)
 				player->getPhysicsBody()->setContactTestBitmask(0xCE); //1100_1110(CE)
 			}
@@ -570,8 +597,9 @@ void RoomScene::update(float delta)
         else {
             //player血量为0，Issac死亡，添加动画和游戏结束界面？
             log("DEAD");
-            //TODO播放死亡动画
+            //TODO播放死亡动画，放完再将 model 设为结束
             //设置 game status
+            player->dead();
             model.game_stat = 2;
         }
 
@@ -597,6 +625,14 @@ void RoomScene::update(float delta)
             hfheart->setPosition(heart_x, 0);
             healthbar->addChild(hfheart, 1);
         }
+        
+        if(monsters_.size() == 0 && !door_removed && doors_.size()!= 0){
+            for(int i = 0; i < doors_.size(); i++){
+                doors_.at(i)->getChildByName("door_piece_left")->runAction(Sequence::create(FadeOut::create(0.5),NULL));
+                doors_.at(i)->getChildByName("door_piece_right")->runAction(Sequence::create(FadeOut::create(0.5),NULL));
+            }
+            door_removed = true;
+        }
     }
 	else if(model.game_stat == 1){
 		//暂停 
@@ -604,7 +640,7 @@ void RoomScene::update(float delta)
 		if (model.paused_menu_generated_flag == 0) {
             this->unschedule(schedule_selector(RoomScene::fire));//防止tear在暂停界面发射
             pausescreen->setVisible(true);
-            auto pausescreenmovein = MoveTo::create(0.2, Vec2(250, 143));
+            const auto pausescreenmovein = MoveTo::create(0.2, Vec2(250, 143));
             pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
             model.paused_menu_generated_flag = 1;
         }
@@ -637,25 +673,34 @@ void RoomScene::update(float delta)
                     break;
             }
             //根据 option 值更新 bar
-            SimpleAudioEngine::getInstance()->setEffectsVolume((float)model.sfx_volume/25.0);
-            SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)model.music_volume/25.0);
-            string sfx_volume_string = "sfx" + to_string(model.sfx_volume);
+            SimpleAudioEngine::getInstance()->setEffectsVolume(RoomService::getInstance()->get_real_sfx_volume());
+            SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(RoomService::getInstance()->get_real_music_volume());
+            const string sfx_volume_string = "sfx" + to_string(RoomService::getInstance()->getSFXVolume());
             optionscreen->getChildByName("optionmenu")->removeChildByName("option_sfx_bar");
             Sprite * option_sfx_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(sfx_volume_string));
             option_sfx_bar->setPosition(175,124);
             optionscreen->getChildByName("optionmenu")->addChild(option_sfx_bar,1,"option_sfx_bar");
             
-            string music_volume_string = "music" + to_string(model.music_volume);
+            const string music_volume_string = "music" + to_string(RoomService::getInstance()->getMusicVolume());
             optionscreen->getChildByName("optionmenu")->removeChildByName("option_music_bar");
             Sprite * option_music_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(music_volume_string));
             option_music_bar->setPosition(175,100);
             optionscreen->getChildByName("optionmenu")->addChild(option_music_bar,1,"option_music_bar");
             
-            string mapopacity_string = "mapopacity" + to_string(model.map_opacity);
+            const string mapopacity_string = "mapopacity" + to_string(RoomService::getInstance()->getMiniOpacity());
             optionscreen->getChildByName("optionmenu")->removeChildByName("option_mapopacity_bar");
             Sprite * option_mapopacity_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(mapopacity_string));
             option_mapopacity_bar->setPosition(175,76);
             optionscreen->getChildByName("optionmenu")->addChild(option_mapopacity_bar,1,"option_mapopacity_bar");
+
+            auto mini_map = this->getChildByName("mini_map");
+            const auto opa = RoomService::getInstance()->get_real_mini_opacity();
+            mini_map->setOpacity(opa);
+            auto mini_is = mini_map->getChildren();
+            for(auto mini_i : mini_is)
+            {
+                mini_i->setOpacity(opa);
+            }
         } else {
             optionscreen->setVisible(false);
         }
@@ -731,6 +776,41 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(frame13, "t_frame13");
     fcache->addSpriteFrame(frame14, "t_frame14");
     fcache->addSpriteFrame(frame15, "t_frame15");
+    
+    Texture2D * mtpoofTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_003_bloodtear.png");
+    const auto mtframe0 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 0, 64, 64));
+    const auto mtframe1 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 0, 64, 64));
+    const auto mtframe2 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 0, 64, 64));
+    const auto mtframe3 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 0, 64, 64));
+    const auto mtframe4 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 64, 64, 64));
+    const auto mtframe5 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 64, 64, 64));
+    const auto mtframe6 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 64, 64, 64));
+    const auto mtframe7 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 64, 64, 64));
+    const auto mtframe8 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 128, 64, 64));
+    const auto mtframe9 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 128, 64, 64));
+    const auto mtframe10 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 128, 64, 64));
+    const auto mtframe11 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 128, 64, 64));
+    const auto mtframe12 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(0, 192, 64, 64));
+    const auto mtframe13 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(64, 192, 64, 64));
+    const auto mtframe14 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(128, 192, 64, 64));
+    const auto mtframe15 = SpriteFrame::createWithTexture(mtpoofTexture, Rect(192, 192, 64, 64));
+    
+    fcache->addSpriteFrame(mtframe0, "mt_frame0");
+    fcache->addSpriteFrame(mtframe1, "mt_frame1");
+    fcache->addSpriteFrame(mtframe2, "mt_frame2");
+    fcache->addSpriteFrame(mtframe3, "mt_frame3");
+    fcache->addSpriteFrame(mtframe4, "mt_frame4");
+    fcache->addSpriteFrame(mtframe5, "mt_frame5");
+    fcache->addSpriteFrame(mtframe6, "mt_frame6");
+    fcache->addSpriteFrame(mtframe7, "mt_frame7");
+    fcache->addSpriteFrame(mtframe8, "mt_frame8");
+    fcache->addSpriteFrame(mtframe9, "mt_frame9");
+    fcache->addSpriteFrame(mtframe10, "mt_frame10");
+    fcache->addSpriteFrame(mtframe11, "mt_frame11");
+    fcache->addSpriteFrame(mtframe12, "mt_frame12");
+    fcache->addSpriteFrame(mtframe13, "mt_frame13");
+    fcache->addSpriteFrame(mtframe14, "mt_frame14");
+    fcache->addSpriteFrame(mtframe15, "mt_frame15");
     
     Texture2D * texture_heart = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_hearts.png");
     const auto fullheartcache = SpriteFrame::createWithTexture(texture_heart, Rect(0,0,16,16));
@@ -838,8 +918,9 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
             PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             nodeA->setInvincibleTime(20);
-            //TODO 添加受伤动画？
+            //受伤动画
             log("Issac Health:%d", nodeA->getHealth());
+            player->hurt();
         }
         //怪物和眼泪碰撞
         if (tagA == 2 && (tagB == 3 || tagB == 4)) {
@@ -851,11 +932,13 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
             PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             if (tagA == 1) nodeA->setInvincibleTime(20);
-            //TO DO添加受伤动画？
+            //添加受伤动画
+            player->hurt();
         }
 		//Issac和门的碰撞
 		if (tagA == 1 && (tagB>=5 && tagB<=8) && monsters_.empty()) {
 			//出门了！
+            RoomService::getInstance()->save_room_scene_state(model);
 			switch (tagB)
 			{
             case(5):

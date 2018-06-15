@@ -14,8 +14,19 @@ class Tear : public Moveable
 	virtual bool init();
 	virtual void createPhyBody();
 	CREATE_FUNC(Tear)
-
+    virtual string getPoofAnimation();
     CC_SYNTHESIZE_RETAIN(Animation *, poof_animation, PoofAnimation)
+};
+
+class MonsterTear : public Tear
+{
+public:
+    static MonsterTear *createMonsterTear();
+    virtual bool init();
+    virtual void createPhyBody();
+    CREATE_FUNC(MonsterTear)
+    virtual string getPoofAnimation();
+    CC_SYNTHESIZE_RETAIN(Animation *, mt_poof_animation, MtPoofAnimation)
 };
 
 #endif

@@ -162,7 +162,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Character\SimpleItem.cpp" />
     <ClCompile Include="..\Classes\Controller\MainSceneController.cpp" />
     <ClCompile Include="..\Classes\Controller\RoomSceneController.cpp" />
-    <ClCompile Include="..\Classes\Service\LevelService.cpp" />
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp" />
     <ClCompile Include="..\Classes\Model\RoomSceneModel.cpp" />
     <ClCompile Include="..\Classes\Service\PlayerService.cpp" />
@@ -189,7 +188,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Controller\RoomSceneController.h" />
     <ClInclude Include="..\Classes\Controller\Event\IMainSceneListener.h" />
     <ClInclude Include="..\Classes\Controller\Event\IRoomSceneListener.h" />
-    <ClInclude Include="..\Classes\Service\LevelService.h" />
     <ClInclude Include="..\Classes\Model\MainSceneModel.h" />
     <ClInclude Include="..\Classes\Model\RoomSceneModel.hpp" />
     <ClInclude Include="..\Classes\Service\PlayerService.h" />

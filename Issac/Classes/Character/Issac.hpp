@@ -16,8 +16,10 @@ public:
 	CREATE_FUNC(Issac)
 
 	virtual void createPhyBody();
-	Tear* Fire(int fireDir);
+	Tear* Fire(int fireDir) const;
     void move(int walk_direction, int tear_direction);
+    void hurt();
+    void dead();
 private:
     void build_sprite_frame_cache(Texture2D *texture_) const;
     static void build_animation_cache();
