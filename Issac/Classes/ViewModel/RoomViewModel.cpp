@@ -18,7 +18,7 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
 
     //生成房间地形,放入石头
     //棋盘中0表示空地，1表示小石头，2表示大石头，3表示玩家
-    //4~19表示怪物的各种类别,20~30item
+    //4~19表示怪物的各种类别,20~30Collectable
     if (barrierType == 0)
     {
         //没有石头
@@ -69,6 +69,7 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
     //1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider
     //5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
     //roomType:8~14宝藏房间
+	//宝藏房号14是测试用，会将所有宝藏放在房间里
     //roomType:15~20代表Boss房
     //15~17 Boss1
     //18~20 Boss2
@@ -209,6 +210,19 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
                 room_map[posX][posY] = 10;
             }
         }
+		//20+是collectable
+		if  (roomType == 14) { //测试用宝藏房间
+			room_map[0][0] = 20;
+			room_map[1][0] = 21;
+			room_map[2][0] = 22;
+			room_map[3][0] = 23;
+			room_map[4][0] = 24;
+			room_map[5][0] = 25;
+			room_map[6][0] = 26;
+			room_map[7][0] = 27;
+			room_map[8][0] = 28;
+		}
+
     }
 }
 

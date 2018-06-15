@@ -24,7 +24,7 @@ bool Issac::init()
 	bodyMass = 50;
 	moving = false;
 	tearSpeed = 100;
-	tearExistTime = 30;
+	tearExistTime = 20;
 	//初始血量6个半心（3颗心）
 	health = 7;
 	//初始攻击
@@ -446,9 +446,9 @@ void Issac::createPhyBody()
 	//速度
 	phyBody->setVelocity(Vec2(0, 0));
 	//碰撞、监听筛选
-	phyBody->setCategoryBitmask(0x01);    // 0000_0001(01)
-	phyBody->setCollisionBitmask(0xFF);   // 1111_1111(FF)
-	phyBody->setContactTestBitmask(0xCE);	//1100_1110(CE)
+	phyBody->setCategoryBitmask(0x001);    // 0000_0000_0001(001)
+	phyBody->setCollisionBitmask(0x0FF);   // 0000_1111_1111(0FF)
+	phyBody->setContactTestBitmask(0x0CE);	//0000_1100_1110(0CE)
 	//添加物理躯体
 	this->addComponent(phyBody);
 }

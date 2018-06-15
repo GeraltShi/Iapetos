@@ -26,9 +26,9 @@ void Tear::createPhyBody()
 	//速度
 	phyBody->setVelocity(Vec2(0, 0));
 	//碰撞、监听筛选
-	phyBody->setCategoryBitmask(0x08);	// 0000_1000
-	phyBody->setCollisionBitmask(0xFF);   // 1111_1111
-	phyBody->setContactTestBitmask(0xFF); //1111_1111
+	phyBody->setCategoryBitmask(0x008);	// 0000_0000_1000(008)
+	phyBody->setCollisionBitmask(0x1FF);   // 0001_1111_1111(1FF)
+	phyBody->setContactTestBitmask(0x1FF); //0001_1111_1111(1FF)
 	//添加物理躯体
 	this->addComponent(phyBody);
 }

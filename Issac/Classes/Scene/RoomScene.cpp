@@ -40,7 +40,7 @@ bool RoomScene::init(int roomID)
      * 6 Overlay, BossHealthBar
      * 5 MiniMap
      * 4 Tear
-     * 3 Issac, Monster, Rock, Pickup
+    ap
      * 2 Room shading
      * 1 Controls, Door, Door Center,ivisiable bordor
      * 0 Room Background
@@ -226,6 +226,12 @@ bool RoomScene::init(int roomID)
 				stones_.at(stones_.size() - 1)->setPosition(Vec2(48 + i*RoomUnitSize.width, 48 + j*RoomUnitSize.height));
 				addChild(stones_.at(stones_.size() - 1), 3);
 			}
+			if (room_vm_.getRoomMap(i, j) >= 20) {//20说明这个位置是Collectable
+												  //Collectable生成
+				collectables_.pushBack(Collectable::createCollectable(room_vm_.getRoomMap(i, j) - 20));
+				collectables_.at(collectables_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(collectables_.at(collectables_.size() - 1),3);
+			}
 		}
 	}
  
@@ -393,22 +399,6 @@ bool RoomScene::init(int roomID)
     SimpleAudioEngine::getInstance()->setEffectsVolume((float)RoomService::getInstance()->getSFXVolume()/25.0);
     SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)RoomService::getInstance()->getMusicVolume() /25.0);
     
-    Texture2D * pickup_heart_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_001_heart.png");
-    Sprite * pickup_heart_plusfull = Sprite::createWithTexture(pickup_heart_texture, Rect(0,0,32,32));
-    Sprite * pickup_heart_plushalf = Sprite::createWithTexture(pickup_heart_texture, Rect(32,0,32,32));
-    pickup_heart_plusfull -> setPosition(221,143);
-    pickup_heart_plushalf -> setPosition(241,143);
-  //  pickup_heart_maxplusfull -> setPosition(261,143);
-    //pickup_heart_maxplushalf -> setPosition(281,143);
-    this->addChild(pickup_heart_plusfull,3);
-    this->addChild(pickup_heart_plushalf,3);
-   // this->addChild(pickup_heart_maxplusfull,3);
-   // this->addChild(pickup_heart_maxplushalf,3);
-    Texture2D * pickup_speedup_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_012_magicmushroom.png");
-    Sprite * pickup_speedup = Sprite::createWithTexture(pickup_speedup_texture, Rect(0,0,32,32));
-    pickup_speedup-> setPosition(301,143);
-    this->addChild(pickup_speedup,3);
-    
     //Boss血条贴图，zorder 为7，两张以一定比例横向拼接，注意 boss 死亡后销毁血条
 
     //if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
@@ -563,6 +553,11 @@ void RoomScene::update(float delta)
 				it++;
             }
         }
+		//player能不能飞
+		if (player->getEnFly()) {
+			player->getPhysicsBody()->setCategoryBitmask(0x100);     //0001_0000_0000(100)
+			player->getPhysicsBody()->setCollisionBitmask(0xDF); //0000_1101_1111(0DF)
+		}
 
         //player移动	
         const auto he = PlayerService::getInstance()->getHealth();
@@ -581,14 +576,24 @@ void RoomScene::update(float delta)
             }
             //player无敌时间的倒计时
             if (player->getInvincibleTime() > 0) {
-				player->getPhysicsBody()->setCollisionBitmask(0xF9); //1111_1001(F9)
+				if (player->getEnFly()) {
+					player->getPhysicsBody()->setCollisionBitmask(0xD9); //0000_1101_1001(0D9)
+				}
+				else {
+					player->getPhysicsBody()->setCollisionBitmask(0xF9); //0000_1111_1001(0F9)
+				}
 				player->getPhysicsBody()->setContactTestBitmask(0xC0); //1100_0000(C0)
                 player->setInvincibleTime(player->getInvincibleTime() - 1);
             }
 			else 
             {
-				player->getPhysicsBody()->setCollisionBitmask(0xFF); //1111_1111(FF)
-				player->getPhysicsBody()->setContactTestBitmask(0xCE); //1100_1110(CE)
+				if (player->getEnFly()) {
+					player->getPhysicsBody()->setCollisionBitmask(0xDF); //0000_1101_1111(0DF)
+				}
+				else {
+					player->getPhysicsBody()->setCollisionBitmask(0xFF); //0000_1111_1111(0FF)
+				}
+				player->getPhysicsBody()->setContactTestBitmask(0xCE); //0000_1100_1110(0CE)
 			}
         }
         else {
@@ -733,6 +738,10 @@ void RoomScene::fire(float dt){
     SimpleAudioEngine::getInstance()->playEffect("res/sfx/tear fire 4.wav",false);
 //    SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav",false);//注意：这句话有鬼畜效果
 	tears_.pushBack(player->Fire(model.tear_direction));
+	if (player->getEnBounce()) {
+		tears_.at(tears_.size() - 1)->getPhysicsBody()->setContactTestBitmask(0x10F); //0001_0000_1111(10F)
+	}
+	
 	addChild(tears_.at(tears_.size() - 1),4);
 }
 
@@ -909,16 +918,16 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
         //if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
 		if (tagA == 1 && tagB == 2)
 		{
-            //Issac被monster碰到，受伤
-            nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
-            //Service更新血量
-            PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
-            //Issac进入短暂无敌状态
-            nodeA->setInvincibleTime(20);
-            //受伤动画
-            log("Issac Health:%d", nodeA->getHealth());
-            player->hurt();
-        }
+			//Issac被monster碰到，受伤
+			nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+			//Service更新血量
+			PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
+			//Issac进入短暂无敌状态
+			nodeA->setInvincibleTime(20);
+			//受伤动画
+			log("Issac Health:%d", nodeA->getHealth());
+			player->hurt();
+		}
         //怪物和眼泪碰撞
         if (tagA == 2 && (tagB == 3 || tagB == 4)) {
             nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
@@ -982,10 +991,12 @@ bool RoomScene::onContactBegin(PhysicsContact& contact)
 			nodeA->setTearExistTime(nodeA->getTearExistTime() + nodeB->getTearExistTime());
 			nodeA->setMoveSpeed(nodeA->getMoveSpeed() + nodeB->getMoveSpeed());
 			nodeA->setRadiusSize(nodeA->getRadiusSize() + nodeB->getRadiusSize());
-			nodeA->setEnFly(nodeB->getEnFly());
-			nodeA->setEnBounce(nodeB->getEnBounce());
+			nodeA->setEnFly(nodeA->getEnFly() || nodeB->getEnFly());
+			nodeA->setEnBounce(nodeA->getEnBounce() || nodeB->getEnBounce());
 			if (nodeB->getEnHalfTearDis())
 				nodeA->setTearExistTime(nodeA->getTearExistTime() / 2);
+			//物品消失
+			nodeB->removeFromParent();
 		}
 
 		//眼泪碰撞后消失

@@ -30,9 +30,9 @@ bool Door::init(int doorType, const string &doorStyle, const Size &winSize)
 	//设置物体的摩擦力
 	phyBody->getShape(0)->setFriction(0.0f);
 	//碰撞、监听筛选
-	phyBody->setCategoryBitmask(0x50);	// 0101_0000(50)
-	phyBody->setCollisionBitmask(0x8F);   // 1000_1111(8F)
-	phyBody->setContactTestBitmask(0x09); //0000_1001(09)
+	phyBody->setCategoryBitmask(0x050);	// 0000_0101_0000(050)
+	phyBody->setCollisionBitmask(0x18F);   // 0001_1000_1111(18F)
+	phyBody->setContactTestBitmask(0x109); //0001_0000_1001(109)
 	this->addComponent(phyBody);
 
 	Texture2D *texture_door = Director::getInstance()->getTextureCache()->addImage(doorStyle);

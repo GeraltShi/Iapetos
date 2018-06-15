@@ -13,6 +13,7 @@
 #include "Character/SimpleItem.h"
 #include "Character/Stone.h"
 #include "Character/Door.h"
+#include "Character/Collectable.h"
 
 #include <vector>
 
@@ -72,6 +73,7 @@ private:
 	Vector<Tear*> tears_;
 	Vector<Stone*> stones_;
 	Vector<Door*> doors_;
+	Vector<Collectable*> collectables_;
 
     MiniMapViewModel mini_map_vm_;
     RoomViewModel room_vm_;

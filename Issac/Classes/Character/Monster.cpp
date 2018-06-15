@@ -165,9 +165,9 @@ void Monster::createPhyBody()
     //速度
     phyBody->setVelocity(Vec2(0, 0));
     //碰撞\监听筛选
-    phyBody->setCategoryBitmask(0x02);    // 0000_0010
-    phyBody->setCollisionBitmask(0xFF);   // 1111_1111
-    phyBody->setContactTestBitmask(0x09); //0000_1001(09)
+    phyBody->setCategoryBitmask(0x002);    // 0000_0000_0010(002)
+    phyBody->setCollisionBitmask(0x1FF);   // 0001_1111_1111(1FF)
+    phyBody->setContactTestBitmask(0x109); //0001_0000_1001(109)
     //添加物理躯体
     this->addComponent(phyBody);
 }
@@ -676,9 +676,9 @@ bool Fly::init()
 	tearExistTime = 0; //Fly射程
 
     this->createPhyBody();
-	this->getPhysicsBody()->setCategoryBitmask(0x04);	// 0000_0100(04)
-	this->getPhysicsBody()->setCollisionBitmask(0xDF);	// 1101_1111(DF)
-	this->getPhysicsBody()->setContactTestBitmask(0x09);//0000_1001(09)
+	this->getPhysicsBody()->setCategoryBitmask(0x004);	// 0000_0000_0100(004)
+	this->getPhysicsBody()->setCollisionBitmask(0x1DF);	// 0001_1101_1111(1DF)
+	this->getPhysicsBody()->setContactTestBitmask(0x109);//0001_0000_1001(109)
     return true;
 }
 

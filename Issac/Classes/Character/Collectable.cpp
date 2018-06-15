@@ -31,7 +31,7 @@ bool Collectable::init(int collectableType)
 	attack = 0;
 	enFly = false;
 	enBounce = true;
-	enhalfTearDis = true;
+	enhalfTearDis = false;
 
 	Sprite *temp_collectableImg;
 	switch (collectableType)
@@ -49,7 +49,7 @@ bool Collectable::init(int collectableType)
 		attack = 0.5;
 		health = 1;
 		moveSpeed = 20;
-		tearExistTime = 10;
+		tearExistTime = 5;
 		break;
 	//下面的贴图都是不对的,全用蓝心代替
 	case(3):	//加攻击3,扣1颗心的血，减慢移动速度
@@ -101,9 +101,9 @@ void Collectable::createPhyBody()
 	//设置物体的摩擦力
 	phyBody->getShape(0)->setFriction(0.0f);
 	//碰撞、监听筛选
-	phyBody->setCategoryBitmask(0x80);	// 1000_0000(80)
-	phyBody->setCollisionBitmask(0xFF);   // 1111_1111(FF)
-	phyBody->setContactTestBitmask(0x09); //0000_1001(09)
+	phyBody->setCategoryBitmask(0x080);	// 0000_1000_0000(080)
+	phyBody->setCollisionBitmask(0x1FF);   // 0001_1111_1111(1FF)
+	phyBody->setContactTestBitmask(0x109); //0001_0000_1001(109)
 										  //添加物理躯体
 	this->addComponent(phyBody);
 }

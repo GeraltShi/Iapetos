@@ -49,15 +49,15 @@ bool Stone::init(int stoneType, Size stoneSize)
 	//碰撞、监听筛选
 	if (stoneType > 0) {
 		//普通石头
-		phyBody->setCategoryBitmask(0x20);	// 0010_0000(20)
-		phyBody->setCollisionBitmask(0x8B);   // 1000_1011(8B)
-		phyBody->setContactTestBitmask(0x08); //0000_1000(08)
+		phyBody->setCategoryBitmask(0x020);	// 0000_0010_0000(020)
+		phyBody->setCollisionBitmask(0x08B);   // 0000_1000_1011(08B)
+		phyBody->setContactTestBitmask(0x008); //0000_0000_1000(008)
 	}
 	else {
 		//无形边界石头
-		phyBody->setCategoryBitmask(0x10);	  //0001_0000(10)
-		phyBody->setCollisionBitmask(0x8F);   //1000_1111(8F)
-		phyBody->setContactTestBitmask(0x08); //0000_1000(08)
+		phyBody->setCategoryBitmask(0x010);	  //0000_0001_0000(010)
+		phyBody->setCollisionBitmask(0x18F);   //0001_1000_1111(18F)
+		phyBody->setContactTestBitmask(0x008); //0000_0000_1000(008)
 	}
 
 	//添加物理躯体
