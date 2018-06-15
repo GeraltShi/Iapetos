@@ -199,19 +199,24 @@ bool RoomScene::init(int roomID)
 												  //FattyFire生成
 				monsters_.pushBack((Monster*)FattyFire::createFattyFire());
 				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
-				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty1");
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fatty2");
 			}
 			if (room_vm_.getRoomMap(i, j) == 9) { //9说明这个位置是FlyFire
 												  //FlyFire生成
 				monsters_.pushBack((Monster*)FlyFire::createFlyFire());
 				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
-				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+				addChild(monsters_.at(monsters_.size() - 1), 3, "fly2");
 			}
 			if (room_vm_.getRoomMap(i, j) == 10) { //10说明这个位置是GaperFire
 												  //GaperFire生成
 				monsters_.pushBack((Monster*)GaperFire::createGaperFire());
 				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
-				addChild(monsters_.at(monsters_.size() - 1), 3, "fly1");
+				addChild(monsters_.at(monsters_.size() - 1), 3, "Gaper2");
+			}
+			if (room_vm_.getRoomMap(i, j) == 19) { //Boss-FlyDaddy
+				monsters_.pushBack((Monster*)FlyDaddy::createFlyDaddy());
+				monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
+				addChild(monsters_.at(monsters_.size() - 1), 3, "flyDaddy1");
 			}
 			if (room_vm_.getRoomMap(i, j) == 1) {  
 				//小石头
@@ -513,44 +518,50 @@ void RoomScene::update(float delta)
                 ++it;
             }
         }
-
+		
         //monster移动和死亡
-        for (auto it = monsters_.begin(); it != monsters_.end(); )
+        for (int i = 0; i < monsters_.size();)
         {
-            if ((*it)->getHealth() <= 0) {
+            if (monsters_.at(i)->getHealth() <= 0) {
                 //血量<0死亡了
                 Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
                 SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
-                temp_sprite->setPosition((*it)->getPosition());
+                temp_sprite->setPosition(monsters_.at(i)->getPosition());
                 addChild(temp_sprite, 3);
 
-                (*it)->removeFromParent();
+				monsters_.at(i)->removeFromParent();
 
-                const auto dead_ani = AnimationCache::getInstance()->getAnimation((*it)->getDeadAnimation());
+                const auto dead_ani = AnimationCache::getInstance()->getAnimation(monsters_.at(i)->getDeadAnimation());
                 const auto dead_anim = Animate::create(dead_ani);
                 const auto dead_animate = Sequence::create(dead_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(dead_animate);
-                it = monsters_.erase(it);
+                monsters_.erase(monsters_.begin()+i);
             }
             else {
-                //移动
-                if ((*it)->getColClog() != 0) {
-                    (*it)->setColClog((*it)->getColClog() - 1);
-                    if ((*it)->getColClog() == 0) {
-                        (*it)->move(5);
+                //是否对其操作
+                if (monsters_.at(i)->getColClog() != 0) {
+					monsters_.at(i)->setColClog(monsters_.at(i)->getColClog() - 1);
+                    if (monsters_.at(i)->getColClog() == 0) {
+						monsters_.at(i)->move(5);
                     }
                 }
                 else {
-                    (*it)->moveStrategy(room_vm_);
+					monsters_.at(i)->moveStrategy(room_vm_);
+					//开火
+					int nowtears_Size = tears_.size();
+					monsters_.at(i)->fireStrategy(tears_);
+					for (int j = nowtears_Size; j < tears_.size(); j++) {
+						addChild(tears_.at(j));
+					}
+					//生宝宝
+					int nowMon_Size = monsters_.size();
+					monsters_.at(i)->giveBirth(monsters_);
+					for (int j = nowMon_Size; j < monsters_.size(); j++) {
+						addChild(monsters_.at(j));
+					}
                 }
-                //开火
-                int nowtears_Size = tears_.size();
-                (*it)->fireStrategy(tears_);
-                for (int i = nowtears_Size; i < tears_.size(); i++) {
-                    addChild(tears_.at(i));
-                }
-				it++;
+				i++;
             }
         }
 		//player能不能飞

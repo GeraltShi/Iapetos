@@ -39,7 +39,7 @@ Tear *Monster::Fire(Vec2 targetPos)
     double tear_V = moveSpeed + tearSpeed;
     myTear->getPhysicsBody()->setVelocity(Vec2(tear_V * diffX / dis, tear_V * diffY / dis));
 	//初始位置
-    myTear->setPosition(Vec2(getPosition().x + MonTearOffset * diffX / dis, getPosition().y + MonTearOffset * diffY / dis));
+    myTear->setPosition(Vec2(getPosition().x + (radiusSize +MonTearOffset) * diffX / dis, getPosition().y + (radiusSize + MonTearOffset) * diffY / dis));
     //存在时间,攻击
     myTear->setTearExistTime(tearExistTime);
     myTear->setAttack(attack);
@@ -1037,9 +1037,6 @@ void GaperFire::fireStrategy(Vector<Tear *> &tears_)
     {
         fireCoolTime = fireSpeed; //冷却
 		//开火
-		double fireOffsetX=this->getPhysicsBody()->getVelocity().x /moveSpeed;
-		double fireOffsetY=this->getPhysicsBody()->getVelocity().y /moveSpeed;
-
 		tears_.pushBack(Fire(Vec2(this->getPosition().x - 10 , this->getPosition().y-10 )));
 		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10 , this->getPosition().y+10 )));
 		tears_.pushBack(Fire(Vec2(this->getPosition().x + 10 , this->getPosition().y - 10 )));
@@ -1261,14 +1258,7 @@ void FlyDaddy::move(int walk_direction)
 {
     //移动
     //移动速度不是之前的情况，说明发生碰撞
-    if (colClog == ColClogTime && this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
-    {
-        colClog = 0;
-    }
-    else
-    {
-        this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
-    }
+    this->getPhysicsBody()->setVelocity(calSpeed(walk_direction));
     
     if (!moving)
     {
@@ -1281,10 +1271,6 @@ void FlyDaddy::move(int walk_direction)
         moving = true;
     }
     
-    if (colClog == 0)
-    {
-        prev_walk_orientation = 5;
-    }
 }
 
 bool FlyDaddy::init()
@@ -1302,30 +1288,90 @@ bool FlyDaddy::init()
     
     this->addChild(bodySprite, 0, "body");
     
-    radiusSize = 15;    //Spider碰撞大小
-    bodyMass = 100;     //Spider重量
-    moveSpeed = 30;     //Spider行走速度
-    health = 300;         //Spider血量
-    attack = 2;         //Spider攻击
-    tearSpeed = 60;     //Spider泪速
-    tearExistTime = 0; //Spider射程
+    radiusSize = 20;    //FlyDaddy碰撞大小
+    bodyMass = 100;     //FlyDaddy重量
+    moveSpeed = 200;     //FlyDaddy行走速度
+    health = 150;         //FlyDaddy血量
+    attack = 1;         //FlyDaddy攻击
+    tearSpeed = 60;     //FlyDaddy泪速
+    tearExistTime = 50; //FlyDaddy射程
     this->createPhyBody();
+	this->getPhysicsBody()->setCategoryBitmask(0x004);	// 0000_0000_0100(004)
+	this->getPhysicsBody()->setCollisionBitmask(0x1DF);	// 0001_1101_1111(1DF)
+	this->getPhysicsBody()->setContactTestBitmask(0x109);//0001_0000_1001(109)
     return true;
 }
 
 void FlyDaddy::moveStrategy(const RoomViewModel & roomMap)
 {
-    if (rand() % 2 == 0) {
-        //冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
-        Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
-        int walk_direction = ToPointDir(playerPos);
-        colClog = 40;
-        this->move(walk_direction);
-    }
-    else {
-        //暂停不动
-        this->getPhysicsBody()->setVelocity(Vec2(0, 0));
-    }
+	if (fireCoolTime == 0) {
+		if (rand() % 5 == 0) {
+			//冲向player方向，并且有一个碰撞阻塞（暂时无法对其进行操作）
+			moveSpeed = 200;
+			Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+			int walk_direction = ToPointDir(playerPos);
+			this->move(walk_direction);
+			colClog = 300;
+		}
+	}
+	else if (moveSpeed==200 || rand() % 8 == 0){
+		moveSpeed = 30;
+		this->move(rand() % 9);
+	}
+}
+
+void FlyDaddy::fireStrategy(Vector<Tear *> &tears_) 
+{
+	if (fireCoolTime == 0) {
+		if (rand() % 3 == 0) {
+			//开火
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y + 10)));
+			fireCoolTime = 120;
+		}
+	}
+	else {
+		if (fireCoolTime == 100 || fireCoolTime == 80) {
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y + 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x + 10, this->getPosition().y - 10)));
+			tears_.pushBack(Fire(Vec2(this->getPosition().x - 10, this->getPosition().y + 10)));
+		}
+	}
+}
+
+void FlyDaddy::giveBirth(Vector<Monster *> &monsters_)
+{
+	if (fireCoolTime == 0) {
+		fireCoolTime = 120;
+		if (rand() % 2 == 0) {
+			//3个Fly
+			monsters_.pushBack(Fly::createFly());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x + radiusSize + 5, this->getPosition().y));
+			monsters_.pushBack(Fly::createFly());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x - radiusSize - 5, this->getPosition().y));	
+			monsters_.pushBack(Fly::createFly());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x, this->getPosition().y + radiusSize + 5));
+		}
+		else {
+			//1个FlyFire
+			monsters_.pushBack(FlyFire::createFlyFire());
+			monsters_.at(monsters_.size() - 1)->setPosition(Vec2(this->getPosition().x + radiusSize + 5, this->getPosition().y + radiusSize + 5));
+		}
+	}
+	else {
+		fireCoolTime--;
+	}
 }
 
 

@@ -76,6 +76,8 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
     //根据roomType放入怪物
     //怪物标号：4:Fatty, 5:Fly, 6:Gaper, 7:Spider
     //怪物标号：8:FattyFire, 9:FlyFire, 10:GaperFire
+	//Boss标号：19:Boss_FlyDaddy
+	//标号:20+为宝藏Collectable
     if (!visited)
     {
         if (roomType == 1) //1:全Fatty
@@ -210,7 +212,11 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
                 room_map[posX][posY] = 10;
             }
         }
-		//20+是collectable
+		if (roomType == 15) {  //Boss房_FlyDaddy
+			room_map[GRID_WIDTH_HALF][GRID_HEIGHT_HALF] = 19;
+		}
+
+		//地面编码20+是collectable
 		if  (roomType == 14) { //测试用宝藏房间
 			room_map[0][0] = 20;
 			room_map[1][0] = 21;
