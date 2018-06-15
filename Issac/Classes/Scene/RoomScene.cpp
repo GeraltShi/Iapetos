@@ -49,7 +49,7 @@ bool RoomScene::init(int roomID)
      * 0 Room Background
      */
 
-    //房间墙面贴图
+     //房间墙面贴图
     const auto ground_s = room_vm_.getGroundStyle();
 
     Texture2D *texture_room = Director::getInstance()->getTextureCache()->addImage(ground_s); //res/gfx/backdrop/01_basement.png
@@ -378,33 +378,33 @@ bool RoomScene::init(int roomID)
     const string movespeedstat = "statA0";
     pausescreen->getChildByName("pausemenu")->removeChildByName("movespeed_bar");
     Sprite * movespeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(movespeedstat));
-    movespeed_bar->setPosition(98,147);
-    pausescreen->getChildByName("pausemenu")->addChild(movespeed_bar,1,"movespeed_bar");
-    
+    movespeed_bar->setPosition(98, 147);
+    pausescreen->getChildByName("pausemenu")->addChild(movespeed_bar, 1, "movespeed_bar");
+
     const string tearexistingtimestat = "statB0";
     pausescreen->getChildByName("pausemenu")->removeChildByName("tearexistingtime_bar");
     Sprite * tearexistingtime_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearexistingtimestat));
-    tearexistingtime_bar->setPosition(157,147);
-    pausescreen->getChildByName("pausemenu")->addChild(tearexistingtime_bar,1,"tearexistingtime_bar");
-    
+    tearexistingtime_bar->setPosition(157, 147);
+    pausescreen->getChildByName("pausemenu")->addChild(tearexistingtime_bar, 1, "tearexistingtime_bar");
+
     const string tearspeedstat = "statB0";
     pausescreen->getChildByName("pausemenu")->removeChildByName("tearspeed_bar");
     Sprite * tearspeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearspeedstat));
-    tearspeed_bar->setPosition(98,130);
-    pausescreen->getChildByName("pausemenu")->addChild(tearspeed_bar,1,"tearspeed_bar");
-    
+    tearspeed_bar->setPosition(98, 130);
+    pausescreen->getChildByName("pausemenu")->addChild(tearspeed_bar, 1, "tearspeed_bar");
+
     const string shootintervalstat = "statA0";
     pausescreen->getChildByName("pausemenu")->removeChildByName("shootinterval_bar");
     Sprite * shootinterval_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(shootintervalstat));
-    shootinterval_bar->setPosition(157,130);
-    pausescreen->getChildByName("pausemenu")->addChild(shootinterval_bar,1,"shootinterval_bar");
-    
+    shootinterval_bar->setPosition(157, 130);
+    pausescreen->getChildByName("pausemenu")->addChild(shootinterval_bar, 1, "shootinterval_bar");
+
     const string attackstat = "statA0";
     pausescreen->getChildByName("pausemenu")->removeChildByName("attack_bar");
     Sprite * attack_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(attackstat));
-    attack_bar->setPosition(98,113);
-    pausescreen->getChildByName("pausemenu")->addChild(attack_bar,1,"attack_bar");
-    
+    attack_bar->setPosition(98, 113);
+    pausescreen->getChildByName("pausemenu")->addChild(attack_bar, 1, "attack_bar");
+
     //设置菜单
     Texture2D *optionscreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/optionsmenudark.png");
     Texture2D *optionscreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
@@ -461,23 +461,22 @@ bool RoomScene::init(int roomID)
 
     //Boss血条贴图，zorder 为7，两张以一定比例横向拼接，注意 boss 死亡后销毁血条
 
-    //if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
-    //{
+    if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
+    {
+        Texture2D * bosshealthbar_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
+        Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar_texture, Rect(0, 0, 150, 32));
+        Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar_texture, Rect(0, 32, 150, 32));
+        ProgressTimer * bosshealthbar = ProgressTimer::create(bosshealthbarfull);
+        bosshealthbar->setType(ProgressTimer::Type::BAR);
+        bosshealthbar->setBarChangeRate(Vec2(1, 0));
+        bosshealthbar->setMidpoint(Vec2(0, 0));
+        bosshealthbar->setPercentage(70);
+        bosshealthbar->setPosition(221, 250);
+        bosshealthbarempty->setPosition(75, 16);
+        bosshealthbar->addChild(bosshealthbarempty, -1);//添加 empty 贴图为背景
 
-    Texture2D * bosshealthbar_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/ui_bosshealthbar.png");
-    Sprite * bosshealthbarfull = Sprite::createWithTexture(bosshealthbar_texture, Rect(0, 0, 150, 32));
-    Sprite * bosshealthbarempty = Sprite::createWithTexture(bosshealthbar_texture, Rect(0, 32, 150, 32));
-    ProgressTimer * bosshealthbar = ProgressTimer::create(bosshealthbarfull);
-    bosshealthbar->setType(ProgressTimer::Type::BAR);
-    bosshealthbar->setBarChangeRate(Vec2(1, 0));
-    bosshealthbar->setMidpoint(Vec2(0, 0));
-    bosshealthbar->setPercentage(70);
-    bosshealthbar->setPosition(221, 120);
-    bosshealthbarempty->setPosition(75, 16);
-    bosshealthbar->addChild(bosshealthbarempty, -1);//添加 empty 贴图为背景
-    
-    this->addChild(bosshealthbar, 6,"bosshealthbar");//getname 调用 bosshealthbar，再 setPercentage 就可以改血量
-    //}
+        this->addChild(bosshealthbar, 6, "bosshealthbar");//getname 调用 bosshealthbar，再 setPercentage 就可以改血量
+    }
 
     scheduleUpdate();
     return true;
