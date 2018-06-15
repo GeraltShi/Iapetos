@@ -342,6 +342,7 @@ bool RoomScene::init(int roomID)
     addChild(pausescreen,7);
     pausescreen->setVisible(false);
     
+    
     //设置菜单
     Texture2D * optionscreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/optionsmenudark.png");
     Texture2D * optionscreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
@@ -887,6 +888,43 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(mapopacity8, "mapopacity8");
     fcache->addSpriteFrame(mapopacity9, "mapopacity9");
     fcache->addSpriteFrame(mapopacity10, "mapopacity10");
+    
+    Texture2D * pausescreenTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/pausescreen.png");
+    //statA是往右斜的
+    const auto statA0 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,16,32,16));
+    const auto statA1 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,16,32,16));
+    const auto statA2 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,16,32,16));
+    const auto statA3 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,16,32,16));
+    const auto statA4 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,0,32,16));
+    const auto statA5 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,0,32,16));
+    const auto statA6 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,0,32,16));
+    const auto statA7 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,0,32,16));
+    fcache->addSpriteFrame(statA0, "statA0");
+    fcache->addSpriteFrame(statA1, "statA1");
+    fcache->addSpriteFrame(statA2, "statA2");
+    fcache->addSpriteFrame(statA3, "statA3");
+    fcache->addSpriteFrame(statA4, "statA4");
+    fcache->addSpriteFrame(statA5, "statA5");
+    fcache->addSpriteFrame(statA6, "statA6");
+    fcache->addSpriteFrame(statA7, "statA7");
+    //statB 是往左斜的
+    const auto statB0 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,80,32,16));
+    const auto statB1 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,80,32,16));
+    const auto statB2 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,80,32,16));
+    const auto statB3 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,80,32,16));
+    const auto statB4 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(352,64,32,16));
+    const auto statB5 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(320,64,32,16));
+    const auto statB6 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(288,64,32,16));
+    const auto statB7 = SpriteFrame::createWithTexture(pausescreenTexture, Rect(256,64,32,16));
+    fcache->addSpriteFrame(statB0, "statB0");
+    fcache->addSpriteFrame(statB1, "statB1");
+    fcache->addSpriteFrame(statB2, "statB2");
+    fcache->addSpriteFrame(statB3, "statB3");
+    fcache->addSpriteFrame(statB4, "statB4");
+    fcache->addSpriteFrame(statB5, "statB5");
+    fcache->addSpriteFrame(statB6, "statB6");
+    fcache->addSpriteFrame(statB7, "statB7");
+    
 }
 
 bool RoomScene::onContactBegin(PhysicsContact& contact)
