@@ -293,10 +293,10 @@ void Fatty::move(int walk_direction)
         break;
     }
 
-    if (colClog == 0)
-    {
-        prev_walk_orientation = 5;
-    }
+    //if (colClog == 0)
+    //{
+    //    prev_walk_orientation = 5;
+    //}
 }
 
 void Fatty::build_sprite_frame_cache(Texture2D *texture_) const
@@ -934,10 +934,10 @@ void Gaper::move(int walk_direction)
         break;
     }
 
-    if (colClog == 0)
-    {
-        prev_walk_orientation = 5;
-    }
+    //if (colClog == 0)
+    //{
+    //    prev_walk_orientation = 5;
+    //}
 }
 
 bool Gaper::init()
