@@ -506,7 +506,8 @@ void Issac::dead(){
     auto aniCache = AnimationCache::getInstance();
     const auto dead_animation = aniCache->getAnimation("dead_animation");
     Animate * deadAnimate = Animate::create(dead_animation);
-    
+    this->getChildByName("head")->setVisible(false);
+    this->getChildByName("body")->setVisible(false);
     this->runAction(deadAnimate);
 }
 

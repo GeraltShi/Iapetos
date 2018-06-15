@@ -432,7 +432,7 @@ bool RoomScene::init(int roomID)
     addChild(optionscreen, 7);
     optionscreen->setVisible(false);
 
-    //结束菜单
+    //死亡菜单
     Texture2D *deadportraitTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/death portraits.png");
     Texture2D *deadoptionTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/backselectwidget.png");
     Texture2D *deadscreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
@@ -450,7 +450,46 @@ bool RoomScene::init(int roomID)
     deadscreen->setPosition(221, 143);
     addChild(deadscreen, 9);
     deadscreen->setVisible(false);
-
+    
+    //通关界面
+    Texture2D *winscreenBgTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/bgblack.png");
+    winscreen = Sprite::createWithTexture(winscreenBgTexture, Rect(0, 0, 442, 286));
+    Texture2D *winhomeTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/loadimages/loadimages-039.png");
+    Sprite * winhome = Sprite::createWithTexture(winhomeTexture, Rect(0, 0, 130, 85));
+    Texture2D *winpopupTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/genericpopup.png");
+    Sprite * winpopup = Sprite::createWithTexture(winpopupTexture, Rect(16, 16, 274, 176));
+    Texture2D *winoptionTexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/backselectwidget.png");
+    Sprite *winback = Sprite::createWithTexture(winoptionTexture, Rect(0, 128, 96, 128));
+    winback->setPosition(0 + 50, 0);
+    Sprite *winrestart = Sprite::createWithTexture(winoptionTexture, Rect(96, 128, 112, 128));
+    winrestart->setPosition(442 - 50, 0 + 30);
+    winhome->setPosition(221,143);
+    winpopup->setPosition(221,143);
+    winscreen->addChild(winpopup,1);
+    winscreen->addChild(winhome,1);
+    winscreen->setOpacity(0x7f);
+    winscreen->setPosition(221, 143);
+    winscreen->addChild(winback, 1, "back");
+    winscreen->addChild(winrestart, 1, "restart");
+    Label *label_you = Label::createWithTTF("YOU", "fonts/Marker Felt.ttf", 25);
+    label_you->setPosition(221-60, 160);
+    label_you->setRotation(-13);
+    label_you->enableOutline(Color4B::BLACK, 3);
+    Label *label_win = Label::createWithTTF("WIN", "fonts/Marker Felt.ttf", 25);
+    label_win->setPosition(221+70, 170);
+    label_win->setRotation(16);
+    label_win->enableOutline(Color4B::BLACK, 3);
+    NodeGrid* label_you_grid = NodeGrid::create();
+    label_you_grid->addChild(label_you);
+    label_you_grid->runAction(Shaky3D::create(2,Size(10,10),2,false));
+    NodeGrid* label_win_grid = NodeGrid::create();
+    label_win_grid->addChild(label_win);
+    label_win_grid->runAction(Shaky3D::create(2,Size(10,10),2,false));
+    winscreen->addChild(label_you_grid,2);
+    winscreen->addChild(label_win_grid,2);
+    winscreen->setVisible(false);//如果要显示就 settrue
+    addChild(winscreen,10);
+    
     //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
     bomb = SimpleItem::createSimpleItem();
     bomb->setVisible(false);

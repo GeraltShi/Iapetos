@@ -51,6 +51,7 @@ public:
     CC_SYNTHESIZE_RETAIN(Sprite*, pausescreen, Pausescreen)
     CC_SYNTHESIZE_RETAIN(Sprite*, optionscreen, Optionscreen)
     CC_SYNTHESIZE_RETAIN(Sprite*, deadscreen, Deadscreen)
+    CC_SYNTHESIZE_RETAIN(Sprite*, winscreen, Winscreen)
     CC_SYNTHESIZE_RETAIN(SpriteFrame*, fullheart, Fullheart)
     CC_SYNTHESIZE_RETAIN(SpriteFrame*, halfheart, Halfheart)
     CC_SYNTHESIZE_RETAIN(Sprite*, healthbar, Healthbar)

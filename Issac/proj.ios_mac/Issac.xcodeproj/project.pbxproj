@@ -101,6 +101,8 @@
 		5259AC7A20D151E60017A803 /* PlayerService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7620D151E50017A803 /* PlayerService.cpp */; };
 		5259AC7D20D151F90017A803 /* PlayerViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */; };
 		5259AC7E20D151F90017A803 /* PlayerViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */; };
+		5259AC8420D3FF4E0017A803 /* Collectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC8220D3FF4D0017A803 /* Collectable.cpp */; };
+		5259AC8520D3FF4E0017A803 /* Collectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC8220D3FF4D0017A803 /* Collectable.cpp */; };
 		5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
@@ -250,6 +252,8 @@
 		5259AC7820D151E60017A803 /* PlayerService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerService.h; sourceTree = "<group>"; };
 		5259AC7B20D151F90017A803 /* PlayerViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewModel.h; sourceTree = "<group>"; };
 		5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerViewModel.cpp; sourceTree = "<group>"; };
+		5259AC8220D3FF4D0017A803 /* Collectable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collectable.cpp; sourceTree = "<group>"; };
+		5259AC8320D3FF4E0017A803 /* Collectable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collectable.h; sourceTree = "<group>"; };
 		5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoomSceneModel.cpp; sourceTree = "<group>"; };
 		5299141520A7E04900FBFBB4 /* RoomSceneModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RoomSceneModel.hpp; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -566,6 +570,8 @@
 				5259AC5B20CE9A650017A803 /* Stone.h */,
 				5259AC5F20CE9A650017A803 /* Tear.cpp */,
 				5259AC5C20CE9A650017A803 /* Tear.h */,
+				5259AC8220D3FF4D0017A803 /* Collectable.cpp */,
+				5259AC8320D3FF4E0017A803 /* Collectable.h */,
 			);
 			path = Character;
 			sourceTree = "<group>";
@@ -769,6 +775,7 @@
 				52D2D49E20C6E1960000798E /* Monster.cpp in Sources */,
 				52D2D4A020C6E1960000798E /* Moveable.cpp in Sources */,
 				52D2D49C20C6E1960000798E /* Issac.cpp in Sources */,
+				5259AC8420D3FF4E0017A803 /* Collectable.cpp in Sources */,
 				5259AC6420CE9A650017A803 /* Tear.cpp in Sources */,
 				52D2D4A720C6E1AA0000798E /* SimpleItemViewModel.cpp in Sources */,
 				5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
@@ -799,6 +806,7 @@
 				5259AC4C20CD443F0017A803 /* MiniMapViewModel.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				5210A1F920A533240081CC78 /* MainScene.cpp in Sources */,
+				5259AC8520D3FF4E0017A803 /* Collectable.cpp in Sources */,
 				5210A1F520A533240081CC78 /* MainSceneController.cpp in Sources */,
 				5259AC5220CD446F0017A803 /* RoomService.cpp in Sources */,
 				5259AC6120CE9A650017A803 /* Stone.cpp in Sources */,
