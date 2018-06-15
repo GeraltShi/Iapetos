@@ -29,7 +29,7 @@ bool RoomScene::init(int roomID)
     mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
 
     //画物理引擎框
-	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     //设置恢复Model
     //model = RoomService::getInstance()->get_prev_room_scene();
@@ -505,7 +505,7 @@ void RoomScene::update(float delta)
         for (auto it = tears_.begin(); it != tears_.end();) {
             if ((*it)->getTearExistTime() == 0) {
                 Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
-                SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
+                SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 0, 1, 1));
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition((*it)->getPosition());
                 addChild(temp_sprite, 3);
@@ -514,7 +514,7 @@ void RoomScene::update(float delta)
                 //
                 const auto poof_ani = AnimationCache::getInstance()->getAnimation((*it)->getPoofAnimation());
                 const auto poof_anim = Animate::create(poof_ani);
-                const auto poof_animate = Sequence::create(poof_anim, RemoveSelf::create(true), NULL);
+                const auto poof_animate = Sequence::create(ScaleTo::create(0,0.5),poof_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(poof_animate);
                 //SimpleAudioEngine::end();
                 it = tears_.erase(it);
@@ -531,7 +531,7 @@ void RoomScene::update(float delta)
             if ((*it)->getHealth() <= 0) {
                 //血量<0死亡了
                 Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
-                SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 32, 32, 32));
+                SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 0, 1, 1));
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition((*it)->getPosition());
                 addChild(temp_sprite, 3);
@@ -540,7 +540,7 @@ void RoomScene::update(float delta)
 
                 const auto dead_ani = AnimationCache::getInstance()->getAnimation((*it)->getDeadAnimation());
                 const auto dead_anim = Animate::create(dead_ani);
-                const auto dead_animate = Sequence::create(dead_anim, RemoveSelf::create(true), NULL);
+                const auto dead_animate = Sequence::create(ScaleTo::create(0,0.5),dead_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(dead_animate);
                 it = monsters_.erase(it);
             }
@@ -642,6 +642,9 @@ void RoomScene::update(float delta)
             pausescreen->getChildByName("pausemenu")->runAction(pausescreenmovein);
             model.paused_menu_generated_flag = 1;
         }
+        //更新 issac 状态属性
+        
+        //更新选项光标
         switch (model.paused_menu_cursor) {
         case 0:
             pausescreen->getChildByName("pausemenu")->getChildByName("pausecursor")->runAction(MoveTo::create(0, Vec2(60, 85)));
@@ -756,7 +759,7 @@ void RoomScene::build_frame_cache() const
     const auto frame13 = SpriteFrame::createWithTexture(poofTexture, Rect(64, 192, 64, 64));
     const auto frame14 = SpriteFrame::createWithTexture(poofTexture, Rect(128, 192, 64, 64));
     const auto frame15 = SpriteFrame::createWithTexture(poofTexture, Rect(192, 192, 64, 64));
-
+    
     auto fcache = SpriteFrameCache::getInstance();
     fcache->addSpriteFrame(frame0, "t_frame0");
     fcache->addSpriteFrame(frame1, "t_frame1");

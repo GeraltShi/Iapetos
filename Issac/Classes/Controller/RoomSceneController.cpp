@@ -20,7 +20,7 @@ bool RoomSceneController::init(int roomID)
         return false;
     }
 
-	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     scene_ = RoomScene::create(roomID);
     scene_->set_event_listener(this);
