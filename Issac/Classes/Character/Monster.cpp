@@ -29,7 +29,7 @@ bool Monster::init()
 Tear *Monster::Fire(Vec2 targetPos)
 {
     //创建一个Tear
-    Tear *myTear = Tear::createTear();
+	MonsterTear *myTear = MonsterTear::createMonsterTear();
 	Vec2 myasd = this->getPosition();
 	
     //设定初始tear位置和速度
@@ -45,7 +45,7 @@ Tear *Monster::Fire(Vec2 targetPos)
     myTear->setAttack(attack);
     //是Monster发射的
     myTear->setTag(3);
-    return myTear;
+    return (Tear*)myTear;
 }
 
 string Monster::getDeadAnimation()

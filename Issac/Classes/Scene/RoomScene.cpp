@@ -28,9 +28,6 @@ bool RoomScene::init(int roomID)
     room_vm_ = RoomService::getInstance()->enter_room(roomID);
     mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
 
-    //画物理引擎框
-	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-
     //设置恢复Model
     //model = RoomService::getInstance()->get_prev_room_scene();
 

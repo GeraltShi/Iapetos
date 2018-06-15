@@ -20,6 +20,7 @@ bool RoomSceneController::init(int roomID)
         return false;
     }
 
+	//画物理引擎的红色边框，调试用
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     scene_ = RoomScene::create(roomID);
