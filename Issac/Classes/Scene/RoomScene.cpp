@@ -701,7 +701,7 @@ void RoomScene::update(float delta)
 
         //添加player的射击监听
         if (model.tear_direction == 5) {
-            this->schedule(schedule_selector(RoomScene::fire), player->getShootInterval(), 65536, 0.001);
+            this->schedule(schedule_selector(RoomScene::fire), player->getShootInterval(), CC_REPEAT_FOREVER, 0.001);
         }
 
         //玩家血量显示
