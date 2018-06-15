@@ -61,8 +61,6 @@
 		5210A1F920A533240081CC78 /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5210A1E620A533240081CC78 /* MainScene.cpp */; };
 		5210A1FA20A533240081CC78 /* RoomScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5210A1E820A533240081CC78 /* RoomScene.cpp */; };
 		5210A1FB20A533240081CC78 /* RoomScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5210A1E820A533240081CC78 /* RoomScene.cpp */; };
-		5210A1FC20A533240081CC78 /* LevelService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5210A1EB20A533240081CC78 /* LevelService.cpp */; };
-		5210A1FD20A533240081CC78 /* LevelService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5210A1EB20A533240081CC78 /* LevelService.cpp */; };
 		5210A1FE20A533240081CC78 /* MainSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5210A1EE20A533240081CC78 /* MainSceneModel.cpp */; };
 		5210A1FF20A533240081CC78 /* MainSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5210A1EE20A533240081CC78 /* MainSceneModel.cpp */; };
 		5210A20020A533240081CC78 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 5210A1F120A533240081CC78 /* .gitkeep */; };
@@ -222,8 +220,6 @@
 		5210A1E720A533240081CC78 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
 		5210A1E820A533240081CC78 /* RoomScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomScene.cpp; sourceTree = "<group>"; };
 		5210A1E920A533240081CC78 /* RoomScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomScene.h; sourceTree = "<group>"; };
-		5210A1EB20A533240081CC78 /* LevelService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelService.cpp; sourceTree = "<group>"; };
-		5210A1EC20A533240081CC78 /* LevelService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelService.h; sourceTree = "<group>"; };
 		5210A1EE20A533240081CC78 /* MainSceneModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainSceneModel.cpp; sourceTree = "<group>"; };
 		5210A1EF20A533240081CC78 /* MainSceneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSceneModel.h; sourceTree = "<group>"; };
 		5210A1F120A533240081CC78 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -518,8 +514,6 @@
 		5210A1EA20A533240081CC78 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				5210A1EB20A533240081CC78 /* LevelService.cpp */,
-				5210A1EC20A533240081CC78 /* LevelService.h */,
 				5259AC5020CD446F0017A803 /* RoomService.h */,
 				5259AC7620D151E50017A803 /* PlayerService.cpp */,
 				5259AC4F20CD446F0017A803 /* RoomService.cpp */,
@@ -780,7 +774,6 @@
 				5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
 				5259AC7D20D151F90017A803 /* PlayerViewModel.cpp in Sources */,
 				5259AC5120CD446F0017A803 /* RoomService.cpp in Sources */,
-				5210A1FC20A533240081CC78 /* LevelService.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,7 +784,6 @@
 				52D2D49F20C6E1960000798E /* Monster.cpp in Sources */,
 				5210A1FB20A533240081CC78 /* RoomScene.cpp in Sources */,
 				5259AC7A20D151E60017A803 /* PlayerService.cpp in Sources */,
-				5210A1FD20A533240081CC78 /* LevelService.cpp in Sources */,
 				5210A1FF20A533240081CC78 /* MainSceneModel.cpp in Sources */,
 				52D2D49D20C6E1960000798E /* Issac.cpp in Sources */,
 				5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */,
