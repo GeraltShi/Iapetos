@@ -43,7 +43,7 @@ bool RoomScene::init(int roomID)
      * 6 Overlay, BossHealthBar
      * 5 MiniMap
      * 4 Tear
-    ap
+     * 3 Issac
      * 2 Room shading
      * 1 Controls, Door, Door Center,ivisiable bordor
      * 0 Room Background
@@ -724,18 +724,25 @@ void RoomScene::update(float delta)
             log("DEAD");
             //TODO播放死亡动画，放完再将 model 设为结束
             //设置 game status
-            player->dead();
-            const auto texture_ghost = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/ghost.png");
-            Sprite * ghost_sprite = Sprite::createWithTexture(texture_ghost, Rect(0, 0, 32, 32));
-            auto aniCache = AnimationCache::getInstance();
-            const auto ghost_animation = aniCache->getAnimation("ghost_animation");
-            Animate * ghostAnimate = Animate::create(ghost_animation);
-            ghost_sprite->setPosition(player->getPosition());
-            this->addChild(ghost_sprite,3);
-            ActionInterval *MoveBy = MoveBy::create(2, Vec2(200, 300));
-            ghost_sprite->runAction(Spawn::create(ghostAnimate,MoveBy,NULL));
-            
-            model.game_stat = 2;
+            if(!dead_ani_generated){
+                player->dead();
+                const auto texture_ghost = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/ghost.png");
+                Sprite * ghost_sprite = Sprite::createWithTexture(texture_ghost, Rect(0, 0, 32, 32));
+                auto aniCache = AnimationCache::getInstance();
+                const auto ghost_animation = aniCache->getAnimation("ghost_animation");
+                Animate * ghostAnimate = Animate::create(ghost_animation);
+                ghost_sprite->setPosition(player->getPosition());
+                this->addChild(ghost_sprite,3);
+                ActionInterval *MoveBy = MoveBy::create(2, Vec2(0, 100));
+                ActionInterval *Fade = FadeOut::create(2);
+                ghost_sprite->runAction(Spawn::create(ghostAnimate,MoveBy,Fade,NULL));
+                dead_ani_generated = true;
+                const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+                Sprite * deadbody = Sprite::createWithTexture(texture_, Rect(192,128,64,64));
+                deadbody->setPosition(player->getPosition());
+                this->addChild(deadbody,3);
+                scheduleOnce(schedule_selector(RoomScene::show_deadmenu),1.5f);
+            }
         }
 
         //添加player的射击监听
@@ -910,11 +917,14 @@ void RoomScene::update(float delta)
         }
         this->stopAllActions();
     }
-    //   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
 
 void RoomScene::updatehealth(float dt)
 {
+}
+
+void RoomScene::show_deadmenu(float dt){
+    model.game_stat = 2;
 }
 
 void RoomScene::set_model(RoomSceneModel model)

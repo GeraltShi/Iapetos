@@ -220,7 +220,7 @@ void Issac::build_animation_cache()
     Vector<SpriteFrame*> deadFrames;
     deadFrames.pushBack(issac_dead0);
     deadFrames.pushBack(issac_dead1);
-    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames, 0.1f);
+    Animation * dead_animation = Animation::createWithSpriteFrames(deadFrames, 0.3f);
     aniCache->addAnimation(dead_animation, "dead_animation");
     
     const auto issac_ghost0 = spriteCache->getSpriteFrameByName("issac_ghost0");
@@ -499,7 +499,9 @@ void Issac::hurt(){
     const auto hurt_animation = aniCache->getAnimation("hurt_animation");
     Animate * hurtAnimate = Animate::create(hurt_animation);
 //    this->getChildByName("head")->runAction(hurtAnimate);
-    this->runAction(Spawn::create(Blink::create(0.5, 4),NULL));
+    if(this->getHealth()>0){
+        this->runAction(Spawn::create(Blink::create(0.5, 4),NULL));
+    }
 }
 
 void Issac::dead(){
