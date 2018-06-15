@@ -51,9 +51,6 @@
     <ClCompile Include="..\Classes\Controller\RoomSceneController.cpp">
       <Filter>src\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Service\LevelService.cpp">
-      <Filter>src\Service</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Model\MainSceneModel.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
@@ -109,9 +106,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Service\LevelService.h">
-      <Filter>src\Service</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\MainScene.h">
       <Filter>src\Scene</Filter>

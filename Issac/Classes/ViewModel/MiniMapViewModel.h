@@ -17,6 +17,7 @@ class MiniMapViewModel
     //-1 -1 -1 -1 -1
     //中间的房间永远是“亮”
     CC_SYNTHESIZE(vector<vector<int>>, mini_mask_, MiniMask)
+    CC_SYNTHESIZE(int, opacity, Opacity)
 };
 
 #endif

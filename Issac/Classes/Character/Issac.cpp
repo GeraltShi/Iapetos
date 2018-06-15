@@ -453,14 +453,14 @@ void Issac::createPhyBody()
 	this->addComponent(phyBody);
 }
 
-Tear* Issac::Fire(int fireDir)
+Tear* Issac::Fire(int fireDir) const
 {
 	assert(fireDir == 2 || fireDir == 4 || fireDir == 6 || fireDir == 8);
 	//创建一个Tear
 	Tear* myTear=Tear::createTear();
-	//设定初始tear位置和速度
-	int offsetX, offsetY;
-	double tear_V = moveSpeed + tearSpeed;
+    int offsetX = rand_minus1_1() * 50;
+    int offsetY = rand_minus1_1() * 50;
+    const double tear_V = moveSpeed + tearSpeed;
 	switch (fireDir) {
 	case 2:
 		offsetX = 0;

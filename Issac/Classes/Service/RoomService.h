@@ -5,6 +5,12 @@
 
 #include "ViewModel/RoomViewModel.h"
 #include "ViewModel/MiniMapViewModel.h"
+#include "Character/Issac.hpp"
+#include "Model/RoomSceneModel.hpp"
+#include "cocos2d.h"
+
+USING_NS_CC;
+using namespace std;
 
 struct Room
 {
@@ -33,6 +39,22 @@ public:
     int get_down_room_id();
     bool is_init_room() const;
     void init();
+    void save_room_scene_state(RoomSceneModel room);
+    RoomSceneModel get_prev_room_scene() const;
+    void increase_mini_opacity();
+    void decrease_mini_opacity();
+    char get_real_mini_opacity() const;
+    //0.0~1.0
+    float get_real_sfx_volume() const;
+    //0.0~1.0
+    float get_real_music_volume() const;
+
+    CC_SYNTHESIZE(int, music_volume, MusicVolume)
+    CC_SYNTHESIZE(int, sfx_volume, SFXVolume)
+        //0 ~ 10  --> 0 ~ 255
+    CC_SYNTHESIZE(int, mini_opacity, MiniOpacity)
+    CC_SYNTHESIZE(bool, win_, Win)
+    CC_SYNTHESIZE(int, play_bg_music_id, PlayBgMusicId)
 
 private:
     static RoomService *inst_;
@@ -47,6 +69,9 @@ private:
     static string get_doorstyle_from_room_type(int room_type);
     static string get_groundstyle_from_room_type(int room_type);
     void build_vm_from_room_map();
+    void build_vm_from_room(Room room_m);
+
+    RoomSceneModel saved_room_;
 };
 
 

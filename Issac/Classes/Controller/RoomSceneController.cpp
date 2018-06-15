@@ -25,10 +25,6 @@ bool RoomSceneController::init(int roomID)
     scene_ = RoomScene::create(roomID);
     scene_->set_event_listener(this);
     addChild(scene_);
-
-    //TODO 地图服务
-    level_service_ = LevelService();
-
     return true;
 }
 
@@ -142,32 +138,30 @@ int RoomSceneController::check_option(EventKeyboard::KeyCode keyCode){
                 break;
             case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
                 if(scene_->model.option_menu_cursor == 0){
-                    if(scene_->model.sfx_volume != 0){
-                        scene_->model.sfx_volume -=1;
+                    if(RoomService::getInstance()->getSFXVolume() != 0){
+                        RoomService::getInstance()->setSFXVolume(RoomService::getInstance()->getSFXVolume() - 1);
                     }
-                } else if(scene_->model.option_menu_cursor == 1){
-                    if(scene_->model.music_volume != 0){
-                        scene_->model.music_volume -=1;
+                } 
+                else if(scene_->model.option_menu_cursor == 1)
+                {
+                    if(RoomService::getInstance()->getMusicVolume() != 0){
+                        RoomService::getInstance()->setMusicVolume(RoomService::getInstance()->getMusicVolume() - 1);
                     }
                 } else if(scene_->model.option_menu_cursor == 2){
-                    if(scene_->model.map_opacity != 0){
-                        scene_->model.map_opacity -=1;
-                    }
+                    RoomService::getInstance()->decrease_mini_opacity();
                 }
                 break;
             case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
                 if(scene_->model.option_menu_cursor == 0){
-                    if(scene_->model.sfx_volume != 10){
-                        scene_->model.sfx_volume +=1;
+                    if (RoomService::getInstance()->getSFXVolume() != 10) {
+                        RoomService::getInstance()->setSFXVolume(RoomService::getInstance()->getSFXVolume() + 1);
                     }
                 } else if(scene_->model.option_menu_cursor == 1){
-                    if(scene_->model.music_volume != 10){
-                        scene_->model.music_volume +=1;
+                    if (RoomService::getInstance()->getMusicVolume() != 10) {
+                        RoomService::getInstance()->setMusicVolume(RoomService::getInstance()->getMusicVolume() + 1);
                     }
                 } else if(scene_->model.option_menu_cursor == 2){
-                    if(scene_->model.map_opacity != 10){
-                        scene_->model.map_opacity +=1;
-                    }
+                    RoomService::getInstance()->increase_mini_opacity();
                 }
                 break;
             case EventKeyboard::KeyCode::KEY_ESCAPE:
