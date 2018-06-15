@@ -81,6 +81,8 @@ bool Collectable::init(int collectableType)
 		enFly = true;
 		break;
 	}
+    //添加跳动动画，如果效果不好需要改
+    temp_collectableImg->runAction(RepeatForever::create(JumpTo::create(1.0,temp_collectableImg->getPosition(),5,1)));
 	this->addChild(temp_collectableImg);
 	this->createPhyBody();
 	this->setTag(9);

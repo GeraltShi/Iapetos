@@ -273,6 +273,7 @@ bool RoomScene::init(int roomID)
     healthbar->setPosition(70, 250);
     addChild(healthbar, 8);
 
+    /*
     Sprite *hud_coin = Sprite::createWithTexture(texture_hud, Rect(0, 0, 16, 16));
     hud_coin->setPosition(30, 224);
     Sprite *hud_bomb = Sprite::createWithTexture(texture_hud, Rect(0, 16, 16, 16));
@@ -285,7 +286,13 @@ bool RoomScene::init(int roomID)
     addChild(hud_bomb, 8);
     addChild(hud_goldkey, 8);
     addChild(hud_silverkey, 8);
-
+    //数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
+    Texture2D *texture_font = Director::getInstance()->getTextureCache()->addImage("res/font/pftempestasevencondensed_0.png");
+    Sprite *num0 = Sprite::createWithTexture(texture_font, Rect(18 * 14, 21 * 3, 18, 21));
+    num0->setPosition(46, 224);
+    addChild(num0, 8);
+    */
+    
     //小地图生成
     //mini_map_vm_
     Texture2D *texture_minimap = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/minimap1.png");
@@ -341,12 +348,6 @@ bool RoomScene::init(int roomID)
             }
         }
     }
-
-    //数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
-    Texture2D *texture_font = Director::getInstance()->getTextureCache()->addImage("res/font/pftempestasevencondensed_0.png");
-    Sprite *num0 = Sprite::createWithTexture(texture_font, Rect(18 * 14, 21 * 3, 18, 21));
-    num0->setPosition(46, 224);
-    addChild(num0, 8);
 
     //TODO 1.石头生成，门生成和进入响应，需触发地图更新，怪没打完逃不出去！ gfx\grid
 
@@ -816,7 +817,7 @@ void RoomScene::update(float delta)
         tearspeed_bar->setPosition(98,130);
         pausescreen->getChildByName("pausemenu")->addChild(tearspeed_bar,1,"tearspeed_bar");
         
-        const string shootintervalstat = "statA" + to_string((int)(player->getShootInterval()*5));
+        const string shootintervalstat = "statA" + to_string((int)(1/player->getShootInterval()));
         pausescreen->getChildByName("pausemenu")->removeChildByName("shootinterval_bar");
         Sprite * shootinterval_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(shootintervalstat));
         shootinterval_bar->setPosition(157,130);
