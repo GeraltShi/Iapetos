@@ -2,6 +2,7 @@
 #include "Scene/RoomScene.h"
 #include <iostream>
 #include "Service/RoomService.h"
+#include "Service/PlayerService.h"
 #include "SimpleAudioEngine.h"
 using namespace CocosDenshion;
 
@@ -71,9 +72,18 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
     if(scene_->model.game_stat == 2){
         switch (keyCode){
             case EventKeyboard::KeyCode::KEY_SPACE:
+            {
+                scene_->stopAllActions();
                 scene_->model.game_stat = 0;
-                // TODO 因为已经死了所以还在这个死亡菜单界面，需要发射重设参数
-                break;
+                RoomService::getInstance()->init();
+                PlayerService::getInstance()->init();
+                const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_init_room_id());
+                TransitionScene* tx = TransitionFade::create(0.7, room);
+                Director::getInstance()->replaceScene(tx);
+                SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+                SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/diptera sonata(basement).wav", true);
+                break; 
+            }
             case EventKeyboard::KeyCode::KEY_ESCAPE:
                 scene_->stopAllActions();
                 scene_->model.game_stat = 0;
@@ -109,11 +119,12 @@ int RoomSceneController::check_pause(EventKeyboard::KeyCode keyCode){
                 break;
             case EventKeyboard::KeyCode::KEY_ENTER:
                 //cursor = 0,跳转到option
-                if(scene_->model.paused_menu_cursor == 0){
+                if(scene_->model.paused_menu_cursor == 0){//选项
                     scene_->model.option_display = 1;
                 }
-                else if(scene_->model.paused_menu_cursor == 1){
+                else if(scene_->model.paused_menu_cursor == 1){//恢复
                     scene_->model.game_stat = 0;
+                    scene_->model.walk_direction = 5;
                 } else if (scene_->model.paused_menu_cursor == 2){
                     Director::getInstance()->popScene();
                     SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);

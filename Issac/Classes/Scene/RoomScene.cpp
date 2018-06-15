@@ -89,7 +89,7 @@ bool RoomScene::init(int roomID)
         Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
         Sprite *controls = Sprite::createWithTexture(texture_controls, Rect(0, 0, 325, 85));
         controls->setPosition(221, 143);
-        addChild(controls, 1);
+        addChild(controls, 0);
     }
 
     //光影遮罩，在整个Scene最顶部
@@ -863,7 +863,7 @@ void RoomScene::update(float delta)
             
         }
     }
-    else
+    else//state = 2, Issac死亡
     {
         Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         if (model.dead_menu_generated_flag == 0)
@@ -874,8 +874,16 @@ void RoomScene::update(float delta)
             SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
             SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav", false);
             SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/you died.wav", true);
+
         }
+
+        for (auto m : monsters_)
+        {
+            m->pauseSchedulerAndActions();
+        }
+
         this->stopAllActions();
+
     }
     //   std::cout << "Test: "<<model.paused << " " << model.paused_menu_generated_flag << " " << model.paused_menu_cursor << endl;
 }
@@ -1134,7 +1142,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             {
                 const auto h1 = monsters_.at(0)->getHealth();
                 const auto h2 = monsters_.at(0)->getMaxHealth();
-                const int percent = (int)(100* ((double)h1 / h2));
+                const float percent = 100* ((float)h1 / h2);
                 ProgressTimer* pro = (ProgressTimer *)this->getChildByName("bosshealthbar");
                 pro->setPercentage(percent);
             }
