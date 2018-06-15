@@ -21,7 +21,7 @@ bool Issac::init()
 	//初始化类变量
 	moveSpeed = 150;
 	radiusSize = 10;
-	bodyMass = 50;
+	bodyMass = 100;
 	moving = false;
 	tearSpeed = 100;
 	tearExistTime = 20;

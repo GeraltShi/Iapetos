@@ -435,7 +435,7 @@ bool Fatty::init()
     }
 
     radiusSize = 12;    //Fatty碰撞大小
-    bodyMass = 500;     //Fatty重量
+    bodyMass = 150;     //Fatty重量
     moveSpeed = 80;     //Fatty行走速度
     health = 5;         //Fatty血量
     attack = 1;         //Fatty攻击
@@ -1289,7 +1289,7 @@ bool FlyDaddy::init()
     this->addChild(bodySprite, 0, "body");
     
     radiusSize = 20;    //FlyDaddy碰撞大小
-    bodyMass = 100;     //FlyDaddy重量
+    bodyMass = 300;     //FlyDaddy重量
     moveSpeed = 200;     //FlyDaddy行走速度
     health = 150;         //FlyDaddy血量
     attack = 1;         //FlyDaddy攻击

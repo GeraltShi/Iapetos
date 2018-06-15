@@ -47,7 +47,7 @@ bool Tear::init()
 	//Tear碰撞大小
 	radiusSize = 3;
 	//Tear重量
-	bodyMass = 10;
+	bodyMass = 5;
 	//Tear行走速度
 	moveSpeed = 120;
 	//Tear攻击1
