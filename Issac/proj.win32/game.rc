@@ -28,7 +28,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "resource.h\0"
 END
@@ -68,12 +68,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "game Module\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "FileVersion", "2, 0, 0, 0\0"
             VALUE "InternalName", "game\0"
             VALUE "LegalCopyright", "Copyright \0"
             VALUE "OriginalFilename", "game.exe\0"
-            VALUE "ProductName", "game Module\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "ProductName", "Issac game\0"
+            VALUE "ProductVersion", "2, 0, 0, 0\0"
         END
     END
     BLOCK "VarFileInfo"
