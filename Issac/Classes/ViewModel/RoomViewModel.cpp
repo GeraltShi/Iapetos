@@ -3,7 +3,7 @@
 RoomViewModel RoomViewModel::createRoomViewModel(int roomType, bool visited, int barrierType)
 {
     RoomViewModel room1;
-    room1.init(roomType, visited，barrierType);
+    room1.init(roomType, visited, barrierType);
     return room1;
 }
 

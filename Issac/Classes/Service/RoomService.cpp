@@ -569,7 +569,7 @@ void RoomService::build_vm_from_room(Room room_m)
     const auto room_type = room_m.current_room_type;
     const auto barrier_type = room_m.current_barrier_type;
 
-    auto room_ = RoomViewModel::createRoomViewModel(room_type, room_m.visited，barrier_type);
+    auto room_ = RoomViewModel::createRoomViewModel(room_type, room_m.visited, barrier_type);
 
     int doors_id[] = {room_m.left_room_id, room_m.up_room_id, room_m.right_room_id, room_m.down_room_id};
 
