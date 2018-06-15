@@ -317,6 +317,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.current_room_type = 0;
+	room__.current_barrier_type = 0;
     room_map_[1] = room__;
 
     //怪物房间
@@ -328,6 +329,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
 	room__.current_room_type = 7;
+	room__.current_barrier_type = 0;
     room_map_[2] = room__;
 
     room__ = Room();
@@ -338,6 +340,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.current_room_type = 2;
+	room__.current_barrier_type = 0;
     room_map_[3] = room__;
 
     room__ = Room();
@@ -348,6 +351,7 @@ void RoomService::init()
     room__.down_room_id = 3;
     room__.visited = false;
     room__.current_room_type = 1;
+	room__.current_barrier_type = 0;
     room_map_[4] = room__;
 
     room__ = Room();
@@ -358,6 +362,7 @@ void RoomService::init()
     room__.down_room_id = 4;
     room__.visited = false;
     room__.current_room_type = 2;
+	room__.current_barrier_type = 0;
     room_map_[5] = room__;
 
     room__ = Room();
@@ -368,6 +373,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.current_room_type = 3;
+	room__.current_barrier_type = 0;
     room_map_[6] = room__;
 
     room__ = Room();
@@ -378,6 +384,7 @@ void RoomService::init()
     room__.down_room_id = 6;
     room__.visited = false;
     room__.current_room_type = 2;
+	room__.current_barrier_type = 0;
     room_map_[7] = room__;
 
     room__ = Room();
@@ -388,6 +395,7 @@ void RoomService::init()
     room__.down_room_id = 7;
     room__.visited = false;
     room__.current_room_type = 5;
+	room__.current_barrier_type = 0;
     room_map_[8] = room__;
 
     room__ = Room();
@@ -398,6 +406,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.current_room_type = 8;
+	room__.current_barrier_type = 0;
     room_map_[9] = room__;
 
     room__ = Room();
@@ -408,6 +417,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.current_room_type = 6;
+	room__.current_barrier_type = 0;
     room_map_[10] = room__;
 
     room__ = Room();
@@ -418,6 +428,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.current_room_type = 7;
+	room__.current_barrier_type = 0;
     room_map_[11] = room__;
 
     room__ = Room();
@@ -428,6 +439,7 @@ void RoomService::init()
     room__.down_room_id = 11;
     room__.visited = false;
     room__.current_room_type = 2;
+	room__.current_barrier_type = 0;
     room_map_[12] = room__;
 
     //Boss
@@ -439,6 +451,7 @@ void RoomService::init()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.current_room_type = 15;
+	room__.current_barrier_type = 0;
     room_map_[13] = room__;
 
     build_vm_from_room_map();
@@ -502,8 +515,9 @@ void RoomService::build_vm_from_room_map()
         const auto room_m = (*it).second;
 
         const auto room_type = room_m.current_room_type;
+		const auto barrier_type = room_m.current_barrier_type;
 
-        auto room_ = RoomViewModel::createRoomViewModel(room_type);
+        auto room_ = RoomViewModel::createRoomViewModel(room_type, barrier_type);
 
         int doors_id[] = { room_m.left_room_id,room_m.up_room_id,room_m.right_room_id,room_m.down_room_id };
 

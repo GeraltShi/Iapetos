@@ -34,8 +34,8 @@ Tear *Monster::Fire(Vec2 targetPos)
     double diffX = abs(targetPos.x - this->getPosition().x);
     double diffY = abs(targetPos.y - this->getPosition().y);
     double dis = sqrt(diffX * diffX + diffY * diffY);
-    //double tear_V = moveSpeed + tearSpeed;
-    //myTear->getPhysicsBody()->setVelocity(Vec2(tear_V * diffX / dis, tear_V * diffY / dis));
+    double tear_V = moveSpeed + tearSpeed;
+    myTear->getPhysicsBody()->setVelocity(Vec2(tear_V * diffX / dis, tear_V * diffY / dis));
     //初始位置
     myTear->setPosition(Vec2(getPosition().x + MonTearOffset * diffX / dis, getPosition().y + MonTearOffset * diffY / dis));
     //存在时间,攻击
@@ -964,7 +964,7 @@ bool Gaper::init()
 
 	radiusSize = 12;    //Gaper碰撞大小
 	bodyMass = 100;     //Gaper重量
-	moveSpeed = 80;     //Gaper行走速度
+	moveSpeed = 30;     //Gaper行走速度
 	health = 5;         //Gaper血量
 	attack = 1;         //Gaper攻击
 	tearSpeed = 60;     //Gaper泪速
@@ -977,6 +977,10 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 {
 	//追踪人的移动策略
 	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
+	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 4) {
+		//足够近 冲刺
+		moveSpeed = 100;
+	}
 	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 1.2)
 	{
 	    //足够近，直接冲过去

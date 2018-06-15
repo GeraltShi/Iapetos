@@ -29,6 +29,7 @@ class Moveable : public Sprite
 	CC_SYNTHESIZE(bool, moving, Moving)
 	CC_SYNTHESIZE(int, prev_walk_orientation, PrevWalkOrientation)
 	CC_SYNTHESIZE(int, prev_head_orientation, PrevHeadOrientation)
+
 	CC_SYNTHESIZE(double, moveSpeed, MoveSpeed)
 	CC_SYNTHESIZE(double, radiusSize, RadiusSize)
 	CC_SYNTHESIZE(double, bodyMass, BodyMass)
@@ -36,6 +37,10 @@ class Moveable : public Sprite
 	CC_SYNTHESIZE(double, tearSpeed, TearSpeed)
 	CC_SYNTHESIZE(int, tearExistTime, TearExistTime)
 	CC_SYNTHESIZE(int, fireSpeed, FireSpeed)
+
+	CC_SYNTHESIZE(bool, enFly, EnFly)
+	CC_SYNTHESIZE(bool, enBounce, EnBounce)
+	CC_SYNTHESIZE(bool, enhalfTearDis, EnHalfTearDis)
 
 	//初步设定Issac的血量为整数，单位为半颗血。Monster血量为实数，<0时死亡
 	CC_SYNTHESIZE(int, health, Health)

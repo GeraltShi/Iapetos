@@ -28,8 +28,9 @@ public:
 	//roomType:15~20代表Boss房
         //15~17 Boss1
         //18~20 Boss2
-	static RoomViewModel createRoomViewModel(int roomType);
-	void init(int roomType);
+	//roomType是房间种类，barrierType是地形（0~2三种）
+	static RoomViewModel createRoomViewModel(int roomType,int barrierType);
+	void init(int roomType, int barrierType);
 
 	//1,2,3,4四个门（左、上、右、下）的位置是否有门
     CC_SYNTHESIZE(vector<int>, door_enable, DoorEnable)

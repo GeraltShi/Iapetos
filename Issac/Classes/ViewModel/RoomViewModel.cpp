@@ -1,23 +1,22 @@
 #include "RoomViewModel.h"
 
-RoomViewModel RoomViewModel::createRoomViewModel(int roomType)
+RoomViewModel RoomViewModel::createRoomViewModel(int roomType, int barrierType)
 {
 	RoomViewModel room1;
-	room1.init(roomType);
+	room1.init(roomType , barrierType);
 	return room1;
 }
 
-void RoomViewModel::init(int roomType)
+void RoomViewModel::init(int roomType, int barrierType)
 {
 	for (int i = 0; i < GRID_WIDTH; i++)
 		for (int j = 0; j < GRID_HEIGHT; j++)
 			room_map[i][j] = 0;
 
+	//生成房间地形,放入石头
 	//棋盘中0表示空地，1表示小石头，2表示大石头，3表示玩家
 	//4~19表示怪物的各种类别,20~30item
-	//生成几种房间之一,放入石头
-    const int barrierType = rand() % 3;
-	if (roomType == 0 || barrierType == 0)
+	if (barrierType == 0)
 	{
 		//没有石头
 	}
@@ -61,6 +60,7 @@ void RoomViewModel::init(int roomType)
 		room_map[8][5] = 2;
 		room_map[9][5] = 2;
 	}
+
 	//roomType:0：初始房间
 	//roomType:1~7怪物房间
 	//1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider
