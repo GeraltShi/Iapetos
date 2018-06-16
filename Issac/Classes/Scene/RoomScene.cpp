@@ -518,7 +518,7 @@ bool RoomScene::init(int roomID)
 
         this->addChild(bosshealthbar, 6, "bosshealthbar");//getname 调用 bosshealthbar，再 setPercentage 就可以改血量
     }
-
+    
     scheduleUpdate();
     return true;
 }
@@ -626,6 +626,15 @@ void RoomScene::update(float delta)
                 auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
                 temp_sprite->setPosition(monsters_.at(i)->getPosition());
                 addChild(temp_sprite, 3);
+                
+                auto spriteCache = SpriteFrameCache::getInstance();
+                int n = rand() % 6;
+                Sprite * blood_pool = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("blood_pool_normal"+to_string(n)));
+                blood_pool->setOpacity(0xaf);
+                blood_pool->setPosition(monsters_.at(i)->getPosition());
+                const auto blood_still = MoveTo::create(2.0,blood_pool->getPosition());
+                this->addChild(blood_pool,2);
+                blood_pool->runAction(Sequence::create(blood_still, FadeOut::create(3.0),RemoveSelf::create(true),NULL));
 
                 monsters_.at(i)->removeFromParent();
 
@@ -633,6 +642,7 @@ void RoomScene::update(float delta)
                 const auto dead_anim = Animate::create(dead_ani);
                 const auto dead_animate = Sequence::create(ScaleTo::create(0,0.5),dead_anim, RemoveSelf::create(true), NULL);
                 temp_sprite->runAction(dead_animate);
+                
                 monsters_.erase(monsters_.begin() + i);
             }
             else
@@ -1166,6 +1176,45 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(statB6, "statB6");
     fcache->addSpriteFrame(statB7, "statB7");
     
+    Texture2D * blood_pool_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_016_bloodpool.png");
+    const auto blood_pool_small0 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(0,0,32,32));
+    const auto blood_pool_small1 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(32,0,32,32));
+    const auto blood_pool_small2 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(0,32,32,32));
+    const auto blood_pool_small3 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(32,32,32,32));
+    const auto blood_pool_small4 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(0,64,32,32));
+    const auto blood_pool_small5 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(32,64,32,32));
+    
+    const auto blood_pool_normal0 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(64,0,48,48));
+    const auto blood_pool_normal1 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(112,0,48,48));
+    const auto blood_pool_normal2 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(64,48,48,48));
+    const auto blood_pool_normal3 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(112,48,48,48));
+    const auto blood_pool_normal4 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(64,96,48,48));
+    const auto blood_pool_normal5 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(112,96,48,48));
+    
+    const auto blood_pool_large0 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(160,0,96,96));
+    const auto blood_pool_large1 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(256,0,96,96));
+    const auto blood_pool_large2 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(352,0,96,96));
+    const auto blood_pool_large3 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(160,96,96,96));
+    const auto blood_pool_large4 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(256,96,96,96));
+    const auto blood_pool_large5 = SpriteFrame::createWithTexture(blood_pool_texture, Rect(352,96,96,96));
+    fcache->addSpriteFrame(blood_pool_small0,"blood_pool_small0");
+    fcache->addSpriteFrame(blood_pool_small1,"blood_pool_small1");
+    fcache->addSpriteFrame(blood_pool_small2,"blood_pool_small2");
+    fcache->addSpriteFrame(blood_pool_small3,"blood_pool_small3");
+    fcache->addSpriteFrame(blood_pool_small4,"blood_pool_small4");
+    fcache->addSpriteFrame(blood_pool_small5,"blood_pool_small5");
+    fcache->addSpriteFrame(blood_pool_normal0,"blood_pool_normal0");
+    fcache->addSpriteFrame(blood_pool_normal1,"blood_pool_normal1");
+    fcache->addSpriteFrame(blood_pool_normal2,"blood_pool_normal2");
+    fcache->addSpriteFrame(blood_pool_normal3,"blood_pool_normal3");
+    fcache->addSpriteFrame(blood_pool_normal4,"blood_pool_normal4");
+    fcache->addSpriteFrame(blood_pool_normal5,"blood_pool_normal5");
+    fcache->addSpriteFrame(blood_pool_large0,"blood_pool_large0");
+    fcache->addSpriteFrame(blood_pool_large1,"blood_pool_large1");
+    fcache->addSpriteFrame(blood_pool_large2,"blood_pool_large2");
+    fcache->addSpriteFrame(blood_pool_large3,"blood_pool_large3");
+    fcache->addSpriteFrame(blood_pool_large4,"blood_pool_large4");
+    fcache->addSpriteFrame(blood_pool_large5,"blood_pool_large5");
 }
 
 bool RoomScene::onContactBegin(PhysicsContact &contact)
