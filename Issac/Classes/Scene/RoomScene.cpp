@@ -787,16 +787,21 @@ void RoomScene::update(float delta)
                 Animate * ghostAnimate = Animate::create(ghost_animation);
                 ghost_sprite->setPosition(player->getPosition());
                 this->addChild(ghost_sprite,3);
+                
+                auto action1 = CallFunc::create(  [&](){
+                    model.game_stat = 2;
+                }  );
+                
                 ActionInterval *MoveBy = MoveBy::create(2, Vec2(0, 100));
                 ActionInterval *Fade = FadeOut::create(2);
-                ghost_sprite->runAction(Spawn::create(ghostAnimate,MoveBy,Fade,NULL));
+                ghost_sprite->runAction(Sequence::create(Spawn::create(ghostAnimate,MoveBy,Fade,NULL),action1,NULL));
                 dead_ani_generated = true;
+                
                 const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
                 Sprite * deadbody = Sprite::createWithTexture(texture_, Rect(192,128,64,64));
                 deadbody->setPosition(player->getPosition());
                 this->addChild(deadbody,3);
                 SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav", false);
-                scheduleOnce(schedule_selector(RoomScene::show_deadmenu),1.5f);
             }
         }
 
@@ -1003,10 +1008,6 @@ void RoomScene::update(float delta)
 
 void RoomScene::updatehealth(float dt)
 {
-}
-
-void RoomScene::show_deadmenu(float dt){
-    model.game_stat = 2;
 }
 
 void RoomScene::set_model(RoomSceneModel model)
