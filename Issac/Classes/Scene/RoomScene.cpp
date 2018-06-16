@@ -249,14 +249,14 @@ bool RoomScene::init(int roomID)
                 //小石头
                 stones_.pushBack(Stone::createStone(1, Size(26, 26)));
                 stones_.at(stones_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
-                addChild(stones_.at(stones_.size() - 1), 3);
+                addChild(stones_.at(stones_.size() - 1), 2);
             }
             if (room_vm_.getRoomMap(i, j) == 2 && i >= 1 && j >= 1 && room_vm_.getRoomMap(i - 1, j - 1) == 2)
             {
                 //大石头
                 stones_.pushBack(Stone::createStone(2, Size(52, 52)));
                 stones_.at(stones_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width, 48 + j * RoomUnitSize.height));
-                addChild(stones_.at(stones_.size() - 1), 3);
+                addChild(stones_.at(stones_.size() - 1), 2);
             }
             if (room_vm_.getRoomMap(i, j) >= 20)
             {   //20说明这个位置是Collectable
@@ -629,7 +629,7 @@ void RoomScene::update(float delta)
                 
                 auto spriteCache = SpriteFrameCache::getInstance();
                 int n = rand() % 6;
-                Sprite * blood_pool = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("blood_pool_normal"+to_string(n)));
+                Sprite * blood_pool = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("blood_pool_small"+to_string(n)));
                 blood_pool->setOpacity(0xaf);
                 blood_pool->setPosition(monsters_.at(i)->getPosition());
                 const auto blood_still = MoveTo::create(2.0,blood_pool->getPosition());
