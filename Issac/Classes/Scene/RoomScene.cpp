@@ -1195,7 +1195,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             //Service更新血量
             //PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
-            nodeA->setInvincibleTime(20);
+            nodeA->setInvincibleTime(50);
             //受伤动画
             log("Issac Health:%d", nodeA->getHealth());
             player->hurt();
@@ -1222,7 +1222,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             //PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             if (tagA == 1)
-                nodeA->setInvincibleTime(20);
+                nodeA->setInvincibleTime(50);
             //添加受伤动画
             player->hurt();
         }

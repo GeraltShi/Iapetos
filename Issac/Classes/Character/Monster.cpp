@@ -828,10 +828,10 @@ void Gaper::move(int walk_direction)
 {
     //移动
     //移动速度不是之前的情况，说明发生碰撞
-    if (colClog == ColClogTime && walk_direction != 5
+    if (colClog == 0 && walk_direction != 5
 		&& this->getPhysicsBody()->getVelocity() != calSpeed(prev_walk_orientation))
     {
-        colClog = 0;
+        colClog = ColClogTime;
     }
     else
     {
@@ -952,10 +952,10 @@ void Gaper::move(int walk_direction)
         }
     }
 
-    //if (colClog == 0)
-    //{
-    //    prev_walk_orientation = 5;
-    //}
+    if (colClog == 0)
+    {
+        prev_walk_orientation = 5;
+    }
 }
 
 bool Gaper::init()
@@ -997,7 +997,7 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 	Vec2 playerPos = this->getParent()->getChildByTag(1)->getPosition();
 	if (CalDistance(playerPos, this->getPosition()) < RoomUnitSize.height * 4) {
 		//足够近 冲刺
-		moveSpeed = 100;
+		moveSpeed = 130;
 	}
 	else {
 		moveSpeed = 30;

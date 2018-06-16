@@ -99,7 +99,7 @@ void Collectable::createPhyBody()
 	//静态
 	phyBody->setDynamic(false);
 	//设置物体的恢复力
-	phyBody->getShape(0)->setRestitution(0.0f);
+	phyBody->getShape(0)->setRestitution(1.0f);
 	//设置物体的摩擦力
 	phyBody->getShape(0)->setFriction(0.0f);
 	//碰撞、监听筛选
