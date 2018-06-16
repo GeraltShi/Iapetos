@@ -89,7 +89,7 @@ bool RoomScene::init(int roomID)
         Texture2D *texture_controls = Director::getInstance()->getTextureCache()->addImage("res/gfx/backdrop/controls.png");
         Sprite *controls = Sprite::createWithTexture(texture_controls, Rect(0, 0, 325, 85));
         controls->setPosition(221, 143);
-        addChild(controls, 1);
+        addChild(controls, 0);
     }
 
     //光影遮罩，在整个Scene最顶部
@@ -510,7 +510,7 @@ bool RoomScene::init(int roomID)
         bosshealthbar->setType(ProgressTimer::Type::BAR);
         bosshealthbar->setBarChangeRate(Vec2(1, 0));
         bosshealthbar->setMidpoint(Vec2(0, 0));
-        bosshealthbar->setPercentage(70);
+        bosshealthbar->setPercentage(100);
         bosshealthbar->setPosition(221, 250);
         bosshealthbarempty->setPosition(75, 16);
         bosshealthbar->addChild(bosshealthbarempty, -1);//添加 empty 贴图为背景
@@ -770,6 +770,7 @@ void RoomScene::update(float delta)
             healthbar->addChild(hfheart, 1);
         }
 
+        //怪物全部死亡
         //开门动画
         if (room_vm_.getVisited() && !door_removed && !doors_.empty()) //已经访问过的房间的门应该是打开的
         {
@@ -792,6 +793,12 @@ void RoomScene::update(float delta)
                 door_removed = true;
             }
         }
+
+        //如果是Boss房间则游戏获胜
+        if (room_vm_.is_boss_room())
+        {
+            RoomService::getInstance()->setWin(true);
+        }
     }
     else if (model.game_stat == 1)
     {
@@ -812,7 +819,7 @@ void RoomScene::update(float delta)
         movespeed_bar->setPosition(98,147);
         pausescreen->getChildByName("pausemenu")->addChild(movespeed_bar,1,"movespeed_bar");
         
-        const string tearexistingtimestat = "statB" + to_string(player->getTearExistingTime()/10);
+        const string tearexistingtimestat = "statB" + to_string(player->getTearExistTime()/10);
         pausescreen->getChildByName("pausemenu")->removeChildByName("tearexistingtime_bar");
         Sprite * tearexistingtime_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearexistingtimestat));
         tearexistingtime_bar->setPosition(157,147);
@@ -903,7 +910,7 @@ void RoomScene::update(float delta)
             
         }
     }
-    else
+    else//state = 2, Issac死亡
     {
         Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         if (model.dead_menu_generated_flag == 0)
@@ -914,8 +921,16 @@ void RoomScene::update(float delta)
             SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
             SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav", false);
             SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/you died.wav", true);
+
         }
+
+        for (auto m : monsters_)
+        {
+            m->pauseSchedulerAndActions();
+        }
+
         this->stopAllActions();
+
     }
 }
 
@@ -1172,6 +1187,16 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
         if (tagA == 2 && (tagB == 3 || tagB == 4))
         {
             nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
+            
+            if (room_vm_.is_boss_room())
+            {
+                const auto h1 = monsters_.at(0)->getHealth();
+                const auto h2 = monsters_.at(0)->getMaxHealth();
+                const float percent = 100* ((float)h1 / h2);
+                ProgressTimer* pro = (ProgressTimer *)this->getChildByName("bosshealthbar");
+                pro->setPercentage(percent);
+            }
+
         }
         //Issac和怪物眼泪碰撞
         if (tagA == 1 && tagB == 3 && nodeA->getInvincibleTime() == 0)

@@ -517,7 +517,7 @@ string RoomService::get_doorstyle_from_room_type(int room_type)
     {
         return "res/gfx/grid/door_01_normaldoor.png";
     }
-    if (room_type >= 8 && room_type <=20) //宝藏门
+    if (room_type >= 8 && room_type <= 20) //宝藏门
     {
         return "res/gfx/grid/door_02_treasureroomdoor.png";
     }
@@ -591,194 +591,221 @@ void RoomService::build_vm_from_room(Room room_m)
 
 RoomService *RoomService::inst_ = nullptr;
 
-
-
 //roomType:0：初始房间
 //roomType:1~7怪物房间。1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider,5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
 //roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里
 //roomType:21+代表Boss房,21:Boss-flyDaddy
-int randomRoom() {
-	if (rand() % 20 == 0) {
-		return rand() % 9 + 8;
-	}
-	else {
-		return rand() % 7 + 1;
-	}	
+int randomRoom()
+{
+    if (rand() % 20 == 0)
+    {
+        return rand() % 9 + 8;
+    }
+    else
+    {
+        return rand() % 7 + 1;
+    }
 }
 
 void RoomService::createMaze()
 {
-	//产生地图,墙是MAZEWALL,不是墙的格子为roomID
-	vector <int> block_row;
-	vector <int> block_column;
-	vector <int> block_direct;
-	for (int i = 0; i < maze_size; i++)
-		for (int j = 0; j < maze_size; j++)
-			m[i][j] = MAZEWALL;
-	int MyRoomID = 1;
-	//加入起点
-	int x_num = 0;
-	int y_num = 0;
-	m[0][0] = MyRoomID;
-	MyRoomID++;
-	if (x_num + 1 < maze_size) {
-		block_row.push_back(x_num + 1);
-		block_column.push_back(y_num);
-		block_direct.push_back(MYDOWN);
-	} //MYDOWN
-	if (y_num + 1 < maze_size) {
-		block_row.push_back(x_num);
-		block_column.push_back(y_num + 1);
-		block_direct.push_back(MYRIGHT);
-	} //MYRIGHT
-	if (x_num - 1 >= 0) {
-		block_row.push_back(x_num - 1);
-		block_column.push_back(y_num);
-		block_direct.push_back(MYUP);
-	} //MYUP
-	if (y_num - 1 >= 0) {
-		block_row.push_back(x_num);
-		block_column.push_back(y_num - 1);
-		block_direct.push_back(MYLEFT);
-	} //MYLEFT
+    //产生地图,墙是MAZEWALL,不是墙的格子为roomID
+    vector<int> block_row;
+    vector<int> block_column;
+    vector<int> block_direct;
+    for (int i = 0; i < maze_size; i++)
+        for (int j = 0; j < maze_size; j++)
+            m[i][j] = MAZEWALL;
+    int MyRoomID = 1;
+    //加入起点
+    int x_num = 0;
+    int y_num = 0;
+    m[0][0] = MyRoomID;
+    MyRoomID++;
+    if (x_num + 1 < maze_size)
+    {
+        block_row.push_back(x_num + 1);
+        block_column.push_back(y_num);
+        block_direct.push_back(MYDOWN);
+    } //MYDOWN
+    if (y_num + 1 < maze_size)
+    {
+        block_row.push_back(x_num);
+        block_column.push_back(y_num + 1);
+        block_direct.push_back(MYRIGHT);
+    } //MYRIGHT
+    if (x_num - 1 >= 0)
+    {
+        block_row.push_back(x_num - 1);
+        block_column.push_back(y_num);
+        block_direct.push_back(MYUP);
+    } //MYUP
+    if (y_num - 1 >= 0)
+    {
+        block_row.push_back(x_num);
+        block_column.push_back(y_num - 1);
+        block_direct.push_back(MYLEFT);
+    } //MYLEFT
 
-	while (block_row.size()) {//第一步压入两堵墙（起点右边和起点下面）进入循环
-		int num = block_row.size();
-		int randnum = rand() % num;//生成0-num-1之间的随机数，同时也是vector里的下标
-		switch (block_direct[randnum]) {//选择一个方向进行后续操作，起始点 邻块 目标块 三块区域在同一直线上 随后移动到目标块的位置
-		case MYDOWN: {
-			x_num = block_row[randnum] + 1;
-			y_num = block_column[randnum];
-			break;
-		}
-		case MYRIGHT: {
-			x_num = block_row[randnum];
-			y_num = block_column[randnum] + 1;
-			break;
-		}
-		case MYLEFT: {
-			x_num = block_row[randnum];
-			y_num = block_column[randnum] - 1;
-			break;
-		}
-		case MYUP: {
-			x_num = block_row[randnum] - 1;
-			y_num = block_column[randnum];
-			break;
-		}
-		}
-		if (m[x_num][y_num] == MAZEWALL) {//目标块如果是墙
-			if (m[block_row[randnum]][block_column[randnum]] == MAZEWALL) {
-				m[block_row[randnum]][block_column[randnum]] = MyRoomID;//打通墙
-				MyRoomID++;
-			}		
-			if (m[x_num][y_num] == MAZEWALL) {
-				m[x_num][y_num] = MyRoomID;//打通目标块
-				MyRoomID++;
-			}
-				
-			if (x_num + 1 < maze_size) {
-				block_row.push_back(x_num + 1);
-				block_column.push_back(y_num);
-				block_direct.push_back(MYDOWN);
-			} //MYDOWN
-			if (y_num + 1 < maze_size) {
-				block_row.push_back(x_num);
-				block_column.push_back(y_num + 1);
-				block_direct.push_back(MYRIGHT);
-			} //MYRIGHT
-			if (x_num - 1 >= 0) {
-				block_row.push_back(x_num - 1);
-				block_column.push_back(y_num);
-				block_direct.push_back(MYUP);
-			} //MYUP
-			if (y_num - 1 >= 0) {
-				block_row.push_back(x_num);
-				block_column.push_back(y_num - 1);
-				block_direct.push_back(MYLEFT);
-			} //MYLEFT
-		}
-		block_row.erase(block_row.begin() + randnum);//删除这堵墙(把用不了的墙删了，对于那些已经施工过了不必再施工了，同时也是确保我们能跳出循环)
-		block_column.erase(block_column.begin() + randnum);
-		block_direct.erase(block_direct.begin() + randnum);
-	}
-	if (rand() % 2) {
-		if (m[maze_size - 2][maze_size - 1] == MAZEWALL) {
-			m[maze_size - 2][maze_size - 1] = MyRoomID;
-			MyRoomID++;
-		}
-	}else if (m[maze_size - 1][maze_size - 2] == MAZEWALL) {
-		m[maze_size - 1][maze_size - 2] = MyRoomID;
-		MyRoomID++;
-	}
-	if (m[maze_size - 1][maze_size - 1] == MAZEWALL) {
-		m[maze_size - 1][maze_size - 1] = MyRoomID;
-	}
+    while (block_row.size())
+    { //第一步压入两堵墙（起点右边和起点下面）进入循环
+        int num = block_row.size();
+        int randnum = rand() % num; //生成0-num-1之间的随机数，同时也是vector里的下标
+        switch (block_direct[randnum])
+        { //选择一个方向进行后续操作，起始点 邻块 目标块 三块区域在同一直线上 随后移动到目标块的位置
+        case MYDOWN:
+        {
+            x_num = block_row[randnum] + 1;
+            y_num = block_column[randnum];
+            break;
+        }
+        case MYRIGHT:
+        {
+            x_num = block_row[randnum];
+            y_num = block_column[randnum] + 1;
+            break;
+        }
+        case MYLEFT:
+        {
+            x_num = block_row[randnum];
+            y_num = block_column[randnum] - 1;
+            break;
+        }
+        case MYUP:
+        {
+            x_num = block_row[randnum] - 1;
+            y_num = block_column[randnum];
+            break;
+        }
+        }
+        if (m[x_num][y_num] == MAZEWALL)
+        { //目标块如果是墙
+            if (m[block_row[randnum]][block_column[randnum]] == MAZEWALL)
+            {
+                m[block_row[randnum]][block_column[randnum]] = MyRoomID; //打通墙
+                MyRoomID++;
+            }
+            if (m[x_num][y_num] == MAZEWALL)
+            {
+                m[x_num][y_num] = MyRoomID; //打通目标块
+                MyRoomID++;
+            }
+
+            if (x_num + 1 < maze_size)
+            {
+                block_row.push_back(x_num + 1);
+                block_column.push_back(y_num);
+                block_direct.push_back(MYDOWN);
+            } //MYDOWN
+            if (y_num + 1 < maze_size)
+            {
+                block_row.push_back(x_num);
+                block_column.push_back(y_num + 1);
+                block_direct.push_back(MYRIGHT);
+            } //MYRIGHT
+            if (x_num - 1 >= 0)
+            {
+                block_row.push_back(x_num - 1);
+                block_column.push_back(y_num);
+                block_direct.push_back(MYUP);
+            } //MYUP
+            if (y_num - 1 >= 0)
+            {
+                block_row.push_back(x_num);
+                block_column.push_back(y_num - 1);
+                block_direct.push_back(MYLEFT);
+            } //MYLEFT
+        }
+        block_row.erase(block_row.begin() + randnum); //删除这堵墙(把用不了的墙删了，对于那些已经施工过了不必再施工了，同时也是确保我们能跳出循环)
+        block_column.erase(block_column.begin() + randnum);
+        block_direct.erase(block_direct.begin() + randnum);
+    }
+    if (rand() % 2)
+    {
+        if (m[maze_size - 2][maze_size - 1] == MAZEWALL)
+        {
+            m[maze_size - 2][maze_size - 1] = MyRoomID;
+            MyRoomID++;
+        }
+    }
+    else if (m[maze_size - 1][maze_size - 2] == MAZEWALL)
+    {
+        m[maze_size - 1][maze_size - 2] = MyRoomID;
+        MyRoomID++;
+    }
+    if (m[maze_size - 1][maze_size - 1] == MAZEWALL)
+    {
+        m[maze_size - 1][maze_size - 1] = MyRoomID;
+    }
 }
-
 
 void RoomService::init()
 {
-	createMaze();
+    createMaze();
 
-	init_room_id_ = 1;
-	current_room_id_ = 0;
-	room_map_.clear();
-	store_.clear();
+    init_room_id_ = 1;
+    current_room_id_ = 0;
+    room_map_.clear();
+    store_.clear();
 
-	for (int i = 0; i < maze_size; i++) {
-		for (int j = 0; j < maze_size; j++) 
-		if (m[i][j]!=MAZEWALL)
-		{
-			auto room__ = Room();
-			room__.current_room_id = m[i][j];
-			if (inmaze(i - 1, j))
-				room__.left_room_id = m[i-1][j];
-			else
-				room__.left_room_id = 0;
-			if (inmaze(i + 1, j))
-				room__.right_room_id = m[i + 1][j];
-			else
-				room__.right_room_id = 0;
-			if (inmaze(i, j + 1))
-				room__.up_room_id = m[i][j + 1];
-			else
-				room__.up_room_id = 0;
-			if (inmaze(i, j - 1))
-				room__.down_room_id = m[i][j - 1];
-			else
-				room__.down_room_id = 0;
-			room__.visited = false;
-			if (i==0 && j==0) {
-				//初始房
-				room__.current_room_type = 0;
-				room__.current_barrier_type = 0;
-			}
-			else if (i == maze_size - 1 && j == maze_size - 1) {
-				room__.current_room_type = 21;
-				room__.current_barrier_type = 0;
-			}
-			else {
-				room__.current_room_type = randomRoom();
-				if (room__.current_room_type >= 8 && room__.current_room_type <= 20)
-					room__.current_barrier_type = 0;
-				else
-					room__.current_barrier_type = rand() % 3;
-			}
-			room_map_[m[i][j]] = room__;
-		}
-	}
-	
-	//在出生点边上添加一个宝物房
-	if (m[1][0]!=MAZEWALL) {
-		room_map_[m[1][0]].current_room_type= rand() % 9 + 8;
-		room_map_[m[1][0]].current_barrier_type = 0;
-	}
-	else {
-		room_map_[m[0][1]].current_room_type = rand() % 9 + 8;
-		room_map_[m[0][1]].current_barrier_type = 0;
-	}
+    for (int i = 0; i < maze_size; i++)
+    {
+        for (int j = 0; j < maze_size; j++)
+            if (m[i][j] != MAZEWALL)
+            {
+                auto room__ = Room();
+                room__.current_room_id = m[i][j];
+                if (inmaze(i - 1, j))
+                    room__.left_room_id = m[i - 1][j];
+                else
+                    room__.left_room_id = 0;
+                if (inmaze(i + 1, j))
+                    room__.right_room_id = m[i + 1][j];
+                else
+                    room__.right_room_id = 0;
+                if (inmaze(i, j + 1))
+                    room__.up_room_id = m[i][j + 1];
+                else
+                    room__.up_room_id = 0;
+                if (inmaze(i, j - 1))
+                    room__.down_room_id = m[i][j - 1];
+                else
+                    room__.down_room_id = 0;
+                room__.visited = false;
+                if (i == 0 && j == 0)
+                {
+                    //初始房
+                    room__.current_room_type = 0;
+                    room__.current_barrier_type = 0;
+                }
+                else if (i == maze_size - 1 && j == maze_size - 1)
+                {
+                    room__.current_room_type = 21;
+                    room__.current_barrier_type = 0;
+                }
+                else
+                {
+                    room__.current_room_type = randomRoom();
+                    if (room__.current_room_type >= 8 && room__.current_room_type <= 20)
+                        room__.current_barrier_type = 0;
+                    else
+                        room__.current_barrier_type = rand() % 3;
+                }
+                room_map_[m[i][j]] = room__;
+            }
+    }
 
+    //在出生点边上添加一个宝物房
+    if (m[1][0] != MAZEWALL)
+    {
+        room_map_[m[1][0]].current_room_type = rand() % 9 + 8;
+        room_map_[m[1][0]].current_barrier_type = 0;
+    }
+    else
+    {
+        room_map_[m[0][1]].current_room_type = rand() % 9 + 8;
+        room_map_[m[0][1]].current_barrier_type = 0;
+    }
 
-	build_vm_from_room_map();
+    build_vm_from_room_map();
 }

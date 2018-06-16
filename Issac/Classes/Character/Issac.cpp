@@ -1,6 +1,7 @@
 #include "Issac.hpp"
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
+#include "Service/PlayerService.h"
 using namespace CocosDenshion;
 
 using namespace cocos2d;
@@ -513,22 +514,54 @@ void Issac::dead(){
     this->runAction(deadAnimate);
 }
 
-double Issac::getMoveSpeed(){
-    return moveSpeed;
+double Issac::getMoveSpeed() const
+{
+    return PlayerService::getInstance()->getMoveSpeed();
 }
 
-double Issac::getAttack(){
-    return attack;
+double Issac::getAttack() const {
+    return PlayerService::getInstance()->getAttack();
 }
 
-double Issac::getTearSpeed(){
-    return tearSpeed;
+int Issac::getTearExistTime() const
+{
+    return PlayerService::getInstance()->getTearExistingTime();
 }
 
-double Issac::getShootInterval(){
-    return shootInterval;
+double Issac::getTearSpeed() const {
+    return PlayerService::getInstance()->getTearSpeed();
 }
 
-int Issac::getTearExistingTime(){
-    return tearExistTime;
+double Issac::getShootInterval() const {
+    return PlayerService::getInstance()->getShootInterval();
+}
+
+void Issac::setHealth(int health)
+{
+    PlayerService::getInstance()->setHealth(health);
+}
+
+void Issac::setAttack(double attack)
+{
+    PlayerService::getInstance()->setAttack(attack);
+}
+
+void Issac::setMoveSpeed(double var)
+{
+    PlayerService::getInstance()->setMoveSpeed(var);
+}
+
+void Issac::setTearSpeed(double var)
+{
+    PlayerService::getInstance()->setTearSpeed(var);
+}
+
+void Issac::setTearExistTime(int var)
+{
+    PlayerService::getInstance()->setTearExistingTime(var);
+}
+
+void Issac::setShootInterval(double var)
+{
+    PlayerService::getInstance()->setShootInterval(var);
 }
