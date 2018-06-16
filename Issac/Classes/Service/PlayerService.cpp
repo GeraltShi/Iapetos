@@ -26,6 +26,10 @@ void PlayerService::init()
     model_.setShootInterval(0.4);
     model_.setTearExistingTime(20);
     model_.setTearSpeed(100);
+    model_.setRadiusSize(10);
+    model_.setBodyMass(100);
+    model_.setEnBounce(false);
+    model_.setEnFly(false);
 }
 
 int PlayerService::getHealth() const
@@ -146,6 +150,46 @@ void PlayerService::decreaseShootInterval(double dshoot_interval)
 void PlayerService::increaseShootInterval(double dshoot_interval)
 {
     model_.setShootInterval(model_.getShootInterval() + dshoot_interval);
+}
+
+double PlayerService::getRadiusSize() const
+{
+    return model_.getRadiusSize();
+}
+
+void PlayerService::setRadiusSize(double radiusSize)
+{
+    model_.setRadiusSize(radiusSize);
+}
+
+double PlayerService::getBodyMass() const
+{
+    return model_.getBodyMass();
+}
+
+void PlayerService::setBodyMass(double bodyMass)
+{
+    model_.setBodyMass(bodyMass);
+}
+
+bool PlayerService::getEnFly() const
+{
+    return model_.getEnFly();
+}
+
+void PlayerService::setEnFly(bool enFly)
+{
+    model_.setEnFly(enFly);
+}
+
+bool PlayerService::getEnBounce() const
+{
+    return model_.getEnBounce();
+}
+
+void PlayerService::setEnBounce(bool enBounce)
+{
+    model_.setEnBounce(enBounce);
 }
 
 PlayerService::PlayerService()

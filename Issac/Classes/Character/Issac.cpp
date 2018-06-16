@@ -21,8 +21,8 @@ bool Issac::init()
 
 	//初始化类变量
     moveSpeed = PlayerService::getInstance()->getMoveSpeed();
-    radiusSize = 10;
-    bodyMass = 100;
+    radiusSize = PlayerService::getInstance()->getRadiusSize();
+    bodyMass = PlayerService::getInstance()->getBodyMass();
     moving = false;
     tearSpeed = PlayerService::getInstance()->getTearSpeed();
     tearExistTime = PlayerService::getInstance()->getTearExistingTime();
@@ -30,8 +30,8 @@ bool Issac::init()
     health = PlayerService::getInstance()->getHealth();
     //初始攻击
     attack = PlayerService::getInstance()->getAttack();
-    enFly = false;
-    enBounce = false;
+    enFly = PlayerService::getInstance()->getEnFly();
+    enBounce = PlayerService::getInstance()->getEnBounce();
     shootInterval = PlayerService::getInstance()->getShootInterval();
     this->setTag(1);
 
@@ -64,6 +64,8 @@ bool Issac::init()
     
     return true;
 }
+
+
 
 void Issac::build_sprite_frame_cache(Texture2D *texture_) const
 {
@@ -541,6 +543,26 @@ double Issac::getShootInterval() const {
     return PlayerService::getInstance()->getShootInterval();
 }
 
+double Issac::getRadiusSize() const
+{
+    return PlayerService::getInstance()->getRadiusSize();
+}
+
+double Issac::getBodyMass() const
+{
+    return PlayerService::getInstance()->getBodyMass();
+}
+
+bool Issac::getEnFly() const
+{
+    return PlayerService::getInstance()->getEnFly();
+}
+
+bool Issac::getEnBounce() const
+{
+    return PlayerService::getInstance()->getEnBounce();
+}
+
 void Issac::setHealth(int health)
 {
     this->health = health;
@@ -575,4 +597,28 @@ void Issac::setShootInterval(double var)
 {
     this->shootInterval = var;
     PlayerService::getInstance()->setShootInterval(var);
+}
+
+void Issac::setRadiusSize(double var)
+{
+    this->radiusSize = var;
+    PlayerService::getInstance()->setRadiusSize(var);
+}
+
+void Issac::setBodyMass(double var)
+{
+    this->bodyMass = var;
+    PlayerService::getInstance()->setBodyMass(var);
+}
+
+void Issac::setEnFly(bool var)
+{
+    this->enFly = var;
+    PlayerService::getInstance()->setEnFly(var);
+}
+
+void Issac::setEnBounce(bool var)
+{
+    this->enBounce = var;
+    PlayerService::getInstance()->setEnBounce(var);
 }

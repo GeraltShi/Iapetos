@@ -44,6 +44,17 @@ public:
     void decreaseShootInterval(double dshoot_interval);
     void increaseShootInterval(double dshoot_interval);
 
+    double getRadiusSize() const;
+    void setRadiusSize(double radiusSize);
+
+    double getBodyMass() const;
+    void setBodyMass(double bodyMass);
+
+    bool getEnFly() const;
+    void setEnFly(bool enFly);
+
+    bool getEnBounce() const;
+    void setEnBounce(bool enBounce);
 
 private:
     PlayerService();

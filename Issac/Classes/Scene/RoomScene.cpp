@@ -1395,7 +1395,9 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
         //Issac和物品Collectable碰撞,Issac拾取
         if (tagA == 1 && tagB == 9)
         {
+            //捡过了物品
             RoomService::getInstance()->set_item_taken(room_vm_.getRoomId());
+
             nodeA->setHealth(nodeA->getHealth() + nodeB->getHealth());
             nodeA->setAttack(nodeA->getAttack() + nodeB->getAttack());
             nodeA->setTearSpeed(nodeA->getTearSpeed() + nodeB->getTearSpeed());
