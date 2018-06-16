@@ -50,6 +50,7 @@ class Moveable : public Sprite
 	CC_SYNTHESIZE(double, attack, Attack)
 	//ColClog用于碰撞阻塞
 	CC_SYNTHESIZE(int, colClog, ColClog)
+    CC_SYNTHESIZE(string, name_string, Name_string);
 
 	virtual void createPhyBody() = 0;
 	Vec2 calSpeed(int dir);

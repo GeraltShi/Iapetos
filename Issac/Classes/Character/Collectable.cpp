@@ -39,10 +39,12 @@ bool Collectable::init(int collectableType)
 	case (0):	//半颗红心
 		temp_collectableImg=Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_001_heart.png"), Rect(32, 0, 32, 32));
 		health = 1;
+            name_string = "Half Heart Collected";
 		break;
 	case (1):	//一颗红心
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_001_heart.png"), Rect(0, 0, 32, 32));
-		health = 1;
+		health = 2;
+            name_string = "Heart Collected";
 		break;
 	case (2):	//加攻击0.3,加血半颗心，加移动速度，加射速，加射程
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_012_magicmushroom.png"), Rect(0, 0, 32, 32));
@@ -50,35 +52,41 @@ bool Collectable::init(int collectableType)
 		health = 1;
 		moveSpeed = 20;
 		tearExistTime = 5;
+            name_string = "Magic Mushroom Collected";
 		break;
-	//下面的贴图都是不对的,全用蓝心代替
 	case(3):	//加攻击3,扣1颗心的血，减慢移动速度
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_013_thevirus.png"), Rect(0, 0, 32, 32));
 		attack = 3;
 		health = -2;
 		moveSpeed = -20;
+            name_string = "Virus Collected";
 		break;
 	case(4):	//加攻击1
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_346_asnack.png"), Rect(0, 0, 32, 32));
 		attack = 1;
+            name_string = "Snack Collected";
 		break;
 	case(5):	//减攻击0.7，射程几乎无限
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_076_xrayvision.png"), Rect(0, 0, 32, 32));
 		attack = -0.3;
 		tearExistTime = 999;
+            name_string = "Xray Collected";
 		break;
 	case(6):	//加攻击4，射程减半
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_230_abaddon.png"), Rect(0, 0, 32, 32));
 		attack = 4;
 		enhalfTearDis = true;
+            name_string = "Abaddon Collected";
 		break;
 	case(7):	//子弹现在反弹了
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_194_magic8ball.png"), Rect(0, 0, 32, 32));
 		enBounce = true;
+            name_string = "Magic 8 Ball Collected";
 		break;
 	case(8):	//人能够飞了, 最好能换成吸血鬼皮肤
 		temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/collectibles/collectibles_062_charmofthevampire.png"), Rect(0, 0, 32, 32));
 		enFly = true;
+            name_string = "Darcula Collected";
 		break;
 	}
     //添加跳动动画，如果效果不好需要改

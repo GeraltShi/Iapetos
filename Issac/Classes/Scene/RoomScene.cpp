@@ -1288,6 +1288,9 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             //生成 Collectible 拾取提示
             Texture2D * streak_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/effect_024_streak.png");
             Sprite * collectible_streak = Sprite::createWithTexture(streak_texture, Rect(0, 0, 400, 64));
+            Label *label_collectible = Label::createWithTTF(nodeB->getName_string(), "fonts/Marker Felt.ttf", 15);
+            label_collectible->setPosition(200,32);
+            collectible_streak->addChild(label_collectible,1,"name");
             collectible_streak->setPosition(-250,220);
             this->addChild(collectible_streak, 6, "collectible_streak");
             this->getChildByName("collectible_streak")->runAction(Sequence::create(collectible_streak_movein,collectible_streak_stay, collectible_streak_moveout,RemoveSelf::create(true), NULL));
