@@ -1013,8 +1013,8 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 	    GridPoint roomFlag[GRID_WIDTH][GRID_HEIGHT];
 	    vector<GridPoint> quary;
 	    int head = 0;
-	    GridPoint destination = CalGridPos(playerPos), startPos = CalGridPos(this->getPosition());
-	    quary.push_back(startPos);
+	    GridPoint destination = CalGridPos(playerPos), startPos = CalGridPos(this->getPosition()); 
+		quary.push_back(startPos);
 	    roomFlag[startPos.x][startPos.y] = GridPoint(99, 99);
 	    while (head < quary.size())
 	    {

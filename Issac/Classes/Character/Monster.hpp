@@ -23,7 +23,13 @@ class Monster : public Moveable
     int ToPointDir(Vec2);
     GridPoint CalGridPos(Vec2 truePos)
     {
-        return GridPoint((int)(truePos.x - 48) / RoomUnitSize.width, (int)(truePos.y - 48) / RoomUnitSize.height);
+		int xx = (int)(truePos.x - 48) / RoomUnitSize.width;
+		int yy = (int)(truePos.y - 48) / RoomUnitSize.height;
+		if (xx < 0) xx = 0;
+		if (yy < 0) yy = 0;
+		if (xx >= GRID_WIDTH) xx = GRID_WIDTH - 1;
+		if (yy >= GRID_HEIGHT) yy = GRID_HEIGHT - 1;
+        return GridPoint(xx, yy);
     }
     double CalDistance(Vec2 x1, Vec2 x2)
     {
