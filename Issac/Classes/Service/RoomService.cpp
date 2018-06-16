@@ -736,7 +736,7 @@ void RoomService::initDebug()
     room__.current_room_id = 8;
     room__.left_room_id = 0;
     room__.up_room_id = 0;
-    room__.right_room_id = 0;
+    room__.right_room_id = 14;
     room__.down_room_id = 7;
     room__.visited = false;
     room__.item_taken = false;
@@ -783,7 +783,7 @@ void RoomService::initDebug()
     room__ = Room();
     room__.current_room_id = 12;
     room__.left_room_id = 0;
-    room__.up_room_id = 0;
+    room__.up_room_id = 19;
     room__.right_room_id = 0;
     room__.down_room_id = 11;
     room__.visited = false;
