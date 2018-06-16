@@ -543,30 +543,36 @@ double Issac::getShootInterval() const {
 
 void Issac::setHealth(int health)
 {
+    this->health = health;
     PlayerService::getInstance()->setHealth(health);
 }
 
 void Issac::setAttack(double attack)
 {
+    this->attack = attack;
     PlayerService::getInstance()->setAttack(attack);
 }
 
 void Issac::setMoveSpeed(double var)
 {
+    this->moveSpeed = var;
     PlayerService::getInstance()->setMoveSpeed(var);
 }
 
 void Issac::setTearSpeed(double var)
 {
+    this->tearSpeed = var;
     PlayerService::getInstance()->setTearSpeed(var);
 }
 
 void Issac::setTearExistTime(int var)
 {
+    this->tearExistTime = var;
     PlayerService::getInstance()->setTearExistingTime(var);
 }
 
 void Issac::setShootInterval(double var)
 {
+    this->shootInterval = var;
     PlayerService::getInstance()->setShootInterval(var);
 }
