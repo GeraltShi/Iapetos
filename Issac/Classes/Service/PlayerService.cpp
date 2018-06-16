@@ -110,7 +110,7 @@ int PlayerService::getTearExistingTime() const
     return model_.getTearExistingTime();
 }
 
-void PlayerService::setTearExistingTime(double tear_existing_time)
+void PlayerService::setTearExistingTime(int tear_existing_time)
 {
     model_.setTearExistingTime(tear_existing_time);
 }

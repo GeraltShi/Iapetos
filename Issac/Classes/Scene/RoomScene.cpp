@@ -670,8 +670,9 @@ void RoomScene::update(float delta)
         //player能不能飞
         if (player->getEnFly())
         {
-            player->getPhysicsBody()->setCategoryBitmask(0x100); //0001_0000_0000(100)
-            player->getPhysicsBody()->setCollisionBitmask(0xDF); //0000_1101_1111(0DF)
+			player->getPhysicsBody()->setCategoryBitmask(0x100); //0001_0000_0000(100)
+            player->getPhysicsBody()->setCollisionBitmask(0x8DF); //1000_1101_1111(8DF)
+			player->getPhysicsBody()->setContactTestBitmask(0x8CE); //1000_1100_1110(8CE)
         }
 
         //player移动
@@ -695,28 +696,30 @@ void RoomScene::update(float delta)
             //player无敌时间的倒计时
             if (player->getInvincibleTime() > 0)
             {
-                if (player->getEnFly())
-                {
-                    player->getPhysicsBody()->setCollisionBitmask(0xD9); //0000_1101_1001(0D9)
+                if (player->getEnFly()){
+					player->getPhysicsBody()->setCategoryBitmask(0x400); //0100_0000_0000(400)
+					player->getPhysicsBody()->setCollisionBitmask(0x8D9); //1000_1101_1001(8D9)
+					player->getPhysicsBody()->setContactTestBitmask(0x8C8); //1000_1100_1000(8C8)
                 }
-                else
-                {
-                    player->getPhysicsBody()->setCollisionBitmask(0xF9); //0000_1111_1001(0F9)
+                else{
+					player->getPhysicsBody()->setCategoryBitmask(0x200); //0010_0000_0000(200)
+					player->getPhysicsBody()->setCollisionBitmask(0x8F9); //1000_1111_1001(8F9)
+					player->getPhysicsBody()->setContactTestBitmask(0x8C8); //1000_1100_1000(8C8)
                 }
-                player->getPhysicsBody()->setContactTestBitmask(0xC0); //1100_0000(C0)
                 player->setInvincibleTime(player->getInvincibleTime() - 1);
             }
             else
             {
-                if (player->getEnFly())
-                {
-                    player->getPhysicsBody()->setCollisionBitmask(0xDF); //0000_1101_1111(0DF)
+                if (player->getEnFly()){
+					player->getPhysicsBody()->setCategoryBitmask(0x100); //0001_0000_0000(100)
+					player->getPhysicsBody()->setCollisionBitmask(0x8DF); //1000_1101_1111(8DF)
+					player->getPhysicsBody()->setContactTestBitmask(0x8CE); //1000_1100_1110(8CE)
                 }
-                else
-                {
-                    player->getPhysicsBody()->setCollisionBitmask(0xFF); //0000_1111_1111(0FF)
+                else{
+					player->getPhysicsBody()->setCategoryBitmask(0x001);    // 0000_0000_0001(001)
+					player->getPhysicsBody()->setCollisionBitmask(0x8FF);   // 1000_1111_1111(8FF)
+					player->getPhysicsBody()->setContactTestBitmask(0x8CE);	//1000_1100_1110(8CE)
                 }
-                player->getPhysicsBody()->setContactTestBitmask(0xCE); //0000_1100_1110(0CE)
             }
         }
         else
@@ -970,7 +973,9 @@ void RoomScene::fire(float dt)
     tears_.pushBack(player->Fire(model.tear_direction));
     if (player->getEnBounce())
     {
-        tears_.at(tears_.size() - 1)->getPhysicsBody()->setContactTestBitmask(0x10F); //0001_0000_1111(10F)
+		tears_.at(tears_.size() - 1)->getPhysicsBody()->setCategoryBitmask(0x800); //1000_0000_0000(800)
+		tears_.at(tears_.size() - 1)->getPhysicsBody()->setCollisionBitmask(0xFFF);//1111_1111_1111(FFF)
+		tears_.at(tears_.size() - 1)->getPhysicsBody()->setContactTestBitmask(0xF0F);//1111_0000_1111(F0F)
     }
 
     addChild(tears_.at(tears_.size() - 1));
@@ -1184,15 +1189,14 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
     //tag=9物品collectable
     if (nodeA && nodeB)
     {
-        //if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
-        if (tagA == 1 && tagB == 2)
+        if (tagA == 1 && tagB == 2 && nodeA->getInvincibleTime() == 0)
         {
             //Issac被monster碰到，受伤
             nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
             //Service更新血量
             //PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
-            nodeA->setInvincibleTime(20);
+            nodeA->setInvincibleTime(50);
             //受伤动画
             log("Issac Health:%d", nodeA->getHealth());
             player->hurt();
@@ -1219,7 +1223,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             //PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             if (tagA == 1)
-                nodeA->setInvincibleTime(20);
+                nodeA->setInvincibleTime(50);
             //添加受伤动画
             player->hurt();
         }
@@ -1273,7 +1277,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             nodeA->setHealth(nodeA->getHealth() + nodeB->getHealth());
             nodeA->setAttack(nodeA->getAttack() + nodeB->getAttack());
             nodeA->setTearSpeed(nodeA->getTearSpeed() + nodeB->getTearSpeed());
-            nodeA->setTearExistTime(nodeA->getTearExistTime() + nodeB->getTearExistTime());
+			nodeA->setTearExistTime(nodeA->getTearExistTime() + nodeB->getTearExistTime());
             nodeA->setMoveSpeed(nodeA->getMoveSpeed() + nodeB->getMoveSpeed());
             nodeA->setRadiusSize(nodeA->getRadiusSize() + nodeB->getRadiusSize());
             nodeA->setEnFly(nodeA->getEnFly() || nodeB->getEnFly());

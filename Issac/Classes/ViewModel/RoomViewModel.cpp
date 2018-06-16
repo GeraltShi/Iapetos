@@ -131,7 +131,6 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
                 }
                 room_map[posX][posY] = 7;
             }
-            room_map[6][3] = 8;
         }
         if (roomType == 5) //5:Spider+FattyFire
         {

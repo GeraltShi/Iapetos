@@ -30,7 +30,7 @@ bool Collectable::init(int collectableType)
 	health = 0;
 	attack = 0;
 	enFly = false;
-	enBounce = true;
+	enBounce = false;
 	enhalfTearDis = false;
 
 	Sprite *temp_collectableImg;
@@ -107,13 +107,13 @@ void Collectable::createPhyBody()
 	//静态
 	phyBody->setDynamic(false);
 	//设置物体的恢复力
-	phyBody->getShape(0)->setRestitution(0.0f);
+	phyBody->getShape(0)->setRestitution(1.0f);
 	//设置物体的摩擦力
 	phyBody->getShape(0)->setFriction(0.0f);
 	//碰撞、监听筛选
 	phyBody->setCategoryBitmask(0x080);	// 0000_1000_0000(080)
-	phyBody->setCollisionBitmask(0x1FF);   // 0001_1111_1111(1FF)
-	phyBody->setContactTestBitmask(0x109); //0001_0000_1001(109)
+	phyBody->setCollisionBitmask(0x9FF);   // 1001_1111_1111(9FF)
+	phyBody->setContactTestBitmask(0x709); //0111_0000_1001(709)
 										  //添加物理躯体
 	this->addComponent(phyBody);
 }
