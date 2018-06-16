@@ -10,11 +10,11 @@ class SimpleItem : public Sprite
 {
 public:
     static SimpleItem *createSimpleItem();
-    static Sprite *createSprite();
     bool init() override;
     
     CREATE_FUNC(SimpleItem)
-    
+    void build_sprite_frame_cache() const;
+    static void build_animation_cache();
 };
 
 

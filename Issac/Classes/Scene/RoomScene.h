@@ -65,8 +65,8 @@ public:
     void monster_move(float dt);
 	bool onContactBegin(PhysicsContact& contact);
     bool door_removed = false;
-    void show_deadmenu(float dt);
     bool dead_ani_generated = false;
+    int prev_walk = 5;
 private:
     IRoomSceneListener * listener_ = nullptr;
     void build_frame_cache() const;
