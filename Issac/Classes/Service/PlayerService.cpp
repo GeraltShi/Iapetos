@@ -17,6 +17,9 @@ PlayerService* PlayerService::getInstance()
 void PlayerService::init()
 {
     model_ = PlayerViewModel();
+    max_health = 7;//初始血量6个半心（3颗心）
+    defaultAttack_ = 1.3;
+
     model_.setHealth(max_health);
     model_.setAttack(defaultAttack_);
     model_.setMoveSpeed(150);
