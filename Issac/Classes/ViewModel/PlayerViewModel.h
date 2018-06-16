@@ -17,6 +17,7 @@ class PlayerViewModel
     CC_SYNTHESIZE(double, body_mass_, BodyMass)
     CC_SYNTHESIZE(bool, en_fly_, EnFly)
     CC_SYNTHESIZE(bool, en_bounce_, EnBounce)
+    CC_SYNTHESIZE(int, bomb_num_, BombNum);
 };
 
 #endif

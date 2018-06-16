@@ -30,6 +30,7 @@ public:
     double getBodyMass() const override;
     bool getEnFly() const override;
     bool getEnBounce() const override;
+    int getBombNum() const override;
 
     void setHealth(int health) override;
     void setAttack(double attack) override;
@@ -41,6 +42,7 @@ public:
     void setBodyMass(double var) override;
     void setEnFly(bool var) override;
     void setEnBounce(bool var) override;
+    void setBombNum(int var) override;
 
 private:
     void build_sprite_frame_cache(Texture2D *texture_) const;

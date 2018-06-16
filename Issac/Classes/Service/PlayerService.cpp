@@ -30,6 +30,7 @@ void PlayerService::init()
     model_.setBodyMass(100);
     model_.setEnBounce(false);
     model_.setEnFly(false);
+    model_.setBombNum(2);
 }
 
 int PlayerService::getHealth() const
@@ -190,6 +191,16 @@ bool PlayerService::getEnBounce() const
 void PlayerService::setEnBounce(bool enBounce)
 {
     model_.setEnBounce(enBounce);
+}
+
+int PlayerService::getBombNum() const
+{
+    return model_.getBombNum();
+}
+
+void PlayerService::setBombNum(int bombNum)
+{
+    model_.setBombNum(bombNum);
 }
 
 PlayerService::PlayerService()

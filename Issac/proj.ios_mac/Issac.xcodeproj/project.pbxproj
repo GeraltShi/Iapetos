@@ -523,8 +523,8 @@
 			isa = PBXGroup;
 			children = (
 				5259AC5020CD446F0017A803 /* RoomService.h */,
-				5259AC7620D151E50017A803 /* PlayerService.cpp */,
 				5259AC4F20CD446F0017A803 /* RoomService.cpp */,
+				5259AC7620D151E50017A803 /* PlayerService.cpp */,
 				5259AC7820D151E60017A803 /* PlayerService.h */,
 			);
 			path = Service;

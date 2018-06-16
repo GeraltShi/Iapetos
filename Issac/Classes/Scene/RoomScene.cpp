@@ -274,17 +274,21 @@ bool RoomScene::init(int roomID)
     healthbar->setPosition(70, 250);
     addChild(healthbar, 8);
 
+    Sprite *hud_bomb = Sprite::createWithTexture(texture_hud, Rect(0, 16, 16, 16));
+    hud_bomb->setPosition(30, 224);
+    addChild(hud_bomb, 8);
+    string bombnum_string = to_string(player->getBombNum());
+    Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+    Count_bomb->setPosition(50,224);
+    this->addChild(Count_bomb,8,"Count_bomb");
     /*
     Sprite *hud_coin = Sprite::createWithTexture(texture_hud, Rect(0, 0, 16, 16));
     hud_coin->setPosition(30, 224);
-    Sprite *hud_bomb = Sprite::createWithTexture(texture_hud, Rect(0, 16, 16, 16));
-    hud_bomb->setPosition(30, 208);
     Sprite *hud_goldkey = Sprite::createWithTexture(texture_hud, Rect(16, 16, 16, 16));
     hud_goldkey->setPosition(30, 192);
     Sprite *hud_silverkey = Sprite::createWithTexture(texture_hud, Rect(16, 0, 16, 16));
     hud_silverkey->setPosition(30, 176);
     addChild(hud_coin, 8);
-    addChild(hud_bomb, 8);
     addChild(hud_goldkey, 8);
     addChild(hud_silverkey, 8);
     //数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
@@ -578,46 +582,54 @@ void RoomScene::update(float delta)
         if (model.bomb)
         {
             cout << "bomb placed" << endl;
-            //TODO 炸弹爆炸动画，爆炸范围判定，销毁
-            //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
-            bomb = SimpleItem::createSimpleItem();
-            addChild(bomb, 3);
-            bomb->setPosition(player->getPositionX(), player->getPositionY());
             model.bomb = false;
-            const auto bomb_ani = AnimationCache::getInstance()->getAnimation("explosion_animation");
-            const auto bomb_anim = Animate::create(bomb_ani);
-            auto action1 = CallFunc::create(  [&](){
-                auto spriteCache = SpriteFrameCache::getInstance();
-                int n = rand() % 8;
-                Sprite * bomb_radius = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("bombradius"+to_string(n)));
-                bomb_radius->setPosition(bomb->getPositionX(), bomb->getPositionY());
-                this->addChild(bomb_radius,2);
-                bomb_radius->runAction(Sequence::create(FadeOut::create(3.0),RemoveSelf::create(true),NULL));
-            }  );
-            
-            auto action2 = CallFunc::create([&](){
-                for(int i = 0; i < monsters_.size(); ++i){
-                    auto deltax = monsters_.at(i)->getPositionX()-bomb->getPositionX();
-                    auto deltay = monsters_.at(i)->getPositionY()-bomb->getPositionY();
-                    if(deltax*deltax + deltay*deltay < 2304.f){//爆炸半径48
-                        monsters_.at(i)->setHealth(0);
+            if(player->getBombNum()>0){
+                bomb = SimpleItem::createSimpleItem();
+                addChild(bomb, 3);
+                bomb->setPosition(player->getPositionX(), player->getPositionY());
+                
+                player->setBombNum(player->getBombNum()-1);
+                const auto bomb_ani = AnimationCache::getInstance()->getAnimation("explosion_animation");
+                const auto bomb_anim = Animate::create(bomb_ani);
+                auto action1 = CallFunc::create(  [&](){
+                    auto spriteCache = SpriteFrameCache::getInstance();
+                    int n = rand() % 8;
+                    Sprite * bomb_radius = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("bombradius"+to_string(n)));
+                    bomb_radius->setPosition(bomb->getPositionX(), bomb->getPositionY());
+                    this->addChild(bomb_radius,2);
+                    bomb_radius->runAction(Sequence::create(FadeOut::create(3.0),RemoveSelf::create(true),NULL));
+                }  );
+                
+                auto action2 = CallFunc::create([&](){
+                    for(int i = 0; i < monsters_.size(); ++i){
+                        auto deltax = monsters_.at(i)->getPositionX()-bomb->getPositionX();
+                        auto deltay = monsters_.at(i)->getPositionY()-bomb->getPositionY();
+                        if(deltax*deltax + deltay*deltay < 2304.f){//爆炸半径48
+                            monsters_.at(i)->setHealth(0);
+                        }
                     }
-                }
-            });
-            auto action3 = CallFunc::create([&](){
-                auto deltax = player->getPositionX()-bomb->getPositionX();
-                auto deltay = player->getPositionY()-bomb->getPositionY();
-                if(deltax*deltax + deltay*deltay < 48*48){//爆炸半径48
-                    player->setHealth(player->getHealth()-2);
-                    player->hurt();
-                    int x = rand()%3-2;//-1~1随机数
-                    int y = rand()%3-2;
-                    player->runAction(MoveBy::create(0.1,Vec2(x*10,y*10)));
-                }
-            });
-            const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,action2,action3,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
-            bomb->runAction(bomb_animate);
-            
+                });
+                auto action3 = CallFunc::create([&](){
+                    auto deltax = player->getPositionX()-bomb->getPositionX();
+                    auto deltay = player->getPositionY()-bomb->getPositionY();
+                    if(deltax*deltax + deltay*deltay < 48*48){//爆炸半径48
+                        player->setHealth(player->getHealth()-2);
+                        player->hurt();
+                        int x = rand()%3-2;//-1~1随机数
+                        int y = rand()%3-2;
+                        player->runAction(MoveBy::create(0.1,Vec2(x*10,y*10)));
+                    }
+                });
+                const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,action2,action3,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
+                bomb->runAction(bomb_animate);
+                this->removeChildByName("Count_bomb");
+                string bombnum_string = to_string(player->getBombNum());
+                Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+                Count_bomb->setPosition(50,224);
+                this->addChild(Count_bomb,8,"Count_bomb");
+            } else {
+                this->getChildByName("Count_bomb")->runAction(Blink::create(0.5,4));
+            }
         }
 
         //tear倒计时和消失
