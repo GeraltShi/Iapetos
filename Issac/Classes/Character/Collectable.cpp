@@ -104,8 +104,8 @@ void Collectable::createPhyBody()
 	phyBody->getShape(0)->setFriction(0.0f);
 	//碰撞、监听筛选
 	phyBody->setCategoryBitmask(0x080);	// 0000_1000_0000(080)
-	phyBody->setCollisionBitmask(0x1FF);   // 0001_1111_1111(1FF)
-	phyBody->setContactTestBitmask(0x109); //0001_0000_1001(109)
+	phyBody->setCollisionBitmask(0x9FF);   // 1001_1111_1111(9FF)
+	phyBody->setContactTestBitmask(0x709); //0111_0000_1001(709)
 										  //添加物理躯体
 	this->addComponent(phyBody);
 }

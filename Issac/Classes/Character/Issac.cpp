@@ -449,8 +449,8 @@ void Issac::createPhyBody()
 	phyBody->setVelocity(Vec2(0, 0));
 	//碰撞、监听筛选
 	phyBody->setCategoryBitmask(0x001);    // 0000_0000_0001(001)
-	phyBody->setCollisionBitmask(0x0FF);   // 0000_1111_1111(0FF)
-	phyBody->setContactTestBitmask(0x0CE);	//0000_1100_1110(0CE)
+	phyBody->setCollisionBitmask(0x8FF);   // 1000_1111_1111(8FF)
+	phyBody->setContactTestBitmask(0x8CE);	//1000_1100_1110(8CE)
 	//添加物理躯体
 	this->addComponent(phyBody);
 }

@@ -50,13 +50,13 @@ bool Stone::init(int stoneType, Size stoneSize)
 	if (stoneType > 0) {
 		//普通石头
 		phyBody->setCategoryBitmask(0x020);	// 0000_0010_0000(020)
-		phyBody->setCollisionBitmask(0x08B);   // 0000_1000_1011(08B)
+		phyBody->setCollisionBitmask(0xA8B);   // 1010_1000_1011(A8B)
 		phyBody->setContactTestBitmask(0x008); //0000_0000_1000(008)
 	}
 	else {
 		//无形边界石头
 		phyBody->setCategoryBitmask(0x010);	  //0000_0001_0000(010)
-		phyBody->setCollisionBitmask(0x18F);   //0001_1000_1111(18F)
+		phyBody->setCollisionBitmask(0xF8F);   //1111_1000_1111(F8F)
 		phyBody->setContactTestBitmask(0x008); //0000_0000_1000(008)
 	}
 

@@ -168,8 +168,8 @@ void Monster::createPhyBody()
     phyBody->setVelocity(Vec2(0, 0));
     //碰撞\监听筛选
     phyBody->setCategoryBitmask(0x002);    // 0000_0000_0010(002)
-    phyBody->setCollisionBitmask(0x1FF);   // 0001_1111_1111(1FF)
-    phyBody->setContactTestBitmask(0x109); //0001_0000_1001(109)
+    phyBody->setCollisionBitmask(0x9FF);   // 1001_1111_1111(9FF)
+    phyBody->setContactTestBitmask(0x909); //1001_0000_1001(909)
     //添加物理躯体
     this->addComponent(phyBody);
 }
@@ -686,8 +686,8 @@ bool Fly::init()
 
     this->createPhyBody();
 	this->getPhysicsBody()->setCategoryBitmask(0x004);	// 0000_0000_0100(004)
-	this->getPhysicsBody()->setCollisionBitmask(0x1DF);	// 0001_1101_1111(1DF)
-	this->getPhysicsBody()->setContactTestBitmask(0x109);//0001_0000_1001(109)
+	this->getPhysicsBody()->setCollisionBitmask(0x9DF);	// 1001_1101_1111(9DF)
+	this->getPhysicsBody()->setContactTestBitmask(0x909);//1001_0000_1001(909)
     return true;
 }
 
@@ -980,7 +980,7 @@ bool Gaper::init()
     headSprite->setPosition(Vec2(0, 10));
     this->setPosition(Vec2(221, 143));
 
-	radiusSize = 9;    //Gaper碰撞大小
+	radiusSize = 11;    //Gaper碰撞大小
 	bodyMass = 100;     //Gaper重量
 	moveSpeed = 30;     //Gaper行走速度
 	health = 5;         //Gaper血量
@@ -1314,8 +1314,8 @@ bool FlyDaddy::init()
     tearExistTime = 50; //FlyDaddy射程
     this->createPhyBody();
 	this->getPhysicsBody()->setCategoryBitmask(0x004);	// 0000_0000_0100(004)
-	this->getPhysicsBody()->setCollisionBitmask(0x1DF);	// 0001_1101_1111(1DF)
-	this->getPhysicsBody()->setContactTestBitmask(0x109);//0001_0000_1001(109)
+	this->getPhysicsBody()->setCollisionBitmask(0x9DF);	// 1001_1101_1111(9DF)
+	this->getPhysicsBody()->setContactTestBitmask(0x909);//1001_0000_1001(909)
     return true;
 }
 
