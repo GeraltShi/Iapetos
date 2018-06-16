@@ -64,15 +64,10 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
         room_map[9][5] = 2;
     }
 
-    //roomType:0：初始房间
-    //roomType:1~7怪物房间
-    //1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider
-    //5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
-    //roomType:8~14宝藏房间
-	//宝藏房号14是测试用，会将所有宝藏放在房间里
-    //roomType:15~20代表Boss房
-    //15~17 Boss1
-    //18~20 Boss2
+	//roomType:0：初始房间
+	//roomType:1~7怪物房间。1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider,5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
+	//roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里
+	//roomType:21+代表Boss房,21:Boss-flyDaddy
     //根据roomType放入怪物
     //怪物标号：4:Fatty, 5:Fly, 6:Gaper, 7:Spider
     //怪物标号：8:FattyFire, 9:FlyFire, 10:GaperFire
@@ -80,6 +75,7 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
 	//标号:20+为宝藏Collectable
     if (!visited)
     {
+		//roomType:1~7怪物房间。1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider,5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
         if (roomType == 1) //1:全Fatty
         {
             const int Fatty_num = rand() % 4 + 2;
@@ -212,12 +208,18 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
                 room_map[posX][posY] = 10;
             }
         }
-		if (roomType == 15) {  //Boss房_FlyDaddy
+		//roomType:21+代表Boss房,21:Boss-flyDaddy
+		if (roomType == 21) {  //Boss房_FlyDaddy
 			room_map[GRID_WIDTH_HALF][GRID_HEIGHT_HALF] = 19;
 		}
 
+		
+		//roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里	
 		//地面编码20+是collectable
-		if  (roomType == 14) { //测试用宝藏房间
+		if (roomType >= 8 && roomType < 20) {
+			room_map[GRID_WIDTH_HALF][GRID_HEIGHT_HALF] = roomType-8+20;
+		}
+		if  (roomType == 20) { //测试用宝藏房间
 			room_map[0][0] = 20;
 			room_map[1][0] = 21;
 			room_map[2][0] = 22;
@@ -234,5 +236,5 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
 
 bool RoomViewModel::is_boss_room() const
 {
-    return room_type >= 15 && room_type <= 20;
+    return room_type >= 21;
 }

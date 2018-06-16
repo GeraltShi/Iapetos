@@ -20,14 +20,10 @@ const Size RoomUnitSize = Size(26.62, 27.14);
 class RoomViewModel
 {
   public:
-	//roomType:0：初始房间
-	//roomType:1~7怪物房间
-	//1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider
-	//5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
-	//roomType:8~14宝藏房间
-	//roomType:15~20代表Boss房
-	//15~17 Boss1
-	//18~20 Boss2
+	  //roomType:0：初始房间
+	  //roomType:1~7怪物房间。1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider,5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
+	  //roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里
+	  //roomType:21+代表Boss房,21:Boss-flyDaddy
 	//roomType是房间种类，barrierType是地形（0~2三种）
 	static RoomViewModel createRoomViewModel(int roomType, bool visited, int barrierType);
 	void init(int roomType, bool visited, int barrierType);
