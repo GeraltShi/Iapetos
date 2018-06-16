@@ -490,11 +490,6 @@ bool RoomScene::init(int roomID)
     winscreen->addChild(label_win_grid,2);
     winscreen->setVisible(false);//如果要显示就 settrue
     addChild(winscreen,10);
-    
-    //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
-    bomb = SimpleItem::createSimpleItem();
-    bomb->setVisible(false);
-    addChild(bomb, 3);
 
     SimpleAudioEngine::getInstance()->setEffectsVolume((float)RoomService::getInstance()->getSFXVolume() / 25.0);
     SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)RoomService::getInstance()->getMusicVolume() / 25.0);
@@ -583,9 +578,23 @@ void RoomScene::update(float delta)
         {
             cout << "bomb placed" << endl;
             //TODO 炸弹爆炸动画，爆炸范围判定，销毁
+            //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
+            bomb = SimpleItem::createSimpleItem();
+            addChild(bomb, 3);
             bomb->setPosition(player->getPositionX(), player->getPositionY());
-            bomb->setVisible(true);
             model.bomb = false;
+            const auto bomb_ani = AnimationCache::getInstance()->getAnimation("explosion_animation");
+            const auto bomb_anim = Animate::create(bomb_ani);
+            auto action1 = CallFunc::create(  [&](){
+                auto spriteCache = SpriteFrameCache::getInstance();
+                int n = rand() % 8;
+                Sprite * bomb_radius = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("bombradius"+to_string(n)));
+                bomb_radius->setPosition(bomb->getPositionX(), bomb->getPositionY());
+                this->addChild(bomb_radius,2);
+                bomb_radius->runAction(Sequence::create(FadeOut::create(3.0),RemoveSelf::create(true),NULL));
+            }  ); 
+            const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
+            bomb->runAction(bomb_animate);
         }
 
         //tear倒计时和消失
@@ -632,9 +641,8 @@ void RoomScene::update(float delta)
                 Sprite * blood_pool = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("blood_pool_small"+to_string(n)));
                 blood_pool->setOpacity(0xaf);
                 blood_pool->setPosition(monsters_.at(i)->getPosition());
-                const auto blood_still = MoveTo::create(2.0,blood_pool->getPosition());
                 this->addChild(blood_pool,2);
-                blood_pool->runAction(Sequence::create(blood_still, FadeOut::create(3.0),RemoveSelf::create(true),NULL));
+                blood_pool->runAction(Sequence::create(DelayTime::create(2.0), FadeOut::create(3.0),RemoveSelf::create(true),NULL));
 
                 monsters_.at(i)->removeFromParent();
 
@@ -1247,6 +1255,24 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(blood_pool_large3,"blood_pool_large3");
     fcache->addSpriteFrame(blood_pool_large4,"blood_pool_large4");
     fcache->addSpriteFrame(blood_pool_large5,"blood_pool_large5");
+    
+    Texture2D * bombraduis_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_017_bombradius_darkroom.png");
+    const auto bombradius0 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(0,0,96,64));
+    const auto bombradius1 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(96,0,96,64));
+    const auto bombradius2 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(192,0,96,64));
+    const auto bombradius3 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(0,64,96,64));
+    const auto bombradius4 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(96,64,96,64));
+    const auto bombradius5 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(192,64,96,64));
+    const auto bombradius6 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(0,128,96,64));
+    const auto bombradius7 = SpriteFrame::createWithTexture(bombraduis_texture, Rect(96,128,96,64));
+    fcache->addSpriteFrame(bombradius0,"bombradius0");
+    fcache->addSpriteFrame(bombradius1,"bombradius1");
+    fcache->addSpriteFrame(bombradius2,"bombradius2");
+    fcache->addSpriteFrame(bombradius3,"bombradius3");
+    fcache->addSpriteFrame(bombradius4,"bombradius4");
+    fcache->addSpriteFrame(bombradius5,"bombradius5");
+    fcache->addSpriteFrame(bombradius6,"bombradius6");
+    fcache->addSpriteFrame(bombradius7,"bombradius7");
 }
 
 bool RoomScene::onContactBegin(PhysicsContact &contact)
@@ -1368,7 +1394,6 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             //物品消失
             nodeB->removeFromParent();
             const auto collectible_streak_movein = MoveTo::create(0.2, Vec2(221,220));
-            const auto collectible_streak_stay = MoveTo::create(1, Vec2(221,220));
             const auto collectible_streak_moveout = MoveTo::create(0.2, Vec2(700,220));
             //生成 Collectible 拾取提示
             Texture2D * streak_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/effect_024_streak.png");
@@ -1378,7 +1403,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             collectible_streak->addChild(label_collectible,1,"name");
             collectible_streak->setPosition(-250,220);
             this->addChild(collectible_streak, 6, "collectible_streak");
-            this->getChildByName("collectible_streak")->runAction(Sequence::create(collectible_streak_movein,collectible_streak_stay, collectible_streak_moveout,RemoveSelf::create(true), NULL));
+            this->getChildByName("collectible_streak")->runAction(Sequence::create(collectible_streak_movein,DelayTime::create(1.0), collectible_streak_moveout,RemoveSelf::create(true), NULL));
         }
 
         //眼泪碰撞后消失
