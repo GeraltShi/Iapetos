@@ -511,19 +511,25 @@ void Issac::dead(){
     this->runAction(deadAnimate);
 }
 
-double Issac::getMoveSpeed(){
+double Issac::getMoveSpeed() const
+{
     return PlayerService::getInstance()->getMoveSpeed();
 }
 
-double Issac::getAttack(){
+double Issac::getAttack() const {
     return PlayerService::getInstance()->getAttack();
 }
 
-double Issac::getTearSpeed(){
+int Issac::getTearExistTime() const
+{
+    return PlayerService::getInstance()->getTearExistingTime();
+}
+
+double Issac::getTearSpeed() const {
     return PlayerService::getInstance()->getTearSpeed();
 }
 
-double Issac::getShootInterval(){
+double Issac::getShootInterval() const {
     return PlayerService::getInstance()->getShootInterval();
 }
 
@@ -537,6 +543,22 @@ void Issac::setAttack(double attack)
     PlayerService::getInstance()->setAttack(attack);
 }
 
-int Issac::getTearExistingTime(){
-    return PlayerService::getInstance()->getTearExistingTime();
+void Issac::setMoveSpeed(double var)
+{
+    PlayerService::getInstance()->setMoveSpeed(var);
+}
+
+void Issac::setTearSpeed(double var)
+{
+    PlayerService::getInstance()->setTearSpeed(var);
+}
+
+void Issac::setTearExistTime(int var)
+{
+    PlayerService::getInstance()->setTearExistingTime(var);
+}
+
+void Issac::setShootInterval(double var)
+{
+    PlayerService::getInstance()->setShootInterval(var);
 }

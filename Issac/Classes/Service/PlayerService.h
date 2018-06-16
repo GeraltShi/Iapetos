@@ -23,23 +23,23 @@ public:
     void decreaseAttack(double dAttack);
     void increaseAttack(double dAttack);
 
-    double getMoveSpeed();//移动速度
+    double getMoveSpeed() const;//移动速度
     void setMoveSpeed(double move_speed);
     void decreaseMoveSpeed(double dmove_speed);
     void increaseMoveSpeed(double dmove_speed);
 
-    double getTearSpeed();//弹速
+    double getTearSpeed() const;//弹速
     void setTearSpeed(double tear_speed);
     void decreaseTearSpeed(double dtear_speed);
     void increaseTearSpeed(double dtear_speed);
 
-    int getTearExistingTime();//射程
+    int getTearExistingTime() const;//射程
     void setTearExistingTime(double tear_existing_time);
     void decreaseTearExistingTime(double dtear_existing_time);
     void increaseTearExistingTime(double dtear_existing_time);
 
 
-    double getShootInterval();//射击间隔
+    double getShootInterval() const;//射击间隔
     void setShootInterval(double shoot_interval);
     void decreaseShootInterval(double dshoot_interval);
     void increaseShootInterval(double dshoot_interval);

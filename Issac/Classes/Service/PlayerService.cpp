@@ -65,7 +65,7 @@ void PlayerService::increaseAttack(double dAttack)
     model_.setAttack(model_.getAttack() + dAttack);
 }
 
-double PlayerService::getMoveSpeed()
+double PlayerService::getMoveSpeed() const
 {
     return model_.getMoveSpeed();
 }
@@ -85,7 +85,7 @@ void PlayerService::increaseMoveSpeed(double dmove_speed)
     model_.setMoveSpeed(model_.getMoveSpeed() + dmove_speed);
 }
 
-double PlayerService::getTearSpeed()
+double PlayerService::getTearSpeed() const
 {
     return model_.getTearSpeed();
 }
@@ -105,14 +105,14 @@ void PlayerService::increaseTearSpeed(double dtear_speed)
     model_.setTearSpeed(model_.getTearSpeed() + dtear_speed);
 }
 
-int PlayerService::getTearExistingTime()
+int PlayerService::getTearExistingTime() const
 {
     return model_.getTearExistingTime();
 }
 
 void PlayerService::setTearExistingTime(double tear_existing_time)
 {
-    model_, setTearExistingTime(tear_existing_time);
+    model_.setTearExistingTime(tear_existing_time);
 }
 
 void PlayerService::decreaseTearExistingTime(double dtear_existing_time)
@@ -125,7 +125,7 @@ void PlayerService::increaseTearExistingTime(double dtear_existing_time)
     model_.setTearExistingTime(model_.getTearExistingTime() + dtear_existing_time);
 }
 
-double PlayerService::getShootInterval()
+double PlayerService::getShootInterval() const
 {
     return model_.getShootInterval();
 }

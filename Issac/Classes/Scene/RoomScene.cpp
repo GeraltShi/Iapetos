@@ -772,7 +772,7 @@ void RoomScene::update(float delta)
         movespeed_bar->setPosition(98,147);
         pausescreen->getChildByName("pausemenu")->addChild(movespeed_bar,1,"movespeed_bar");
         
-        const string tearexistingtimestat = "statB" + to_string(player->getTearExistingTime()/10);
+        const string tearexistingtimestat = "statB" + to_string(player->getTearExistTime()/10);
         pausescreen->getChildByName("pausemenu")->removeChildByName("tearexistingtime_bar");
         Sprite * tearexistingtime_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearexistingtimestat));
         tearexistingtime_bar->setPosition(157,147);
