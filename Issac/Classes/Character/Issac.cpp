@@ -20,19 +20,19 @@ bool Issac::init()
     }
 
 	//初始化类变量
-	moveSpeed = PlayerService::getInstance()->getMoveSpeed();
+	moveSpeed = 150;
 	radiusSize = 10;
 	bodyMass = 100;
 	moving = false;
-	tearSpeed = PlayerService::getInstance()->getTearSpeed();
-	tearExistTime = PlayerService::getInstance()->getTearExistingTime();
+	tearSpeed = 100;
+	tearExistTime = 20;
 	//初始血量6个半心（3颗心）
-	health = PlayerService::getInstance()->getHealth();
+	health = 7;
 	//初始攻击
-	attack = PlayerService::getInstance()->getAttack();
+	attack = 1.3;
 	enFly = false;
 	enBounce = false;
-    shootInterval = PlayerService::getInstance()->getShootInterval();
+    shootInterval = 0.4;
 	this->setTag(1);
 
 
