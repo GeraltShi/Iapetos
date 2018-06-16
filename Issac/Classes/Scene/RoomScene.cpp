@@ -593,9 +593,31 @@ void RoomScene::update(float delta)
                 bomb_radius->setPosition(bomb->getPositionX(), bomb->getPositionY());
                 this->addChild(bomb_radius,2);
                 bomb_radius->runAction(Sequence::create(FadeOut::create(3.0),RemoveSelf::create(true),NULL));
-            }  ); 
-            const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
+            }  );
+            
+            auto action2 = CallFunc::create([&](){
+                for(int i = 0; i < monsters_.size(); ++i){
+                    auto deltax = monsters_.at(i)->getPositionX()-bomb->getPositionX();
+                    auto deltay = monsters_.at(i)->getPositionY()-bomb->getPositionY();
+                    if(deltax*deltax + deltay*deltay < 2304.f){//爆炸半径48
+                        monsters_.at(i)->setHealth(0);
+                    }
+                }
+            });
+            auto action3 = CallFunc::create([&](){
+                auto deltax = player->getPositionX()-bomb->getPositionX();
+                auto deltay = player->getPositionY()-bomb->getPositionY();
+                if(deltax*deltax + deltay*deltay < 48*48){//爆炸半径48
+                    player->setHealth(player->getHealth()-2);
+                    player->hurt();
+                    int x = rand()%3-2;//-1~1随机数
+                    int y = rand()%3-2;
+                    player->runAction(MoveBy::create(0.1,Vec2(x*10,y*10)));
+                }
+            });
+            const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,action2,action3,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
             bomb->runAction(bomb_animate);
+            
         }
 
         //tear倒计时和消失
