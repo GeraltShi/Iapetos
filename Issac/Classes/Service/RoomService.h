@@ -28,15 +28,14 @@ struct Room
     int down_room_id;
     bool visited;
     int current_room_type;
-	int current_barrier_type;
+    int current_barrier_type;
 };
-
 
 class RoomService
 {
-public:
-	static RoomService* getInstance();
-	RoomViewModel enter_room(int room_id);
+  public:
+    static RoomService *getInstance();
+    RoomViewModel enter_room(int room_id);
     MiniMapViewModel get_mini_map(int room_id);
     int get_init_room_id() const;
     int get_current_room_id() const;
@@ -56,19 +55,18 @@ public:
     //0.0~1.0
     float get_real_music_volume() const;
 
-	//´´ÔìÃÔ¹¬,²úÉúÃ¿¸ö·¿¼äµÄroomID
-	void createMaze();
-	//¸ù¾ÝMAZE×öinit
+    //åˆ›é€ è¿·å®«,äº§ç”Ÿæ¯ä¸ªæˆ¿é—´çš„roomID
+    void createMaze();
+    //æ ¹æ®MAZEåšinit
 
     CC_SYNTHESIZE(int, music_volume, MusicVolume)
     CC_SYNTHESIZE(int, sfx_volume, SFXVolume)
-        //0 ~ 10  --> 0 ~ 255
+    //0 ~ 10  --> 0 ~ 255
     CC_SYNTHESIZE(int, mini_opacity, MiniOpacity)
     CC_SYNTHESIZE(bool, win_, Win)
     CC_SYNTHESIZE(int, play_bg_music_id, PlayBgMusicId)
 
-
-private:
+  private:
     static RoomService *inst_;
     RoomService();
 
@@ -85,15 +83,15 @@ private:
 
     RoomSceneModel saved_room_;
 
-	//ÃÔ¹¬µØÍ¼,²úÉúÃ¿¸ö·¿¼äµÄroomID
-	int m[maze_size][maze_size];
-	//ÅÐ¶ÏµãÔÚµØÍ¼ÖÐ
-	bool inmaze(int x, int y) {
-		return (x >= 0 && x < maze_size && y >= 0 && y < maze_size);
-	}
+    //è¿·å®«åœ°å›¾,äº§ç”Ÿæ¯ä¸ªæˆ¿é—´çš„roomID
+    int m[maze_size][maze_size];
+    //åˆ¤æ–­ç‚¹åœ¨åœ°å›¾ä¸­
+    bool inmaze(int x, int y)
+    {
+        return (x >= 0 && x < maze_size && y >= 0 && y < maze_size);
+    }
 };
 
 int randomRoom();
 
 #endif // _ROOMSERVICE_H_
-
