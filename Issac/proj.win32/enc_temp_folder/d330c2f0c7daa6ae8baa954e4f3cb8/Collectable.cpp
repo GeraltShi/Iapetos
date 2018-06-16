@@ -30,7 +30,7 @@ bool Collectable::init(int collectableType)
 	health = 0;
 	attack = 0;
 	enFly = false;
-	enBounce = false;
+	enBounce = true;
 	enhalfTearDis = false;
 
 	Sprite *temp_collectableImg;
