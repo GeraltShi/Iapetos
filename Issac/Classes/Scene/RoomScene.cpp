@@ -324,7 +324,7 @@ bool RoomScene::init(int roomID)
                 available_room->setOpacity(opa);
                 minimap->addChild(available_room, 1);
             }
-            else if (msk >= 8 && msk < 15) //宝藏房间
+            else if (msk >= 8 && msk <= 20) //宝藏房间
             {
                 Sprite *available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16)); //非当前房间
                 available_room->setPosition(12 + j * 8, 40 - i * 8);
@@ -335,7 +335,7 @@ bool RoomScene::init(int roomID)
                 treasure_room_icon->setOpacity(opa);
                 minimap->addChild(treasure_room_icon, 1);
             }
-            else if (msk >= 15 && msk < 20) //Boss房间
+            else if (msk >= 21) //Boss房间
             {
                 Sprite *available_room = Sprite::createWithTexture(texture_minimap, Rect(64, 16, 16, 16)); //非当前房间
                 available_room->setPosition(12 + j * 8, 40 - i * 8);
