@@ -740,6 +740,11 @@ void RoomScene::update(float delta)
                         default:
                             break;
                     }
+                    player->removeChildByName("body");
+                    const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+                    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
+                    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+                    player->addChild(bodySprite, 0, "body");
                     
                 }
                 prev_walk = player->getPrevWalkOrientation();
