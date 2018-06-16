@@ -21,7 +21,7 @@ bool Monster::init()
     //tag=2是怪物
     this->setTag(2);
 
-    const auto common_dead_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_002_bloodpoof.png");
+    const auto common_dead_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_002_bloodpoof_large1.png");
     build_sprite_frame_cache(common_dead_texture_);
     build_animation_cache();
 
@@ -59,16 +59,16 @@ void Monster::build_sprite_frame_cache(Texture2D *dead_texture_) const
 {
     auto spriteCache = SpriteFrameCache::getInstance();
 
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 0, 64, 64)), "dead_frame0");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 0, 64, 64)), "dead_frame1");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 0, 64, 64)), "dead_frame2");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 0, 64, 64)), "dead_frame3");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 1, 64, 64)), "dead_frame4");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 1, 64, 64)), "dead_frame5");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 2, 64 * 1, 64, 64)), "dead_frame6");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 3, 64 * 1, 64, 64)), "dead_frame7");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 0, 64 * 2, 64, 64)), "dead_frame8");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(64 * 1, 64 * 2, 64, 64)), "dead_frame9");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 0, 80 * 0, 80, 80)), "dead_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 1, 80 * 0, 80, 80)), "dead_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 2, 80 * 0, 80, 80)), "dead_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 3, 80 * 0, 80, 80)), "dead_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 0, 80 * 1, 80, 80)), "dead_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 1, 80 * 1, 80, 80)), "dead_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 2, 80 * 1, 80, 80)), "dead_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 3, 80 * 1, 80, 80)), "dead_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 0, 80 * 2, 80, 80)), "dead_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(80 * 1, 80 * 2, 80, 80)), "dead_frame9");
 }
 
 void Monster::build_animation_cache()
@@ -345,6 +345,7 @@ void Fatty::build_sprite_frame_cache(Texture2D *texture_) const
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 224, 64, 64)), "monster_vwalk_frame9");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 224, 64, 64)), "monster_vwalk_frame10");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 3, 224, 64, 64)), "monster_vwalk_frame11");
+    
 }
 
 void Fatty::build_animation_cache()
@@ -1231,10 +1232,10 @@ void Spider::moveStrategy(const RoomViewModel & roomMap)
 
 string FlyDaddy::getDeadAnimation()
 {
-    return "monster_dead_animation";
+    return "flydaddy_dead_animation";
 }
 
-void FlyDaddy::build_sprite_frame_cache(Texture2D *texture_) const
+void FlyDaddy::build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const
 {
     auto spriteCache = SpriteFrameCache::getInstance();
     
@@ -1242,6 +1243,17 @@ void FlyDaddy::build_sprite_frame_cache(Texture2D *texture_) const
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(80,0,80,64)),"flydaddy_frame1");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(0,64,80,64)),"flydaddy_frame2");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(80,64,80,64)),"flydaddy_frame3");
+    
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 0, 0, 120, 120)), "flydaddy_dead_frame0");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 1, 0, 120, 120)), "flydaddy_dead_frame1");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 2, 0, 120, 120)), "flydaddy_dead_frame2");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 3, 0, 120, 120)), "flydaddy_dead_frame3");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 0, 120, 120, 120)), "flydaddy_dead_frame4");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 1, 120, 120, 120)), "flydaddy_dead_frame5");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 2, 120, 120, 120)), "flydaddy_dead_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 3, 120, 120, 120)), "flydaddy_dead_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 0, 240, 120, 120)), "flydaddy_dead_frame8");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(dead_texture_, Rect(120 * 1, 240, 120, 120)), "flydaddy_dead_frame9");
 
 }
 
@@ -1263,6 +1275,35 @@ void FlyDaddy::build_animation_cache()
     flydaddy_animation->setLoops(-1);
     flydaddy_animation->setRestoreOriginalFrame(true);
     aniCache->addAnimation(flydaddy_animation, "flydaddy_animation");
+    
+    const auto dead_frame0 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame0");
+    const auto dead_frame1 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame1");
+    const auto dead_frame2 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame2");
+    const auto dead_frame3 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame3");
+    const auto dead_frame4 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame4");
+    const auto dead_frame5 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame5");
+    const auto dead_frame6 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame6");
+    const auto dead_frame7 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame7");
+    const auto dead_frame8 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame8");
+    const auto dead_frame9 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame9");
+    const auto dead_frame10 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame10");
+    const auto dead_frame11 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame11");
+    Vector<SpriteFrame *> deadFrames;
+    deadFrames.pushBack(dead_frame0);
+    deadFrames.pushBack(dead_frame1);
+    deadFrames.pushBack(dead_frame2);
+    deadFrames.pushBack(dead_frame3);
+    deadFrames.pushBack(dead_frame4);
+    deadFrames.pushBack(dead_frame5);
+    deadFrames.pushBack(dead_frame6);
+    deadFrames.pushBack(dead_frame7);
+    deadFrames.pushBack(dead_frame8);
+    deadFrames.pushBack(dead_frame9);
+    deadFrames.pushBack(dead_frame10);
+    deadFrames.pushBack(dead_frame11);
+    Animation *dead_animation = Animation::createWithSpriteFrames(deadFrames, 0.1f);
+    dead_animation->setLoops(1);
+    aniCache->addAnimation(dead_animation, "flydaddy_dead_animation");
 }
 
 FlyDaddy *FlyDaddy::createFlyDaddy()
@@ -1296,10 +1337,12 @@ bool FlyDaddy::init()
         return false;
     }
     const auto flydaddy_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/bosses/classic/boss_007_dukeofflies.png");
+    const auto flydaddy_dead_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_002_bloodpoof_large2.png");
     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(flydaddy_texture, Rect(0, 0, 80, 64));
     Sprite *bodySprite = createWithSpriteFrame(bodyFrame);
     
-    build_sprite_frame_cache(flydaddy_texture);
+    build_sprite_frame_cache(flydaddy_texture, flydaddy_dead_texture_
+                             );
     build_animation_cache();
     
     this->addChild(bodySprite, 0, "body");
