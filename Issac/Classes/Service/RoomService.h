@@ -33,7 +33,7 @@ struct Room
 
 class RoomService
 {
-  public:
+public:
     static RoomService *getInstance();
     RoomViewModel enter_room(int room_id);
     MiniMapViewModel get_mini_map(int room_id);
@@ -45,6 +45,7 @@ class RoomService
     int get_down_room_id();
     bool is_init_room() const;
     void init();
+    void initDebug();
     void save_room_scene_state(RoomSceneModel room);
     RoomSceneModel get_prev_room_scene() const;
     void increase_mini_opacity();
@@ -60,13 +61,13 @@ class RoomService
     //根据MAZE做init
 
     CC_SYNTHESIZE(int, music_volume, MusicVolume)
-    CC_SYNTHESIZE(int, sfx_volume, SFXVolume)
-    //0 ~ 10  --> 0 ~ 255
-    CC_SYNTHESIZE(int, mini_opacity, MiniOpacity)
-    CC_SYNTHESIZE(bool, win_, Win)
-    CC_SYNTHESIZE(int, play_bg_music_id, PlayBgMusicId)
+        CC_SYNTHESIZE(int, sfx_volume, SFXVolume)
+        //0 ~ 10  --> 0 ~ 255
+        CC_SYNTHESIZE(int, mini_opacity, MiniOpacity)
+        CC_SYNTHESIZE(bool, win_, Win)
+        CC_SYNTHESIZE(int, play_bg_music_id, PlayBgMusicId)
 
-  private:
+private:
     static RoomService *inst_;
     RoomService();
 

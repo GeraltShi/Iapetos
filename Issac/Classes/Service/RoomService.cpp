@@ -8,9 +8,9 @@ using namespace std;
 USING_NS_CC;
 
 /**
- * \brief 单线程
- * \return
- */
+* \brief 单线程
+* \return
+*/
 RoomService *RoomService::getInstance()
 {
     if (inst_ == nullptr)
@@ -23,10 +23,10 @@ RoomService *RoomService::getInstance()
 }
 
 /**
- * \brief 获取房间信息
- * \param room_id 房间ID，必须要大于0
- * \return 渲染房间所需要的全部信息
- */
+* \brief 获取房间信息
+* \param room_id 房间ID，必须要大于0
+* \return 渲染房间所需要的全部信息
+*/
 RoomViewModel RoomService::enter_room(const int room_id)
 {
     if (room_id <= 0)
@@ -295,165 +295,6 @@ bool RoomService::is_init_room() const
     return current_room_id_ == init_room_id_;
 }
 
-/**
- * \brief 必须在使用Service前调用Init()方法
- */
-//void RoomService::init()
-//{
-//    init_room_id_ = 1;
-//    current_room_id_ = 0;
-//    room_map_.clear();
-//    store_.clear();
-//
-//    //初始房间
-//    auto room__ = Room();
-//    room__.current_room_id = 1;
-//    room__.left_room_id = 2;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 3;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 0;
-//    room__.current_barrier_type = 0;
-//    room_map_[1] = room__;
-//
-//    //怪物房间
-//    room__ = Room();
-//    room__.current_room_id = 2;
-//    room__.left_room_id = 0;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 1;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 15;
-//    room__.current_barrier_type = 0;
-//    room_map_[2] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 3;
-//    room__.left_room_id = 1;
-//    room__.up_room_id = 4;
-//    room__.right_room_id = 0;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 6;
-//    room__.current_barrier_type = 1;
-//    room_map_[3] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 4;
-//    room__.left_room_id = 0;
-//    room__.up_room_id = 5;
-//    room__.right_room_id = 0;
-//    room__.down_room_id = 3;
-//    room__.visited = false;
-//    room__.current_room_type = 1;
-//    room__.current_barrier_type = 0;
-//    room_map_[4] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 5;
-//    room__.left_room_id = 6;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 10;
-//    room__.down_room_id = 4;
-//    room__.visited = false;
-//    room__.current_room_type = 2;
-//    room__.current_barrier_type = 0;
-//    room_map_[5] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 6;
-//    room__.left_room_id = 0;
-//    room__.up_room_id = 7;
-//    room__.right_room_id = 5;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 3;
-//    room__.current_barrier_type = 0;
-//    room_map_[6] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 7;
-//    room__.left_room_id = 9;
-//    room__.up_room_id = 8;
-//    room__.right_room_id = 0;
-//    room__.down_room_id = 6;
-//    room__.visited = false;
-//    room__.current_room_type = 2;
-//    room__.current_barrier_type = 0;
-//    room_map_[7] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 8;
-//    room__.left_room_id = 0;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 0;
-//    room__.down_room_id = 7;
-//    room__.visited = false;
-//    room__.current_room_type = 5;
-//    room__.current_barrier_type = 0;
-//    room_map_[8] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 9;
-//    room__.left_room_id = 0;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 7;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 8;
-//    room__.current_barrier_type = 0;
-//    room_map_[9] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 10;
-//    room__.left_room_id = 5;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 11;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 6;
-//    room__.current_barrier_type = 0;
-//    room_map_[10] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 11;
-//    room__.left_room_id = 10;
-//    room__.up_room_id = 12;
-//    room__.right_room_id = 13;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 7;
-//    room__.current_barrier_type = 0;
-//    room_map_[11] = room__;
-//
-//    room__ = Room();
-//    room__.current_room_id = 12;
-//    room__.left_room_id = 0;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 0;
-//    room__.down_room_id = 11;
-//    room__.visited = false;
-//    room__.current_room_type = 2;
-//    room__.current_barrier_type = 0;
-//    room_map_[12] = room__;
-//
-//    //Boss
-//    room__ = Room();
-//    room__.current_room_id = 13;
-//    room__.left_room_id = 11;
-//    room__.up_room_id = 0;
-//    room__.right_room_id = 0;
-//    room__.down_room_id = 0;
-//    room__.visited = false;
-//    room__.current_room_type = 15;
-//    room__.current_barrier_type = 0;
-//    room_map_[13] = room__;
-//
-//    build_vm_from_room_map();
-//}
-
 void RoomService::save_room_scene_state(RoomSceneModel room)
 {
     saved_room_ = room;
@@ -496,8 +337,8 @@ float RoomService::get_real_music_volume() const
 }
 
 /**
- * \brief 初始化所有房间信息,创建Service后必须调用init()方法
- */
+* \brief 初始化所有房间信息,创建Service后必须调用init()方法
+*/
 RoomService::RoomService()
 {
     init_room_id_ = 1;
@@ -572,7 +413,7 @@ void RoomService::build_vm_from_room(Room room_m)
 
     auto room_ = RoomViewModel::createRoomViewModel(room_type, room_m.visited, barrier_type);
 
-    int doors_id[] = {room_m.left_room_id, room_m.up_room_id, room_m.right_room_id, room_m.down_room_id};
+    int doors_id[] = { room_m.left_room_id, room_m.up_room_id, room_m.right_room_id, room_m.down_room_id };
 
     auto door_ = vector<int>();
     auto door_style = vector<string>();
@@ -591,18 +432,17 @@ void RoomService::build_vm_from_room(Room room_m)
 
 RoomService *RoomService::inst_ = nullptr;
 
+
+
 //roomType:0：初始房间
 //roomType:1~7怪物房间。1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider,5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
 //roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里
 //roomType:21+代表Boss房,21:Boss-flyDaddy
-int randomRoom()
-{
-    if (rand() % 20 == 0)
-    {
+int randomRoom() {
+    if (rand() % 20 == 0) {
         return rand() % 9 + 8;
     }
-    else
-    {
+    else {
         return rand() % 7 + 1;
     }
 }
@@ -610,9 +450,9 @@ int randomRoom()
 void RoomService::createMaze()
 {
     //产生地图,墙是MAZEWALL,不是墙的格子为roomID
-    vector<int> block_row;
-    vector<int> block_column;
-    vector<int> block_direct;
+    vector <int> block_row;
+    vector <int> block_column;
+    vector <int> block_direct;
     for (int i = 0; i < maze_size; i++)
         for (int j = 0; j < maze_size; j++)
             m[i][j] = MAZEWALL;
@@ -622,122 +462,102 @@ void RoomService::createMaze()
     int y_num = 0;
     m[0][0] = MyRoomID;
     MyRoomID++;
-    if (x_num + 1 < maze_size)
-    {
+    if (x_num + 1 < maze_size) {
         block_row.push_back(x_num + 1);
         block_column.push_back(y_num);
         block_direct.push_back(MYDOWN);
     } //MYDOWN
-    if (y_num + 1 < maze_size)
-    {
+    if (y_num + 1 < maze_size) {
         block_row.push_back(x_num);
         block_column.push_back(y_num + 1);
         block_direct.push_back(MYRIGHT);
     } //MYRIGHT
-    if (x_num - 1 >= 0)
-    {
+    if (x_num - 1 >= 0) {
         block_row.push_back(x_num - 1);
         block_column.push_back(y_num);
         block_direct.push_back(MYUP);
     } //MYUP
-    if (y_num - 1 >= 0)
-    {
+    if (y_num - 1 >= 0) {
         block_row.push_back(x_num);
         block_column.push_back(y_num - 1);
         block_direct.push_back(MYLEFT);
     } //MYLEFT
 
-    while (block_row.size())
-    { //第一步压入两堵墙（起点右边和起点下面）进入循环
+    while (block_row.size()) {//第一步压入两堵墙（起点右边和起点下面）进入循环
         int num = block_row.size();
-        int randnum = rand() % num; //生成0-num-1之间的随机数，同时也是vector里的下标
-        switch (block_direct[randnum])
-        { //选择一个方向进行后续操作，起始点 邻块 目标块 三块区域在同一直线上 随后移动到目标块的位置
-        case MYDOWN:
-        {
+        int randnum = rand() % num;//生成0-num-1之间的随机数，同时也是vector里的下标
+        switch (block_direct[randnum]) {//选择一个方向进行后续操作，起始点 邻块 目标块 三块区域在同一直线上 随后移动到目标块的位置
+        case MYDOWN: {
             x_num = block_row[randnum] + 1;
             y_num = block_column[randnum];
             break;
         }
-        case MYRIGHT:
-        {
+        case MYRIGHT: {
             x_num = block_row[randnum];
             y_num = block_column[randnum] + 1;
             break;
         }
-        case MYLEFT:
-        {
+        case MYLEFT: {
             x_num = block_row[randnum];
             y_num = block_column[randnum] - 1;
             break;
         }
-        case MYUP:
-        {
+        case MYUP: {
             x_num = block_row[randnum] - 1;
             y_num = block_column[randnum];
             break;
         }
         }
-        if (m[x_num][y_num] == MAZEWALL)
-        { //目标块如果是墙
-            if (m[block_row[randnum]][block_column[randnum]] == MAZEWALL)
-            {
-                m[block_row[randnum]][block_column[randnum]] = MyRoomID; //打通墙
+        if (m[x_num][y_num] == MAZEWALL) {//目标块如果是墙
+            if (m[block_row[randnum]][block_column[randnum]] == MAZEWALL) {
+                m[block_row[randnum]][block_column[randnum]] = MyRoomID;//打通墙
                 MyRoomID++;
             }
-            if (m[x_num][y_num] == MAZEWALL)
-            {
-                m[x_num][y_num] = MyRoomID; //打通目标块
+            if (m[x_num][y_num] == MAZEWALL) {
+                m[x_num][y_num] = MyRoomID;//打通目标块
                 MyRoomID++;
             }
 
-            if (x_num + 1 < maze_size)
-            {
+            if (x_num + 1 < maze_size) {
                 block_row.push_back(x_num + 1);
                 block_column.push_back(y_num);
                 block_direct.push_back(MYDOWN);
             } //MYDOWN
-            if (y_num + 1 < maze_size)
-            {
+            if (y_num + 1 < maze_size) {
                 block_row.push_back(x_num);
                 block_column.push_back(y_num + 1);
                 block_direct.push_back(MYRIGHT);
             } //MYRIGHT
-            if (x_num - 1 >= 0)
-            {
+            if (x_num - 1 >= 0) {
                 block_row.push_back(x_num - 1);
                 block_column.push_back(y_num);
                 block_direct.push_back(MYUP);
             } //MYUP
-            if (y_num - 1 >= 0)
-            {
+            if (y_num - 1 >= 0) {
                 block_row.push_back(x_num);
                 block_column.push_back(y_num - 1);
                 block_direct.push_back(MYLEFT);
             } //MYLEFT
         }
-        block_row.erase(block_row.begin() + randnum); //删除这堵墙(把用不了的墙删了，对于那些已经施工过了不必再施工了，同时也是确保我们能跳出循环)
+        block_row.erase(block_row.begin() + randnum);//删除这堵墙(把用不了的墙删了，对于那些已经施工过了不必再施工了，同时也是确保我们能跳出循环)
         block_column.erase(block_column.begin() + randnum);
         block_direct.erase(block_direct.begin() + randnum);
     }
-    if (rand() % 2)
-    {
-        if (m[maze_size - 2][maze_size - 1] == MAZEWALL)
-        {
+    if (rand() % 2) {
+        if (m[maze_size - 2][maze_size - 1] == MAZEWALL) {
             m[maze_size - 2][maze_size - 1] = MyRoomID;
             MyRoomID++;
         }
     }
-    else if (m[maze_size - 1][maze_size - 2] == MAZEWALL)
-    {
+    else if (m[maze_size - 1][maze_size - 2] == MAZEWALL) {
         m[maze_size - 1][maze_size - 2] = MyRoomID;
         MyRoomID++;
     }
-    if (m[maze_size - 1][maze_size - 1] == MAZEWALL)
-    {
+    if (m[maze_size - 1][maze_size - 1] == MAZEWALL) {
         m[maze_size - 1][maze_size - 1] = MyRoomID;
     }
 }
+
 
 void RoomService::init()
 {
@@ -748,8 +568,7 @@ void RoomService::init()
     room_map_.clear();
     store_.clear();
 
-    for (int i = 0; i < maze_size; i++)
-    {
+    for (int i = 0; i < maze_size; i++) {
         for (int j = 0; j < maze_size; j++)
             if (m[i][j] != MAZEWALL)
             {
@@ -772,19 +591,16 @@ void RoomService::init()
                 else
                     room__.down_room_id = 0;
                 room__.visited = false;
-                if (i == 0 && j == 0)
-                {
+                if (i == 0 && j == 0) {
                     //初始房
                     room__.current_room_type = 0;
                     room__.current_barrier_type = 0;
                 }
-                else if (i == maze_size - 1 && j == maze_size - 1)
-                {
+                else if (i == maze_size - 1 && j == maze_size - 1) {
                     room__.current_room_type = 21;
                     room__.current_barrier_type = 0;
                 }
-                else
-                {
+                else {
                     room__.current_room_type = randomRoom();
                     if (room__.current_room_type >= 8 && room__.current_room_type <= 20)
                         room__.current_barrier_type = 0;
@@ -796,16 +612,171 @@ void RoomService::init()
     }
 
     //在出生点边上添加一个宝物房
-    if (m[1][0] != MAZEWALL)
-    {
+    if (m[1][0] != MAZEWALL) {
         room_map_[m[1][0]].current_room_type = rand() % 9 + 8;
         room_map_[m[1][0]].current_barrier_type = 0;
     }
-    else
-    {
+    else {
         room_map_[m[0][1]].current_room_type = rand() % 9 + 8;
         room_map_[m[0][1]].current_barrier_type = 0;
     }
+
+
+    build_vm_from_room_map();
+}
+
+void RoomService::initDebug()
+{
+    init_room_id_ = 1;
+    current_room_id_ = 0;
+    room_map_.clear();
+    store_.clear();
+
+    //初始房间
+    auto room__ = Room();
+    room__.current_room_id = 1;
+    room__.left_room_id = 2;
+    room__.up_room_id = 0;
+    room__.right_room_id = 3;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 0;
+    room__.current_barrier_type = 0;
+    room_map_[1] = room__;
+
+    //怪物房间
+    room__ = Room();
+    room__.current_room_id = 2;
+    room__.left_room_id = 0;
+    room__.up_room_id = 0;
+    room__.right_room_id = 1;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 21;
+    room__.current_barrier_type = 0;
+    room_map_[2] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 3;
+    room__.left_room_id = 1;
+    room__.up_room_id = 4;
+    room__.right_room_id = 0;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 20;
+    room__.current_barrier_type = 1;
+    room_map_[3] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 4;
+    room__.left_room_id = 0;
+    room__.up_room_id = 5;
+    room__.right_room_id = 0;
+    room__.down_room_id = 3;
+    room__.visited = false;
+    room__.current_room_type = 1;
+    room__.current_barrier_type = 0;
+    room_map_[4] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 5;
+    room__.left_room_id = 6;
+    room__.up_room_id = 0;
+    room__.right_room_id = 10;
+    room__.down_room_id = 4;
+    room__.visited = false;
+    room__.current_room_type = 2;
+    room__.current_barrier_type = 0;
+    room_map_[5] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 6;
+    room__.left_room_id = 0;
+    room__.up_room_id = 7;
+    room__.right_room_id = 5;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 3;
+    room__.current_barrier_type = 0;
+    room_map_[6] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 7;
+    room__.left_room_id = 9;
+    room__.up_room_id = 8;
+    room__.right_room_id = 0;
+    room__.down_room_id = 6;
+    room__.visited = false;
+    room__.current_room_type = 2;
+    room__.current_barrier_type = 0;
+    room_map_[7] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 8;
+    room__.left_room_id = 0;
+    room__.up_room_id = 0;
+    room__.right_room_id = 0;
+    room__.down_room_id = 7;
+    room__.visited = false;
+    room__.current_room_type = 5;
+    room__.current_barrier_type = 0;
+    room_map_[8] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 9;
+    room__.left_room_id = 0;
+    room__.up_room_id = 0;
+    room__.right_room_id = 7;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 8;
+    room__.current_barrier_type = 0;
+    room_map_[9] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 10;
+    room__.left_room_id = 5;
+    room__.up_room_id = 0;
+    room__.right_room_id = 11;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 6;
+    room__.current_barrier_type = 0;
+    room_map_[10] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 11;
+    room__.left_room_id = 10;
+    room__.up_room_id = 12;
+    room__.right_room_id = 13;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 7;
+    room__.current_barrier_type = 0;
+    room_map_[11] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 12;
+    room__.left_room_id = 0;
+    room__.up_room_id = 0;
+    room__.right_room_id = 0;
+    room__.down_room_id = 11;
+    room__.visited = false;
+    room__.current_room_type = 2;
+    room__.current_barrier_type = 0;
+    room_map_[12] = room__;
+
+    //Boss
+    room__ = Room();
+    room__.current_room_id = 13;
+    room__.left_room_id = 11;
+    room__.up_room_id = 0;
+    room__.right_room_id = 0;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.current_room_type = 15;
+    room__.current_barrier_type = 0;
+    room_map_[13] = room__;
 
     build_vm_from_room_map();
 }
