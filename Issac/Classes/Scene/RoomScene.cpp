@@ -499,6 +499,7 @@ bool RoomScene::init(int roomID)
     SimpleAudioEngine::getInstance()->setEffectsVolume((float)RoomService::getInstance()->getSFXVolume() / 25.0);
     SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)RoomService::getInstance()->getMusicVolume() / 25.0);
 
+    
     //Boss血条贴图，zorder 为6，两张以一定比例横向拼接，注意 boss 死亡后销毁血条
 
     if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
@@ -1281,6 +1282,15 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
                 nodeA->setTearExistTime(nodeA->getTearExistTime() / 2);
             //物品消失
             nodeB->removeFromParent();
+            const auto collectible_streak_movein = MoveTo::create(0.2, Vec2(221,220));
+            const auto collectible_streak_stay = MoveTo::create(1, Vec2(221,220));
+            const auto collectible_streak_moveout = MoveTo::create(0.2, Vec2(700,220));
+            //生成 Collectible 拾取提示
+            Texture2D * streak_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/effect_024_streak.png");
+            Sprite * collectible_streak = Sprite::createWithTexture(streak_texture, Rect(0, 0, 400, 64));
+            collectible_streak->setPosition(-250,220);
+            this->addChild(collectible_streak, 6, "collectible_streak");
+            this->getChildByName("collectible_streak")->runAction(Sequence::create(collectible_streak_movein,collectible_streak_stay, collectible_streak_moveout,RemoveSelf::create(true), NULL));
         }
 
         //眼泪碰撞后消失
