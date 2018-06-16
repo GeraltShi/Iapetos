@@ -499,7 +499,7 @@ bool RoomScene::init(int roomID)
     SimpleAudioEngine::getInstance()->setEffectsVolume((float)RoomService::getInstance()->getSFXVolume() / 25.0);
     SimpleAudioEngine::getInstance()->setBackgroundMusicVolume((float)RoomService::getInstance()->getMusicVolume() / 25.0);
 
-    //Boss血条贴图，zorder 为7，两张以一定比例横向拼接，注意 boss 死亡后销毁血条
+    //Boss血条贴图，zorder 为6，两张以一定比例横向拼接，注意 boss 死亡后销毁血条
 
     if (room_vm_.is_boss_room() && !RoomService::getInstance()->getWin())
     {

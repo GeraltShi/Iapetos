@@ -56,6 +56,16 @@ bool MainScene::init()
     gamemenubg->setPosition(0,-270);
     bg->addChild(gamemenubg,0);
     
+    Texture2D *menuoverlaytexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/menuoverlay.png");
+    Sprite * menuoverlay = Sprite::createWithTexture(menuoverlaytexture, Rect(0,0,480,270));
+    menuoverlay->setScale(442.f/480.f, 286.f/270.f);
+    menuoverlay->setPosition(221, 143);
+    this->addChild(menuoverlay,2);
+    Texture2D *menushadowtexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/menushadow.png");
+    Sprite * menushadow = Sprite::createWithTexture(menushadowtexture, Rect(0,0,256,150));
+    menushadow->setAnchorPoint(Vec2(0,0));
+    menushadow->setPosition(0, 0);
+    this->addChild(menushadow,2);
 //    Texture2D *emptyscreentexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/ui/main menu/emptyscreen.png");
 //    auto emptyscreenbg = Sprite::createWithTexture(emptyscreentexture, Rect(0,0,480,270));
 //    emptyscreenbg->setAnchorPoint(Point(0,0));
