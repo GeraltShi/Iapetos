@@ -741,6 +741,7 @@ void RoomScene::update(float delta)
                 Sprite * deadbody = Sprite::createWithTexture(texture_, Rect(192,128,64,64));
                 deadbody->setPosition(player->getPosition());
                 this->addChild(deadbody,3);
+                SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav", false);
                 scheduleOnce(schedule_selector(RoomScene::show_deadmenu),1.5f);
             }
         }
@@ -814,31 +815,31 @@ void RoomScene::update(float delta)
             model.paused_menu_generated_flag = 1;
         }
         //更新 issac 状态属性
-        const string movespeedstat = "statA" + to_string((int)(player->getMoveSpeed()/50));
+        const string movespeedstat = "statA" + to_string((int)(player->getMoveSpeed()/50)>7?7:(int)(player->getMoveSpeed()/50));
         pausescreen->getChildByName("pausemenu")->removeChildByName("movespeed_bar");
         Sprite * movespeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(movespeedstat));
         movespeed_bar->setPosition(98,147);
         pausescreen->getChildByName("pausemenu")->addChild(movespeed_bar,1,"movespeed_bar");
         
-        const string tearexistingtimestat = "statB" + to_string(player->getTearExistTime()/10);
+        const string tearexistingtimestat = "statB" + to_string(player->getTearExistTime()/10>7?7:player->getTearExistTime()/10);
         pausescreen->getChildByName("pausemenu")->removeChildByName("tearexistingtime_bar");
         Sprite * tearexistingtime_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearexistingtimestat));
         tearexistingtime_bar->setPosition(157,147);
         pausescreen->getChildByName("pausemenu")->addChild(tearexistingtime_bar,1,"tearexistingtime_bar");
         
-        const string tearspeedstat = "statB" + to_string((int)(player->getTearSpeed()/33));
+        const string tearspeedstat = "statB" + to_string((int)(player->getTearSpeed()/33)>7?7:(int)(player->getTearSpeed()/33));
         pausescreen->getChildByName("pausemenu")->removeChildByName("tearspeed_bar");
         Sprite * tearspeed_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(tearspeedstat));
         tearspeed_bar->setPosition(98,130);
         pausescreen->getChildByName("pausemenu")->addChild(tearspeed_bar,1,"tearspeed_bar");
         
-        const string shootintervalstat = "statA" + to_string((int)(1/player->getShootInterval()));
+        const string shootintervalstat = "statA" + to_string((int)(1/player->getShootInterval())>7?7:(int)(1/player->getShootInterval()));
         pausescreen->getChildByName("pausemenu")->removeChildByName("shootinterval_bar");
         Sprite * shootinterval_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(shootintervalstat));
         shootinterval_bar->setPosition(157,130);
         pausescreen->getChildByName("pausemenu")->addChild(shootinterval_bar,1,"shootinterval_bar");
         
-        const string attackstat = "statA" + to_string((int)player->getAttack());
+        const string attackstat = "statA" + to_string((int)(player->getAttack()*2.5)>7?7:(int)(player->getAttack()*2.5));
         pausescreen->getChildByName("pausemenu")->removeChildByName("attack_bar");
         Sprite * attack_bar = Sprite::createWithSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(attackstat));
         attack_bar->setPosition(98,113);
@@ -920,7 +921,6 @@ void RoomScene::update(float delta)
             deadscreen->setVisible(true);
             model.dead_menu_generated_flag = 1;
             SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
-            SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav", false);
             SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/you died.wav", true);
 
         }
