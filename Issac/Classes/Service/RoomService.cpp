@@ -668,7 +668,7 @@ void RoomService::initDebug()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 21;
+    room__.current_room_type = 1;
     room__.current_barrier_type = 0;
     room_map_[2] = room__;
 
@@ -680,7 +680,7 @@ void RoomService::initDebug()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 20;
+    room__.current_room_type = 2;
     room__.current_barrier_type = 1;
     room_map_[3] = room__;
 
@@ -693,7 +693,7 @@ void RoomService::initDebug()
     room__.visited = false;
     room__.item_taken = false;
     room__.current_room_type = 3;
-    room__.current_barrier_type = 0;
+    room__.current_barrier_type = 2;
     room_map_[4] = room__;
 
     room__ = Room();
@@ -704,7 +704,7 @@ void RoomService::initDebug()
     room__.down_room_id = 4;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 4;
     room__.current_barrier_type = 0;
     room_map_[5] = room__;
 
@@ -716,8 +716,8 @@ void RoomService::initDebug()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 3;
-    room__.current_barrier_type = 0;
+    room__.current_room_type = 5;
+    room__.current_barrier_type = 1;
     room_map_[6] = room__;
 
     room__ = Room();
@@ -728,7 +728,7 @@ void RoomService::initDebug()
     room__.down_room_id = 6;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 7;
     room__.current_barrier_type = 0;
     room_map_[7] = room__;
 
@@ -740,8 +740,8 @@ void RoomService::initDebug()
     room__.down_room_id = 7;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 5;
-    room__.current_barrier_type = 0;
+    room__.current_room_type = 1;
+    room__.current_barrier_type = 2;
     room_map_[8] = room__;
 
     room__ = Room();
@@ -752,7 +752,7 @@ void RoomService::initDebug()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 8;
+    room__.current_room_type = 20;
     room__.current_barrier_type = 0;
     room_map_[9] = room__;
 
@@ -764,7 +764,7 @@ void RoomService::initDebug()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 6;
+    room__.current_room_type = 8;
     room__.current_barrier_type = 0;
     room_map_[10] = room__;
 
@@ -776,8 +776,8 @@ void RoomService::initDebug()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 7;
-    room__.current_barrier_type = 0;
+    room__.current_room_type = 5;
+    room__.current_barrier_type = 1;
     room_map_[11] = room__;
 
     room__ = Room();
@@ -788,7 +788,7 @@ void RoomService::initDebug()
     room__.down_room_id = 11;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 2;
+    room__.current_room_type = 4;
     room__.current_barrier_type = 0;
     room_map_[12] = room__;
 
@@ -801,9 +801,131 @@ void RoomService::initDebug()
     room__.down_room_id = 0;
     room__.visited = false;
     room__.item_taken = false;
-    room__.current_room_type = 15;
+    room__.current_room_type = 21;
     room__.current_barrier_type = 0;
     room_map_[13] = room__;
+
+    //======
+
+    room__ = Room();
+    room__.current_room_id = 14;
+    room__.left_room_id = 8;
+    room__.up_room_id = 15;
+    room__.right_room_id = 0;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 9;
+    room__.current_barrier_type = 0;
+    room_map_[14] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 15;
+    room__.left_room_id = 0;
+    room__.up_room_id = 16;
+    room__.right_room_id = 0;
+    room__.down_room_id = 14;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 1;
+    room__.current_barrier_type = 1;
+    room_map_[15] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 16;
+    room__.left_room_id = 17;
+    room__.up_room_id = 0;
+    room__.right_room_id = 18;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 2;
+    room__.current_barrier_type = 2;
+    room_map_[16] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 17;
+    room__.left_room_id = 0;
+    room__.up_room_id = 0;
+    room__.right_room_id = 16;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 10;
+    room__.current_barrier_type = 0;
+    room_map_[17] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 18;
+    room__.left_room_id = 16;
+    room__.up_room_id = 0;
+    room__.right_room_id = 0;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 11;
+    room__.current_barrier_type = 0;
+    room_map_[18] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 19;
+    room__.left_room_id = 0;
+    room__.up_room_id = 0;
+    room__.right_room_id = 20;
+    room__.down_room_id = 12;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 5;
+    room__.current_barrier_type = 0;
+    room_map_[19] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 20;
+    room__.left_room_id = 19;
+    room__.up_room_id = 0;
+    room__.right_room_id = 21;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 6;
+    room__.current_barrier_type = 1;
+    room_map_[20] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 21;
+    room__.left_room_id = 20;
+    room__.up_room_id = 22;
+    room__.right_room_id = 0;
+    room__.down_room_id = 23;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 7;
+    room__.current_barrier_type = 2;
+    room_map_[21] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 22;
+    room__.left_room_id = 0;
+    room__.up_room_id = 0;
+    room__.right_room_id = 0;
+    room__.down_room_id = 21;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 12;
+    room__.current_barrier_type = 0;
+    room_map_[22] = room__;
+
+    room__ = Room();
+    room__.current_room_id = 23;
+    room__.left_room_id = 0;
+    room__.up_room_id = 7;
+    room__.right_room_id = 0;
+    room__.down_room_id = 0;
+    room__.visited = false;
+    room__.item_taken = false;
+    room__.current_room_type = 13;
+    room__.current_barrier_type = 0;
+    room_map_[23] = room__;
 
     build_vm_from_room_map();
 }
