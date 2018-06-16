@@ -27,6 +27,7 @@ bool Collectable::init(int collectableType)
 	radiusSize = 0;
 	tearSpeed = 0;
 	tearExistTime = 0;
+	shootInterval = 0;
 	health = 0;
 	attack = 0;
 	enFly = false;
@@ -51,6 +52,7 @@ bool Collectable::init(int collectableType)
 		attack = 0.5;
 		health = 1;
 		moveSpeed = 20;
+		shootInterval = -0.2;
 		tearExistTime = 5;
             name_string = "Magic Mushroom Collected";
 		break;

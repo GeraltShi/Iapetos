@@ -1329,6 +1329,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
 			nodeA->setTearExistTime(nodeA->getTearExistTime() + nodeB->getTearExistTime());
             nodeA->setMoveSpeed(nodeA->getMoveSpeed() + nodeB->getMoveSpeed());
             nodeA->setRadiusSize(nodeA->getRadiusSize() + nodeB->getRadiusSize());
+			nodeA->setShootInterval(nodeA->getShootInterval() + nodeB->getShootInterval());
             nodeA->setEnFly(nodeA->getEnFly() || nodeB->getEnFly());
             nodeA->setEnBounce(nodeA->getEnBounce() || nodeB->getEnBounce());
             if (nodeB->getEnHalfTearDis())
