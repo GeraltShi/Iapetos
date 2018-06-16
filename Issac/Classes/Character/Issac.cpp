@@ -514,6 +514,11 @@ void Issac::dead(){
     this->runAction(deadAnimate);
 }
 
+int Issac::getHealth() const
+{
+    return PlayerService::getInstance()->getHealth();
+}
+
 double Issac::getMoveSpeed() const
 {
     return PlayerService::getInstance()->getMoveSpeed();

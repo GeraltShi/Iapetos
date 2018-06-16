@@ -567,6 +567,7 @@ void RoomService::init()
     current_room_id_ = 0;
     room_map_.clear();
     store_.clear();
+    win_ = false;
 
     for (int i = 0; i < maze_size; i++) {
         for (int j = 0; j < maze_size; j++)
@@ -631,6 +632,7 @@ void RoomService::initDebug()
     current_room_id_ = 0;
     room_map_.clear();
     store_.clear();
+    win_ = false;
 
     //初始房间
     auto room__ = Room();

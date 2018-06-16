@@ -19,7 +19,7 @@ public:
         option_menu_cursor = (option_menu_cursor+wd+3)%3;
     }
     bool bomb = false;
-    int game_stat = 0;// 游戏状态控制，0为运行，1为暂停，2为结束
+    int game_stat = 0;// 游戏状态控制，0为运行，1为暂停，2为结束，3为获胜
     int paused_menu_generated_flag = 0;
     int paused_menu_cursor = 1;//1表明光标初始化在 resume
     
@@ -27,6 +27,7 @@ public:
     int option_display = 0;
     
     int dead_menu_generated_flag = 0;
+    int win_generated_flag = 0;
     
 };
 #endif /* RoomSceneModel_hpp */

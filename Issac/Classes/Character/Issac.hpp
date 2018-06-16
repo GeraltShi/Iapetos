@@ -20,6 +20,7 @@ public:
     void move(int walk_direction, int tear_direction);
     void hurt();
     void dead();
+    int getHealth() const override;
     double getMoveSpeed() const override;//移动速度
     double getTearSpeed() const override;//弹速
     double getAttack() const override;//攻击力

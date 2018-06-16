@@ -105,6 +105,16 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
                 break;
         }
     }
+
+    if (scene_->model.game_stat == 3) {
+        //按任意键返回主界面
+        scene_->stopAllActions();
+        scene_->model.game_stat = 0;
+        Director::getInstance()->popScene();
+        SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+        SimpleAudioEngine::getInstance()->stopAllEffects();
+        SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/title screen.wav", true);
+    }
     return 4;
 }
 

@@ -795,9 +795,10 @@ void RoomScene::update(float delta)
         }
 
         //如果是Boss房间则游戏获胜
-        if (room_vm_.is_boss_room())
+        if (room_vm_.is_boss_room() && monsters_.empty())
         {
             RoomService::getInstance()->setWin(true);
+            model.game_stat = 3;
         }
     }
     else if (model.game_stat == 1)
@@ -910,7 +911,7 @@ void RoomScene::update(float delta)
             
         }
     }
-    else//state = 2, Issac死亡
+    else if (model.game_stat == 2)//state = 2, Issac死亡
     {
         Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         if (model.dead_menu_generated_flag == 0)
@@ -929,8 +930,20 @@ void RoomScene::update(float delta)
             m->pauseSchedulerAndActions();
         }
 
-        this->stopAllActions();
+        
 
+    }
+    else//state = 3， 获胜
+    {
+        if (model.win_generated_flag == 0)
+        {
+            this->unschedule(schedule_selector(RoomScene::fire));
+            winscreen->setVisible(true);
+            model.win_generated_flag = 1;
+            SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+        }
+
+        this->stopAllActions();
     }
 }
 
@@ -1176,7 +1189,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             //Issac被monster碰到，受伤
             nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
             //Service更新血量
-            PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
+            //PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             nodeA->setInvincibleTime(20);
             //受伤动画
@@ -1202,7 +1215,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
         if (tagA == 1 && tagB == 3 && nodeA->getInvincibleTime() == 0)
         {
             nodeA->setHealth(nodeA->getHealth() - nodeB->getAttack());
-            PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
+            //PlayerService::getInstance()->decreaseHealth(nodeB->getAttack());
             //Issac进入短暂无敌状态
             if (tagA == 1)
                 nodeA->setInvincibleTime(20);
