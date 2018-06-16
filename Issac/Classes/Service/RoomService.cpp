@@ -46,8 +46,14 @@ RoomViewModel RoomService::enter_room(const int room_id)
     else
     {
         const auto prev_id = current_room_id_;
-
         const auto r_map = room_map_[room_id];
+        current_room_id_ = room_id;
+        build_vm_from_room(r_map);//构建下一次进入的房间
+
+        if (room_map_[room_id].item_taken)//修复捡过的房间要第二次进入才消失的bug
+        {
+            room_view_model = store_[room_id];//取出刚生成的房间
+        }
 
         if (r_map.left_room_id == prev_id) //从左门进入
         {
@@ -66,8 +72,6 @@ RoomViewModel RoomService::enter_room(const int room_id)
             room_view_model.setPlayerPos(GRID_WIDTH_HALF, 0);
         }
 
-        current_room_id_ = room_id;
-        build_vm_from_room(r_map);
     }
 
     return room_view_model;
@@ -290,6 +294,11 @@ int RoomService::get_down_room_id()
     return r.down_room_id;
 }
 
+void RoomService::set_item_taken(int room_id)
+{
+    room_map_[room_id].item_taken = true;
+}
+
 bool RoomService::is_init_room() const
 {
     return current_room_id_ == init_room_id_;
@@ -410,8 +419,9 @@ void RoomService::build_vm_from_room(Room room_m)
     const auto room_id = room_m.current_room_id;
     const auto room_type = room_m.current_room_type;
     const auto barrier_type = room_m.current_barrier_type;
+    const auto taken = room_m.item_taken;
 
-    auto room_ = RoomViewModel::createRoomViewModel(room_type, room_m.visited, barrier_type);
+    auto room_ = RoomViewModel::createRoomViewModel(room_type, room_m.visited, barrier_type,taken);
 
     int doors_id[] = { room_m.left_room_id, room_m.up_room_id, room_m.right_room_id, room_m.down_room_id };
 
@@ -426,6 +436,7 @@ void RoomService::build_vm_from_room(Room room_m)
     room_.setDoorEnable(door_);
     room_.setDoorStyle(door_style);
     room_.setGroundStyle(get_groundstyle_from_room_type(room_type));
+    room_.setRoomId(room_id);
 
     store_[room_id] = room_;
 }
@@ -592,6 +603,7 @@ void RoomService::init()
                 else
                     room__.down_room_id = 0;
                 room__.visited = false;
+                room__.item_taken = false;
                 if (i == 0 && j == 0) {
                     //初始房
                     room__.current_room_type = 0;
@@ -642,6 +654,7 @@ void RoomService::initDebug()
     room__.right_room_id = 3;
     room__.down_room_id = 0;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 0;
     room__.current_barrier_type = 0;
     room_map_[1] = room__;
@@ -654,8 +667,9 @@ void RoomService::initDebug()
     room__.right_room_id = 1;
     room__.down_room_id = 0;
     room__.visited = false;
-    room__.current_room_type = 3;
-    room__.current_barrier_type = 1;
+    room__.item_taken = false;
+    room__.current_room_type = 21;
+    room__.current_barrier_type = 0;
     room_map_[2] = room__;
 
     room__ = Room();
@@ -665,6 +679,7 @@ void RoomService::initDebug()
     room__.right_room_id = 0;
     room__.down_room_id = 0;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 20;
     room__.current_barrier_type = 1;
     room_map_[3] = room__;
@@ -676,6 +691,7 @@ void RoomService::initDebug()
     room__.right_room_id = 0;
     room__.down_room_id = 3;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 3;
     room__.current_barrier_type = 0;
     room_map_[4] = room__;
@@ -687,6 +703,7 @@ void RoomService::initDebug()
     room__.right_room_id = 10;
     room__.down_room_id = 4;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 2;
     room__.current_barrier_type = 0;
     room_map_[5] = room__;
@@ -698,6 +715,7 @@ void RoomService::initDebug()
     room__.right_room_id = 5;
     room__.down_room_id = 0;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 3;
     room__.current_barrier_type = 0;
     room_map_[6] = room__;
@@ -709,6 +727,7 @@ void RoomService::initDebug()
     room__.right_room_id = 0;
     room__.down_room_id = 6;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 2;
     room__.current_barrier_type = 0;
     room_map_[7] = room__;
@@ -720,6 +739,7 @@ void RoomService::initDebug()
     room__.right_room_id = 0;
     room__.down_room_id = 7;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 5;
     room__.current_barrier_type = 0;
     room_map_[8] = room__;
@@ -731,6 +751,7 @@ void RoomService::initDebug()
     room__.right_room_id = 7;
     room__.down_room_id = 0;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 8;
     room__.current_barrier_type = 0;
     room_map_[9] = room__;
@@ -742,6 +763,7 @@ void RoomService::initDebug()
     room__.right_room_id = 11;
     room__.down_room_id = 0;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 6;
     room__.current_barrier_type = 0;
     room_map_[10] = room__;
@@ -753,6 +775,7 @@ void RoomService::initDebug()
     room__.right_room_id = 13;
     room__.down_room_id = 0;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 7;
     room__.current_barrier_type = 0;
     room_map_[11] = room__;
@@ -764,6 +787,7 @@ void RoomService::initDebug()
     room__.right_room_id = 0;
     room__.down_room_id = 11;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 2;
     room__.current_barrier_type = 0;
     room_map_[12] = room__;
@@ -776,6 +800,7 @@ void RoomService::initDebug()
     room__.right_room_id = 0;
     room__.down_room_id = 0;
     room__.visited = false;
+    room__.item_taken = false;
     room__.current_room_type = 15;
     room__.current_barrier_type = 0;
     room_map_[13] = room__;

@@ -1,13 +1,13 @@
 #include "RoomViewModel.h"
 
-RoomViewModel RoomViewModel::createRoomViewModel(int roomType, bool visited, int barrierType)
+RoomViewModel RoomViewModel::createRoomViewModel(int roomType, bool visited, int barrierType, bool item_taken)
 {
     RoomViewModel room1;
-    room1.init(roomType, visited, barrierType);
+    room1.init(roomType, visited, barrierType, item_taken);
     return room1;
 }
 
-void RoomViewModel::init(int roomType, bool visited, int barrierType)
+void RoomViewModel::init(int roomType, bool visited, int barrierType, bool item_taken)
 {
     this->visited = visited;
     this->room_type = roomType;
@@ -212,24 +212,26 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType)
 			room_map[GRID_WIDTH_HALF][GRID_HEIGHT_HALF] = 19;
 		}
 
-		
-		//roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里	
-		//地面编码20+是collectable
-		if (roomType >= 8 && roomType < 20) {
-			room_map[GRID_WIDTH_HALF][GRID_HEIGHT_HALF] = roomType-8+20;
-		}
-		if  (roomType == 20) { //测试用宝藏房间
-			room_map[0][0] = 20;
-			room_map[1][0] = 21;
-			room_map[2][0] = 22;
-			room_map[3][0] = 23;
-			room_map[4][0] = 24;
-			room_map[5][0] = 25;
-			room_map[6][0] = 26;
-			room_map[7][0] = 27;
-			room_map[8][0] = 28;
-		}
+    }
 
+    if (!item_taken)
+    {
+        //roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里	
+        //地面编码20+是collectable
+        if (roomType >= 8 && roomType < 20) {
+            room_map[GRID_WIDTH_HALF][GRID_HEIGHT_HALF] = roomType - 8 + 20;
+        }
+        if (roomType == 20) { //测试用宝藏房间
+            room_map[0][0] = 20;
+            room_map[1][0] = 21;
+            room_map[2][0] = 22;
+            room_map[3][0] = 23;
+            room_map[4][0] = 24;
+            room_map[5][0] = 25;
+            room_map[6][0] = 26;
+            room_map[7][0] = 27;
+            room_map[8][0] = 28;
+        }
     }
 }
 

@@ -27,6 +27,7 @@ struct Room
     int up_room_id;
     int down_room_id;
     bool visited;
+    bool item_taken;
     int current_room_type;
     int current_barrier_type;
 };
@@ -43,6 +44,7 @@ public:
     int get_up_room_id();
     int get_right_room_id();
     int get_down_room_id();
+    void set_item_taken(int room_id);
     bool is_init_room() const;
     void init();
     void initDebug();
@@ -61,11 +63,11 @@ public:
     //根据MAZE做init
 
     CC_SYNTHESIZE(int, music_volume, MusicVolume)
-        CC_SYNTHESIZE(int, sfx_volume, SFXVolume)
-        //0 ~ 10  --> 0 ~ 255
-        CC_SYNTHESIZE(int, mini_opacity, MiniOpacity)
-        CC_SYNTHESIZE(bool, win_, Win)
-        CC_SYNTHESIZE(int, play_bg_music_id, PlayBgMusicId)
+    CC_SYNTHESIZE(int, sfx_volume, SFXVolume)
+    //0 ~ 10  --> 0 ~ 255
+    CC_SYNTHESIZE(int, mini_opacity, MiniOpacity)
+    CC_SYNTHESIZE(bool, win_, Win)
+    CC_SYNTHESIZE(int, play_bg_music_id, PlayBgMusicId)
 
 private:
     static RoomService *inst_;

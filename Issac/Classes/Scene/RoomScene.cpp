@@ -242,7 +242,8 @@ bool RoomScene::init(int roomID)
             { //Boss-FlyDaddy
                 monsters_.pushBack((Monster *)FlyDaddy::createFlyDaddy());
                 monsters_.at(monsters_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
-                addChild(monsters_.at(monsters_.size() - 1), 3, "flyDaddy1");
+                monsters_.at(monsters_.size() - 1)->setName("Boss");
+                addChild(monsters_.at(monsters_.size() - 1), 3, "Boss");
             }
             if (room_vm_.getRoomMap(i, j) == 1)
             {
@@ -999,10 +1000,14 @@ void RoomScene::update(float delta)
             this->unschedule(schedule_selector(RoomScene::fire));
             winscreen->setVisible(true);
             model.win_generated_flag = 1;
-            SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+            //SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+            player->stopAllActions();
+            //Director::getInstance()->getRunningScene()->getPhysicsWorld()->setSpeed(0);
         }
 
-        this->stopAllActions();
+
+        //获胜动画需要播放
+        //this->stopAllActions();
     }
 }
 
@@ -1316,13 +1321,21 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
             
             if (room_vm_.is_boss_room())
             {
-                const auto h1 = monsters_.at(0)->getHealth();
-                const auto h2 = monsters_.at(0)->getMaxHealth();
-                const float percent = 100* ((float)h1 / h2);
-                ProgressTimer* pro = (ProgressTimer *)this->getChildByName("bosshealthbar");
-                pro->setPercentage(percent);
+                const auto name = monsters_.at(0)->getName();
+                if (name == "Boss")
+                {
+                    const auto h1 = monsters_.at(0)->getHealth();
+                    const auto h2 = monsters_.at(0)->getMaxHealth();
+                    const float percent = 100 * ((float)h1 / h2);
+                    ProgressTimer* pro = (ProgressTimer *)this->getChildByName("bosshealthbar");
+                    pro->setPercentage(percent);
+                }
+                else
+                {
+                    ProgressTimer* pro = (ProgressTimer *)this->getChildByName("bosshealthbar");
+                    pro->setVisible(false);
+                }
             }
-
         }
         //Issac和怪物眼泪碰撞
         if (tagA == 1 && tagB == 3 && nodeA->getInvincibleTime() == 0)
@@ -1382,6 +1395,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
         //Issac和物品Collectable碰撞,Issac拾取
         if (tagA == 1 && tagB == 9)
         {
+            RoomService::getInstance()->set_item_taken(room_vm_.getRoomId());
             nodeA->setHealth(nodeA->getHealth() + nodeB->getHealth());
             nodeA->setAttack(nodeA->getAttack() + nodeB->getAttack());
             nodeA->setTearSpeed(nodeA->getTearSpeed() + nodeB->getTearSpeed());

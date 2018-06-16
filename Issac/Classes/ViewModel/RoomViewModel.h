@@ -25,8 +25,8 @@ class RoomViewModel
 	  //roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里
 	  //roomType:21+代表Boss房,21:Boss-flyDaddy
 	//roomType是房间种类，barrierType是地形（0~2三种）
-	static RoomViewModel createRoomViewModel(int roomType, bool visited, int barrierType);
-	void init(int roomType, bool visited, int barrierType);
+	static RoomViewModel createRoomViewModel(int roomType, bool visited, int barrierType, bool item_taken);
+	void init(int roomType, bool visited, int barrierType, bool item_taken);
 	bool is_boss_room() const;
 
 	//1,2,3,4四个门（左、上、右、下）的位置是否有门
@@ -40,6 +40,7 @@ class RoomViewModel
 
 	CC_SYNTHESIZE(bool, visited, Visited)
 	CC_SYNTHESIZE(int, room_type, RoomType)
+    CC_SYNTHESIZE(int, room_id, RoomId)
 
 	int getRoomMap(int x, int y) const
 	{

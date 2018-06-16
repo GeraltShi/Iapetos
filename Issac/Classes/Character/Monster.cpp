@@ -1286,8 +1286,7 @@ void FlyDaddy::build_animation_cache()
     const auto dead_frame7 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame7");
     const auto dead_frame8 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame8");
     const auto dead_frame9 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame9");
-    const auto dead_frame10 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame10");
-    const auto dead_frame11 = spriteCache->getSpriteFrameByName("flydaddy_dead_frame11");
+
     Vector<SpriteFrame *> deadFrames;
     deadFrames.pushBack(dead_frame0);
     deadFrames.pushBack(dead_frame1);
@@ -1299,8 +1298,7 @@ void FlyDaddy::build_animation_cache()
     deadFrames.pushBack(dead_frame7);
     deadFrames.pushBack(dead_frame8);
     deadFrames.pushBack(dead_frame9);
-    deadFrames.pushBack(dead_frame10);
-    deadFrames.pushBack(dead_frame11);
+
     Animation *dead_animation = Animation::createWithSpriteFrames(deadFrames, 0.1f);
     dead_animation->setLoops(1);
     aniCache->addAnimation(dead_animation, "flydaddy_dead_animation");
@@ -1350,7 +1348,7 @@ bool FlyDaddy::init()
     radiusSize = 20;    //FlyDaddy碰撞大小
     bodyMass = 300;     //FlyDaddy重量
     moveSpeed = 200;     //FlyDaddy行走速度
-    health = 150;         //FlyDaddy血量
+    health = 2;         //FlyDaddy血量
     max_health_ = 150;
     attack = 1;         //FlyDaddy攻击
     tearSpeed = 60;     //FlyDaddy泪速
