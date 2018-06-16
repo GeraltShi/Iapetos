@@ -34,7 +34,7 @@ public:
     void increaseTearSpeed(double dtear_speed);
 
     int getTearExistingTime() const;//射程
-    void setTearExistingTime(double tear_existing_time);
+    void setTearExistingTime(int tear_existing_time);
     void decreaseTearExistingTime(double dtear_existing_time);
     void increaseTearExistingTime(double dtear_existing_time);
 
