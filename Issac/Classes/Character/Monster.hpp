@@ -187,7 +187,7 @@ public:
 	virtual void fireStrategy(Vector<Tear *> &tears_);
 	virtual void giveBirth(Vector<Monster *> &monsters_) ;
     string getDeadAnimation() override;
-    void build_sprite_frame_cache(Texture2D *texture_) const;
+    void build_sprite_frame_cache(Texture2D *texture_, Texture2D *dead_texture_) const;
     static void build_animation_cache();
 };
 
