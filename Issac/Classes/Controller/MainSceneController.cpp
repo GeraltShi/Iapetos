@@ -75,6 +75,17 @@ int MainSceneController::check_key(EventKeyboard::KeyCode keyCode) const
                     SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/diptera sonata(basement).wav",true);
                 }
                 break;
+            case EventKeyboard::KeyCode::KEY_D:
+                {
+                RoomService::getInstance()->initDebug();
+                PlayerService::getInstance()->init();
+                const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_init_room_id());
+                TransitionScene* tx = TransitionFade::create(0.7, room);
+                Director::getInstance()->pushScene(tx);
+                SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);
+                SimpleAudioEngine::getInstance()->playBackgroundMusic("res/music/diptera sonata(basement).wav", true);
+                break;
+                }
             case EventKeyboard::KeyCode::KEY_ESCAPE:
                 scene_->model.view = 0;
                 break;

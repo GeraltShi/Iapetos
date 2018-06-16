@@ -85,6 +85,8 @@ int RoomSceneController::check_key_inRoom(EventKeyboard::KeyCode keyCode)
                 break; 
             }
             case EventKeyboard::KeyCode::KEY_D: {
+                scene_->stopAllActions();
+                scene_->model.game_stat = 0;
                 RoomService::getInstance()->initDebug();
                 PlayerService::getInstance()->init();
                 const auto room = RoomSceneController::createScene(RoomService::getInstance()->get_init_room_id());
