@@ -675,63 +675,70 @@ void RoomScene::update(float delta)
         //monster移动和死亡
         for (int i = 0; i < monsters_.size();)
         {
-            if (monsters_.at(i)->getHealth() <= 0)
-            {
-                //血量<0死亡了
-                Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
-                SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 0, 1, 1));
-                auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
-                temp_sprite->setPosition(monsters_.at(i)->getPosition());
-                addChild(temp_sprite, 3);
-                
-                auto spriteCache = SpriteFrameCache::getInstance();
-                int n = rand() % 6;
-                Sprite * blood_pool = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("blood_pool_small"+to_string(n)));
-                blood_pool->setOpacity(0xaf);
-                blood_pool->setPosition(monsters_.at(i)->getPosition());
-                this->addChild(blood_pool,2);
-                blood_pool->runAction(Sequence::create(DelayTime::create(2.0), FadeOut::create(3.0),RemoveSelf::create(true),NULL));
+			if (player->getHealth() <= 0) {
+				monsters_.at(i)->move(5);
+				i++;
+			}
+			else{
+				if (monsters_.at(i)->getHealth() <= 0)
+				{
+					//血量<0死亡了
+					Texture2D *temp_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/tears.png");
+					SpriteFrame *temp_frame = SpriteFrame::createWithTexture(temp_texture, Rect(0, 0, 1, 1));
+					auto temp_sprite = Sprite::createWithSpriteFrame(temp_frame);
+					temp_sprite->setPosition(monsters_.at(i)->getPosition());
+					addChild(temp_sprite, 3);
 
-                monsters_.at(i)->removeFromParent();
+					auto spriteCache = SpriteFrameCache::getInstance();
+					int n = rand() % 6;
+					Sprite * blood_pool = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("blood_pool_small" + to_string(n)));
+					blood_pool->setOpacity(0xaf);
+					blood_pool->setPosition(monsters_.at(i)->getPosition());
+					this->addChild(blood_pool, 2);
+					blood_pool->runAction(Sequence::create(DelayTime::create(2.0), FadeOut::create(3.0), RemoveSelf::create(true), NULL));
 
-                const auto dead_ani = AnimationCache::getInstance()->getAnimation(monsters_.at(i)->getDeadAnimation());
-                const auto dead_anim = Animate::create(dead_ani);
-                const auto dead_animate = Sequence::create(ScaleTo::create(0,0.5),dead_anim, RemoveSelf::create(true), NULL);
-                temp_sprite->runAction(dead_animate);
-                
-                monsters_.erase(monsters_.begin() + i);
-            }
-            else
-            {
-                //是否对其操作
-                if (monsters_.at(i)->getColClog() != 0)
-                {
-                    monsters_.at(i)->setColClog(monsters_.at(i)->getColClog() - 1);
-                    if (monsters_.at(i)->getColClog() == 0)
-                    {
-                        monsters_.at(i)->move(5);
-                    }
-                }
-                else
-                {
-                    monsters_.at(i)->moveStrategy(room_vm_);
-                    //开火
-                    int nowtears_Size = tears_.size();
-                    monsters_.at(i)->fireStrategy(tears_);
-                    for (int j = nowtears_Size; j < tears_.size(); j++)
-                    {
-                        addChild(tears_.at(j));
-                    }
-                    //生宝宝
-                    int nowMon_Size = monsters_.size();
-                    monsters_.at(i)->giveBirth(monsters_);
-                    for (int j = nowMon_Size; j < monsters_.size(); j++)
-                    {
-                        addChild(monsters_.at(j));
-                    }
-                }
-                i++;
-            }
+					monsters_.at(i)->removeFromParent();
+
+					const auto dead_ani = AnimationCache::getInstance()->getAnimation(monsters_.at(i)->getDeadAnimation());
+					const auto dead_anim = Animate::create(dead_ani);
+					const auto dead_animate = Sequence::create(ScaleTo::create(0, 0.5), dead_anim, RemoveSelf::create(true), NULL);
+					temp_sprite->runAction(dead_animate);
+
+					monsters_.erase(monsters_.begin() + i);
+				}
+				else
+				{
+					//是否对其操作
+					if (monsters_.at(i)->getColClog() != 0)
+					{
+						monsters_.at(i)->setColClog(monsters_.at(i)->getColClog() - 1);
+						if (monsters_.at(i)->getColClog() == 0)
+						{
+							monsters_.at(i)->move(5);
+						}
+					}
+					else
+					{
+						monsters_.at(i)->moveStrategy(room_vm_);
+						//开火
+						int nowtears_Size = tears_.size();
+						monsters_.at(i)->fireStrategy(tears_);
+						for (int j = nowtears_Size; j < tears_.size(); j++)
+						{
+							addChild(tears_.at(j));
+						}
+						//生宝宝
+						int nowMon_Size = monsters_.size();
+						monsters_.at(i)->giveBirth(monsters_);
+						for (int j = nowMon_Size; j < monsters_.size(); j++)
+						{
+							addChild(monsters_.at(j));
+						}
+					}
+					i++;
+				}
+			}
+
         }
         //player能不能飞
         if (player->getEnFly())
