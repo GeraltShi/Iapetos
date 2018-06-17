@@ -90,7 +90,7 @@ bool Collectable::init(int collectableType)
 		enFly = true;
             name_string = "Darcula Collected";
 		break;
-    case(9):    //人能够飞了, 最好能换成吸血鬼皮肤
+    case(9):    //炸弹
         temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_016_bomb.png"), Rect(128, 64, 32, 32));
             bombNum = 1;
         name_string = "Bomb Collected";

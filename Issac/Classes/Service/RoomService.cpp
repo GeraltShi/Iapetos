@@ -451,7 +451,7 @@ RoomService *RoomService::inst_ = nullptr;
 //roomType:21+代表Boss房,21:Boss-flyDaddy
 int randomRoom() {
     if (rand() % 20 == 0) {
-        return rand() % 9 + 8;
+        return rand() % 10 + 8;
     }
     else {
         return rand() % 7 + 1;
