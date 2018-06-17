@@ -1446,6 +1446,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
 			nodeA->setShootInterval(nodeA->getShootInterval() + nodeB->getShootInterval());
             nodeA->setEnFly(nodeA->getEnFly() || nodeB->getEnFly());
             nodeA->setEnBounce(nodeA->getEnBounce() || nodeB->getEnBounce());
+            nodeA->setBombNum(nodeA->getBombNum() + nodeB->getBombNum());
             if (nodeB->getEnHalfTearDis())
                 nodeA->setTearExistTime(nodeA->getTearExistTime() / 2);
             //物品消失
