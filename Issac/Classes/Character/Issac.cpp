@@ -505,6 +505,7 @@ void Issac::hurt(){
 //    this->getChildByName("head")->runAction(hurtAnimate);
     if(this->getHealth()>0){
         this->runAction(Spawn::create(Blink::create(0.5, 4),NULL));
+        SimpleAudioEngine::getInstance()->playEffect("res/sfx/hurt grunt 2.wav", false);
     }
 }
 
