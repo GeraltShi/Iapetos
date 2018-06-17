@@ -28,9 +28,6 @@ bool RoomScene::init(int roomID)
     room_vm_ = RoomService::getInstance()->enter_room(roomID);
     mini_map_vm_ = RoomService::getInstance()->get_mini_map(roomID);
 
-    //画物理引擎框
-//    getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-
     //设置恢复Model
     //model = RoomService::getInstance()->get_prev_room_scene();
 
@@ -248,14 +245,14 @@ bool RoomScene::init(int roomID)
             if (room_vm_.getRoomMap(i, j) == 1)
             {
                 //小石头
-                stones_.pushBack(Stone::createStone(1, Size(26, 26)));
+                stones_.pushBack(Stone::createStone(1, Size(27, 27)));
                 stones_.at(stones_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width + RoomUnitSize.width / 2, 48 + j * RoomUnitSize.height + RoomUnitSize.height / 2));
                 addChild(stones_.at(stones_.size() - 1), 2);
             }
             if (room_vm_.getRoomMap(i, j) == 2 && i >= 1 && j >= 1 && room_vm_.getRoomMap(i - 1, j - 1) == 2)
             {
                 //大石头
-                stones_.pushBack(Stone::createStone(2, Size(52, 52)));
+                stones_.pushBack(Stone::createStone(2, Size(54, 54)));
                 stones_.at(stones_.size() - 1)->setPosition(Vec2(48 + i * RoomUnitSize.width, 48 + j * RoomUnitSize.height));
                 addChild(stones_.at(stones_.size() - 1), 2);
             }

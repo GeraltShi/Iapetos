@@ -504,14 +504,18 @@ void Fatty::moveStrategy(const RoomViewModel &roomMap)
             }
             head++;
         }
-    mark:
-        GridPoint des1 = destination;
-        while (!(roomFlag[destination.x][destination.y] == startPos))
-        {
-            destination = roomFlag[destination.x][destination.y];
-        }
-        this->move(ToPointDir(Vec2(RoomUnitSize.width * destination.x + 61, RoomUnitSize.height * destination.y + 61)));
-    }
+	mark:
+		if ((roomFlag[destination.x][destination.y].x) != -1) {
+			while (!(roomFlag[destination.x][destination.y] == startPos))
+			{
+				destination = roomFlag[destination.x][destination.y];
+			}
+			this->move(ToPointDir(Vec2(RoomUnitSize.width * destination.x + 61, RoomUnitSize.height * destination.y + 61)));
+		}
+		else {
+			this->move(ToPointDir(playerPos));
+		}
+	}
 }
 
 //---------------------------------------------------------FattyFire----------------------------------------------------------
@@ -1017,6 +1021,9 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 	    GridPoint destination = CalGridPos(playerPos), startPos = CalGridPos(this->getPosition()); 
 		quary.push_back(startPos);
 	    roomFlag[startPos.x][startPos.y] = GridPoint(99, 99);
+		if (destination.x == 9 && destination.y == 4) {
+			head = 0;
+		}
 	    while (head < quary.size())
 	    {
 	        for (int i = 0; i < 4; i++)
@@ -1033,12 +1040,16 @@ void Gaper::moveStrategy(const RoomViewModel & roomMap)
 	        head++;
 	    }
 	mark:
-	    GridPoint des1 = destination;
-	    while (!(roomFlag[destination.x][destination.y] == startPos))
-	    {
-	        destination = roomFlag[destination.x][destination.y];
-	    }
-	    this->move(ToPointDir(Vec2(RoomUnitSize.width * destination.x + 61, RoomUnitSize.height * destination.y + 61)));
+		if ((roomFlag[destination.x][destination.y].x) != -1) {
+			while (!(roomFlag[destination.x][destination.y] == startPos))
+			{
+				destination = roomFlag[destination.x][destination.y];
+			}
+			this->move(ToPointDir(Vec2(RoomUnitSize.width * destination.x + 61, RoomUnitSize.height * destination.y + 61)));
+		}
+		else {
+		this->move(ToPointDir(playerPos));
+		}
 	}
 }
 

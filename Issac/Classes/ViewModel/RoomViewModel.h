@@ -15,7 +15,7 @@
 USING_NS_CC;
 using namespace std;
 
-const Size RoomUnitSize = Size(26.62, 27.14);
+const Size RoomUnitSize = Size(346.0/13.0, 190.0/7.0);
 
 class RoomViewModel
 {
