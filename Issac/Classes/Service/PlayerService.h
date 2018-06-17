@@ -55,6 +55,9 @@ public:
 
     bool getEnBounce() const;
     void setEnBounce(bool enBounce);
+    
+    int getBombNum() const;
+    void setBombNum(int bombNum);
 
 private:
     PlayerService();

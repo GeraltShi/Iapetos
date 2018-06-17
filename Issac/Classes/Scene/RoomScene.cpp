@@ -274,17 +274,22 @@ bool RoomScene::init(int roomID)
     healthbar->setPosition(70, 250);
     addChild(healthbar, 8);
 
+    Sprite *hud_bomb = Sprite::createWithTexture(texture_hud, Rect(0, 16, 16, 16));
+    hud_bomb->setPosition(30, 224);
+    addChild(hud_bomb, 8);
+    string bombnum_string = to_string(player->getBombNum());
+    Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+    Count_bomb->enableOutline(Color4B::BLACK, 3);
+    Count_bomb->setPosition(50,224);
+    this->addChild(Count_bomb,8,"Count_bomb");
     /*
     Sprite *hud_coin = Sprite::createWithTexture(texture_hud, Rect(0, 0, 16, 16));
     hud_coin->setPosition(30, 224);
-    Sprite *hud_bomb = Sprite::createWithTexture(texture_hud, Rect(0, 16, 16, 16));
-    hud_bomb->setPosition(30, 208);
     Sprite *hud_goldkey = Sprite::createWithTexture(texture_hud, Rect(16, 16, 16, 16));
     hud_goldkey->setPosition(30, 192);
     Sprite *hud_silverkey = Sprite::createWithTexture(texture_hud, Rect(16, 0, 16, 16));
     hud_silverkey->setPosition(30, 176);
     addChild(hud_coin, 8);
-    addChild(hud_bomb, 8);
     addChild(hud_goldkey, 8);
     addChild(hud_silverkey, 8);
     //数字缓存加载，需专门处理物品计数和字符显示，字符大小：18x31
@@ -578,24 +583,69 @@ void RoomScene::update(float delta)
         if (model.bomb)
         {
             cout << "bomb placed" << endl;
-            //TODO 炸弹爆炸动画，爆炸范围判定，销毁
-            //TODO 因为一次放一个炸弹，因此炸弹预生成。如果同时放多个，需要改
-            bomb = SimpleItem::createSimpleItem();
-            addChild(bomb, 3);
-            bomb->setPosition(player->getPositionX(), player->getPositionY());
             model.bomb = false;
-            const auto bomb_ani = AnimationCache::getInstance()->getAnimation("explosion_animation");
-            const auto bomb_anim = Animate::create(bomb_ani);
-            auto action1 = CallFunc::create(  [&](){
-                auto spriteCache = SpriteFrameCache::getInstance();
-                int n = rand() % 8;
-                Sprite * bomb_radius = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("bombradius"+to_string(n)));
-                bomb_radius->setPosition(bomb->getPositionX(), bomb->getPositionY());
-                this->addChild(bomb_radius,2);
-                bomb_radius->runAction(Sequence::create(FadeOut::create(3.0),RemoveSelf::create(true),NULL));
-            }  ); 
-            const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
-            bomb->runAction(bomb_animate);
+            if(player->getBombNum()>0){
+                const auto bombtexture = Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_016_bomb.png");
+                bomb = Sprite::createWithTexture(bombtexture, Rect(0,0,32,32));
+                addChild(bomb, 3);
+                bomb->setPosition(player->getPositionX(), player->getPositionY());
+                
+                player->setBombNum(player->getBombNum()-1);
+                
+                this->removeChildByName("Count_bomb");
+                string bombnum_string = to_string(player->getBombNum());
+                Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+                Count_bomb->enableOutline(Color4B::BLACK, 3);
+                Count_bomb->setPosition(50,224);
+                this->addChild(Count_bomb,8,"Count_bomb");
+                
+                const auto bomb_ani = AnimationCache::getInstance()->getAnimation("explosion_animation");
+                const auto bomb_anim = Animate::create(bomb_ani);
+                auto action1 = CallFunc::create(  [&](){
+                    auto spriteCache = SpriteFrameCache::getInstance();
+                    int n = rand() % 8;
+                    Sprite * bomb_radius = Sprite::createWithSpriteFrame(spriteCache->getSpriteFrameByName("bombradius"+to_string(n)));
+                    bomb_radius->setPosition(bomb->getPositionX(), bomb->getPositionY());
+                    this->addChild(bomb_radius,2);
+                    bomb_radius->runAction(Sequence::create(FadeOut::create(3.0),RemoveSelf::create(true),NULL));
+                }  );
+                
+                auto action2 = CallFunc::create([&](){
+                    for(int i = 0; i < monsters_.size(); ++i){
+                        auto deltax = monsters_.at(i)->getPositionX()-bomb->getPositionX();
+                        auto deltay = monsters_.at(i)->getPositionY()-bomb->getPositionY();
+                        if(deltax*deltax + deltay*deltay < 2304.f){//爆炸半径48
+                            monsters_.at(i)->setHealth(monsters_.at(i)->getHealth()-20);
+                        }
+                    }
+                });
+                auto action3 = CallFunc::create([&](){
+                    auto deltax = player->getPositionX()-bomb->getPositionX();
+                    auto deltay = player->getPositionY()-bomb->getPositionY();
+                    if(deltax*deltax + deltay*deltay < 48*48){//爆炸半径48
+                        player->setHealth(player->getHealth()-2);
+                        player->hurt();
+                        int x = rand()%3-2;//-1~1随机数
+                        int y = rand()%3-2;
+                        player->runAction(MoveBy::create(0.1,Vec2(x*10,y*10)));
+                    }
+                });
+                const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,action2,action3,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
+                bomb->runAction(bomb_animate);
+                prev_bomb_num = player->getBombNum();
+            } else {
+                this->getChildByName("Count_bomb")->runAction(Blink::create(0.5,4));
+            }
+            
+        }
+        if(player->getBombNum()>prev_bomb_num){//捡到炸弹
+            this->removeChildByName("Count_bomb");
+            string bombnum_string = to_string(player->getBombNum());
+            Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+            Count_bomb->enableOutline(Color4B::BLACK, 3);
+            Count_bomb->setPosition(50,224);
+            this->addChild(Count_bomb,8,"Count_bomb");
+
         }
 
         //tear倒计时和消失
@@ -740,6 +790,11 @@ void RoomScene::update(float delta)
                         default:
                             break;
                     }
+                    player->removeChildByName("body");
+                    const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
+                    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
+                    Sprite * bodySprite = Sprite::createWithSpriteFrame(bodyFrame);
+                    player->addChild(bodySprite, 0, "body");
                     
                 }
                 prev_walk = player->getPrevWalkOrientation();
@@ -1279,6 +1334,64 @@ void RoomScene::build_frame_cache() const
     fcache->addSpriteFrame(bombradius5,"bombradius5");
     fcache->addSpriteFrame(bombradius6,"bombradius6");
     fcache->addSpriteFrame(bombradius7,"bombradius7");
+    
+    Texture2D * explosion_texture = Director::getInstance()->getTextureCache()->addImage("res/gfx/effects/effect_029_explosion.png");
+    const auto explosion0 = SpriteFrame::createWithTexture(explosion_texture,Rect(0,0,96,96));
+    const auto explosion1 = SpriteFrame::createWithTexture(explosion_texture,Rect(96,0,96,96));
+    const auto explosion2 = SpriteFrame::createWithTexture(explosion_texture,Rect(192,0,96,96));
+    const auto explosion3 = SpriteFrame::createWithTexture(explosion_texture,Rect(288,0,96,96));
+    const auto explosion4 = SpriteFrame::createWithTexture(explosion_texture,Rect(0,96,96,96));
+    const auto explosion5 = SpriteFrame::createWithTexture(explosion_texture,Rect(96,96,96,96));
+    const auto explosion6 = SpriteFrame::createWithTexture(explosion_texture,Rect(192,96,96,96));
+    const auto explosion7 = SpriteFrame::createWithTexture(explosion_texture,Rect(288,96,96,96));
+    const auto explosion8 = SpriteFrame::createWithTexture(explosion_texture,Rect(0,192,96,96));
+    const auto explosion9 = SpriteFrame::createWithTexture(explosion_texture,Rect(96,192,96,96));
+    const auto explosion10 = SpriteFrame::createWithTexture(explosion_texture,Rect(192,192,96,96));
+    const auto explosion11 = SpriteFrame::createWithTexture(explosion_texture,Rect(288,192,96,96));
+    fcache->addSpriteFrame(explosion0,"explosion0");
+    fcache->addSpriteFrame(explosion1,"explosion1");
+    fcache->addSpriteFrame(explosion2,"explosion2");
+    fcache->addSpriteFrame(explosion3,"explosion3");
+    fcache->addSpriteFrame(explosion4,"explosion4");
+    fcache->addSpriteFrame(explosion5,"explosion5");
+    fcache->addSpriteFrame(explosion6,"explosion6");
+    fcache->addSpriteFrame(explosion7,"explosion7");
+    fcache->addSpriteFrame(explosion8,"explosion8");
+    fcache->addSpriteFrame(explosion9,"explosion9");
+    fcache->addSpriteFrame(explosion10,"explosion10");
+    fcache->addSpriteFrame(explosion11,"explosion11");
+    
+    auto spriteCache = SpriteFrameCache::getInstance();
+    auto aniCache = AnimationCache::getInstance();
+    
+    const auto explosion_frame0 = spriteCache->getSpriteFrameByName("explosion0");
+    const auto explosion_frame1 = spriteCache->getSpriteFrameByName("explosion1");
+    const auto explosion_frame2 = spriteCache->getSpriteFrameByName("explosion2");
+    const auto explosion_frame3 = spriteCache->getSpriteFrameByName("explosion3");
+    const auto explosion_frame4 = spriteCache->getSpriteFrameByName("explosion4");
+    const auto explosion_frame5 = spriteCache->getSpriteFrameByName("explosion5");
+    const auto explosion_frame6 = spriteCache->getSpriteFrameByName("explosion6");
+    const auto explosion_frame7 = spriteCache->getSpriteFrameByName("explosion7");
+    const auto explosion_frame8 = spriteCache->getSpriteFrameByName("explosion8");
+    const auto explosion_frame9 = spriteCache->getSpriteFrameByName("explosion9");
+    const auto explosion_frame10 = spriteCache->getSpriteFrameByName("explosion10");
+    const auto explosion_frame11 = spriteCache->getSpriteFrameByName("explosion11");
+    Vector<SpriteFrame *> explosionFrames;
+    explosionFrames.pushBack(explosion_frame0);
+    explosionFrames.pushBack(explosion_frame1);
+    explosionFrames.pushBack(explosion_frame2);
+    explosionFrames.pushBack(explosion_frame3);
+    explosionFrames.pushBack(explosion_frame4);
+    explosionFrames.pushBack(explosion_frame5);
+    explosionFrames.pushBack(explosion_frame6);
+    explosionFrames.pushBack(explosion_frame7);
+    explosionFrames.pushBack(explosion_frame8);
+    explosionFrames.pushBack(explosion_frame9);
+    explosionFrames.pushBack(explosion_frame10);
+    explosionFrames.pushBack(explosion_frame11);
+    Animation *explosion_animation = Animation::createWithSpriteFrames(explosionFrames, 0.1f);
+    explosion_animation->setLoops(1);
+    aniCache->addAnimation(explosion_animation, "explosion_animation");
 }
 
 bool RoomScene::onContactBegin(PhysicsContact &contact)
@@ -1407,6 +1520,7 @@ bool RoomScene::onContactBegin(PhysicsContact &contact)
 			nodeA->setShootInterval(nodeA->getShootInterval() + nodeB->getShootInterval());
             nodeA->setEnFly(nodeA->getEnFly() || nodeB->getEnFly());
             nodeA->setEnBounce(nodeA->getEnBounce() || nodeB->getEnBounce());
+            nodeA->setBombNum(nodeA->getBombNum() + nodeB->getBombNum());
             if (nodeB->getEnHalfTearDis())
                 nodeA->setTearExistTime(nodeA->getTearExistTime() / 2);
             //物品消失

@@ -231,6 +231,7 @@ void RoomViewModel::init(int roomType, bool visited, int barrierType, bool item_
             room_map[6][0] = 26;
             room_map[7][0] = 27;
             room_map[8][0] = 28;
+            room_map[9][0] = 29;
         }
     }
 }

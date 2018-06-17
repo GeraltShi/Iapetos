@@ -23,7 +23,6 @@
 		46880B8219C43A67006E1F66 /* HelloWorld.png in Resources */ = {isa = PBXBuildFile; fileRef = 46880B7A19C43A67006E1F66 /* HelloWorld.png */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
-		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		503AE10017EB989F00D1A890 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FB17EB989F00D1A890 /* AppController.mm */; };
 		503AE10117EB989F00D1A890 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FC17EB989F00D1A890 /* main.m */; };
 		503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FF17EB989F00D1A890 /* RootViewController.mm */; };
@@ -103,6 +102,9 @@
 		5259AC7E20D151F90017A803 /* PlayerViewModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */; };
 		5259AC8420D3FF4E0017A803 /* Collectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC8220D3FF4D0017A803 /* Collectable.cpp */; };
 		5259AC8520D3FF4E0017A803 /* Collectable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5259AC8220D3FF4D0017A803 /* Collectable.cpp */; };
+		525FEEAB20D56BD000BF9D32 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 525FEEAA20D56BD000BF9D32 /* Icon.icns */; };
+		525FEEAC20D56BD000BF9D32 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 525FEEAA20D56BD000BF9D32 /* Icon.icns */; };
+		525FEEAE20D56C4300BF9D32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 525FEEAD20D56C4300BF9D32 /* Images.xcassets */; };
 		5299141620A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		5299141720A7E04900FBFBB4 /* RoomSceneModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
@@ -180,7 +182,6 @@
 		46880B7A19C43A67006E1F66 /* HelloWorld.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HelloWorld.png; sourceTree = "<group>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE0FA17EB989F00D1A890 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppController.h; path = ios/AppController.h; sourceTree = SOURCE_ROOT; };
 		503AE0FB17EB989F00D1A890 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppController.mm; path = ios/AppController.mm; sourceTree = SOURCE_ROOT; };
@@ -254,6 +255,8 @@
 		5259AC7C20D151F90017A803 /* PlayerViewModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerViewModel.cpp; sourceTree = "<group>"; };
 		5259AC8220D3FF4D0017A803 /* Collectable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collectable.cpp; sourceTree = "<group>"; };
 		5259AC8320D3FF4E0017A803 /* Collectable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collectable.h; sourceTree = "<group>"; };
+		525FEEAA20D56BD000BF9D32 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
+		525FEEAD20D56C4300BF9D32 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Issac-desktop/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		5299141420A7E04900FBFBB4 /* RoomSceneModel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RoomSceneModel.cpp; sourceTree = "<group>"; };
 		5299141520A7E04900FBFBB4 /* RoomSceneModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RoomSceneModel.hpp; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
@@ -401,6 +404,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				525FEEAD20D56C4300BF9D32 /* Images.xcassets */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
 				46880B7619C43A67006E1F66 /* CloseNormal.png */,
@@ -439,7 +443,7 @@
 		503AE0F517EB97AB00D1A890 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
-				503AE0F617EB97AB00D1A890 /* Icon.icns */,
+				525FEEAA20D56BD000BF9D32 /* Icon.icns */,
 				503AE0F717EB97AB00D1A890 /* Info.plist */,
 			);
 			name = Icons;
@@ -519,8 +523,8 @@
 			isa = PBXGroup;
 			children = (
 				5259AC5020CD446F0017A803 /* RoomService.h */,
-				5259AC7620D151E50017A803 /* PlayerService.cpp */,
 				5259AC4F20CD446F0017A803 /* RoomService.cpp */,
+				5259AC7620D151E50017A803 /* PlayerService.cpp */,
 				5259AC7820D151E60017A803 /* PlayerService.h */,
 			);
 			path = Service;
@@ -708,6 +712,7 @@
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
+				525FEEAB20D56BD000BF9D32 /* Icon.icns in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
@@ -733,7 +738,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8219C43A67006E1F66 /* HelloWorld.png in Resources */,
-				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
+				525FEEAE20D56C4300BF9D32 /* Images.xcassets in Resources */,
 				5242193F205153CF009A404A /* idle_2.png in Resources */,
 				5242193B205153CF009A404A /* move_2.png in Resources */,
 				52421939205153CF009A404A /* idle_1.png in Resources */,
@@ -745,6 +750,7 @@
 				46880B7E19C43A67006E1F66 /* CloseSelected.png in Resources */,
 				5210A20120A533240081CC78 /* .gitkeep in Resources */,
 				52421941205153CF009A404A /* move_1.png in Resources */,
+				525FEEAC20D56BD000BF9D32 /* Icon.icns in Resources */,
 				52421937205153CF009A404A /* move_4.png in Resources */,
 				5210A20320A533240081CC78 /* .gitkeep in Resources */,
 			);
@@ -900,6 +906,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -931,6 +938,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;

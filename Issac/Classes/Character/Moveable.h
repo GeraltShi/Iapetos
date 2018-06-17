@@ -42,6 +42,7 @@ class Moveable : public Sprite
 	CC_SYNTHESIZE(bool, enFly, EnFly)
 	CC_SYNTHESIZE(bool, enBounce, EnBounce)
 	CC_SYNTHESIZE(bool, enhalfTearDis, EnHalfTearDis)
+    CC_SYNTHESIZE(int, bombNum, BombNum)
 
 	//初步设定Issac的血量为整数，单位为半颗血。Monster血量为实数，<0时死亡
 	CC_SYNTHESIZE(int, health, Health)

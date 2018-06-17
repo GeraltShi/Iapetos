@@ -33,6 +33,7 @@ bool Issac::init()
     enFly = PlayerService::getInstance()->getEnFly();
     enBounce = PlayerService::getInstance()->getEnBounce();
     shootInterval = PlayerService::getInstance()->getShootInterval();
+    bombNum = PlayerService::getInstance()->getBombNum();
     this->setTag(1);
 
 
@@ -563,6 +564,11 @@ bool Issac::getEnBounce() const
     return PlayerService::getInstance()->getEnBounce();
 }
 
+int Issac::getBombNum() const
+{
+    return PlayerService::getInstance()->getBombNum();
+}
+
 void Issac::setHealth(int health)
 {
     this->health = health;
@@ -621,4 +627,10 @@ void Issac::setEnBounce(bool var)
 {
     this->enBounce = var;
     PlayerService::getInstance()->setEnBounce(var);
+}
+
+void Issac::setBombNum(int var)
+{
+    this->bombNum = var;
+    PlayerService::getInstance()->setBombNum(var);
 }

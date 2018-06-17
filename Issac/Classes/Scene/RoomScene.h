@@ -55,7 +55,7 @@ public:
     CC_SYNTHESIZE_RETAIN(SpriteFrame*, fullheart, Fullheart)
     CC_SYNTHESIZE_RETAIN(SpriteFrame*, halfheart, Halfheart)
     CC_SYNTHESIZE_RETAIN(Sprite*, healthbar, Healthbar)
-    CC_SYNTHESIZE_RETAIN(SimpleItem*, bomb, Bomb)
+    CC_SYNTHESIZE_RETAIN(Sprite*, bomb, Bomb)
 	CC_SYNTHESIZE(int, roomID, RoomID)
 
     void set_event_listener(IRoomSceneListener *listener);
@@ -67,6 +67,7 @@ public:
     bool door_removed = false;
     bool dead_ani_generated = false;
     int prev_walk = 5;
+    int prev_bomb_num = 2;
 private:
     IRoomSceneListener * listener_ = nullptr;
     void build_frame_cache() const;

@@ -1078,8 +1078,8 @@ void Spider::build_sprite_frame_cache(Texture2D *texture_) const
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 16, 32, 16)), "spider_frame3");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 32, 32, 16)), "spider_frame4");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 32, 32, 16)), "spider_frame5");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 64, 32, 16)), "spider_frame6");
-    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 64, 32, 16)), "spider_frame7");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 0, 48, 32, 16)), "spider_frame6");
+    spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(32 * 1, 48, 32, 16)), "spider_frame7");
 
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 1, 0, 64, 64)), "spider_dead_frame0");
     spriteCache->addSpriteFrame(SpriteFrame::createWithTexture(texture_, Rect(64 * 2, 0, 64, 64)), "spider_dead_frame1");
@@ -1194,7 +1194,7 @@ bool Spider::init()
         return false;
     }
     const auto spider_texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/monsters/classic/monster_080_spider.png");
-    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(spider_texture_, Rect(0, 0, 32, 32));
+    SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(spider_texture_, Rect(0, 0, 32, 16));
     Sprite *bodySprite = createWithSpriteFrame(bodyFrame);
 
     build_sprite_frame_cache(spider_texture_);
