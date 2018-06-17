@@ -982,7 +982,7 @@ bool Gaper::init()
 
     this->addChild(headSprite, 1, "head");
     this->addChild(bodySprite, 0, "body");
-    headSprite->setPosition(Vec2(0, 10));
+    headSprite->setPosition(Vec2(0, 12));
     this->setPosition(Vec2(221, 143));
 
 	radiusSize = 11;    //Gaper碰撞大小

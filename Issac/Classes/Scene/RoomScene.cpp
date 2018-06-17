@@ -852,7 +852,7 @@ void RoomScene::update(float delta)
                 
                 const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
                 Sprite * deadbody = Sprite::createWithTexture(texture_, Rect(192,128,64,64));
-                deadbody->setPosition(player->getPosition());
+                deadbody->setPosition(player->getPositionX(),player->getPositionY()+20);
                 this->addChild(deadbody,3);
                 SimpleAudioEngine::getInstance()->playEffect("res/sfx/isaac dies new.wav", false);
             }
