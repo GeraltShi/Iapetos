@@ -452,7 +452,7 @@ RoomService *RoomService::inst_ = nullptr;
 int randomRoom() {
     if (rand() % 20 == 0) {
         return rand() % 10 + 8;
-    }
+	}
     else {
         return rand() % 7 + 1;
     }
@@ -626,11 +626,11 @@ void RoomService::init()
 
     //在出生点边上添加一个宝物房
     if (m[1][0] != MAZEWALL) {
-        room_map_[m[1][0]].current_room_type = rand() % 9 + 8;
+        room_map_[m[1][0]].current_room_type = rand() % 10 + 8;
         room_map_[m[1][0]].current_barrier_type = 0;
     }
     else {
-        room_map_[m[0][1]].current_room_type = rand() % 9 + 8;
+        room_map_[m[0][1]].current_room_type = rand() % 10 + 8;
         room_map_[m[0][1]].current_barrier_type = 0;
     }
 
