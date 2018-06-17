@@ -759,34 +759,34 @@ void RoomScene::update(float delta)
             {
                 player->move(model.walk_direction, model.tear_direction);
                 if(prev_walk!=model.walk_direction && model.walk_direction == 5){
-                    switch (prev_walk) {
-                        case 1:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(-2/ROOT2,2/ROOT2)),MoveBy::create(0.1,Vec2(-0.5/ROOT2,0.5/ROOT2)),NULL));
-                            break;
-                        case 2:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(0,2)),MoveBy::create(0.1,Vec2(0,0.5)),NULL));
-                            break;
-                        case 3:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(2/ROOT2,2/ROOT2)),MoveBy::create(0.1,Vec2(0.5/ROOT2,0.5/ROOT2)),NULL));
-                            break;
-                        case 4:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(-2,0)),MoveBy::create(0.1,Vec2(-0.5,0)),NULL));
-                            break;
-                        case 6:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(2,0)),MoveBy::create(0.1,Vec2(0.5,0)),NULL));
-                            break;
-                        case 7:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(-2/ROOT2,-2/ROOT2)),MoveBy::create(0.1,Vec2(-0.5/ROOT2,-0.5/ROOT2)),NULL));
-                            break;
-                        case 8:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(0,-2)),MoveBy::create(0.1,Vec2(0,-0.5)),NULL));
-                            break;
-                        case 9:
-                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(2/ROOT2,-2/ROOT2)),MoveBy::create(0.1,Vec2(0.5/ROOT2,-0.5/ROOT2)),NULL));
-                            break;
-                        default:
-                            break;
-                    }
+//                    switch (prev_walk) {
+//                        case 1:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(-2/ROOT2,2/ROOT2)),MoveBy::create(0.1,Vec2(-0.5/ROOT2,0.5/ROOT2)),NULL));
+//                            break;
+//                        case 2:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(0,2)),MoveBy::create(0.1,Vec2(0,0.5)),NULL));
+//                            break;
+//                        case 3:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(2/ROOT2,2/ROOT2)),MoveBy::create(0.1,Vec2(0.5/ROOT2,0.5/ROOT2)),NULL));
+//                            break;
+//                        case 4:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(-2,0)),MoveBy::create(0.1,Vec2(-0.5,0)),NULL));
+//                            break;
+//                        case 6:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(2,0)),MoveBy::create(0.1,Vec2(0.5,0)),NULL));
+//                            break;
+//                        case 7:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(-2/ROOT2,-2/ROOT2)),MoveBy::create(0.1,Vec2(-0.5/ROOT2,-0.5/ROOT2)),NULL));
+//                            break;
+//                        case 8:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(0,-2)),MoveBy::create(0.1,Vec2(0,-0.5)),NULL));
+//                            break;
+//                        case 9:
+//                            player->runAction(Sequence::create(MoveBy::create(0.1,Vec2(2/ROOT2,-2/ROOT2)),MoveBy::create(0.1,Vec2(0.5/ROOT2,-0.5/ROOT2)),NULL));
+//                            break;
+//                        default:
+//                            break;
+//                    }
                     player->removeChildByName("body");
                     const auto texture_ = Director::getInstance()->getTextureCache()->addImage("res/gfx/characters/costumes/character_001_isaac.png");
                     SpriteFrame *bodyFrame = SpriteFrame::createWithTexture(texture_, Rect(0, 32, 32, 32));
