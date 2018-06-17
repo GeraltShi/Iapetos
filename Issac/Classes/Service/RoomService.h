@@ -28,14 +28,14 @@ struct Room
     int down_room_id;
     bool visited;
     bool item_taken;
-    /* roomType:0：初始房间
-    roomType:1~7怪物房间。1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider,5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
-    roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里
-    roomType:21+代表Boss房,21:Boss-flyDaddy */
+    // roomType:0：初始房间
+    //roomType:1~7怪物房间。1:全Fatty,2:全Fly ,3:全Gaper ,4:全Spider,5:Spider+FattyFire,6:Fly+FlyFire,7:Fly+GaperFire
+    //roomType:8~20宝藏房间,宝藏房号20是测试用，会将所有宝藏放在房间里
+    //roomType:21+代表Boss房,21:Boss-flyDaddy 
     int current_room_type;
-    /*0没有石头
-      1十字型
-      2田字型*/
+    //0没有石头
+    //  1十字型
+    //  2田字型
     int current_barrier_type;
 };
 
@@ -104,4 +104,4 @@ private:
 
 int randomRoom();
 
-#endif // _ROOMSERVICE_H_
+#endif // _ROOMSERVICE_H_ 

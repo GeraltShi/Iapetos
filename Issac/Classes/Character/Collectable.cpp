@@ -30,6 +30,7 @@ bool Collectable::init(int collectableType)
 	shootInterval = 0;
 	health = 0;
 	attack = 0;
+	bombNum = 0;
 	enFly = false;
 	enBounce = false;
 	enhalfTearDis = false;
@@ -92,7 +93,7 @@ bool Collectable::init(int collectableType)
 		break;
     case(9):    //炸弹
         temp_collectableImg = Sprite::createWithTexture(Director::getInstance()->getTextureCache()->addImage("res/gfx/items/pick ups/pickup_016_bomb.png"), Rect(128, 64, 32, 32));
-            bombNum = 1;
+        bombNum = 1;
         name_string = "Bomb Collected";
         break;
 	}
