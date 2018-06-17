@@ -67,6 +67,7 @@ public:
     bool door_removed = false;
     bool dead_ani_generated = false;
     int prev_walk = 5;
+    int prev_bomb_num = 2;
 private:
     IRoomSceneListener * listener_ = nullptr;
     void build_frame_cache() const;

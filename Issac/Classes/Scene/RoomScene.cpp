@@ -590,6 +590,14 @@ void RoomScene::update(float delta)
                 bomb->setPosition(player->getPositionX(), player->getPositionY());
                 
                 player->setBombNum(player->getBombNum()-1);
+                
+                this->removeChildByName("Count_bomb");
+                string bombnum_string = to_string(player->getBombNum());
+                Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+                Count_bomb->enableOutline(Color4B::BLACK, 3);
+                Count_bomb->setPosition(50,224);
+                this->addChild(Count_bomb,8,"Count_bomb");
+                
                 const auto bomb_ani = AnimationCache::getInstance()->getAnimation("explosion_animation");
                 const auto bomb_anim = Animate::create(bomb_ani);
                 auto action1 = CallFunc::create(  [&](){
@@ -623,16 +631,21 @@ void RoomScene::update(float delta)
                 });
                 const auto bomb_animate = Sequence::create(Blink::create(0.8, 3),Blink::create(0.2, 5),action1,action2,action3,MoveBy::create(0,Vec2(0,40)),bomb_anim,RemoveSelf::create(true),NULL);
                 bomb->runAction(bomb_animate);
+                prev_bomb_num = player->getBombNum();
             } else {
                 this->getChildByName("Count_bomb")->runAction(Blink::create(0.5,4));
             }
+            
         }
-        this->removeChildByName("Count_bomb");
-        string bombnum_string = to_string(player->getBombNum());
-        Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
-        Count_bomb->enableOutline(Color4B::BLACK, 3);
-        Count_bomb->setPosition(50,224);
-        this->addChild(Count_bomb,8,"Count_bomb");
+        if(player->getBombNum()>prev_bomb_num){//捡到炸弹
+            this->removeChildByName("Count_bomb");
+            string bombnum_string = to_string(player->getBombNum());
+            Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+            Count_bomb->enableOutline(Color4B::BLACK, 3);
+            Count_bomb->setPosition(50,224);
+            this->addChild(Count_bomb,8,"Count_bomb");
+
+        }
 
         //tear倒计时和消失
         for (auto it = tears_.begin(); it != tears_.end();)
