@@ -279,6 +279,7 @@ bool RoomScene::init(int roomID)
     addChild(hud_bomb, 8);
     string bombnum_string = to_string(player->getBombNum());
     Label *Count_bomb = Label::createWithTTF(bombnum_string, "fonts/Marker Felt.ttf", 15);
+    Count_bomb->enableOutline(Color4B::BLACK, 3);
     Count_bomb->setPosition(50,224);
     this->addChild(Count_bomb,8,"Count_bomb");
     /*
