@@ -669,7 +669,7 @@ void RoomService::initDebug()
     room__.visited = false;
     room__.item_taken = false;
     room__.current_room_type = 20;
-    room__.current_barrier_type = 0;
+    room__.current_barrier_type = 1;
     room_map_[2] = room__;
 
     room__ = Room();

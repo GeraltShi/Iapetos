@@ -701,7 +701,7 @@ void RoomScene::update(float delta)
 
 					const auto dead_ani = AnimationCache::getInstance()->getAnimation(monsters_.at(i)->getDeadAnimation());
 					const auto dead_anim = Animate::create(dead_ani);
-					const auto dead_animate = Sequence::create(ScaleTo::create(0, 0.5), dead_anim, RemoveSelf::create(true), NULL);
+					const auto dead_animate = Sequence::create(dead_anim, RemoveSelf::create(true), NULL);
 					temp_sprite->runAction(dead_animate);
 
 					monsters_.erase(monsters_.begin() + i);
