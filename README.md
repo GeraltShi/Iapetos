@@ -4,6 +4,15 @@
 
 复旦大学微电子科学与工程系
 
+## 开发环境
+
+cocos2dx 3.16
+
+- Window 10 1803
+  - Visual Studio 2017
+- macOS Sierra 10.12
+  - Xcode 9.2
+
 ### 主要实现功能
 
 - 多个房间切换
@@ -18,8 +27,18 @@
 
 ### 游戏截图
 
+- Windows
+
 ![](./Img/capture1.png)
 
 ![](./Img/capture2.png)
 
 ![](./Img/capture3.png)
+
+- macOS
+
+![](./Img/capture4.png)
+
+![](./Img/capture5.png)
+
+![](./Img/capture6.png)
