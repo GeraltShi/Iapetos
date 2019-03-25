@@ -33,19 +33,23 @@ cocos2dx 3.16
 
 - Windows
 
-![](./Img/capture1.png)
+<p align="center">
+<img src="./Img/capture1.png" width="444">
 
-![](./Img/capture2.png)
+<img src="./Img/capture2.png" width="444">
 
-![](./Img/capture3.png)
+<img src="./Img/capture3.png" width="444">
+</p>
 
 - macOS
 
-![](./Img/capture4.png)
+<p align="center">
+<img src="./Img/capture4.png" width="444">
 
-![](./Img/capture5.png)
+<img src="./Img/capture5.png" width="444">
 
-![](./Img/capture6.png)
+<img src="./Img/capture6.png" width="444">
+</p>
 
 ## Reference
 
