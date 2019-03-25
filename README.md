@@ -1,14 +1,14 @@
-# WheelCreator 小组作品
+# WheelCreator Group DEMO
 
-## Issac 游戏
+## Issac Game
 
-复旦大学微电子科学与工程系
+Microelectronic Science and Engineering, Fudan University
 
 - 施葹 15307130017
 - 蔡俊哲 15307130076
 - 王渝 15307130258
 
-### 开发环境
+### Environment
 
 cocos2dx 3.16
 
@@ -17,19 +17,19 @@ cocos2dx 3.16
 - macOS Sierra 10.12
   - Xcode 9.2
 
-### 主要实现功能
+### Main features realized
 
-- 多个房间切换
-- 单层 Level 完整
-- 多种怪物
-- 眼泪打击动画，怪物死亡动画
-- Boss 逻辑，完整闭环
-- Debug 模式地图和迷宫地图
-- Issac 死亡动画
-- 地面物品系统
-- 炸弹
+- Swap between rooms
+- Complete Single level map and plot
+- Multiple monsters
+- Tear animation and Monster dead animation
+- Complete close-loop boss logic
+- Debug mode map and maze mode map
+- Issac dead animation
+- Object system on the ground
+- BOMBS!
 
-### 游戏截图
+### Snapshots
 
 - Windows
 
@@ -47,9 +47,9 @@ cocos2dx 3.16
 
 ![](./Img/capture6.png)
 
-## 参考资料
+## Reference
 
-### MVC 框架
+### MVC Framework
 
 [cocos2d 里面如何实现 mvc](http://www.cnblogs.com/andyque/archive/2012/03/11/2390814.html)
 
@@ -69,7 +69,7 @@ cocos2dx 3.16
 
 - TODO：最后应使用 IOC/DI 管理所有 Scene、Controller、Service。目前阶段直接例化也可以。
 
-### 贴图纹理相关：Texture、SpriteFrame
+### Texture & SpriteFrame
 
 [cocos2d 随手记(11)——纹理贴图集为什么必须满足“2 的 n 次方规则”*朝寒雨晚来风*新浪博客](http://blog.sina.com.cn/s/blog_623ed7840100yz1d.html)
 
@@ -77,15 +77,15 @@ cocos2dx 3.16
 
 [Cocos2d-x 学习笔记（九）纹理 CCTexture2D 和精灵 CCSprite - 移动开发其他类 - 红黑联盟](https://www.2cto.com/kf/201408/328980.html)
 
-### 库 Sprite 的继承
+### Sprite inheritance
 
 [关于在 cocos2dx 中继承 Sprite 的分析与技巧 - CSDN 博客](http://blog.csdn.net/while0/article/details/25615685)
 
-### 帧动画
+### Frame animation
 
 [cocos2dx 3.x(实现帧动画(人物动画,跑马灯效果)的几种方法) - 罗任德 - 博客园](https://www.cnblogs.com/luorende/p/5998893.html)
 
-### 相关资源
+### Related resources
 
 素材网站（第三方提取） https://tieba.baidu.com/p/3628520349?red_tag=2076293033
 
